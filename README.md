@@ -90,6 +90,9 @@ font-substitution or visual-validation report.
 engineVersion }`. PDF and PNG values are Node `Buffer` objects. Previews are
 generated from the finalized PDF and are empty when disabled.
 
+Linear-gradient fills can appear in the PDF but be absent from PNG previews in
+this engine version. The report example uses solid chart fills for that reason.
+
 | Option | Behavior |
 | --- | --- |
 | `html` | Required nonempty HTML string. |
