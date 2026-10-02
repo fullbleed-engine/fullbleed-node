@@ -46,7 +46,7 @@ a { color: inherit; }
 .report .chart-bars { height: 127pt; display: flex; gap: 20pt; align-items: flex-end; margin: 12pt 0 8pt; border-bottom: .5pt solid #83a48b; }
 .report .chart-col { width: 20%; text-align: center; }
 .report .chart-value { font: 17pt 'Bebas Neue'; margin-bottom: 5pt; }
-.report .bar { width: 100%; background: #d9bc77; }
+.report .bar { width: 100%; background: linear-gradient(180deg,#d9bc77,#a9b884); }
 .report .chart-labels { display: flex; gap: 20pt; font-size: 7pt; }
 .report .chart-labels span { display: block; flex: 1; text-align: center; }
 .report .quote { font: 26pt/1.16 'DM Serif Display'; color: #a53e25; }

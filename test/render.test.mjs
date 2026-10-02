@@ -5,6 +5,8 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { renderPdf, FullbleedError, engineVersion } from 'fullbleed';
+import { gradientFixtures } from './gradients.mjs';
+import { decodePng } from './png.mjs';
 
 const hash = value => createHash('sha256').update(value).digest('hex');
 const html = '<h1>Invoice NS-1042</h1><p>Consulting: USD 1,200.00</p>';
@@ -38,6 +40,21 @@ test('renders a designed three-page report', async () => {
   assert.equal(report.pages, 3);
   assert.equal(report.missingGlyphs, 0);
 });
+
+for (const fixture of gradientFixtures) {
+  test(`finalized preview preserves ${fixture.name} colors`, async () => {
+    const result = await renderPdf({ html: fixture.html, css: fixture.css, previewDpi: 72 });
+    assert.equal(result.pages, 1);
+    const image = decodePng(result.previews[0]);
+    assert.equal(image.width, 100); assert.equal(image.height, 100);
+    for (const [x, y, expected] of fixture.probes) {
+      const actual = image.pixel(x, y);
+      assert.equal(actual[3], 255);
+      assert(expected.every((value, channel) => Math.abs(value - actual[channel]) <= 3),
+        `${fixture.name} (${x},${y}): ${actual}, expected ${expected}`);
+    }
+  });
+}
 
 test('supports seven pages and rejects the caller-selected page limit', async () => {
   const input = { html: Array.from({ length: 7 }, (_, i) => `<section><h1>Record ${i + 1}</h1></section>`).join(''), css: 'section {break-after:page} section:last-child {break-after:auto}' };

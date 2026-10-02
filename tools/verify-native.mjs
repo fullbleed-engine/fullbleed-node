@@ -6,6 +6,7 @@ import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderPdf } from 'fullbleed';
+import { gradientFixtures } from '../test/gradients.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const engine = join(root, 'engine');
@@ -18,6 +19,7 @@ const manifest = JSON.parse(await readFile(join(root, 'dist/build.json'), 'utf8'
 const hash = data => createHash('sha256').update(data).digest('hex');
 const records = [];
 const fixtures = [];
+fixtures.push(...gradientFixtures);
 for (const [name, pages] of [['invoice', 1], ['report', 3]]) {
   fixtures.push({ name, pages, html: await readFile(join(root, 'examples', name + '.html'), 'utf8'), css: await readFile(join(root, 'examples', name + '.css'), 'utf8') });
 }
@@ -57,6 +59,6 @@ for (const fixture of fixtures) {
   }
   records.push({ name: fixture.name, pages: wasi.pages, pdfSha256: hash(pdf), previewsSha256: previews, directory: directory.slice(output.length + 1), nativeWasiEqual: true });
 }
-const report = { ok: true, engine: manifest.engineVersion, node: process.version, platform: process.platform, wasmSha256: manifest.files['dist/engine.wasm'].sha256, fixtures: records, scope: 'Equality for these four ordinary PDF fixtures and their finalized previews; no general platform or standards certification.' };
+const report = { ok: true, engine: manifest.engineVersion, node: process.version, platform: process.platform, wasmSha256: manifest.files['dist/engine.wasm'].sha256, fixtures: records, scope: 'Equality for these seven ordinary PDF fixtures and their finalized previews; no general platform or standards certification.' };
 await writeFile(join(output, 'verification.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report));
