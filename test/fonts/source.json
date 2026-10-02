@@ -1,0 +1,8 @@
+{
+  "font": "NotoSansMath-Regular.ttf",
+  "source": "Fullbleed 2.5.4 published Python wheel",
+  "sha256": "80b61fd613d3519197e64fff6f7e71fdc7f3e6526440ea4115b554ef7fd59af7",
+  "license_url": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosansmath/OFL.txt",
+  "license_sha256": "403a95275b469061b7d4371c328e0ada3bc7d63328abe2e88aad5cd243b2fe21",
+  "purpose": "Custom-font regression fixture; not included in the npm tarball."
+}

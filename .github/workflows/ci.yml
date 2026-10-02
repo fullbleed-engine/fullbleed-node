@@ -1,0 +1,95 @@
+name: Node integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build published engine and verify native output
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: '1.97.0'
+          targets: wasm32-wasip1
+          components: rustfmt
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: cargo fmt --manifest-path engine/Cargo.toml --check
+      - run: npm run build
+      - run: npm test
+      - run: npm run check:types
+      - run: npm run verify:native
+      - run: npm run example
+      - run: npm run verify:pack
+      - uses: actions/upload-artifact@v4
+        with:
+          name: node-engine
+          path: dist/
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        with:
+          name: node-package
+          path: |
+            output/pack-verification/*.tgz
+            output/pack-verification/package-info.json
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: node-native-evidence
+          path: |
+            output/native-verification/verification.json
+            output/native-verification/**/*.pdf
+            output/native-verification/**/*.png
+            output/native-verification/**/input.html
+            output/native-verification/**/style.css
+            output/pack-verification/verification.json
+          retention-days: 7
+
+  installed:
+    name: Packed package (${{ matrix.os }}, Node ${{ matrix.node }})
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: ['22', '24', '26']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        with:
+          name: node-engine
+          path: dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: node-package
+          path: input
+      - run: npm test
+      - run: npm run check:types
+      - run: npm run verify:pack -- --package-dir input
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: node-installed-${{ matrix.os }}-${{ matrix.node }}
+          path: |
+            output/pack-verification/verification.json
+            output/pack-verification/**/installed.pdf
+            output/pack-verification/**/installed.png
+          retention-days: 7

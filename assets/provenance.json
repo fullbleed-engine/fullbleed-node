@@ -1,0 +1,56 @@
+{
+  "repository": "https://github.com/fullbleed-engine/docs",
+  "commit": "c4ca8da804ef119db186b3f3922fff6e7e7c9a38",
+  "files": [
+    {
+      "file": "assets/fonts/BebasNeue-OFL.txt",
+      "sha256": "72082f6cb4d04be2ecf7cc7d9e1e7d73787f0af8a5a278a47cade70c16b78341",
+      "source_sha256": "72082f6cb4d04be2ecf7cc7d9e1e7d73787f0af8a5a278a47cade70c16b78341",
+      "source_path": "docs/assets/playground/fonts/BebasNeue-OFL.txt",
+      "transformation": null
+    },
+    {
+      "file": "assets/fonts/BebasNeue-Regular.ttf",
+      "sha256": "08e4623805102d819f58601e46e345648846075e363b2ceb23313c2d1c83ec73",
+      "source_sha256": "08e4623805102d819f58601e46e345648846075e363b2ceb23313c2d1c83ec73",
+      "source_path": "docs/assets/playground/fonts/BebasNeue-Regular.ttf",
+      "transformation": null
+    },
+    {
+      "file": "assets/fonts/DMSerifDisplay-Italic.ttf",
+      "sha256": "df74c0ac387baeaeb0fe4f2324e1668e6a3ed8c09cd9796fe162c71753e19e45",
+      "source_sha256": "df74c0ac387baeaeb0fe4f2324e1668e6a3ed8c09cd9796fe162c71753e19e45",
+      "source_path": "docs/assets/playground/fonts/DMSerifDisplay-Italic.ttf",
+      "transformation": null
+    },
+    {
+      "file": "assets/fonts/DMSerifDisplay-OFL.txt",
+      "sha256": "aa49c876a28d8c0b0a3027d6c25b9c607eee8c0fb96165011d42a6ace1408fe1",
+      "source_sha256": "a3e5cdd67d4571dd0a24fcc968de0efde7ae97ef752daf0906e4767619dd7231",
+      "source_path": "docs/assets/playground/fonts/DMSerifDisplay-OFL.txt",
+      "transformation": "License text line endings normalized to LF; full content preserved."
+    },
+    {
+      "file": "assets/fonts/DMSerifDisplay-Regular.ttf",
+      "sha256": "8cc3643535edf039aa5d95440a8542735e9197e4f4b8d9303e980fefbf5ab616",
+      "source_sha256": "8cc3643535edf039aa5d95440a8542735e9197e4f4b8d9303e980fefbf5ab616",
+      "source_path": "docs/assets/playground/fonts/DMSerifDisplay-Regular.ttf",
+      "transformation": null
+    },
+    {
+      "file": "assets/fonts/Inter-OFL.txt",
+      "sha256": "5b9321a4298cfeb6b34354164a1c3afc3db114569984c502b9b35d988fd58c57",
+      "source_sha256": "5b9321a4298cfeb6b34354164a1c3afc3db114569984c502b9b35d988fd58c57",
+      "source_path": "docs/assets/playground/fonts/Inter-OFL.txt",
+      "transformation": null
+    },
+    {
+      "file": "assets/fonts/Inter-Variable.ttf",
+      "sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
+      "source_sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
+      "source_path": "docs/assets/playground/fonts/Inter-Variable.ttf",
+      "transformation": null
+    }
+  ],
+  "examples": "examples/invoice.* and examples/report.* are copied from docs/assets/showcase at the same commit; text uses LF line endings."
+}

@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.ttf -text
+*.png -text
+*.pdf -text
+*.wasm -text
+assets/fonts/*-OFL.txt -whitespace
+test/fonts/*-OFL.txt -whitespace

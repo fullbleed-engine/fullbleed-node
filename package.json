@@ -1,0 +1,71 @@
+{
+  "name": "fullbleed",
+  "version": "0.1.0",
+  "description": "Generate PDFs from HTML and CSS in Node.js with the Fullbleed Rust engine, bundled fonts, and optional PNG previews.",
+  "type": "module",
+  "main": "./src/index.cjs",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./src/index.d.ts",
+        "default": "./src/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./src/index.cjs"
+      }
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "src/",
+    "dist/",
+    "assets/fonts/",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "prepack": "node tools/check-build.mjs",
+    "test": "node --test test/*.test.mjs",
+    "check:types": "tsc -p tsconfig.json",
+    "verify:native": "node tools/verify-native.mjs",
+    "example": "node examples/invoice.mjs",
+    "verify:pack": "node tools/verify-pack.mjs"
+  },
+  "dependencies": {
+    "@bjorn3/browser_wasi_shim": "0.4.2"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fullbleed-engine/fullbleed-node.git"
+  },
+  "homepage": "https://github.com/fullbleed-engine/fullbleed-node#readme",
+  "bugs": {
+    "url": "https://github.com/fullbleed-engine/fullbleed-node/issues"
+  },
+  "keywords": [
+    "pdf",
+    "html-to-pdf",
+    "pdf-generation",
+    "fullbleed",
+    "invoice",
+    "reports",
+    "rust",
+    "webassembly"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "fullbleed": {
+    "engineVersion": "2.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "typescript": "7.0.2"
+  }
+}
