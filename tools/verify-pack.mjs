@@ -63,7 +63,7 @@ const env = { ...process.env, PATH: dirname(process.execPath) };
 const run = spawnSync(process.execPath, ['smoke.mjs'], { cwd: install, env, encoding: 'utf8', timeout: 60000 });
 assert.equal(run.status, 0, run.stderr);
 const smoke = JSON.parse(run.stdout);
-const inline = spawnSync(process.execPath, ['--input-type=module', '--eval', "import {renderPdf} from 'fullbleed'; console.log((await renderPdf({html:'Inline module works'})).pages)"], { cwd: install, env, encoding: 'utf8', timeout: 60000 });
+const inline = spawnSync(process.execPath, ['--stack-trace-limit=10', '--input-type=module', '--eval', "import {renderPdf} from 'fullbleed'; console.log((await renderPdf({html:'Inline module works'})).pages)"], { cwd: install, env, encoding: 'utf8', timeout: 60000 });
 assert.equal(inline.status, 0, inline.stderr);
 assert.equal(inline.stdout.trim(), '1');
 const report = { ok: true, node: process.version, platform: process.platform, package: packed.filename,

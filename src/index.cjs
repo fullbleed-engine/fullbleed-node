@@ -4,6 +4,7 @@ const { readFile } = require('node:fs/promises');
 const { createHash } = require('node:crypto');
 const { join } = require('node:path');
 const { Worker } = require('node:worker_threads');
+const { pathToFileURL } = require('node:url');
 const pkg = require('../package.json');
 
 class FullbleedError extends Error {
@@ -101,15 +102,11 @@ async function renderPdf(options) {
     if (job.signal?.aborted) return abort();
     runtime().then(loaded => {
       if (settled) return;
-      // --input-type applies to the caller's eval/stdin, not this file-based worker.
-      const execArgv = [];
-      for (let i = 0; i < process.execArgv.length; i++) {
-        const arg = process.execArgv[i];
-        if (arg === '--input-type') { i++; continue; }
-        if (!arg.startsWith('--input-type=')) execArgv.push(arg);
-      }
-      worker = new Worker(join(__dirname, 'worker.js'), {
-        execArgv,
+      // A trusted inline bootstrap supports --input-type callers while letting
+      // Node inherit process flags through its own worker compatibility rules.
+      const entry = pathToFileURL(join(__dirname, 'worker.js')).href;
+      worker = new Worker(`import(${JSON.stringify(entry)})`, {
+        eval: true,
         workerData: {
           module: loaded.module, fonts: [...loaded.fonts, ...job.customFonts], assets: job.assetFiles,
           html: job.html, css: job.css, previewDpi: job.previewDpi, maxPages: job.maxPages,
