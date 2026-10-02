@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 import assert from 'node:assert/strict';
-import { readFile, writeFile, mkdir, mkdtemp } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, mkdtemp, copyFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { join, dirname, resolve } from 'node:path';
@@ -9,9 +9,10 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const output = join(root, 'output/pack-verification');
 await mkdir(output, { recursive: true });
+const cache = await mkdtemp(join(output, 'fresh npm cache '));
 assert(process.env.npm_execpath, 'Run this check with npm run verify:pack');
 function npm(args, cwd) {
-  const result = spawnSync(process.execPath, [process.env.npm_execpath, ...args], { cwd, encoding: 'utf8', timeout: 120000 });
+  const result = spawnSync(process.execPath, [process.env.npm_execpath, ...args], { cwd, env: { ...process.env, npm_config_cache: cache }, encoding: 'utf8', timeout: 120000 });
   assert.equal(result.status, 0, result.stderr || result.stdout);
   return result.stdout;
 }
@@ -27,9 +28,12 @@ assert(names.every(n => /^(?:dist\/|src\/|assets\/fonts\/|LICENSE$|README\.md$|p
 assert(!names.some(n => /(?:\.env|node_modules|target|test\/|engine\/)/.test(n)), names);
 const tarball = join(packageDirectory, packed.filename);
 assert.equal('sha512-' + createHash('sha512').update(await readFile(tarball)).digest('base64'), packed.integrity);
-const install = await mkdtemp(join(output, 'consumer with spaces '));
-await writeFile(join(install, 'package.json'), JSON.stringify({ name: 'fullbleed-install-check', version: '0.0.0', private: true, type: 'module' }));
-npm(['install', '--offline', '--ignore-scripts', '--omit=dev', '--no-audit', '--no-fund', tarball], install);
+const first = await mkdtemp(join(output, 'fresh consumer with spaces '));
+await writeFile(join(first, 'package.json'), JSON.stringify({ name: 'fullbleed-install-check', version: '0.0.0', private: true, type: 'module' }));
+npm(['install', '--ignore-scripts', '--omit=dev', '--no-audit', '--no-fund', tarball], first);
+const install = await mkdtemp(join(output, 'offline consumer with spaces '));
+for (const name of ['package.json', 'package-lock.json']) await copyFile(join(first, name), join(install, name));
+npm(['ci', '--offline', '--ignore-scripts', '--omit=dev', '--no-audit', '--no-fund'], install);
 const tree = JSON.parse(npm(['ls', '--all', '--json'], install));
 assert.deepEqual(Object.keys(tree.dependencies), ['fullbleed']);
 assert.deepEqual(Object.keys(tree.dependencies.fullbleed.dependencies), ['@bjorn3/browser_wasi_shim']);
@@ -64,7 +68,7 @@ assert.equal(inline.status, 0, inline.stderr);
 assert.equal(inline.stdout.trim(), '1');
 const report = { ok: true, node: process.version, platform: process.platform, package: packed.filename,
   tarballSha256: createHash('sha256').update(await readFile(tarball)).digest('hex'), files: names,
-  offlineInstall: true, runtimePath: 'Node executable directory only', installDirectory: install.slice(output.length + 1),
+  freshCacheInstall: true, offlineInstallFromGeneratedLock: true, runtimePath: 'Node executable directory only', installDirectory: install.slice(output.length + 1),
   inlineModule: true, smoke };
 await writeFile(join(output, 'verification.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report));
