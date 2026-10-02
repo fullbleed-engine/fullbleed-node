@@ -4,15 +4,15 @@ Generate PDFs from static HTML and CSS in Node.js. The package includes the
 Fullbleed Rust engine compiled to WebAssembly and four font faces, so installing
 it does not require Python, Rust, a browser, or system fonts. MIT licensed.
 
-This is an optional integration around the unchanged **Fullbleed 2.5.4** engine.
-The Node package has its own version, **0.1.0**.
+This is an optional integration around the unchanged **Fullbleed 2.5.5** engine.
+The Node package has its own version, **0.1.1**.
 
 ## Install and render
 
 Use Node.js 22 or newer. Install the versioned package from its GitHub release:
 
 ```bash
-npm install https://github.com/fullbleed-engine/fullbleed-node/releases/download/v0.1.0/fullbleed-0.1.0.tgz
+npm install https://github.com/fullbleed-engine/fullbleed-node/releases/download/v0.1.1/fullbleed-0.1.1.tgz
 ```
 
 Save this as `invoice.mjs` and run `node invoice.mjs`:
@@ -90,8 +90,9 @@ font-substitution or visual-validation report.
 engineVersion }`. PDF and PNG values are Node `Buffer` objects. Previews are
 generated from the finalized PDF and are empty when disabled.
 
-Linear-gradient fills can appear in the PDF but be absent from PNG previews in
-this engine version. The report example uses solid chart fills for that reason.
+The report example uses gradient chart fills. Its finalized PDF previews and
+separate linear, translucent, and hard radial fixtures are checked against the
+native engine.
 
 | Option | Behavior |
 | --- | --- |

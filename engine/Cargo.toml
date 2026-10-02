@@ -1,12 +1,12 @@
 [package]
 name = "fullbleed-node-adapter"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 license = "MIT"
 publish = false
 
 [dependencies]
-fullbleed = "=2.5.4"
+fullbleed = "=2.5.5"
 
 [profile.release]
 lto = true
