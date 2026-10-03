@@ -36,6 +36,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install pypdf==6.19.0
+      - run: python -m unittest discover -s test -p 'test_release.py'
       - run: npm run verify:text
       - uses: actions/upload-artifact@v4
         with:

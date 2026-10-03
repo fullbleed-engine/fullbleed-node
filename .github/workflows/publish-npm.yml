@@ -1,0 +1,85 @@
+name: Publish verified npm release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Published GitHub release version (for example 0.1.2)'
+        required: true
+        type: string
+      ci_run:
+        description: 'Successful Node integration run that built the release tarball'
+        required: true
+        type: string
+      publish:
+        description: 'Publish the verified tarball to npm'
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-publication
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      filename: ${{ steps.release.outputs.filename }}
+      sha256: ${{ steps.release.outputs.sha256 }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s test -p 'test_release.py'
+      - id: release
+        name: Match the GitHub release to its successful CI artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          CI_RUN: ${{ inputs.ci_run }}
+        run: python tools/verify-release.py --version "$RELEASE_VERSION" --ci-run "$CI_RUN"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-npm-release
+          path: output/publish/
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    if: inputs.publish
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: verified-npm-release
+          path: verified
+      - name: Verify and publish the unchanged tarball using OIDC
+        working-directory: verified
+        env:
+          RELEASE_FILE: ${{ needs.verify.outputs.filename }}
+          RELEASE_SHA256: ${{ needs.verify.outputs.sha256 }}
+        run: |
+          printf '%s  %s\n' "$RELEASE_SHA256" "$RELEASE_FILE" | sha256sum --check --strict
+          npm publish "./$RELEASE_FILE" --access public --ignore-scripts

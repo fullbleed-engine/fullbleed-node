@@ -18,8 +18,11 @@ lockfiles synchronized when changing their respective versions.
    and SHA-256 sums. Verify uploaded sizes and hashes before publishing.
 6. Install the public GitHub tarball in a new directory and render the quickstart
    again. Confirm that its PDF and PNG hashes match the retained fixture.
-7. Publish the unchanged verified tarball to npm using the maintainer's required
-   account verification. Do not repack it for publication.
+7. Run `publish-npm.yml` from `main` with the version, its successful Node
+   integration run ID, and `publish=false`. It requires the public release,
+   annotated tag/source commit, all ten CI jobs, package metadata, and tarball
+   hashes to agree. Then dispatch the same inputs with `publish=true` to publish
+   the unchanged tarball through npm's GitHub trusted publisher. Do not repack it.
 8. Verify registry metadata, tarball integrity, and a fresh registry install.
    Read the emitted PDF with the independent extraction check before updating
    version pins in examples and documentation.
@@ -27,6 +30,11 @@ lockfiles synchronized when changing their respective versions.
 The repository's `npm run verify:text` check requires the test-only Python reader
 `pypdf==6.19.0`. It reads the actual PDF from `npm run verify:pack` and checks its
 hash and single-copy authored text. Python and pypdf are not package dependencies.
+
+Configure npm's trusted publisher for organization `fullbleed-engine`, repository
+`fullbleed-node`, workflow `publish-npm.yml`, and environment `npm`, allowing direct
+`npm publish`. The publication job receives OIDC access only after verification;
+it uses no stored npm token. See [npm's trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/).
 
 The checks establish package behavior for the retained fixtures. They do not
 establish PDF standards certification, general browser parity, or arbitrary
