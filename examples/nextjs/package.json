@@ -1,0 +1,22 @@
+{
+  "name": "fullbleed-nextjs-starter",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "postbuild": "node tools/copy-public.mjs",
+    "start": "node tools/start.mjs",
+    "preview:pdf": "node tools/render-preview.mjs",
+    "verify": "node tools/verify.mjs"
+  },
+  "dependencies": {
+    "fullbleed": "https://github.com/fullbleed-engine/fullbleed-node/releases/download/v0.1.1/fullbleed-0.1.1.tgz",
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  }
+}
