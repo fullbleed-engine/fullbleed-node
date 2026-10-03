@@ -4,3 +4,4 @@ engine/target/
 output/
 target/
 *.tgz
+__pycache__/
