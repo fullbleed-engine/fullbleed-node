@@ -9,11 +9,16 @@ The Node package has its own version, **0.1.1**.
 
 ## Install and render
 
-Use Node.js 22 or newer. Install the versioned package from its GitHub release:
+Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package/fullbleed):
 
 ```bash
-npm install https://github.com/fullbleed-engine/fullbleed-node/releases/download/v0.1.1/fullbleed-0.1.1.tgz
+npm install fullbleed
 ```
+
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.1.1`.
+The npm tarball is byte-identical to the verified
+[GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.1.1).
+See the [registry installation checks](verification/npm-publication-0.1.1.json).
 
 Save this as `invoice.mjs` and run `node invoice.mjs`:
 
