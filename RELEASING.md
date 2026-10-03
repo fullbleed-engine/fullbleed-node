@@ -18,11 +18,15 @@ lockfiles synchronized when changing their respective versions.
    and SHA-256 sums. Verify uploaded sizes and hashes before publishing.
 6. Install the public GitHub tarball in a new directory and render the quickstart
    again. Confirm that its PDF and PNG hashes match the retained fixture.
+7. Publish the unchanged verified tarball to npm using the maintainer's required
+   account verification. Do not repack it for publication.
+8. Verify registry metadata, tarball integrity, and a fresh registry install.
+   Read the emitted PDF with the independent extraction check before updating
+   version pins in examples and documentation.
 
-Until npm account publishing is configured, document the versioned GitHub
-tarball installation URL. Do not advertise `npm install fullbleed` as a registry
-installation. If publishing to npm, publish the exact verified tarball, then
-verify registry metadata and a fresh registry install before updating that command.
+The repository's `npm run verify:text` check requires the test-only Python reader
+`pypdf==6.19.0`. It reads the actual PDF from `npm run verify:pack` and checks its
+hash and single-copy authored text. Python and pypdf are not package dependencies.
 
 The checks establish package behavior for the retained fixtures. They do not
 establish PDF standards certification, general browser parity, or arbitrary
