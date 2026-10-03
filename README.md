@@ -4,8 +4,9 @@ Generate PDFs from static HTML and CSS in Node.js. The package includes the
 Fullbleed Rust engine compiled to WebAssembly and four font faces, so installing
 it does not require Python, Rust, a browser, or system fonts. MIT licensed.
 
-This is an optional integration around the unchanged **Fullbleed 2.5.5** engine.
-The Node package has its own version, **0.1.1**.
+This is an optional integration around the unchanged **Fullbleed 2.5.6** engine.
+The Node package has its own version, **0.1.2**. This patch keeps synthesized-bold
+headings searchable once instead of exposing duplicate text to PDF readers.
 
 ## Install and render
 
@@ -15,10 +16,10 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.1.1`.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.1.2`.
 The npm tarball is byte-identical to the verified
-[GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.1.1).
-See the [registry installation checks](verification/npm-publication-0.1.1.json).
+[GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.1.2).
+See the [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification).
 
 Save this as `invoice.mjs` and run `node invoice.mjs`:
 
@@ -156,8 +157,9 @@ arbitrary browser pages.
 
 ## Build and verify from source
 
-Contributors need Node.js 22+ and Rust 1.97.0 with the WASI target. Package users
-do not need a compiler. Dependencies are pinned in both lockfiles.
+Contributors need Node.js 22+ and Rust 1.97.0 with the WASI target. The independent
+PDF text check also uses Python with the test-only `pypdf==6.19.0` reader. Package
+users do not need a compiler or Python. Dependencies are pinned in both lockfiles.
 
 ```bash
 rustup target add wasm32-wasip1
@@ -167,6 +169,8 @@ npm test
 npm run check:types
 npm run verify:native
 npm run verify:pack
+python -m pip install pypdf==6.19.0
+npm run verify:text
 ```
 
 The build records engine metadata, licenses, and artifact hashes in `dist/`.

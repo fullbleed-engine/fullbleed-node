@@ -59,6 +59,6 @@ for (const fixture of fixtures) {
   }
   records.push({ name: fixture.name, pages: wasi.pages, pdfSha256: hash(pdf), previewsSha256: previews, directory: directory.slice(output.length + 1), nativeWasiEqual: true });
 }
-const report = { ok: true, engine: manifest.engineVersion, node: process.version, platform: process.platform, wasmSha256: manifest.files['dist/engine.wasm'].sha256, fixtures: records, scope: 'Equality for these seven ordinary PDF fixtures and their finalized previews; no general platform or standards certification.' };
+const report = { ok: true, engine: manifest.engineVersion, node: process.version, platform: process.platform, wasmSha256: manifest.files['dist/engine.wasm'].sha256, fixtures: records, scope: 'Equality for the retained ordinary PDF fixtures and their finalized previews; no general platform or standards certification.' };
 await writeFile(join(output, 'verification.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report));
