@@ -57,6 +57,14 @@ npm run example
 Open `output/invoice/invoice.pdf` and `page-1.png`. The [three-page report
 sources](examples/report.html) demonstrate pagination, tables, and vector artwork.
 
+## Use it in Next.js
+
+For a web application, start with the [Next.js PDF download example](examples/nextjs).
+It includes a designed invoice, an App Router handler, production build settings
+for the worker and bundled assets, and a standalone-server verification script.
+The route bounds rendering and returns private PDF attachments from fictional
+data; connect your own authenticated record lookup when adapting it.
+
 ## Fonts and assets
 
 Supply file bytes explicitly. Additional fonts are registered alongside the
