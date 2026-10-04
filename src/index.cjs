@@ -87,13 +87,20 @@ async function renderPdf(options) {
   if (remaining <= 0) throw new FullbleedError('TIMEOUT', `PDF rendering exceeded ${job.timeoutMs} ms.`);
   return new Promise((resolve, reject) => {
     let worker, timer, settled = false;
-    const finish = (error, result) => {
+    const finish = async (error, result) => {
       if (settled) return;
       settled = true;
       clearTimeout(timer);
       job.signal?.removeEventListener('abort', abort);
-      const termination = worker?.terminate();
-      if (termination) termination.catch(() => {});
+      // A process 'worker' listener can abort synchronously inside the Worker
+      // constructor. Let that constructor assign its handle before cleanup.
+      await Promise.resolve();
+      try {
+        await worker?.terminate();
+      } catch (cause) {
+        reject(new FullbleedError('WORKER_FAILED', 'Could not stop the rendering worker.', { cause }));
+        return;
+      }
       if (error) reject(error); else resolve(result);
     };
     const abort = () => finish(aborted());

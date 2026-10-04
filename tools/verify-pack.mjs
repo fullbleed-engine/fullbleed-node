@@ -47,16 +47,26 @@ import { writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const input = {html:'<h1>Installed package</h1><p>Invoice NS-1042</p>', previewDpi:96};
+const activeWorkers = new Set();
+let createdWorkers = 0;
+process.on('worker', worker => {
+  createdWorkers++;
+  activeWorkers.add(worker);
+  worker.once('exit', () => activeWorkers.delete(worker));
+});
 // Exercise a cold cancellation before engine compilation has completed.
 await assert.rejects(renderPdf({...input,timeoutMs:1}), e => e instanceof FullbleedError && e.code==='TIMEOUT');
 const result=await renderPdf(input);
+assert.equal(activeWorkers.size,0,'The installed rendering worker must exit before success.');
 assert.equal(result.pages,1); assert.equal(result.missingGlyphs,0);
 assert.equal(result.pdf.subarray(0,5).toString(),'%PDF-');
 const cjs=createRequire(import.meta.url)('fullbleed');
 assert.equal(hash((await cjs.renderPdf(input)).pdf),hash(result.pdf));
+assert.equal(activeWorkers.size,0,'The CommonJS worker must also exit before success.');
+assert(createdWorkers>=2,'Observe actual rendering workers.');
 await writeFile('installed.pdf',result.pdf);
 await writeFile('installed.png',result.previews[0]);
-console.log(JSON.stringify({ok:true,engine:engineVersion,pdf:hash(result.pdf),png:hash(result.previews[0]),cjs:true,coldTimeoutRecovered:true}));
+console.log(JSON.stringify({ok:true,engine:engineVersion,pdf:hash(result.pdf),png:hash(result.previews[0]),cjs:true,coldTimeoutRecovered:true,settledWorkersReleased:true}));
 `;
 await writeFile(join(install, 'smoke.mjs'), script);
 const env = { ...process.env, PATH: dirname(process.execPath) };
