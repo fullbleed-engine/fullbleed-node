@@ -20,7 +20,7 @@ Open `http://127.0.0.1:3000` and select **Download sample PDF**. The route
 IDs return 404. Use `npm run dev` while editing the app. `PORT` changes the port;
 `FULLBLEED_HOST` changes the production server's loopback binding.
 
-The lockfile pins Next.js 16.3.8, React 19.3.0 and Fullbleed Node 0.1.2
+The lockfile pins Next.js 16.3.8, React 19.3.0 and Fullbleed Node 0.1.3
 (engine 2.5.6) from npm. The registry package is byte-identical to the
 verified GitHub release tarball.
 Installing this starter needs no Python, Rust, system fonts or browser renderer.
@@ -71,6 +71,10 @@ queue. Successful PDFs have `private, no-store`, a fixed filename, a complete
 content length and `nosniff`. Jobs have a 15-second rendering deadline and a
 five-page cap, and receive the request's abort signal. No generated PDF is
 written to application storage by the route.
+
+The render promise waits for its worker to exit, including after errors,
+timeouts, or cancellation. The route therefore holds its capacity slot until
+that worker stops; sequential downloads do not overlap worker lifetimes.
 
 Use shared rate/usage controls for multiple processes or replicas. Measure your
 host's memory and CPU before increasing capacity; each render worker can grow
