@@ -186,6 +186,12 @@ error recovery; and installs the packed tarball into a separate directory with
 spaces in its path. CI exercises Node 22, 24, and 26 on Windows, Linux, and macOS.
 Retained release evidence describes the verified fixtures and scope.
 
+An intermittent process crash observed on Linux with Node 24.21.0 remains under
+investigation in [issue #7](https://github.com/fullbleed-engine/fullbleed-node/issues/7).
+Version 0.1.3 fixes worker shutdown timing, but does not establish that this crash
+is resolved. See the [runtime investigation and diagnostic](docs/runtime-diagnostics.md)
+for the observed scope, retained results, and a synthetic reproducer.
+
 ## License and support
 
 The adapter and Fullbleed engine are MIT licensed. Bundled fonts use SIL OFL 1.1.
