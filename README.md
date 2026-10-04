@@ -5,8 +5,9 @@ Fullbleed Rust engine compiled to WebAssembly and four font faces, so installing
 it does not require Python, Rust, a browser, or system fonts. MIT licensed.
 
 This is an optional integration around the unchanged **Fullbleed 2.5.6** engine.
-The Node package has its own version, **0.1.2**. This patch keeps synthesized-bold
-headings searchable once instead of exposing duplicate text to PDF readers.
+The Node package has its own version, **0.1.3**. Render promises now wait for their
+worker to exit, including after errors, timeouts, and cancellation, so sequential
+calls do not overlap worker lifetimes.
 
 ## Install and render
 
@@ -16,9 +17,9 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.1.2`.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.1.3`.
 The npm tarball is byte-identical to the verified
-[GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.1.2).
+[GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.1.3).
 See the [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification).
 
 Save this as `invoice.mjs` and run `node invoice.mjs`:
@@ -121,7 +122,12 @@ native engine.
 | `allowMissingGlyphs` | Default `false`: reject engine-reported missing glyphs. |
 
 Rendering runs in a dedicated worker. Concurrent calls use separate workers and
-document state. Bound concurrency in a server according to its available memory;
+document state. The returned promise waits for that worker to exit on success,
+render failure, timeout, or cancellation. Awaiting jobs in sequence therefore
+does not overlap their worker lifetimes. A timeout or abort starts termination;
+settlement includes the time needed to stop the worker.
+
+Bound concurrency in a server according to its available memory;
 each worker's WebAssembly memory has a 512 MiB ceiling. HTML and CSS together are
 limited to 4,000,000 UTF-8 bytes; supplied fonts and assets together to 64 MiB.
 Preview images can use substantially more memory than PDF-only rendering.
