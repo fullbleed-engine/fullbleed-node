@@ -4,10 +4,11 @@ Generate PDFs from static HTML and CSS in Node.js. The package includes the
 Fullbleed Rust engine compiled to WebAssembly and four font faces, so installing
 it does not require Python, Rust, a browser, or system fonts. MIT licensed.
 
-This is an optional integration around the unchanged **Fullbleed 2.5.6** engine.
-The Node package has its own version, **0.1.3**. Render promises now wait for their
-worker to exit, including after errors, timeouts, and cancellation, so sequential
-calls do not overlap worker lifetimes.
+This is an optional integration around the published **Fullbleed 2.5.7** engine.
+The Node package has its own version, **0.1.4**. This release reduces embedded
+font metadata while preserving the retained glyph outlines, metrics, and font
+notices. See the [installed-package font checks](docs/font-subsets.md) for the
+fixtures and verification commands.
 
 ## Install and render
 
@@ -17,9 +18,9 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.1.3`.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.1.4`.
 The npm tarball is byte-identical to the verified
-[GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.1.3).
+[GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.1.4).
 See the [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification).
 
 Save this as `invoice.mjs` and run `node invoice.mjs`:
@@ -164,8 +165,8 @@ arbitrary browser pages.
 ## Build and verify from source
 
 Contributors need Node.js 22+ and Rust 1.97.0 with the WASI target. The independent
-PDF text check also uses Python with the test-only `pypdf==6.19.0` reader. Package
-users do not need a compiler or Python. Dependencies are pinned in both lockfiles.
+PDF checks also use Python with the test-only readers listed below. Package users
+do not need a compiler or Python. Dependencies are pinned in both lockfiles.
 
 ```bash
 rustup target add wasm32-wasip1
@@ -175,8 +176,10 @@ npm test
 npm run check:types
 npm run verify:native
 npm run verify:pack
-python -m pip install pypdf==6.19.0
+python -m pip install pypdf==6.19.0 pypdfium2==5.14.0 fonttools==4.65.0 pillow==12.3.0
 npm run verify:text
+npm run render:fonts
+npm run verify:fonts
 ```
 
 The build records engine metadata, licenses, and artifact hashes in `dist/`.
@@ -185,6 +188,10 @@ fonts, and image assets; compares native and WebAssembly PDF/PNG bytes; checks
 error recovery; and installs the packed tarball into a separate directory with
 spaces in its path. CI exercises Node 22, 24, and 26 on Windows, Linux, and macOS.
 Retained release evidence describes the verified fixtures and scope.
+The font check reads PDFs from the isolated tarball installation, checks the
+embedded TrueType programs against their source fonts, and compares two
+independent text readers. CI also compares text and native/PDFium pixels with
+the previous public npm release.
 
 An intermittent process crash observed on Linux with Node 24.21.0 remains under
 investigation in [issue #7](https://github.com/fullbleed-engine/fullbleed-node/issues/7).
