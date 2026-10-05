@@ -5,7 +5,9 @@ Keep `package.json`, the adapter version in `engine/Cargo.toml`, and both
 lockfiles synchronized when changing their respective versions.
 
 1. Build and verify locally using the README commands. Inspect generated PDFs
-   and their finalized previews. Keep the original inputs and reports.
+   and their finalized previews. Keep the original inputs and reports. Run the
+   [installed font checks](docs/font-subsets.md), including the previous-release
+   comparison, and retain the source fonts with their licenses.
 2. Commit the candidate and run the full Node integration workflow. Require all
    ten jobs to pass. All nine platform/Node combinations must install the same
    `node-package` artifact; do not rebuild the tarball for publication.
@@ -29,7 +31,8 @@ lockfiles synchronized when changing their respective versions.
 
 The repository's `npm run verify:text` check requires the test-only Python reader
 `pypdf==6.19.0`. It reads the actual PDF from `npm run verify:pack` and checks its
-hash and single-copy authored text. Python and pypdf are not package dependencies.
+hash and single-copy authored text. The font comparison also uses the pinned
+PDFium, fonttools, and Pillow versions in CI. These are not package dependencies.
 
 Configure npm's trusted publisher for organization `fullbleed-engine`, repository
 `fullbleed-node`, workflow `publish-npm.yml`, and environment `npm`, allowing direct
