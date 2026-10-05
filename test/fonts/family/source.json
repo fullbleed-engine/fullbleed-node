@@ -1,0 +1,26 @@
+{
+  "repository": "https://github.com/google/fonts",
+  "commit": "ea37b132420c876be7220094ea6374be0efb23e3",
+  "license": "OFL-1.1",
+  "scope": "Unmodified custom fonts used only by regression tests, excluded from npm package",
+  "files": [
+    {
+      "file": "LibreCaslonText[wght].ttf",
+      "url": "https://raw.githubusercontent.com/google/fonts/ea37b132420c876be7220094ea6374be0efb23e3/ofl/librecaslontext/LibreCaslonText%5Bwght%5D.ttf",
+      "bytes": 126876,
+      "sha256": "c11809dbfd5445886293d89b32bfc2584075c80e77750cf1c284113e36b8b3f4"
+    },
+    {
+      "file": "LibreCaslonText-Italic[wght].ttf",
+      "url": "https://raw.githubusercontent.com/google/fonts/ea37b132420c876be7220094ea6374be0efb23e3/ofl/librecaslontext/LibreCaslonText-Italic%5Bwght%5D.ttf",
+      "bytes": 176200,
+      "sha256": "60ca1a3aade61c8c381800ca85b9b2f0fb341d89ebe065e12cd6ec2ee2e53e54"
+    },
+    {
+      "file": "OFL.txt",
+      "url": "https://raw.githubusercontent.com/google/fonts/ea37b132420c876be7220094ea6374be0efb23e3/ofl/librecaslontext/OFL.txt",
+      "bytes": 4404,
+      "sha256": "a294245c822c5aa9fd9a9f3189418e99415428be5fecadf797793d5d8f6a3ad3"
+    }
+  ]
+}

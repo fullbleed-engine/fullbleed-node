@@ -4,11 +4,12 @@ Generate PDFs from static HTML and CSS in Node.js. The package includes the
 Fullbleed Rust engine compiled to WebAssembly and four font faces, so installing
 it does not require Python, Rust, a browser, or system fonts. MIT licensed.
 
-This is an optional integration around the published **Fullbleed 2.5.7** engine.
-The Node package has its own version, **0.1.4**. This release reduces embedded
-font metadata while preserving the retained glyph outlines, metrics, and font
-notices. See the [installed-package font checks](docs/font-subsets.md) for the
-fixtures and verification commands.
+This is an optional integration around the published **Fullbleed 2.5.8** engine.
+The Node package has its own version, **0.1.5**. Normal text now selects a custom
+family's regular face even when its italic face is supplied first. Review saved
+PDF baselines when upgrading: affected documents can change appearance and line
+breaks. See the [font-family checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-families.md) and
+[embedded-font checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-subsets.md) for the retained fixtures.
 
 ## Install and render
 
@@ -18,9 +19,9 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.1.4`.
-The npm tarball is byte-identical to the verified
-[GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.1.4).
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.1.5`.
+Release verification compares the npm tarball with the checked
+[GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.1.5).
 See the [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification).
 
 Save this as `invoice.mjs` and run `node invoice.mjs`:
@@ -180,6 +181,8 @@ python -m pip install pypdf==6.19.0 pypdfium2==5.14.0 fonttools==4.65.0 pillow==
 npm run verify:text
 npm run render:fonts
 npm run verify:fonts
+npm run render:families
+npm run verify:families
 ```
 
 The build records engine metadata, licenses, and artifact hashes in `dist/`.

@@ -1,6 +1,7 @@
 # Checking the installed package's embedded fonts
 
-Node package 0.1.4 pins the published Fullbleed 2.5.7 engine. Its font subsetting
+Node package 0.1.4 introduced the Fullbleed 2.5.7 font compaction described here;
+0.1.5 retains these checks with engine 2.5.8. The engine's font subsetting
 removes unused metadata and metrics while retaining original glyph IDs and the
 glyph outlines, instructions, advances, character mappings, and font notices
 needed by the document. The JavaScript API and four bundled font faces are

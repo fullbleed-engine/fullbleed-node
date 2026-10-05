@@ -75,6 +75,24 @@ test('custom fonts resolve characters missing from the bundled fonts', async () 
   assert.match(result.pdf.toString('latin1'), /NotoSansMath/);
 });
 
+test('custom regular and italic family faces match exact controls in either order', async () => {
+  const regular = await readFile(new URL('./fonts/family/LibreCaslonText[wght].ttf', import.meta.url));
+  const italic = await readFile(new URL('./fonts/family/LibreCaslonText-Italic[wght].ttf', import.meta.url));
+  const input = (family, style, fonts) => ({
+    html: '<p>Type Alpha with care.</p>', fonts, previewDpi: 96,
+    css: `@page {size:440pt 140pt;margin:20pt} p {font-family:"${family}";font-size:22pt;font-style:${style};margin:0}`,
+  });
+  for (const [style, face, font] of [['normal', 'LibreCaslonText-Regular', regular], ['italic', 'LibreCaslonText-Italic', italic]]) {
+    const control = await renderPdf(input(face, style, [font]));
+    for (const fonts of [[italic, regular], [regular, italic]]) {
+      const actual = await renderPdf(input('Libre Caslon Text', style, fonts));
+      assert.equal(actual.missingGlyphs, 0);
+      assert.equal(actual.pages, 1);
+      assert.deepEqual(actual.previews, control.previews);
+    }
+  }
+});
+
 test('nested virtual assets affect PDF and preview bytes', async () => {
   const svg = color => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><rect width="80" height="40" fill="${color}"/></svg>`);
   const input = { html: '<h1>Asset test</h1><img src="assets/brand/logo.svg" width="80" height="40">', previewDpi: 96 };
