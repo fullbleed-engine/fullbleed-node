@@ -101,6 +101,24 @@ jobs:
       - run: npm test
       - run: npm run check:types
       - run: npm run verify:pack -- --package-dir input
+      - uses: actions/setup-python@v6
+        if: matrix.os == 'windows-latest' && matrix.node == '22'
+        with:
+          python-version: '3.12'
+      - name: Verify Unicode font evidence with Windows locale decoding
+        if: matrix.os == 'windows-latest' && matrix.node == '22'
+        env:
+          PYTHONUTF8: '0'
+        run: |
+          python -m pip install pypdf==6.19.0 pypdfium2==5.14.0 fonttools==4.65.0 pillow==12.3.0
+          npm run render:fonts
+          npm run verify:fonts
+      - uses: actions/upload-artifact@v4
+        if: always() && matrix.os == 'windows-latest' && matrix.node == '22'
+        with:
+          name: node-windows-font-evidence
+          path: output/font-subsets/
+          retention-days: 7
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -20,8 +20,8 @@ Open `http://127.0.0.1:3000` and select **Download sample PDF**. The route
 IDs return 404. Use `npm run dev` while editing the app. `PORT` changes the port;
 `FULLBLEED_HOST` changes the production server's loopback binding.
 
-The lockfile pins Next.js 16.3.8, React 19.3.0 and Fullbleed Node 0.1.3
-(engine 2.5.6) from npm. The registry package is byte-identical to the
+The lockfile pins Next.js 16.3.8, React 19.3.0 and Fullbleed Node 0.1.4
+(engine 2.5.7) from npm. The registry package is byte-identical to the
 verified GitHub release tarball.
 Installing this starter needs no Python, Rust, system fonts or browser renderer.
 
