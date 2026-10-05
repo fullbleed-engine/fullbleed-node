@@ -144,9 +144,9 @@ def compact(text):
 
 def verify(args):
     root = args.evidence_root.resolve()
-    renders = json.loads((root / 'renders.json').read_text())
+    renders = json.loads((root / 'renders.json').read_text(encoding='utf-8'))
     assert renders['ok'] and len(renders['fixtures']) == 7
-    baseline = json.loads((args.baseline / 'verification.json').read_text()) if args.baseline else None
+    baseline = json.loads((args.baseline / 'verification.json').read_text(encoding='utf-8')) if args.baseline else None
     if baseline:
         assert baseline['ok']
         assert baseline['fonts'] == renders['fonts'], 'Before/after source fonts changed'
@@ -233,7 +233,7 @@ def verify(args):
         assert all_fonts_seen == {item['name'] for item in renders['fonts']}
         report['ok'] = True
     finally:
-        destination.write_text(json.dumps(report, indent=2) + '\n')
+        destination.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     return report
 
 
