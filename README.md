@@ -20,8 +20,11 @@ npm install fullbleed
 ```
 
 For a version-pinned installation, use `npm install --save-exact fullbleed@0.1.5`.
-Release verification compares the npm tarball with the checked
+The npm tarball matches the checked
 [GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.1.5).
+A [fresh registry install](https://github.com/fullbleed-engine/fullbleed-node/blob/main/verification/npm-publication-0.1.5.json)
+reproduces the retained PDF/PNG output and passes seven compact-font fixtures
+and ten custom-family cases.
 See the [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification).
 
 Save this as `invoice.mjs` and run `node invoice.mjs`:
