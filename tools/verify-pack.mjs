@@ -23,7 +23,7 @@ const packed = args.length ? JSON.parse(await readFile(join(packageDirectory, 'p
   : JSON.parse(npm(['pack', '--json', '--pack-destination', output], root))[0];
 if (!args.length) await writeFile(join(output, 'package-info.json'), JSON.stringify(packed, null, 2) + '\n');
 const names = packed.files.map(f => f.path);
-for (const required of ['dist/engine.wasm', 'dist/build.json', 'dist/index.d.cts', 'dist/THIRD_PARTY_NOTICES.txt', 'src/index.js', 'src/index.cjs', 'src/index.d.ts', 'src/worker.js', 'src/process-worker.cjs', 'LICENSE', 'README.md', 'package.json']) assert(names.includes(required), required);
+for (const required of ['dist/engine.wasm', 'dist/build.json', 'dist/index.d.cts', 'dist/THIRD_PARTY_NOTICES.txt', 'dist/browser/client.js', 'dist/browser/worker.js', 'dist/browser/asset-manifest.json', 'src/index.js', 'src/index.cjs', 'src/index.d.ts', 'src/browser.d.ts', 'src/engine-runner.js', 'src/render-input.cjs', 'src/copy-browser-assets.cjs', 'src/worker.js', 'src/process-worker.cjs', 'LICENSE', 'README.md', 'package.json']) assert(names.includes(required), required);
 assert(names.every(n => /^(?:dist\/|src\/|assets\/fonts\/|LICENSE$|README\.md$|package\.json$)/.test(n)), names);
 assert(!names.some(n => /(?:\.env|node_modules|target|test\/|engine\/)/.test(n)), names);
 const tarball = join(packageDirectory, packed.filename);

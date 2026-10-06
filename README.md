@@ -1,13 +1,16 @@
-# Fullbleed for Node.js
+# Fullbleed for Node.js and browsers
 
-Generate PDFs from static HTML and CSS in Node.js. The package includes the
+Generate PDFs from static HTML and CSS in Node.js or a browser worker. The package includes the
 Fullbleed Rust engine compiled to WebAssembly and four font faces, so installing
 it does not require Python, Rust, a browser, or system fonts. MIT licensed.
 
+Import `fullbleed` for Node.js or `fullbleed/browser` for a web application.
+
 This is an optional integration around the published **Fullbleed 2.5.8** engine.
-The Node package has its own version, **0.2.0**. It adds optional process isolation
-for server applications. The engine and default worker mode are unchanged from
-0.1.5. See the [process isolation guide](docs/process-isolation.md),
+The package has its own version, **0.3.0**, and adds a browser entry point for
+rendering in a Web Worker. The Node API still supports worker and process
+isolation. See the [browser guide](docs/browser.md),
+[process isolation guide](docs/process-isolation.md),
 [font-family checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-families.md), and
 [embedded-font checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-subsets.md) for the retained fixtures.
 
@@ -19,13 +22,12 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.2.0`.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.3.0`.
 Package archives and retained PDF/PNG evidence are attached to each
 [GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
-A [fresh npm installation](verification/npm-publication-0.2.0.json) matches the
-release tarball and reproduces the retained PDF/PNG output in both isolation
-modes, including recovery after forced child termination.
-See the [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification).
+The [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification)
+retain published-package checks by version, including output hashes and failure
+recovery. Use the record for the version you are evaluating.
 
 Save this as `invoice.mjs` and run `node invoice.mjs`:
 
@@ -77,6 +79,32 @@ for the worker and bundled assets, and a standalone-server verification script.
 The route bounds rendering and returns private PDF attachments from fictional
 data; connect your own authenticated record lookup when adapting it.
 
+## Use it in a browser
+
+Copy the browser runtime into your application's static directory:
+
+```sh
+npx fullbleed-browser-assets public/fullbleed
+```
+
+Then use the separate browser entry from a page served over HTTPS or localhost:
+
+```javascript
+import { createRenderer } from 'fullbleed/browser';
+
+const renderer = createRenderer({ assetBaseUrl: '/fullbleed/' });
+const result = await renderer.renderPdf({
+  html: '<h1>Your document</h1>',
+  css: 'h1 { color: #175c52 }',
+  maxPages: 20,
+});
+const pdf = new Blob([result.pdf], { type: 'application/pdf' });
+```
+
+The result uses browser byte arrays. The worker loads the shipped engine/fonts
+from your site and renders locally, with cancellation, deadlines and structured
+errors. See the [browser API, download example and hosting requirements](docs/browser.md).
+
 ## Fonts and assets
 
 Supply file bytes explicitly. Additional fonts are registered alongside the
@@ -105,6 +133,9 @@ family. Its missing-glyph report checks resolved fonts and is not an exhaustive
 font-substitution or visual-validation report.
 
 ## API
+
+This section describes the Node entry. The browser entry returns browser byte
+arrays through a configured renderer; see its [API guide](docs/browser.md).
 
 `await renderPdf(options)` returns `{ pdf, previews, pages, missingGlyphs,
 engineVersion }`. PDF and PNG values are Node `Buffer` objects. Previews are
@@ -196,6 +227,12 @@ npm run render:fonts
 npm run verify:fonts
 npm run render:families
 npm run verify:families
+npm run verify:browser:prepare
+python -m pip install -r tools/browser-requirements.txt
+python -m playwright install chrome firefox webkit
+python tools/check-browser.py --browser chrome --label local
+python tools/check-browser.py --browser firefox --label local
+python tools/check-browser.py --browser webkit --label local
 ```
 
 The build records engine metadata, licenses, and artifact hashes in `dist/`.
@@ -204,6 +241,8 @@ fonts, and image assets; compares native and WebAssembly PDF/PNG bytes; checks
 error recovery; and installs the packed tarball into a separate directory with
 spaces in its path. CI exercises Node 22, 24, and 26 on Windows, Linux, and macOS.
 Retained release evidence describes the verified fixtures and scope.
+Browser CI uses the same packed artifact in Chrome, Firefox and Playwright WebKit,
+including actual downloads, finalized previews, asset failures and recovery.
 The font check reads PDFs from the isolated tarball installation, checks the
 embedded TrueType programs against their source fonts, and compares two
 independent text readers. CI also compares text and native/PDFium pixels with

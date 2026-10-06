@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
+import { buildBrowser } from './build-browser.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const engine = join(root, 'engine');
@@ -50,5 +51,6 @@ const manifest = {
   dependencies: metadata.packages.filter(p => p.source).map(p => ({ name: p.name, version: p.version, source: p.source, license: p.license })),
   files,
 };
+Object.assign(manifest.files, await buildBrowser(root, manifest));
 await writeFile(join(dist, 'build.json'), JSON.stringify(manifest, null, 2) + '\n');
 console.log(JSON.stringify({ ok: true, engine: core.version, wasm: files['dist/engine.wasm'] }));
