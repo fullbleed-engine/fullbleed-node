@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderPdf } from 'fullbleed';
 import { gradientFixtures } from '../test/gradients.mjs';
+import { inlineFixtures } from '../test/inline-wrapping.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const engine = join(root, 'engine');
@@ -20,6 +21,7 @@ const hash = data => createHash('sha256').update(data).digest('hex');
 const records = [];
 const fixtures = [];
 fixtures.push(...gradientFixtures);
+fixtures.push(...inlineFixtures);
 for (const [name, pages] of [['invoice', 1], ['report', 3]]) {
   fixtures.push({ name, pages, html: await readFile(join(root, 'examples', name + '.html'), 'utf8'), css: await readFile(join(root, 'examples', name + '.css'), 'utf8') });
 }
