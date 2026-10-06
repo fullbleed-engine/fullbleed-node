@@ -23,7 +23,7 @@ const packed = args.length ? JSON.parse(await readFile(join(packageDirectory, 'p
   : JSON.parse(npm(['pack', '--json', '--pack-destination', output], root))[0];
 if (!args.length) await writeFile(join(output, 'package-info.json'), JSON.stringify(packed, null, 2) + '\n');
 const names = packed.files.map(f => f.path);
-for (const required of ['dist/engine.wasm', 'dist/build.json', 'dist/index.d.cts', 'dist/THIRD_PARTY_NOTICES.txt', 'src/index.js', 'src/index.cjs', 'src/index.d.ts', 'src/worker.js', 'LICENSE', 'README.md', 'package.json']) assert(names.includes(required), required);
+for (const required of ['dist/engine.wasm', 'dist/build.json', 'dist/index.d.cts', 'dist/THIRD_PARTY_NOTICES.txt', 'src/index.js', 'src/index.cjs', 'src/index.d.ts', 'src/worker.js', 'src/process-worker.cjs', 'LICENSE', 'README.md', 'package.json']) assert(names.includes(required), required);
 assert(names.every(n => /^(?:dist\/|src\/|assets\/fonts\/|LICENSE$|README\.md$|package\.json$)/.test(n)), names);
 assert(!names.some(n => /(?:\.env|node_modules|target|test\/|engine\/)/.test(n)), names);
 const tarball = join(packageDirectory, packed.filename);
@@ -73,12 +73,66 @@ const env = { ...process.env, PATH: dirname(process.execPath) };
 const run = spawnSync(process.execPath, ['smoke.mjs'], { cwd: install, env, encoding: 'utf8', timeout: 60000 });
 assert.equal(run.status, 0, run.stderr);
 const smoke = JSON.parse(run.stdout);
-const inline = spawnSync(process.execPath, ['--stack-trace-limit=10', '--input-type=module', '--eval', "import {renderPdf} from 'fullbleed'; console.log((await renderPdf({html:'Inline module works'})).pages)"], { cwd: install, env, encoding: 'utf8', timeout: 60000 });
+const processScript = `
+import assert from 'node:assert/strict';
+import { renderPdf, FullbleedError } from 'fullbleed';
+import { createRequire } from 'node:module';
+import { ChildProcess } from 'node:child_process';
+import { writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+const expected = ${JSON.stringify(smoke)};
+// A fresh consumer must keep Wasm and render workers out of the caller process.
+for (const name of ['compile','compileStreaming','instantiate','instantiateStreaming']) {
+  WebAssembly[name] = () => { throw new Error('The parent must not load WebAssembly.'); };
+}
+process.on('worker', () => { throw new Error('The parent must not create render workers.'); });
+// Child startup must not replay application preloads, flags, or inline scripts.
+await writeFile('must-not-run.cjs', "throw new Error('Application preload was replayed');");
+process.env.NODE_OPTIONS = '--require=./must-not-run.cjs';
+process.execArgv.push('--require', './must-not-run.cjs');
+const children = [];
+const active = new Set();
+let interruptNext = false;
+const originalSpawn = ChildProcess.prototype.spawn;
+ChildProcess.prototype.spawn = function(options) {
+  children.push(this); active.add(this);
+  this.once('exit', () => active.delete(this));
+  this.once('close', () => active.delete(this));
+  const result = originalSpawn.call(this, options);
+  if (interruptNext) { interruptNext = false; this.once('spawn', () => this.kill('SIGKILL')); }
+  return result;
+};
+const stopped = () => {
+  assert.equal(active.size, 0);
+  assert(children.every(child => !child.connected));
+};
+const input = {html:'<h1>Installed package</h1><p>Invoice NS-1042</p>', previewDpi:96, isolation:'process'};
+const result = await renderPdf(input); stopped();
+assert.equal(hash(result.pdf), expected.pdf); assert.equal(hash(result.previews[0]), expected.png);
+const cjs = createRequire(import.meta.url)('fullbleed');
+assert.equal(hash((await cjs.renderPdf(input)).pdf), expected.pdf); stopped();
+interruptNext = true;
+await assert.rejects(renderPdf(input), error => error instanceof FullbleedError && error.code === 'PROCESS_FAILED');
+stopped();
+assert.equal(hash((await renderPdf(input)).pdf), expected.pdf); stopped();
+assert.equal(children.length, 4);
+await writeFile('process-installed.pdf', result.pdf);
+await writeFile('process-installed.png', result.previews[0]);
+console.log(JSON.stringify({ok:true,parentWasmForbidden:true,parentWorkersForbidden:true,
+  applicationPreloadsExcluded:true,cjs:true,forcedTerminationRecovered:true,settledProcessesReleased:true,
+  children:children.length,pdf:hash(result.pdf),png:hash(result.previews[0])}));
+`;
+await writeFile(join(install, 'process-smoke.mjs'), processScript);
+const processRun = spawnSync(process.execPath, ['process-smoke.mjs'], { cwd: install, env, encoding: 'utf8', timeout: 60000 });
+assert.equal(processRun.status, 0, processRun.stderr);
+const processSmoke = JSON.parse(processRun.stdout);
+const inline = spawnSync(process.execPath, ['--stack-trace-limit=10', '--input-type=module', '--eval', "import {renderPdf} from 'fullbleed'; for(const isolation of ['worker','process']) console.log((await renderPdf({html:'Inline module works',isolation})).pages)"], { cwd: install, env, encoding: 'utf8', timeout: 60000 });
 assert.equal(inline.status, 0, inline.stderr);
-assert.equal(inline.stdout.trim(), '1');
+assert.equal(inline.stdout.trim().replaceAll('\r', ''), '1\n1');
 const report = { ok: true, node: process.version, platform: process.platform, package: packed.filename,
   tarballSha256: createHash('sha256').update(await readFile(tarball)).digest('hex'), files: names,
   freshCacheInstall: true, offlineInstallFromGeneratedLock: true, runtimePath: 'Node executable directory only', installDirectory: install.slice(output.length + 1),
-  inlineModule: true, smoke };
+  inlineModule: true, smoke, processSmoke };
 await writeFile(join(output, 'verification.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report));

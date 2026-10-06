@@ -5,10 +5,10 @@ Fullbleed Rust engine compiled to WebAssembly and four font faces, so installing
 it does not require Python, Rust, a browser, or system fonts. MIT licensed.
 
 This is an optional integration around the published **Fullbleed 2.5.8** engine.
-The Node package has its own version, **0.1.5**. Normal text now selects a custom
-family's regular face even when its italic face is supplied first. Review saved
-PDF baselines when upgrading: affected documents can change appearance and line
-breaks. See the [font-family checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-families.md) and
+The Node package has its own version, **0.2.0**. It adds optional process isolation
+for server applications. The engine and default worker mode are unchanged from
+0.1.5. See the [process isolation guide](docs/process-isolation.md),
+[font-family checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-families.md), and
 [embedded-font checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-subsets.md) for the retained fixtures.
 
 ## Install and render
@@ -19,12 +19,9 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.1.5`.
-The npm tarball matches the checked
-[GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.1.5).
-A [fresh registry install](https://github.com/fullbleed-engine/fullbleed-node/blob/main/verification/npm-publication-0.1.5.json)
-reproduces the retained PDF/PNG output and passes seven compact-font fixtures
-and ten custom-family cases.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.2.0`.
+Package archives and retained PDF/PNG evidence are attached to each
+[GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
 See the [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification).
 
 Save this as `invoice.mjs` and run `node invoice.mjs`:
@@ -124,6 +121,7 @@ native engine.
 | `maxPages` | Reject larger documents. Default: 1000. |
 | `timeoutMs` | Deadline including initial engine loading. Default: 30000 ms. |
 | `signal` | An `AbortSignal` to cancel rendering. |
+| `isolation` | `'worker'` (default) or `'process'` for a separate Node process per call. |
 | `allowMissingGlyphs` | Default `false`: reject engine-reported missing glyphs. |
 
 Rendering runs in a dedicated worker. Concurrent calls use separate workers and
@@ -131,6 +129,13 @@ document state. The returned promise waits for that worker to exit on success,
 render failure, timeout, or cancellation. Awaiting jobs in sequence therefore
 does not overlap their worker lifetimes. A timeout or abort starts termination;
 settlement includes the time needed to stop the worker.
+
+Use `isolation: 'process'` when a render-process failure should become a rejected
+request while the calling application stays running. This mode runs the engine
+and its worker in a fresh Node process, and waits for process exit and IPC
+disconnection before settling. It requires a host that permits child processes
+and adds startup and memory overhead. It does not pool processes or retry jobs.
+See the [guide and failure checks](docs/process-isolation.md).
 
 Bound concurrency in a server according to its available memory;
 each worker's WebAssembly memory has a 512 MiB ceiling. HTML and CSS together are
@@ -145,6 +150,7 @@ try {
     html: '<h1>Monthly statement</h1>',
     maxPages: 20,
     timeoutMs: 10_000,
+    isolation: 'process',
     signal: AbortSignal.timeout(8_000),
   });
   // Return result.pdf from your HTTP handler, or write it to your storage.
@@ -156,8 +162,9 @@ try {
 
 Error codes include `INVALID_INPUT`, `MISSING_GLYPHS`, `PAGE_LIMIT`, `TIMEOUT`,
 `ABORTED`, `ENGINE_LOAD_FAILED`, `ENGINE_LIMIT`, `RENDER_FAILED`,
-`PREVIEW_FAILED`, and `WORKER_FAILED`. Failed or cancelled calls do not return a
-partial PDF. Caller-owned asset buffers are copied when a call starts.
+`PREVIEW_FAILED`, `WORKER_FAILED`, and `PROCESS_FAILED`. Process failures may also
+include `exitCode` and `signal`. Failed or cancelled calls do not return a partial
+PDF. Caller-owned asset buffers are copied when a call starts.
 
 This API covers ordinary document generation and previews. It does not expose
 PDF/A, PDF/UA, PDF/X, template overlays, or compiled VDP. Use the
@@ -202,7 +209,8 @@ the previous public npm release.
 An intermittent process crash observed on Linux with Node 24.21.0 remains under
 investigation in [issue #7](https://github.com/fullbleed-engine/fullbleed-node/issues/7).
 Version 0.1.3 fixes worker shutdown timing, but does not establish that this crash
-is resolved. See the [runtime investigation and diagnostic](docs/runtime-diagnostics.md)
+is resolved. Version 0.2.0 adds optional process fault containment; it does not
+claim to fix the native crash. See the [runtime investigation and diagnostic](docs/runtime-diagnostics.md)
 for the observed scope, retained results, and a synthetic reproducer.
 
 ## License and support

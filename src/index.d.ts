@@ -17,6 +17,8 @@ export interface RenderOptions {
   /** Default false: missing glyphs reject the job instead of silently emitting them. */
   allowMissingGlyphs?: boolean;
   signal?: AbortSignal;
+  /** Default: worker. Process starts a fresh Node child and waits for its exit. */
+  isolation?: 'worker' | 'process';
 }
 
 export interface RenderResult {
@@ -29,6 +31,9 @@ export interface RenderResult {
 
 export class FullbleedError extends Error {
   readonly code: string;
+  /** Present on PROCESS_FAILED errors after the child closes. */
+  readonly exitCode?: number | null;
+  readonly signal?: NodeJS.Signals | null;
   constructor(code: string, message: string, options?: ErrorOptions);
 }
 export function renderPdf(options: RenderOptions): Promise<RenderResult>;

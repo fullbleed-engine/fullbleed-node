@@ -12,6 +12,12 @@ That fixes the independently reproduced worker-lifecycle defect in
 establish the cause or resolution of the original native crash. A process signal
 can terminate the application before JavaScript can return a `FullbleedError`.
 
+Version 0.2.0 adds optional [process isolation](process-isolation.md), so a
+render-child failure can be reported while the caller continues running. Its
+fault-injection checks exercise termination, shutdown failure, and recovery.
+They do not reproduce the original SIGSEGV or establish its cause; issue #7
+remains open.
+
 ## Concurrent-render experiment, October 4, 2026
 
 The [upstream Node report](https://github.com/nodejs/node/issues/66366) describes
