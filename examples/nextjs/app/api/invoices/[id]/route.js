@@ -24,7 +24,7 @@ export async function GET(request, { params }) {
   active++;
   try {
     const template = await invoiceTemplate(invoice);
-    const { pdf } = await renderPdf({ ...template, maxPages: 5, timeoutMs: 15_000, signal: request.signal });
+    const { pdf } = await renderPdf({ ...template, isolation: 'process', maxPages: 5, timeoutMs: 15_000, signal: request.signal });
     return new Response(pdf, {
       headers: {
         ...privateHeaders,

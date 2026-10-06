@@ -22,6 +22,9 @@ npm install fullbleed
 For a version-pinned installation, use `npm install --save-exact fullbleed@0.2.0`.
 Package archives and retained PDF/PNG evidence are attached to each
 [GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
+A [fresh npm installation](verification/npm-publication-0.2.0.json) matches the
+release tarball and reproduces the retained PDF/PNG output in both isolation
+modes, including recovery after forced child termination.
 See the [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification).
 
 Save this as `invoice.mjs` and run `node invoice.mjs`:
