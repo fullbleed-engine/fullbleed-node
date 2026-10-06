@@ -105,6 +105,32 @@ try {
   await pdfResponse(await get(url));
   check('a valid document renders after the page limit rejects a job', true);
 
+  // Next can keep both the traced package and a renamed external-package copy.
+  // Target every verified copy in this disposable artifact so the injected
+  // failure reaches the package actually imported by the production route.
+  async function processEntries(directory) {
+    const found = [];
+    for (const entry of await readdir(directory, { withFileTypes: true })) {
+      const path = join(directory, entry.name);
+      if (entry.isDirectory()) found.push(...await processEntries(path));
+      else if (entry.name === 'process-worker.cjs') found.push(path);
+    }
+    return found;
+  }
+  const processPaths = await processEntries(folder);
+  assert(processPaths.length > 0, 'Standalone tracing must include the render child.');
+  const originalProcessEntry = await readFile('node_modules/fullbleed/src/process-worker.cjs');
+  for (const path of processPaths) assert.deepEqual(await readFile(path), originalProcessEntry);
+  try {
+    for (const path of processPaths) await writeFile(path, 'process.exit(23);\n');
+    const failure = await get(url);
+    check('a failed render child returns an HTTP error while the production server stays alive',
+      failure.status === 500 && (await failure.json()).error.code === 'RENDER_FAILED'
+      && logs.includes('PROCESS_FAILED') && child.exitCode === null);
+  } finally { for (const path of processPaths) await writeFile(path, originalProcessEntry); }
+  await pdfResponse(await get(url));
+  check('the production server returns a valid PDF after a render-process failure', true);
+
   async function jsFiles(directory) {
     const result = [];
     for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -118,9 +144,9 @@ try {
   for (const file of chunks) assert.doesNotMatch(await readFile(file, 'utf8'), /browser_wasi_shim|engine\.wasm|node:worker_threads/);
   check('client JavaScript excludes the server PDF engine and worker', chunks.length > 0);
   const info = JSON.parse(await readFile('package.json', 'utf8'));
-  const record = { checkedAt: new Date().toISOString(), node: process.version, platform: platform(), next: info.dependencies.next, nodePackage: version, engineVersion,
+  const record = { checkedAt: new Date().toISOString(), node: process.version, platform: platform(), next: info.dependencies.next, nodePackage: version, engineVersion, isolation: 'process',
     packageLockSha256: hash(await readFile('package-lock.json')), base, standaloneFolder: folder, pages: expected.pages, pdfSha256: hash(bytes), burst, checks,
-    scope: 'Real next build standalone server with released Fullbleed tarball and fictional data. No hosted platform or application-authentication claim.' };
+    scope: 'Real next build standalone server with released Fullbleed npm package and fictional data; HTTP recovery after deliberate child failure. No hosted platform or application-authentication claim.' };
   await writeFile('output/verification.json', JSON.stringify(record, null, 2) + '\n');
   await writeFile('output/server.log', logs);
   if (process.argv.includes('--serve')) {
