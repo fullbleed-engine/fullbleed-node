@@ -56,6 +56,28 @@ class ReleaseBindingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'SHA-256'):
             release_check.verify_tarball(b'modified tarball', info, report)
 
+    def browser_release(self):
+        names = ['Build published engine and verify native output']
+        names += [f'Packed package ({os}, Node {node})' for os in ['ubuntu-latest', 'windows-latest', 'macos-latest'] for node in ['22', '24', '26']]
+        names += [f'Browser package ({browser})' for browser in ['chrome', 'firefox', 'webkit']]
+        self.run['jobs'] = [{'name': name, 'conclusion': 'success'} for name in names]
+        self.release['tag_name'] = 'v0.3.0'
+        self.report.update(package_version='0.3.0', ci_jobs=13,
+            browser_matrix=[{'browser': browser, 'ok': True, 'package_version': '0.3.0', 'checks': 30} for browser in ['chrome', 'firefox', 'webkit']])
+
+    def test_browser_release_requires_every_named_browser_job(self):
+        self.browser_release()
+        self.verify(version='0.3.0')
+        self.run['jobs'][-1]['name'] = 'Unrelated green job'
+        with self.assertRaisesRegex(ValueError, 'Required browser'): self.verify(version='0.3.0')
+
+    def test_browser_release_rejects_incomplete_or_wrong_package_evidence(self):
+        for change in [{'checks': 0}, {'ok': False}, {'package_version': '0.2.0'}, {'browser': 'chrome'}]:
+            with self.subTest(change=change):
+                self.browser_release()
+                self.report['browser_matrix'][-1].update(change)
+                with self.assertRaises(ValueError): self.verify(version='0.3.0')
+
 
 if __name__ == '__main__':
     unittest.main()

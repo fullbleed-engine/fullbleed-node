@@ -1,7 +1,7 @@
 {
   "name": "fullbleed",
-  "version": "0.2.0",
-  "description": "Generate PDFs from HTML and CSS in Node.js with the Fullbleed Rust engine, bundled fonts, and optional PNG previews.",
+  "version": "0.3.0",
+  "description": "Generate PDFs from HTML and CSS in Node.js or a browser worker with the Fullbleed Rust engine, bundled fonts, and optional PNG previews.",
   "type": "module",
   "main": "./src/index.cjs",
   "types": "./src/index.d.ts",
@@ -15,6 +15,10 @@
         "types": "./dist/index.d.cts",
         "default": "./src/index.cjs"
       }
+    },
+    "./browser": {
+      "types": "./src/browser.d.ts",
+      "default": "./dist/browser/client.js"
     }
   },
   "engines": {
@@ -31,7 +35,7 @@
     "build": "node tools/build.mjs",
     "prepack": "node tools/check-build.mjs",
     "test": "node --test test/*.test.mjs",
-    "check:types": "tsc -p tsconfig.json",
+    "check:types": "tsc -p tsconfig.json && tsc -p tsconfig.browser.json",
     "verify:native": "node tools/verify-native.mjs",
     "example": "node examples/invoice.mjs",
     "verify:pack": "node tools/verify-pack.mjs",
@@ -39,7 +43,9 @@
     "render:fonts": "node tools/render-font-subsets.mjs",
     "verify:fonts": "python tools/verify-font-subsets.py",
     "render:families": "node tools/render-font-families.mjs",
-    "verify:families": "python tools/verify-font-families.py output/font-families"
+    "verify:families": "python tools/verify-font-families.py output/font-families",
+    "build:browser": "node tools/build-browser.mjs",
+    "verify:browser:prepare": "node tools/prepare-browser-check.mjs"
   },
   "dependencies": {
     "@bjorn3/browser_wasi_shim": "0.4.2"
@@ -71,6 +77,10 @@
   },
   "devDependencies": {
     "@types/node": "22.20.5",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "esbuild": "0.28.2"
+  },
+  "bin": {
+    "fullbleed-browser-assets": "src/copy-browser-assets.cjs"
   }
 }

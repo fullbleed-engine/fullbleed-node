@@ -14,6 +14,14 @@ for (const [name, expected] of Object.entries(manifest.files)) {
   assert.equal(createHash('sha256').update(bytes).digest('hex'), expected.sha256, name);
 }
 assert.deepEqual(await readFile(new URL('src/index.d.ts', root)), await readFile(new URL('dist/index.d.cts', root)));
+const browser = JSON.parse(await readFile(new URL('dist/browser/asset-manifest.json', root), 'utf8'));
+assert.equal(browser.packageVersion, pkg.version);
+assert.equal(browser.engineVersion, pkg.fullbleed.engineVersion);
+for (const record of Object.values(browser.files)) {
+  const bytes = await readFile(new URL(record.source, root));
+  assert.equal(bytes.length, record.bytes, record.source);
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), record.sha256, record.source);
+}
 const wasm = await readFile(new URL('dist/engine.wasm', root));
 let cursor = 8, memoryMaximum;
 const leb = () => {

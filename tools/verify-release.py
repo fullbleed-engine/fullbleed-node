@@ -27,15 +27,28 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
     require(run['status'] == 'completed' and run['conclusion'] == 'success', 'CI must have succeeded')
     require(run['name'] == 'Node integration' and run['headRepository']['nameWithOwner'] == REPO,
             'CI must belong to this repository')
-    require(len(run['jobs']) == 10 and all(j['conclusion'] == 'success' for j in run['jobs']),
-            'All ten CI jobs must pass')
+    browser_release = tuple(map(int, version.split('.'))) >= (0, 3, 0)
+    job_count = 13 if browser_release else 10
+    require(len(run['jobs']) == job_count and all(j['conclusion'] == 'success' for j in run['jobs']),
+            f'All {job_count} CI jobs must pass')
+    if browser_release:
+        expected = {'Build published engine and verify native output'}
+        expected.update(f'Packed package ({os}, Node {node})' for os in ['ubuntu-latest', 'windows-latest', 'macos-latest'] for node in ['22', '24', '26'])
+        expected.update(f'Browser package ({browser})' for browser in ['chrome', 'firefox', 'webkit'])
+        require({job.get('name') for job in run['jobs']} == expected, 'Required browser and installed CI jobs are missing')
     require(not release['draft'] and not release['prerelease'] and release['tag_name'] == 'v' + version,
             'Require a published stable GitHub release')
     require(report['ok'] and report['package_version'] == version, 'Release version differs')
     require(run['headSha'] == tag_commit == report['source_commit'], 'Source commit differs')
     require(report['ci_run'] == f'https://github.com/{REPO}/actions/runs/{run_id}', 'CI run differs')
-    require(report['ci_jobs'] == 10 and len(report['installed_matrix']) == 9,
+    require(report['ci_jobs'] == job_count and len(report['installed_matrix']) == 9,
             'Release does not retain the required installed matrix')
+    if browser_release:
+        browsers = report.get('browser_matrix', [])
+        require(len(browsers) == 3 and {item.get('browser') for item in browsers} == {'chrome', 'firefox', 'webkit'},
+                'Release does not retain the required browser matrix')
+        require(all(item.get('ok') is True and item.get('package_version') == version and item.get('checks', 0) >= 30 for item in browsers),
+                'Browser verification is incomplete or tests another package')
 
 
 def verify_tarball(data, info, report):
@@ -63,6 +76,10 @@ def verify_tarball(data, info, report):
         require(package['repository']['url'] == f'https://github.com/{REPO}.git', 'Repository differs')
         require(package['fullbleed']['engineVersion'] == report['engine_version'], 'Engine differs')
     require(all(item['tarball_sha256'] == sha for item in report['installed_matrix']), 'Matrix tested another tarball')
+    if tuple(map(int, info['version'].split('.'))) >= (0, 3, 0):
+        require({'dist/browser/client.js', 'dist/browser/worker.js', 'dist/browser/asset-manifest.json', 'src/browser.d.ts', 'src/copy-browser-assets.cjs'}.issubset(names),
+                'Browser package files are missing')
+        require(all(item['tarball_sha256'] == sha for item in report['browser_matrix']), 'Browser matrix tested another tarball')
     return sha
 
 
@@ -111,7 +128,7 @@ def main():
         (out / filename).write_bytes(data)
     result = dict(ok=True, version=args.version, source_commit=run['headSha'], ci_run=args.ci_run,
         release=release['html_url'], filename=filename, sha256=sha, integrity=info['integrity'],
-        bytes=len(data), scope='Exact public GitHub release tarball matched to all ten successful CI jobs.')
+        bytes=len(data), scope=f'Exact public GitHub release tarball matched to all {len(run["jobs"])} successful CI jobs.')
     (out / 'verification.json').write_text(json.dumps(result, indent=2) + '\n')
     if os.environ.get('GITHUB_OUTPUT'):
         with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
