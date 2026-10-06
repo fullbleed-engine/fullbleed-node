@@ -5,6 +5,9 @@ dedicated Web Worker. It uses the same pinned 2.5.8 engine and bundled fonts as
 the Node entry. The result is a `Uint8Array`, suitable for a PDF `Blob`, plus
 optional PNG previews. No PDF server or account is required.
 
+The [runnable browser starter](../examples/browser) includes editable templates,
+previews, downloads, and production build settings.
+
 ## Copy the runtime into your site
 
 Install the package in your web project, then copy its browser files into the

@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "checked_at": "2026-10-06T03:32:03.294918+00:00",
+  "package_version": "0.3.0",
+  "engine_version": "2.5.8",
+  "registry": "https://registry.npmjs.org/fullbleed/0.3.0",
+  "tarball_sha256": "e02086f88d9472bba34435ba7229423218a03c98964cc5f0cbed8c16dcea68d4",
+  "package_integrity": "sha512-9HimnoHTEpgtGhqi9gF+IMSEW8g3GRK11yUkmL6OYD40D/RhWoIF7SqKuDs6nrHF7loWnhtNDWz3Hp/DNaBbMQ==",
+  "installed_files_matched": 28,
+  "fresh_cache": true,
+  "empty_user_config": true,
+  "release": "https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.3.0",
+  "source_commit": "b53615597fdc45b0dfb2adc2cfeea6dd9e6dafcd",
+  "publication": "https://github.com/fullbleed-engine/fullbleed-node/actions/runs/37409246969",
+  "scope": "Anonymous public-registry bytes match the CI/GitHub release. Every installed package file matches the tarball. Vite starter built from that package; browser UI checks are retained separately."
+}

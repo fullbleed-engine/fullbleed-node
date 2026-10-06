@@ -81,6 +81,10 @@ data; connect your own authenticated record lookup when adapting it.
 
 ## Use it in a browser
 
+Start with the [complete browser application](examples/browser): editable HTML/CSS,
+invoice and report designs, previews, cancellation, and PDF downloads.
+
+
 Copy the browser runtime into your application's static directory:
 
 ```sh
