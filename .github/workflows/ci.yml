@@ -134,6 +134,6 @@ jobs:
           name: node-installed-${{ matrix.os }}-${{ matrix.node }}
           path: |
             output/pack-verification/verification.json
-            output/pack-verification/**/installed.pdf
-            output/pack-verification/**/installed.png
+            output/pack-verification/**/*.pdf
+            output/pack-verification/**/*.png
           retention-days: 7
