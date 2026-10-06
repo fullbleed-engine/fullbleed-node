@@ -1,4 +1,5 @@
-@font-face{font-family:Inter;src:url('/fullbleed/fonts/Inter-Variable.ttf') format('truetype');font-weight:100 900;font-display:swap}
+/* Match the pinned renderer's URL so the page and worker can share the cached font. */
+@font-face{font-family:Inter;src:url('/fullbleed/fonts/Inter-Variable.ttf?v=0.3.0') format('truetype');font-weight:100 900;font-display:swap}
 :root{font-family:Inter,sans-serif;color:#173b35;background:#f6f5ef;font-synthesis:none;font-size:15px;line-height:1.5}
 *{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button,a,input,select{touch-action:manipulation}a{color:inherit}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #d45d34;outline-offset:4px}
 .site-header{max-width:1440px;margin:auto;padding:22px 5vw;display:flex;align-items:center;gap:28px;border-bottom:1px solid #d8ded5}.wordmark{font-weight:850;font-size:29px;letter-spacing:-1.6px;text-decoration:none}.wordmark span{color:#d85330}.header-note{font-size:10px;letter-spacing:2px;font-weight:700;margin-left:8px}.docs-link{margin-left:auto;text-decoration:none;font-size:13px;font-weight:650}.docs-link span{margin-left:10px}
