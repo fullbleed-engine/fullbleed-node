@@ -10,6 +10,12 @@ const assetBaseUrl = new URL('fullbleed/', new URL(import.meta.env.BASE_URL, loc
 let renderer;
 const escapeHtml = value => value.replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
 const placeholder = $('preview').firstElementChild.cloneNode(true);
+if ($('accent').type !== 'color') {
+  $('accent').classList.add('color-text');
+  $('accent').maxLength = 7;
+  $('accent').setAttribute('pattern', '#[0-9a-fA-F]{6}');
+  $('color-value').hidden = true;
+}
 let controller, pdfUrl, filename, previewUrls = [];
 const defaults = {
   invoice: { html: invoiceTemplate, css: invoiceCss },

@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "checked_at": "2026-10-06T03:33:32.142655+00:00",
+  "checked_at": "2026-10-06T03:35:30.320823+00:00",
   "package_version": "0.3.0",
   "engine_version": "2.5.8",
   "source_files": {
@@ -14,10 +14,10 @@
     "examples/browser/public/favicon.svg": "3eed6dcf1013e48bc64886fed4cf815c609ed06b404742bdacdc44c1df8d3118",
     "examples/browser/src/invoice.css": "0b310ce0f2964fd6b9b68e4afafa9307b4ff8c6b2f1fc753367dc755620ce427",
     "examples/browser/src/invoice.html": "1f065ad6694021649e61b3f666cba6dc01aacdcbd8e80e97425b383e60d7d2fe",
-    "examples/browser/src/main.js": "4a320083d641b9660f113d959e707e90bf7900fcbce947f66948d17954c0c387",
+    "examples/browser/src/main.js": "10312b7064b0b2c19d97194b3953f639cc1f6842c35acf85f5e9543fa9c1d27f",
     "examples/browser/src/report.css": "519591ae75c239ec602324f008dd99108ebeae0b9306df7215fa5f0442905473",
     "examples/browser/src/report.html": "46b0e975d43914c8b4492218feae09ea0ad684091a9f9ee3b18f66a87202e521",
-    "examples/browser/src/style.css": "0f66c68661a08ecbfdbbfb624b46ed6e1144d7d95de9dcc53d09180816ed0da5"
+    "examples/browser/src/style.css": "66ac49a5f55e8b855d4f9c1222b349fcca7948f0ea4f71411ecbae53b16f7211"
   },
   "browsers": [
     {
@@ -32,6 +32,8 @@
         "1440px: no horizontal overflow",
         "390px: no horizontal overflow",
         "320px: no horizontal overflow",
+        "color-only: download has the expected pages and text",
+        "changing only ink color changes the rendered PDF",
         "changed inputs clear the previous preview",
         "customized: download has the expected pages and text",
         "customized bytes differ from the default invoice",
@@ -54,6 +56,12 @@
           "filename": "invoice-NS-1042.pdf",
           "pages": 1,
           "sha256": "9d93174ed961bb2ef577f5f38d2836763b414edc53365f1a9c61e2b50d40f054"
+        },
+        {
+          "name": "color-only",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "424848919562d03127bee320322615211ec2df84f3fbdb38685cceb718124c69"
         },
         {
           "name": "customized",
@@ -94,6 +102,8 @@
         "1440px: no horizontal overflow",
         "390px: no horizontal overflow",
         "320px: no horizontal overflow",
+        "color-only: download has the expected pages and text",
+        "changing only ink color changes the rendered PDF",
         "changed inputs clear the previous preview",
         "customized: download has the expected pages and text",
         "customized bytes differ from the default invoice",
@@ -116,6 +126,12 @@
           "filename": "invoice-NS-1042.pdf",
           "pages": 1,
           "sha256": "9d93174ed961bb2ef577f5f38d2836763b414edc53365f1a9c61e2b50d40f054"
+        },
+        {
+          "name": "color-only",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "424848919562d03127bee320322615211ec2df84f3fbdb38685cceb718124c69"
         },
         {
           "name": "customized",
@@ -156,6 +172,8 @@
         "1440px: no horizontal overflow",
         "390px: no horizontal overflow",
         "320px: no horizontal overflow",
+        "color-only: download has the expected pages and text",
+        "changing only ink color changes the rendered PDF",
         "changed inputs clear the previous preview",
         "customized: download has the expected pages and text",
         "customized bytes differ from the default invoice",
@@ -178,6 +196,12 @@
           "filename": "invoice-NS-1042.pdf",
           "pages": 1,
           "sha256": "9d93174ed961bb2ef577f5f38d2836763b414edc53365f1a9c61e2b50d40f054"
+        },
+        {
+          "name": "color-only",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "424848919562d03127bee320322615211ec2df84f3fbdb38685cceb718124c69"
         },
         {
           "name": "customized",
