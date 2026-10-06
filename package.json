@@ -1,6 +1,6 @@
 {
   "name": "fullbleed",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Generate PDFs from HTML and CSS in Node.js or a browser worker with the Fullbleed Rust engine, bundled fonts, and optional PNG previews.",
   "type": "module",
   "main": "./src/index.cjs",
@@ -45,7 +45,9 @@
     "render:families": "node tools/render-font-families.mjs",
     "verify:families": "python tools/verify-font-families.py output/font-families",
     "build:browser": "node tools/build-browser.mjs",
-    "verify:browser:prepare": "node tools/prepare-browser-check.mjs"
+    "verify:browser:prepare": "node tools/prepare-browser-check.mjs",
+    "render:inline": "node tools/render-inline-wrapping.mjs",
+    "verify:inline": "python tools/verify-inline-wrapping.py"
   },
   "dependencies": {
     "@bjorn3/browser_wasi_shim": "0.4.2"
@@ -73,7 +75,7 @@
     "access": "public"
   },
   "fullbleed": {
-    "engineVersion": "2.5.8"
+    "engineVersion": "2.5.10"
   },
   "devDependencies": {
     "@types/node": "22.20.5",

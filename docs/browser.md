@@ -1,7 +1,7 @@
 # Generate PDFs in a browser
 
-The `fullbleed/browser` entry in Fullbleed 0.3.0 renders static HTML/CSS in a
-dedicated Web Worker. It uses the same pinned 2.5.8 engine and bundled fonts as
+The `fullbleed/browser` entry in Fullbleed 0.3.1 renders static HTML/CSS in a
+dedicated Web Worker. It uses the same pinned 2.5.10 engine and bundled fonts as
 the Node entry. The result is a `Uint8Array`, suitable for a PDF `Blob`, plus
 optional PNG previews. No PDF server or account is required.
 
@@ -17,7 +17,7 @@ Install the package in your web project, then copy its browser files into the
 directory your application serves as static files:
 
 ```sh
-npm install --save-exact fullbleed@0.3.0
+npm install --save-exact fullbleed@0.3.1
 npx fullbleed-browser-assets public/fullbleed
 ```
 

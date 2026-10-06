@@ -4,9 +4,9 @@ version = 4
 
 [[package]]
 name = "fullbleed"
-version = "2.5.8"
+version = "2.5.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "443024fa33d7f7d9b3115d884120bfba2b43590ce3b89fc38fe3b8ec9b7b97d4"
+checksum = "cde5bca216e60f3a1b79cadbfed3efd9b14ea09c26ea5bbc105166fcf9fc5980"
 dependencies = [
  "fullbleed_audit_contract",
  "subsetter",
@@ -15,7 +15,7 @@ dependencies = [
 
 [[package]]
 name = "fullbleed-node-adapter"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "fullbleed",
 ]

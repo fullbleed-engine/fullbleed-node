@@ -78,6 +78,17 @@ class ReleaseBindingTests(unittest.TestCase):
                 self.report['browser_matrix'][-1].update(change)
                 with self.assertRaises(ValueError): self.verify(version='0.3.0')
 
+    def test_inline_release_requires_the_expanded_browser_checks(self):
+        self.browser_release()
+        self.release['tag_name'] = 'v0.3.1'
+        self.report['package_version'] = '0.3.1'
+        for browser in self.report['browser_matrix']:
+            browser.update(package_version='0.3.1', checks=66)
+        self.verify(version='0.3.1')
+        self.report['browser_matrix'][0]['checks'] = 30
+        with self.assertRaisesRegex(ValueError, 'Browser verification is incomplete'):
+            self.verify(version='0.3.1')
+
 
 if __name__ == '__main__':
     unittest.main()

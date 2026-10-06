@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderPdf } from 'fullbleed';
 import { gradientFixtures } from '../test/gradients.mjs';
+import { inlineFixtures } from '../test/inline-wrapping.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const engine = join(root, 'engine');
@@ -20,6 +21,7 @@ const hash = data => createHash('sha256').update(data).digest('hex');
 const records = [];
 const fixtures = [];
 fixtures.push(...gradientFixtures);
+fixtures.push(...inlineFixtures);
 for (const [name, pages] of [['invoice', 1], ['report', 3]]) {
   fixtures.push({ name, pages, html: await readFile(join(root, 'examples', name + '.html'), 'utf8'), css: await readFile(join(root, 'examples', name + '.css'), 'utf8') });
 }
@@ -52,13 +54,22 @@ for (const fixture of fixtures) {
   assert.equal(hash(wasi.pdf), hash(pdf), fixture.name + ' PDF');
   await writeFile(join(directory, 'wasi.pdf'), wasi.pdf);
   const previews = [];
+  const wasiPreviews = [];
+  const previewComparisonRequired = !['inline-helvetica', 'inline-times'].includes(fixture.name);
   for (let i = 0; i < wasi.previews.length; i++) {
     const png = await readFile(join(directory, `preview-${i + 1}.png`));
-    assert.equal(hash(wasi.previews[i]), hash(png), `${fixture.name} preview ${i + 1}`);
+    await writeFile(join(directory, `wasi-preview-${i + 1}.png`), wasi.previews[i]);
+    if (previewComparisonRequired) assert.equal(hash(wasi.previews[i]), hash(png), `${fixture.name} preview ${i + 1}`);
     previews.push(hash(png));
+    wasiPreviews.push(hash(wasi.previews[i]));
   }
-  records.push({ name: fixture.name, pages: wasi.pages, pdfSha256: hash(pdf), previewsSha256: previews, directory: directory.slice(output.length + 1), nativeWasiEqual: true });
+  const previewsEqual = JSON.stringify(previews) === JSON.stringify(wasiPreviews);
+  records.push({ name: fixture.name, pages: wasi.pages, pdfSha256: hash(pdf), previewsSha256: previews,
+    wasiPreviewsSha256: wasiPreviews, directory: directory.slice(output.length + 1), nativeWasiPdfEqual: true,
+    nativeWasiPreviewsEqual: previewsEqual, nativeWasiEqual: previewsEqual, previewComparisonRequired,
+    previewScope: previewComparisonRequired ? 'Exact finalized preview bytes'
+      : 'Unembedded Standard 14 faces: native raster can use host fonts, while Wasm has none. Independent PDFium verifies these PDFs; native preview equality is not claimed.' });
 }
-const report = { ok: true, engine: manifest.engineVersion, node: process.version, platform: process.platform, wasmSha256: manifest.files['dist/engine.wasm'].sha256, fixtures: records, scope: 'Equality for the retained ordinary PDF fixtures and their finalized previews; no general platform or standards certification.' };
+const report = { ok: true, engine: manifest.engineVersion, node: process.version, platform: process.platform, wasmSha256: manifest.files['dist/engine.wasm'].sha256, fixtures: records, scope: 'PDF equality for all retained fixtures. Exact finalized previews only where previewComparisonRequired is true; unembedded Standard 14 native previews can use host fonts absent from Wasm. No general platform or standards certification.' };
 await writeFile(join(output, 'verification.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report));

@@ -6,10 +6,14 @@ it does not require Python, Rust, a browser, or system fonts. MIT licensed.
 
 Import `fullbleed` for Node.js or `fullbleed/browser` for a web application.
 
-This is an optional integration around the published **Fullbleed 2.5.8** engine.
-The package has its own version, **0.3.0**, and adds a browser entry point for
-rendering in a Web Worker. The Node API still supports worker and process
-isolation. See the [browser guide](docs/browser.md),
+This is an optional integration around the published **Fullbleed 2.5.10** engine.
+The package has its own version, **0.3.1**. This patch fixes inline text overlap
+and spacing in wrapped paragraphs, and keeps tracked labels at their intended
+width. Affected PDFs can change line breaks,
+pagination, and hashes; review saved baselines when upgrading.
+The browser entry renders in a Web Worker, and the Node API supports worker and
+process isolation. See the [browser guide](docs/browser.md),
+[inline wrapping checks](docs/inline-wrapping.md),
 [process isolation guide](docs/process-isolation.md),
 [font-family checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-families.md), and
 [embedded-font checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-subsets.md) for the retained fixtures.
@@ -22,7 +26,7 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.3.0`.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.3.1`.
 Package archives and retained PDF/PNG evidence are attached to each
 [GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
 The [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification)
@@ -138,6 +142,10 @@ when adapting a template; unsupported CSS or an unavailable asset can affect out
 Use registered font families in CSS. The engine can substitute an unavailable
 family. Its missing-glyph report checks resolved fonts and is not an exhaustive
 font-substitution or visual-validation report.
+
+Use bundled or explicitly registered fonts for PNG previews. PDFs using the
+unembedded built-in Helvetica or Times faces rely on PDF-reader fonts; the
+Fullbleed preview can omit their text. See the [retained inline checks](docs/inline-wrapping.md).
 
 ## API
 
