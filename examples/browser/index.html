@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Generate a designed PDF in your browser with Fullbleed. A runnable JavaScript example with local rendering, previews and downloads.">
+  <title>Browser PDF starter · Fullbleed</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="https://docs.fullbleed.dev/" aria-label="Fullbleed documentation">fullbleed<span>.</span></a>
+    <span class="header-note">BROWSER STARTER / MIT</span>
+    <a class="docs-link" href="https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/browser.md">API guide <span aria-hidden="true">↗</span></a>
+  </header>
+  <main>
+    <section class="intro">
+      <p class="eyebrow"><span aria-hidden="true"></span> HTML + CSS → PDF</p>
+      <h1>A proper document.<br>Made in your browser.</h1>
+      <p class="lede">Change the details. Choose a color. Download the real PDF.<br class="wide-only"> Fullbleed handles the print layout locally, in a worker.</p>
+    </section>
+    <div class="workspace">
+      <section class="controls" aria-labelledby="design-heading">
+        <div class="panel-heading"><span class="step">01</span><h2 id="design-heading">Make it yours</h2></div>
+        <form id="design-form">
+          <fieldset id="fields">
+            <legend class="sr-only">Document details</legend>
+            <label for="kind">Start with a design</label>
+            <select id="kind" name="kind"><option value="invoice">Studio invoice</option><option value="report">Community report</option></select>
+            <div id="invoice-fields">
+              <label for="customer">Customer name</label>
+              <input id="customer" name="customer" value="Maple &amp; Finch" maxlength="80" required autocomplete="off">
+              <label for="reference">Invoice reference</label>
+              <input id="reference" name="reference" value="NS-1042" maxlength="24" required autocomplete="off">
+              <label for="accent">Ink color</label>
+              <div class="color-row"><input id="accent" name="accent" type="color" value="#17382e"><span id="color-value">#17382E</span><span class="color-hint">Your print palette</span></div>
+            </div>
+          </fieldset>
+          <p class="sample-note" id="sample-note">Fictional invoice. Items and amounts are fixed for this example.</p>
+          <div class="actions"><button id="generate" type="submit">Generate PDF <span aria-hidden="true">→</span></button><button id="cancel" class="secondary" type="button" hidden>Cancel</button></div>
+        </form>
+        <p id="status" role="status" aria-live="polite">Preparing the first preview…</p>
+        <div class="local-note"><span class="local-dot" aria-hidden="true"></span><p><strong>Rendered here.</strong> The app loads its engine and fonts from this site. Document inputs are not uploaded by this starter.</p></div>
+        <div class="source-note"><h3>Your HTML. Your print styles.</h3><p>Open the template editor below. Paste your own HTML and CSS, then generate a new PDF.</p><a href="https://docs.fullbleed.dev/css-coverage/">Explore supported CSS <span aria-hidden="true">↗</span></a></div>
+      </section>
+      <section class="preview-panel" aria-labelledby="preview-heading">
+        <div class="preview-toolbar"><div><span class="step">02</span><h2 id="preview-heading">The actual PDF</h2><span id="page-count"></span></div><button id="download" type="button" disabled>Download PDF <span aria-hidden="true">↓</span></button></div>
+        <div id="preview" class="preview-area" aria-busy="true"><div class="placeholder"><span class="paper-icon" aria-hidden="true"></span><p>Your document will appear here.</p></div></div>
+      </section>
+    </div>
+    <details class="template-editor" id="template-editor">
+      <summary>Edit the HTML &amp; CSS</summary>
+      <p class="editor-note">Make the template your own. Invoice fields replace <code>{{customer}}</code> and <code>{{reference}}</code>; <code>{{ink}}</code> applies the color in CSS. Edits stay in this tab until you reload. Fullbleed uses static print HTML and CSS; document scripts do not run.</p>
+      <fieldset id="editor-fields"><legend class="sr-only">Template source</legend><div class="editor-grid">
+        <div><label for="html-source">HTML</label><textarea id="html-source" spellcheck="false" aria-label="Document HTML"></textarea></div>
+        <div><label for="css-source">Print CSS</label><textarea id="css-source" spellcheck="false" aria-label="Document print CSS"></textarea></div>
+      </div></fieldset>
+      <div class="editor-actions"><button type="button" id="render-source">Generate edited PDF</button><button type="button" class="secondary" id="reset-source">Reset this template</button></div>
+    </details>
+    <footer><p>Static HTML. Deterministic print layout. Open source.</p><a href="https://docs.fullbleed.dev/">Built with Fullbleed <span aria-hidden="true">↗</span></a></footer>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

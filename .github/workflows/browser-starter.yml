@@ -1,0 +1,45 @@
+name: Browser starter
+
+on:
+  push:
+    branches: [main]
+    paths: ['examples/browser/**', 'tools/check-browser-starter.py', 'tools/browser-requirements.txt', '.github/workflows/browser-starter.yml']
+  pull_request:
+    paths: ['examples/browser/**', 'tools/check-browser-starter.py', 'tools/browser-requirements.txt', '.github/workflows/browser-starter.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    name: Browser starter (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: examples/browser/package-lock.json
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+        working-directory: examples/browser
+      - run: npm run build
+        working-directory: examples/browser
+      - run: python -m pip install -r tools/browser-requirements.txt
+      - run: python -m playwright install --with-deps ${{ matrix.browser }}
+      - run: python tools/check-browser-starter.py --dist examples/browser/dist --out output/starter-${{ matrix.browser }} --browser ${{ matrix.browser }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: starter-${{ matrix.browser }}
+          path: output/starter-${{ matrix.browser }}/
+          retention-days: 14

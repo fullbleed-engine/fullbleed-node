@@ -1,0 +1,4 @@
+node_modules/
+dist/
+public/fullbleed/
+output/

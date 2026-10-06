@@ -1,0 +1,215 @@
+{
+  "ok": true,
+  "checked_at": "2026-10-06T03:33:32.142655+00:00",
+  "package_version": "0.3.0",
+  "engine_version": "2.5.8",
+  "source_files": {
+    "examples/browser/.gitignore": "c023fec2bf12476cb47709e859f1fbb785aeb1e03281e52141e0bee1ee7dad72",
+    "examples/browser/index.html": "79baecb0b24716e78799893fc0076d88b2c026354f9f31acdf799c8f305c954b",
+    "examples/browser/LICENSE": "36a2115938f6e68cf0d87eccff7a6a3e57c17017e909cbd640d51aff1fa0c5a9",
+    "examples/browser/package-lock.json": "c24943d2d37f25768ce71581290e03aba5daac39beeae11e94bf2318d539ba17",
+    "examples/browser/package.json": "638a60e7b5aebe6f614f0808bfbe085866392b094e1b403b5dffd52141fe1c43",
+    "examples/browser/README.md": "1a1cc25ecb04b943b26703114135e42cfbb44baa4b939eb7534e6013e67563ca",
+    "examples/browser/vite.config.js": "ec725922705a3c5ba2df191a564c54c0cac6e8997ecd3d00b8a42c647bec8e74",
+    "examples/browser/public/favicon.svg": "3eed6dcf1013e48bc64886fed4cf815c609ed06b404742bdacdc44c1df8d3118",
+    "examples/browser/src/invoice.css": "0b310ce0f2964fd6b9b68e4afafa9307b4ff8c6b2f1fc753367dc755620ce427",
+    "examples/browser/src/invoice.html": "1f065ad6694021649e61b3f666cba6dc01aacdcbd8e80e97425b383e60d7d2fe",
+    "examples/browser/src/main.js": "4a320083d641b9660f113d959e707e90bf7900fcbce947f66948d17954c0c387",
+    "examples/browser/src/report.css": "519591ae75c239ec602324f008dd99108ebeae0b9306df7215fa5f0442905473",
+    "examples/browser/src/report.html": "46b0e975d43914c8b4492218feae09ea0ad684091a9f9ee3b18f66a87202e521",
+    "examples/browser/src/style.css": "0f66c68661a08ecbfdbbfb624b46ed6e1144d7d95de9dcc53d09180816ed0da5"
+  },
+  "browsers": [
+    {
+      "browser_engine": "chrome",
+      "browser": "154.0.8037.98",
+      "playwright": "1.63.0",
+      "pypdf": "6.19.0",
+      "checks": [
+        "runtime resolves beneath a nested deployment path",
+        "bundled UI font loads",
+        "invoice: download has the expected pages and text",
+        "1440px: no horizontal overflow",
+        "390px: no horizontal overflow",
+        "320px: no horizontal overflow",
+        "changed inputs clear the previous preview",
+        "customized: download has the expected pages and text",
+        "customized bytes differ from the default invoice",
+        "edited: download has the expected pages and text",
+        "edited print CSS changes the PDF page size",
+        "document script does not run on the page",
+        "report: download has the expected pages and text",
+        "multi-page preview displays all report pages",
+        "each design preserves its template edits",
+        "reset restores only the selected template",
+        "invalid input displays an error without a stale download",
+        "cancellation restores controls without a stale download",
+        "recovered: download has the expected pages and text",
+        "no document uploads or cross-origin runtime requests",
+        "no uncaught page errors"
+      ],
+      "documents": [
+        {
+          "name": "invoice",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "9d93174ed961bb2ef577f5f38d2836763b414edc53365f1a9c61e2b50d40f054"
+        },
+        {
+          "name": "customized",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "ae64ae2bb3e47e564f59cd6111f200e224140ced8bfc3dff7e5e614011ab52ae"
+        },
+        {
+          "name": "edited",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "9dd12f70c9b7ef78c8420d22658de164fda994796b4dbebf9c6579dd827499fc"
+        },
+        {
+          "name": "report",
+          "filename": "community-report.pdf",
+          "pages": 3,
+          "sha256": "cbe463b5759957261dc41aadd8727f8d01485e405c2e2841c9b34c0289876c10"
+        },
+        {
+          "name": "recovered",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "ae64ae2bb3e47e564f59cd6111f200e224140ced8bfc3dff7e5e614011ab52ae"
+        }
+      ],
+      "scope": "Owned browser; synthetic inputs; production build served at /nested/demo/ with no PDF server."
+    },
+    {
+      "browser_engine": "firefox",
+      "browser": "155.0",
+      "playwright": "1.63.0",
+      "pypdf": "6.19.0",
+      "checks": [
+        "runtime resolves beneath a nested deployment path",
+        "bundled UI font loads",
+        "invoice: download has the expected pages and text",
+        "1440px: no horizontal overflow",
+        "390px: no horizontal overflow",
+        "320px: no horizontal overflow",
+        "changed inputs clear the previous preview",
+        "customized: download has the expected pages and text",
+        "customized bytes differ from the default invoice",
+        "edited: download has the expected pages and text",
+        "edited print CSS changes the PDF page size",
+        "document script does not run on the page",
+        "report: download has the expected pages and text",
+        "multi-page preview displays all report pages",
+        "each design preserves its template edits",
+        "reset restores only the selected template",
+        "invalid input displays an error without a stale download",
+        "cancellation restores controls without a stale download",
+        "recovered: download has the expected pages and text",
+        "no document uploads or cross-origin runtime requests",
+        "no uncaught page errors"
+      ],
+      "documents": [
+        {
+          "name": "invoice",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "9d93174ed961bb2ef577f5f38d2836763b414edc53365f1a9c61e2b50d40f054"
+        },
+        {
+          "name": "customized",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "ae64ae2bb3e47e564f59cd6111f200e224140ced8bfc3dff7e5e614011ab52ae"
+        },
+        {
+          "name": "edited",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "9dd12f70c9b7ef78c8420d22658de164fda994796b4dbebf9c6579dd827499fc"
+        },
+        {
+          "name": "report",
+          "filename": "community-report.pdf",
+          "pages": 3,
+          "sha256": "cbe463b5759957261dc41aadd8727f8d01485e405c2e2841c9b34c0289876c10"
+        },
+        {
+          "name": "recovered",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "ae64ae2bb3e47e564f59cd6111f200e224140ced8bfc3dff7e5e614011ab52ae"
+        }
+      ],
+      "scope": "Owned browser; synthetic inputs; production build served at /nested/demo/ with no PDF server."
+    },
+    {
+      "browser_engine": "webkit",
+      "browser": "26.6",
+      "playwright": "1.63.0",
+      "pypdf": "6.19.0",
+      "checks": [
+        "runtime resolves beneath a nested deployment path",
+        "bundled UI font loads",
+        "invoice: download has the expected pages and text",
+        "1440px: no horizontal overflow",
+        "390px: no horizontal overflow",
+        "320px: no horizontal overflow",
+        "changed inputs clear the previous preview",
+        "customized: download has the expected pages and text",
+        "customized bytes differ from the default invoice",
+        "edited: download has the expected pages and text",
+        "edited print CSS changes the PDF page size",
+        "document script does not run on the page",
+        "report: download has the expected pages and text",
+        "multi-page preview displays all report pages",
+        "each design preserves its template edits",
+        "reset restores only the selected template",
+        "invalid input displays an error without a stale download",
+        "cancellation restores controls without a stale download",
+        "recovered: download has the expected pages and text",
+        "no document uploads or cross-origin runtime requests",
+        "no uncaught page errors"
+      ],
+      "documents": [
+        {
+          "name": "invoice",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "9d93174ed961bb2ef577f5f38d2836763b414edc53365f1a9c61e2b50d40f054"
+        },
+        {
+          "name": "customized",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "ae64ae2bb3e47e564f59cd6111f200e224140ced8bfc3dff7e5e614011ab52ae"
+        },
+        {
+          "name": "edited",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "9dd12f70c9b7ef78c8420d22658de164fda994796b4dbebf9c6579dd827499fc"
+        },
+        {
+          "name": "report",
+          "filename": "community-report.pdf",
+          "pages": 3,
+          "sha256": "cbe463b5759957261dc41aadd8727f8d01485e405c2e2841c9b34c0289876c10"
+        },
+        {
+          "name": "recovered",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "ae64ae2bb3e47e564f59cd6111f200e224140ced8bfc3dff7e5e614011ab52ae"
+        }
+      ],
+      "scope": "Owned browser; synthetic inputs; production build served at /nested/demo/ with no PDF server."
+    }
+  ],
+  "reviewed_screenshots": [
+    "Chrome 1440px and 320px",
+    "WebKit 390px"
+  ],
+  "scope": "Public npm package, production Vite bundle under a URL prefix, synthetic inputs. Browser API certification and standards conformance are not claimed."
+}
