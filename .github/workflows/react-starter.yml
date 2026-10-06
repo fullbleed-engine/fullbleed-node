@@ -1,0 +1,58 @@
+name: React starter
+
+on:
+  push:
+    branches: [main]
+    paths: ['examples/react/**', 'tools/check-react-starter.py', 'tools/prepare-react-check.mjs', 'tools/browser-requirements.txt', '.github/workflows/react-starter.yml']
+  pull_request:
+    paths: ['examples/react/**', 'tools/check-react-starter.py', 'tools/prepare-react-check.mjs', 'tools/browser-requirements.txt', '.github/workflows/react-starter.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    name: React starter (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: examples/react/package-lock.json
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+        working-directory: examples/react
+      - run: npm run build
+        working-directory: examples/react
+      - run: node tools/prepare-react-check.mjs
+      - run: python -m pip install -r tools/browser-requirements.txt
+      - run: python -m playwright install --with-deps ${{ matrix.browser }}
+      - run: python tools/check-react-starter.py --dist examples/react/dist --out output/react-${{ matrix.browser }} --browser ${{ matrix.browser }}
+      - name: Build React development runtime with StrictMode
+        if: matrix.browser == 'chrome'
+        env:
+          NODE_ENV: development
+        run: npx vite build --mode strict --outDir dist-strict --sourcemap
+        working-directory: examples/react
+      - name: Check StrictMode lifecycle and downloads
+        if: matrix.browser == 'chrome'
+        run: python tools/check-react-starter.py --dist examples/react/dist-strict --out output/react-strict --browser chrome --strict
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: react-starter-${{ matrix.browser }}
+          path: |
+            output/react-baseline/
+            output/react-${{ matrix.browser }}/
+            output/react-strict/
+          retention-days: 14
