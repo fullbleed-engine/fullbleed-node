@@ -6,9 +6,10 @@ it does not require Python, Rust, a browser, or system fonts. MIT licensed.
 
 Import `fullbleed` for Node.js or `fullbleed/browser` for a web application.
 
-This is an optional integration around the published **Fullbleed 2.5.9** engine.
+This is an optional integration around the published **Fullbleed 2.5.10** engine.
 The package has its own version, **0.3.1**. This patch fixes inline text overlap
-and spacing in wrapped paragraphs. Affected PDFs can change line breaks,
+and spacing in wrapped paragraphs, and keeps tracked labels at their intended
+width. Affected PDFs can change line breaks,
 pagination, and hashes; review saved baselines when upgrading.
 The browser entry renders in a Web Worker, and the Node API supports worker and
 process isolation. See the [browser guide](docs/browser.md),

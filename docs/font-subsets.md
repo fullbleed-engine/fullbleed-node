@@ -1,7 +1,7 @@
 # Checking the installed package's embedded fonts
 
 Node package 0.1.4 introduced the Fullbleed 2.5.7 font compaction described here;
-0.1.5 retains these checks with engine 2.5.8. The engine's font subsetting
+0.3.1 retains these checks with engine 2.5.10. The engine's font subsetting
 removes unused metadata and metrics while retaining original glyph IDs and the
 glyph outlines, instructions, advances, character mappings, and font notices
 needed by the document. The JavaScript API and four bundled font faces are
@@ -17,9 +17,15 @@ Neue. The additional test font is not included in the npm package.
 and fonttools. It checks the embedded programs against the original font bytes,
 including composite components, checksums, notices, compact `post` tables,
 horizontal metrics, and header extrema. Both readers must extract the same text.
-The repeated PDFs must be byte-identical. In the before/after comparison, all
-seven PDFs must be smaller and their text, native previews, and PDFium page pixels
-must remain identical. These checks establish behavior for the retained fixtures;
+The repeated PDFs must be byte-identical. In the comparison with 0.1.3, all seven
+PDFs must be smaller and retain their normalized text and page counts. The five
+font-only specimens must also retain exact text, native previews, and PDFium
+page pixels. The invoice and report match the exact reviewed 2.5.10 layout in
+[`test/fixtures/inline-layout-2.5.10.json`](../test/fixtures/inline-layout-2.5.10.json),
+including PDF hashes. Their tracked labels and footers stay on one line after
+the inline-sizing correction. Reports explicitly record that these two layouts
+differ from 0.1.3; they do not report unchanged pixels. Source HTML/CSS and font
+bytes must still match the historical fixtures. These checks establish behavior for the retained fixtures;
 they are not a general visual-parity, speed, or PDF conformance claim.
 
 After building and running `npm run verify:pack`, install the development-only
@@ -31,7 +37,7 @@ npm install --prefix output/font-baseline-consumer --ignore-scripts --no-audit -
 npm run render:fonts -- --package-root output/font-baseline-consumer/node_modules/fullbleed --out output/font-baseline
 npm run verify:fonts -- --evidence-root output/font-baseline --allow-legacy-metadata
 npm run render:fonts
-npm run verify:fonts -- --baseline output/font-baseline
+npm run verify:fonts -- --baseline output/font-baseline --reviewed-layout test/fixtures/inline-layout-2.5.10.json
 ```
 
 The legacy flag applies only to the old package's metadata; outlines, metrics,
@@ -43,7 +49,7 @@ runs and choose a new `--out` path when repeating a check. Reports, exact HTML/C
 source fonts and licenses, PDFs, and native/PDFium previews are retained under
 `output/font-baseline` and `output/font-subsets`. The CI evidence artifact includes
 both directories and the baseline's npm lockfile; release verification binds the
-candidate tarball to all ten CI jobs.
+candidate tarball to all thirteen CI jobs, including three browser checks.
 
 Python and these readers are verification tools only. Installing or running the
 npm package requires none of them. The separate [Node 24 crash investigation](runtime-diagnostics.md)

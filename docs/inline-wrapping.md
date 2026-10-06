@@ -1,10 +1,16 @@
 # Inline wrapping and spacing
 
-Fullbleed for JavaScript 0.3.1 uses engine 2.5.9. It fixes overlapping text in
+Fullbleed for JavaScript 0.3.1 uses engine 2.5.10. It fixes overlapping text in
 paragraphs such as `Edit <code>print.css</code> to change the paper size...`.
 Styled words and the following text share the available line width, with
 collapsed spaces handled at line edges. Built-in proportional fonts use their
 actual advances instead of approximate monospace widths.
+
+Intrinsic sizing includes fragment-edge spacing and layout rounding, so tracked
+flex and inline-block labels fit their own max-content widths. Min-content
+sizing recognizes collapsed-space word boundaries. The designed invoice and
+report keep their footer labels on one line; their exact reviewed layout is
+checked separately from the five unchanged font-only specimens.
 
 Affected PDFs can change line breaks, pagination, and hashes. Review saved
 baselines when upgrading. This correction covers space-separated, horizontal,

@@ -142,6 +142,24 @@ def compact(text):
     return re.sub(r'\s+', '', text)
 
 
+LAYOUT_FIELDS = ('htmlSha256', 'cssSha256', 'pages', 'text', 'previewsSha256', 'pdfiumPixelSha256')
+
+
+def compare_layout(item, prior, reviewed=None):
+    """Accept only the exact reviewed layout; retain the historical comparison."""
+    if prior:
+        for field in ['htmlSha256', 'cssSha256', 'pages']:
+            assert item[field] == prior[field], (item['name'], field)
+        assert ' '.join(item['text'].split()) == ' '.join(prior['text'].split()), (item['name'], 'content')
+    expected = reviewed or prior
+    if expected:
+        for field in LAYOUT_FIELDS:
+            assert item[field] == expected[field], (item['name'], field)
+        if reviewed:
+            assert item['pdfSha256'] == reviewed['pdfSha256'], (item['name'], 'pdfSha256')
+    return bool(prior and all(item[field] == prior[field] for field in LAYOUT_FIELDS))
+
+
 def verify(args):
     root = args.evidence_root.resolve()
     renders = json.loads((root / 'renders.json').read_text(encoding='utf-8'))
@@ -150,12 +168,19 @@ def verify(args):
     if baseline:
         assert baseline['ok']
         assert baseline['fonts'] == renders['fonts'], 'Before/after source fonts changed'
+    reviewed = json.loads(args.reviewed_layout.read_text(encoding='utf-8')) if args.reviewed_layout else None
+    if reviewed:
+        assert reviewed['schema'] == 'fullbleed.reviewed_inline_layout.v1'
+        assert reviewed['engineVersion'] == renders['engineVersion'], 'Reviewed layout targets another engine'
+        assert reviewed['fonts'] == renders['fonts'], 'Reviewed layout uses other font bytes'
+        assert set(reviewed['fixtures']) == {'invoice', 'report'}, 'Only the two reviewed designed fixtures may change'
     report = dict(schema='fullbleed.node_font_subset_verification.v1', ok=False,
                   packageVersion=renders['packageVersion'], engineVersion=renders['engineVersion'],
                   node=renders['node'], platform=renders['platform'], fonts=renders['fonts'],
                   licenses=renders['licenses'],
                   legacyMetadataAllowed=args.allow_legacy_metadata, fixtures=[],
                   baselinePackageVersion=baseline['packageVersion'] if baseline else None,
+                  reviewedLayoutSha256=digest(args.reviewed_layout.read_bytes()) if reviewed else None,
                   readers={name: metadata.version(name) for name in ['pypdf', 'pypdfium2', 'fonttools', 'pillow']},
                   scope='Retained synthetic fixtures; embedded-font, text and pixel checks. No speed, general parity or conformance claim.')
     destination = args.report or root / 'verification.json'
@@ -221,14 +246,18 @@ def verify(args):
             assert compact(''.join(pdfium_text)) == compact(text), fixture['name']
             item = dict(fixture, text=text, pdfiumPixelSha256=pixels, embeddedFonts=checked,
                         independentTextReadersAgree=True)
+            reviewed_case = reviewed['fixtures'].get(fixture['name']) if reviewed else None
             if baseline:
                 prior = next(x for x in baseline['fixtures'] if x['name'] == fixture['name'])
-                for field in ['htmlSha256', 'cssSha256', 'pages', 'text', 'previewsSha256', 'pdfiumPixelSha256']:
-                    assert item[field] == prior[field], (fixture['name'], field)
+                identical = compare_layout(item, prior, reviewed_case)
                 assert item['pdfBytes'] < prior['pdfBytes'], fixture['name']
                 item['beforePdfBytes'] = prior['pdfBytes']
                 item['pdfReductionPercent'] = round(100 * (1 - item['pdfBytes'] / prior['pdfBytes']), 2)
-                item['baselineTextAndPixelsIdentical'] = True
+                item['baselineTextAndPixelsIdentical'] = identical
+            elif reviewed_case:
+                compare_layout(item, None, reviewed_case)
+            if reviewed_case:
+                item['reviewedInlineLayoutMatched'] = True
             report['fixtures'].append(item)
         assert all_fonts_seen == {item['name'] for item in renders['fonts']}
         report['ok'] = True
@@ -241,9 +270,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--evidence-root', type=Path, default=Path(__file__).resolve().parents[1] / 'output/font-subsets')
     parser.add_argument('--baseline', type=Path)
+    parser.add_argument('--reviewed-layout', type=Path, help='Exact reviewed invoice/report layout; other fixtures retain the historical baseline')
     parser.add_argument('--report', type=Path)
     parser.add_argument('--allow-legacy-metadata', action='store_true')
     report = verify(parser.parse_args())
     print(json.dumps({'ok': report['ok'], 'package': report['packageVersion'],
                       'engine': report['engineVersion'], 'fixtures': len(report['fixtures'])}))
-

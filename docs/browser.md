@@ -1,7 +1,7 @@
 # Generate PDFs in a browser
 
 The `fullbleed/browser` entry in Fullbleed 0.3.1 renders static HTML/CSS in a
-dedicated Web Worker. It uses the same pinned 2.5.9 engine and bundled fonts as
+dedicated Web Worker. It uses the same pinned 2.5.10 engine and bundled fonts as
 the Node entry. The result is a `Uint8Array`, suitable for a PDF `Blob`, plus
 optional PNG previews. No PDF server or account is required.
 

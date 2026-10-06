@@ -75,7 +75,7 @@
     "access": "public"
   },
   "fullbleed": {
-    "engineVersion": "2.5.9"
+    "engineVersion": "2.5.10"
   },
   "devDependencies": {
     "@types/node": "22.20.5",
