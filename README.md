@@ -6,6 +6,11 @@ it does not require Python, Rust, a browser, or system fonts. MIT licensed.
 
 Import `fullbleed` for Node.js or `fullbleed/browser` for a web application.
 
+Try a complete project online: [JavaScript + Vite](https://docs.fullbleed.dev/assets/browser-starter/edit-online.html)
+or [React + TypeScript](https://docs.fullbleed.dev/assets/react-starter/edit-online.html).
+Edit the HTML/CSS templates, preview the result, and download a PDF. Each starter
+also includes a ZIP for local development.
+
 This is an optional integration around the published **Fullbleed 2.5.10** engine.
 The package has its own version, **0.3.1**. This patch fixes inline text overlap
 and spacing in wrapped paragraphs, and keeps tracked labels at their intended
