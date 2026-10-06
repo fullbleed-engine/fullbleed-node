@@ -101,6 +101,10 @@ try:
                     expected = baseline['pdf'] if preview == -1 else baseline['previews'][preview]
                     assert sha256(path.read_bytes()).hexdigest() == expected
                     documents.append({'file': filename, 'bytes': path.stat().st_size, 'sha256': expected})
+                    if args.browser == 'chrome':
+                        # Chromium permits ten downloads per one-second burst.
+                        # Pace this fixture loop so fast rendering stays below it.
+                        page.wait_for_timeout(125)
                 actual = PdfReader(out / (name + '.pdf'))
                 reference = PdfReader(root / 'output/browser-verification' / (name + '.pdf'))
                 check(name + ': independent reader confirms every page and text', [p.extract_text() for p in actual.pages] == [p.extract_text() for p in reference.pages])

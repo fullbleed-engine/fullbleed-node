@@ -1,0 +1,196 @@
+{
+  "checked_at": "2026-10-06T14:22:16.097963+00:00",
+  "scope": "Verification harness pacing only; no renderer, API or package-version change.",
+  "observed_ci_failure": "https://github.com/fullbleed-engine/fullbleed-node/actions/runs/37476656808/job/112315786512",
+  "failure": "The renderer produced baseline-identical bytes, then the fixture loop timed out waiting for a rapid download.",
+  "chromium_source": "https://raw.githubusercontent.com/chromium/chromium/main/third_party/blink/renderer/core/frame/local_frame.cc",
+  "chromium_source_sha256": "684a997aee7ce424966d2fd055acc2d21835e8c233b24192cd65c671927c2ff6",
+  "isolated_chrome_downloads": [
+    {
+      "case": "burst",
+      "interval_ms": 0,
+      "requested": 25,
+      "downloaded": 10
+    },
+    {
+      "case": "paced",
+      "interval_ms": 125,
+      "requested": 25,
+      "downloaded": 25
+    }
+  ],
+  "browser": "154.0.8037.98",
+  "change": "After each saved Chrome download, wait 125 ms before requesting the next file. Retain every PDF/PNG download and comparison.",
+  "checker_sha256": "89fa0fca9f2c23d1e514c19b51ba86e9fb09f613c0c9dd0fbe04637cedf7f751",
+  "package": "0.3.1",
+  "engine": "2.5.10",
+  "full_browser_checks": 66,
+  "downloaded_documents": [
+    {
+      "file": "invoice.pdf",
+      "bytes": 40386,
+      "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+    },
+    {
+      "file": "invoice-1.png",
+      "bytes": 73493,
+      "sha256": "72536ce1750f737b1c199dab5efbb8c10860291020a821f4f2cc761fcb46419f"
+    },
+    {
+      "file": "report.pdf",
+      "bytes": 46044,
+      "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802"
+    },
+    {
+      "file": "report-1.png",
+      "bytes": 60223,
+      "sha256": "a37d818784e1e58c1e6b23bfe8d42456c9284e63dadba538ac8a784969a9e937"
+    },
+    {
+      "file": "report-2.png",
+      "bytes": 72580,
+      "sha256": "e4a9f7d4eacffb417fc321d673d5b9bc071d22db993e10350f3999a552dbbc32"
+    },
+    {
+      "file": "report-3.png",
+      "bytes": 71932,
+      "sha256": "fd028d502256757278b1e8ac1b7389f92bff307317821aac0e1d9aa469807510"
+    },
+    {
+      "file": "inline-plain.pdf",
+      "bytes": 7480,
+      "sha256": "af2de6e8d41c8268c3424e2a8642f7fa45c92af0467cea6c6824290ac65ad6a6"
+    },
+    {
+      "file": "inline-plain-1.png",
+      "bytes": 14525,
+      "sha256": "819e92abe82446b888af6e65aa751be4236a7f9387e5ee489d4ca5ef92568f26"
+    },
+    {
+      "file": "inline-unstyled-span.pdf",
+      "bytes": 7480,
+      "sha256": "af2de6e8d41c8268c3424e2a8642f7fa45c92af0467cea6c6824290ac65ad6a6"
+    },
+    {
+      "file": "inline-unstyled-span-1.png",
+      "bytes": 14525,
+      "sha256": "819e92abe82446b888af6e65aa751be4236a7f9387e5ee489d4ca5ef92568f26"
+    },
+    {
+      "file": "inline-code.pdf",
+      "bytes": 7664,
+      "sha256": "96d23f2fd25ad97bc2723a6f3d3e3954dc783c475e302d2d9070017bf7b2c79a"
+    },
+    {
+      "file": "inline-code-1.png",
+      "bytes": 14781,
+      "sha256": "3feac074f1871fbdd5145e25bdaf8deeda803c98ebfcd4817fae3618eda6fe00"
+    },
+    {
+      "file": "inline-color.pdf",
+      "bytes": 7699,
+      "sha256": "c5d2ab26947975054d91a0ce152e55bc8df1be87e839467f5b4021cd55bd88de"
+    },
+    {
+      "file": "inline-color-1.png",
+      "bytes": 15119,
+      "sha256": "aa6fef0604d8c0ac78cc49bf30ba9fe8a8dec6ff8656bdc92ccbaccc242d0b7f"
+    },
+    {
+      "file": "inline-background.pdf",
+      "bytes": 7715,
+      "sha256": "32d51bf1f1015ff6643c9afc65b3423f15bbab891848c9e23a13f53c7ac01a10"
+    },
+    {
+      "file": "inline-background-1.png",
+      "bytes": 15107,
+      "sha256": "0b5a182da5cf79ae38ad0a916d9dd6a0d5c9e75481de572b7c1ad37d31289a49"
+    },
+    {
+      "file": "inline-padding.pdf",
+      "bytes": 7659,
+      "sha256": "94eb02ef150b8e7e93790391d1a6bc3dec1b3515e6de219029a85ce982e2b610"
+    },
+    {
+      "file": "inline-padding-1.png",
+      "bytes": 14874,
+      "sha256": "358d613893a414dd6f2a563facb6fda875d256fc067fc1e040f7988160de7ad3"
+    },
+    {
+      "file": "inline-different-font.pdf",
+      "bytes": 13866,
+      "sha256": "7eb9e61ef48fbe011540414f39c1d283699366ea206e15e4a10293a9b75713ae"
+    },
+    {
+      "file": "inline-different-font-1.png",
+      "bytes": 14711,
+      "sha256": "b71e3b6ab86288d08fa37a2573cc934441c9dc50a0dfe9aa26c879edef886ec0"
+    },
+    {
+      "file": "inline-decorated.pdf",
+      "bytes": 13913,
+      "sha256": "871a4cc3f6c053a473da8fba615fc7eb49d9a02e759b40a988909f476643c27d"
+    },
+    {
+      "file": "inline-decorated-1.png",
+      "bytes": 15169,
+      "sha256": "e17dfd71cd0ef58c1a6ae61a7cd768bef8994f701c08f9478b7a8992d27cacfc"
+    },
+    {
+      "file": "inline-long-inline.pdf",
+      "bytes": 7698,
+      "sha256": "d7f19d69461ad7e4ea5f2f2d4eacabc23f439fca05fac9f54eb7fd273a006ac0"
+    },
+    {
+      "file": "inline-long-inline-1.png",
+      "bytes": 16003,
+      "sha256": "ee8e13cb00b74814479b600436b63df826932fbc50f7a2aacf777e9f8a142ab8"
+    },
+    {
+      "file": "inline-collapsed-spaces.pdf",
+      "bytes": 7728,
+      "sha256": "81db9d398cd1af121fb60bba0b280e4b14afbb23a9bde14719dfb8e6b7116e49"
+    },
+    {
+      "file": "inline-collapsed-spaces-1.png",
+      "bytes": 15110,
+      "sha256": "cf076b2f4f01394235d3ac0d1fc395cd6d5b1f0b522f4d4f517023077d5538f1"
+    },
+    {
+      "file": "inline-helvetica.pdf",
+      "bytes": 1179,
+      "sha256": "3235c4b9547dbef81898cf4e1721814139aa06ed0d534493a8224c9ec3f5a61f"
+    },
+    {
+      "file": "inline-helvetica-1.png",
+      "bytes": 7031,
+      "sha256": "d4bb36144169c852a929ccf33a0ca630fd2ad08cbd3ec7fb753822a86d904f35"
+    },
+    {
+      "file": "inline-times.pdf",
+      "bytes": 1172,
+      "sha256": "c5f2e2e699eb16d064e9791c020db7eff9d9e255ab2364e90214a62da3331198"
+    },
+    {
+      "file": "inline-times-1.png",
+      "bytes": 7031,
+      "sha256": "d4bb36144169c852a929ccf33a0ca630fd2ad08cbd3ec7fb753822a86d904f35"
+    },
+    {
+      "file": "custom.pdf",
+      "bytes": 24499,
+      "sha256": "4fad8a0ac0e14f235c3ee89cc23095b6bf4463498d03f9160f3d069a432c39a6"
+    },
+    {
+      "file": "custom-1.png",
+      "bytes": 23673,
+      "sha256": "8f31c9a57f80029213cc02f2e6e5cc81d109847897cb4294b440293f4b4386ee"
+    },
+    {
+      "file": "static.pdf",
+      "bytes": 22950,
+      "sha256": "6573e3c20221daaddaf937ff47029b4a02c5f3bd7842bfa9609380b265a02fdb"
+    }
+  ],
+  "local_runtime": "Reused the verified installed 0.3.1 runtime after verifying its file hashes and equality of every baseline with the failing CI artifact. CI rebuilds the package."
+}
