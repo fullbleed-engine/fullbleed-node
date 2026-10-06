@@ -43,7 +43,10 @@ the independent reader, but their Fullbleed native previews omit the text in
 both 0.3.0 and 0.3.1. Their layout checks use PDFium. Preview equality does not
 prove visual fidelity for those fonts; use the bundled or explicitly registered
 fonts when requesting Fullbleed previews. Embedded-font cases must contain
-visible ink, and their previews are retained for review.
+visible ink, and their previews are retained for review. The native adapter can
+use host-font fallback for those unembedded faces, while the Wasm package has
+no host fonts. The native check retains both previews and requires PDF equality
+for those two cases; it requires exact preview bytes for the other fixtures.
 
 The scripts retain PDFs, native previews, independent PDFium previews, word
 coordinates, input HTML/CSS, hashes, and result JSON under
