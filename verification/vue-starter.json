@@ -1,0 +1,353 @@
+{
+  "ok": true,
+  "checked_at": "2026-10-06T14:50:28.045271+00:00",
+  "package": "0.3.1",
+  "engine": "2.5.10",
+  "vue": "3.5.43",
+  "typescript": "6.0.3",
+  "sources": {
+    "examples/vue/.gitignore": "c023fec2bf12476cb47709e859f1fbb785aeb1e03281e52141e0bee1ee7dad72",
+    "examples/vue/index.html": "30d46eb1b5147bd3d9c580e7adaed5b5202f9b97ab598e189efda7c3d2d405be",
+    "examples/vue/LICENSE": "36a2115938f6e68cf0d87eccff7a6a3e57c17017e909cbd640d51aff1fa0c5a9",
+    "examples/vue/package-lock.json": "75ce815032cacd7596af9435d1003680967e570fcbc32a398cb041a360febbbc",
+    "examples/vue/package.json": "470894ba1eb0e0676bc3a38b5fa69aa5cdac752f3c22110d70d54d20e9c97027",
+    "examples/vue/README.md": "92379177e243f455359ef3f3ddc385701474d859bf23ceabd5d472f4444964c7",
+    "examples/vue/tsconfig.json": "0d0065f1a795408837fd69a8ec9e5c5e7c6eb23b304d9710c6dbfaa96573a453",
+    "examples/vue/vite.config.js": "dfcc6c065fb26ada03802def672108735f4c2c35e0f30d11965ddfa796b8a0c0",
+    "examples/vue/public/favicon.svg": "3eed6dcf1013e48bc64886fed4cf815c609ed06b404742bdacdc44c1df8d3118",
+    "examples/vue/src/App.vue": "0afa15196ccedd0b0f91293cc5e362799149a2752c59deaa377f4533825ea2af",
+    "examples/vue/src/DocumentEditor.vue": "a3f3f8096d194e1eed6cd0cf2fb0a0606a04d40823ff7b794b9b1a0dbfd8c28a",
+    "examples/vue/src/invoice.css": "0b310ce0f2964fd6b9b68e4afafa9307b4ff8c6b2f1fc753367dc755620ce427",
+    "examples/vue/src/invoice.html": "1f065ad6694021649e61b3f666cba6dc01aacdcbd8e80e97425b383e60d7d2fe",
+    "examples/vue/src/main.ts": "d6d44427a8c817da9a1a8f6809a0d6e1fff87f73ee695442f174fca32db8e6f6",
+    "examples/vue/src/report.css": "519591ae75c239ec602324f008dd99108ebeae0b9306df7215fa5f0442905473",
+    "examples/vue/src/report.html": "46b0e975d43914c8b4492218feae09ea0ad684091a9f9ee3b18f66a87202e521",
+    "examples/vue/src/style.css": "940621b782b9e39fc48f5a257c119763e11cedd158fb570a82f483ea20aa9951",
+    "examples/vue/src/usePdfPreview.ts": "cc0c57d0d8733ca4bfe257ce5fc08acfb78693ca63a4298c169dc6608a89c893"
+  },
+  "checks": [
+    {
+      "browser_engine": "chrome",
+      "browser": "154.0.8037.98",
+      "checks": [
+        "invoice: real PDF has expected pages and text",
+        "invoice matches the installed Node package",
+        "invoice: displayed previews match the installed Node package",
+        "initial automatic render starts one worker",
+        "settled render terminates its worker",
+        "runtime resolves beneath a nested deployment path",
+        "bundled interface font loads",
+        "1440px: no horizontal overflow",
+        "390px: no horizontal overflow",
+        "320px: no horizontal overflow",
+        "on-demand mode does not schedule a render after edits",
+        "manual: real PDF has expected pages and text",
+        "automatic rendering can be re-enabled",
+        "edits immediately hide the old preview and release its URLs",
+        "latest-input: real PDF has expected pages and text",
+        "superseded render cannot overwrite the latest input",
+        "a burst of edits is debounced into one new worker",
+        "replacement does not overlap active worker handles",
+        "only current PDF and preview URLs remain",
+        "edited-template: real PDF has expected pages and text",
+        "edited print CSS changes the page size",
+        "document scripts are not executed in the app",
+        "report: real PDF has expected pages and text",
+        "report matches the installed Node package",
+        "all report pages have previews",
+        "report: displayed previews match the installed Node package",
+        "each design preserves its template edits",
+        "invalid input cannot leave an old download",
+        "cancelling a queued preview prevents its worker from starting",
+        "runtime load failure clears previews and releases the worker",
+        "outage-recovery: real PDF has expected pages and text",
+        "cancel removes the worker and stale download",
+        "recovered: real PDF has expected pages and text",
+        "unmount releases ready PDF and preview URLs",
+        "unmount aborts a pending worker",
+        "remounted: real PDF has expected pages and text",
+        "remount starts from clean state and recovers",
+        "all created URLs and workers are released at final unmount",
+        "no uploads or cross-origin document requests",
+        "no uncaught page errors"
+      ],
+      "documents": [
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883"
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "53ff4a2e00b7c36b0a8c70c59cbe1f89387cc6b5cbafed439b8b9a993daaeefa"
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802"
+        },
+        {
+          "name": "outage-recovery",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        }
+      ],
+      "lifecycle": {
+        "started": 15,
+        "terminated": 15,
+        "peak": 1,
+        "created": 24,
+        "revoked": 24,
+        "live": 0,
+        "urls": 0
+      },
+      "scope": "Synthetic inputs; real installed package; worker counts observe API handles, not native thread-exit events."
+    },
+    {
+      "browser_engine": "firefox",
+      "browser": "155.0",
+      "checks": [
+        "invoice: real PDF has expected pages and text",
+        "invoice matches the installed Node package",
+        "invoice: displayed previews match the installed Node package",
+        "initial automatic render starts one worker",
+        "settled render terminates its worker",
+        "runtime resolves beneath a nested deployment path",
+        "bundled interface font loads",
+        "1440px: no horizontal overflow",
+        "390px: no horizontal overflow",
+        "320px: no horizontal overflow",
+        "on-demand mode does not schedule a render after edits",
+        "manual: real PDF has expected pages and text",
+        "automatic rendering can be re-enabled",
+        "edits immediately hide the old preview and release its URLs",
+        "latest-input: real PDF has expected pages and text",
+        "superseded render cannot overwrite the latest input",
+        "a burst of edits is debounced into one new worker",
+        "replacement does not overlap active worker handles",
+        "only current PDF and preview URLs remain",
+        "edited-template: real PDF has expected pages and text",
+        "edited print CSS changes the page size",
+        "document scripts are not executed in the app",
+        "report: real PDF has expected pages and text",
+        "report matches the installed Node package",
+        "all report pages have previews",
+        "report: displayed previews match the installed Node package",
+        "each design preserves its template edits",
+        "invalid input cannot leave an old download",
+        "cancelling a queued preview prevents its worker from starting",
+        "runtime load failure clears previews and releases the worker",
+        "outage-recovery: real PDF has expected pages and text",
+        "cancel removes the worker and stale download",
+        "recovered: real PDF has expected pages and text",
+        "unmount releases ready PDF and preview URLs",
+        "unmount aborts a pending worker",
+        "remounted: real PDF has expected pages and text",
+        "remount starts from clean state and recovers",
+        "all created URLs and workers are released at final unmount",
+        "no uploads or cross-origin document requests",
+        "no uncaught page errors"
+      ],
+      "documents": [
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883"
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "53ff4a2e00b7c36b0a8c70c59cbe1f89387cc6b5cbafed439b8b9a993daaeefa"
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802"
+        },
+        {
+          "name": "outage-recovery",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        }
+      ],
+      "lifecycle": {
+        "started": 15,
+        "terminated": 15,
+        "peak": 1,
+        "created": 24,
+        "revoked": 24,
+        "live": 0,
+        "urls": 0
+      },
+      "scope": "Synthetic inputs; real installed package; worker counts observe API handles, not native thread-exit events."
+    },
+    {
+      "browser_engine": "webkit",
+      "browser": "26.6",
+      "checks": [
+        "invoice: real PDF has expected pages and text",
+        "invoice matches the installed Node package",
+        "invoice: displayed previews match the installed Node package",
+        "initial automatic render starts one worker",
+        "settled render terminates its worker",
+        "runtime resolves beneath a nested deployment path",
+        "bundled interface font loads",
+        "1440px: no horizontal overflow",
+        "390px: no horizontal overflow",
+        "320px: no horizontal overflow",
+        "on-demand mode does not schedule a render after edits",
+        "manual: real PDF has expected pages and text",
+        "automatic rendering can be re-enabled",
+        "edits immediately hide the old preview and release its URLs",
+        "latest-input: real PDF has expected pages and text",
+        "superseded render cannot overwrite the latest input",
+        "a burst of edits is debounced into one new worker",
+        "replacement does not overlap active worker handles",
+        "only current PDF and preview URLs remain",
+        "edited-template: real PDF has expected pages and text",
+        "edited print CSS changes the page size",
+        "document scripts are not executed in the app",
+        "report: real PDF has expected pages and text",
+        "report matches the installed Node package",
+        "all report pages have previews",
+        "report: displayed previews match the installed Node package",
+        "each design preserves its template edits",
+        "invalid input cannot leave an old download",
+        "cancelling a queued preview prevents its worker from starting",
+        "runtime load failure clears previews and releases the worker",
+        "outage-recovery: real PDF has expected pages and text",
+        "cancel removes the worker and stale download",
+        "recovered: real PDF has expected pages and text",
+        "unmount releases ready PDF and preview URLs",
+        "unmount aborts a pending worker",
+        "remounted: real PDF has expected pages and text",
+        "remount starts from clean state and recovers",
+        "all created URLs and workers are released at final unmount",
+        "no uploads or cross-origin document requests",
+        "no uncaught page errors"
+      ],
+      "documents": [
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883"
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "53ff4a2e00b7c36b0a8c70c59cbe1f89387cc6b5cbafed439b8b9a993daaeefa"
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802"
+        },
+        {
+          "name": "outage-recovery",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        }
+      ],
+      "lifecycle": {
+        "started": 15,
+        "terminated": 15,
+        "peak": 1,
+        "created": 24,
+        "revoked": 24,
+        "live": 0,
+        "urls": 0
+      },
+      "scope": "Synthetic inputs; real installed package; worker counts observe API handles, not native thread-exit events."
+    }
+  ],
+  "type_check": "vue-tsc --noEmit passed",
+  "build": "npm run build passed",
+  "fresh_registry_install": true,
+  "failure_evidence": "The first type-check with TypeScript 7.0.2 failed because vue-tsc 3.3.12 needs typescript/lib/tsc. TypeScript 6.0.3 passed. An initial preview-hash check attempted a Blob fetch blocked by CSP; the final checker reads the already-created Blob directly without weakening the policy.",
+  "scope": "Synthetic browser fixtures, ordinary PDF and PNG output. No core, engine, package API or npm release change. WebKit is not branded Safari certification."
+}

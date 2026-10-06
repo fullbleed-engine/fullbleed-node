@@ -11,6 +11,9 @@ or [React + TypeScript](https://docs.fullbleed.dev/assets/react-starter/edit-onl
 Edit the HTML/CSS templates, preview the result, and download a PDF. Each starter
 also includes a ZIP for local development.
 
+Using Vue? The [Vue and TypeScript starter](examples/vue) includes editable
+templates, automatic previews, downloads, and a reusable `usePdfPreview` composable.
+
 This is an optional integration around the published **Fullbleed 2.5.10** engine.
 The package has its own version, **0.3.1**. This patch fixes inline text overlap
 and spacing in wrapped paragraphs, and keeps tracked labels at their intended
