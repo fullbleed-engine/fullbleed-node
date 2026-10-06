@@ -7,6 +7,9 @@ optional PNG previews. No PDF server or account is required.
 
 The [runnable browser starter](../examples/browser) includes editable templates,
 previews, downloads, and production build settings.
+The [React and TypeScript starter](../examples/react) adds form-driven automatic
+previews and a reusable hook that cancels stale work and releases output URLs
+when inputs change or the component unmounts.
 
 ## Copy the runtime into your site
 

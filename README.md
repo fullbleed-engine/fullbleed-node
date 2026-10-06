@@ -81,6 +81,9 @@ data; connect your own authenticated record lookup when adapting it.
 
 ## Use it in a browser
 
+For React, use the [React and TypeScript starter](examples/react) with automatic
+previews, editable templates, cancellation, and a reusable component-lifecycle hook.
+
 Start with the [complete browser application](examples/browser): editable HTML/CSS,
 invoice and report designs, previews, cancellation, and PDF downloads.
 
