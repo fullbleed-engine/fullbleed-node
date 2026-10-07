@@ -38,7 +38,7 @@ Use [supported print CSS](https://docs.fullbleed.dev/css-coverage/).
 ## Reuse the composable
 
 Copy `src/usePdfPreview.ts` into your client application, install
-`fullbleed@0.3.1`, and copy the runtime with
+`fullbleed@0.3.2`, and copy the runtime with
 `npx fullbleed-browser-assets public/fullbleed`:
 
 ```vue
@@ -106,7 +106,7 @@ WebAssembly, and Web Crypto are required.
 
 ## Versions and verification
 
-The lockfile pins Fullbleed 0.3.1 / engine 2.5.10, Vue 3.5.43, TypeScript 6.0.3,
+The lockfile pins Fullbleed 0.3.2 / engine 2.5.11, Vue 3.5.43, TypeScript 6.0.3,
 and Vite 8.3.2. TypeScript 6 is used because the pinned `vue-tsc` still needs
 TypeScript's JavaScript compiler entry; TypeScript 7 does not expose it.
 

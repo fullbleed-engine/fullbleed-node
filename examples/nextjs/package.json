@@ -16,7 +16,7 @@
     "verify": "node tools/verify.mjs"
   },
   "dependencies": {
-    "fullbleed": "0.3.1",
+    "fullbleed": "0.3.2",
     "next": "16.3.8",
     "react": "19.3.0",
     "react-dom": "19.3.0"
