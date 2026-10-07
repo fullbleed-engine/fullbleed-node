@@ -23,6 +23,7 @@ const packed = args.length ? JSON.parse(await readFile(join(packageDirectory, 'p
   : JSON.parse(npm(['pack', '--json', '--pack-destination', output], root))[0];
 if (!args.length) await writeFile(join(output, 'package-info.json'), JSON.stringify(packed, null, 2) + '\n');
 const names = packed.files.map(f => f.path);
+assert(names.includes('src/render-queue.cjs'), 'The Node render queue must ship in the tarball.');
 for (const required of ['dist/engine.wasm', 'dist/build.json', 'dist/index.d.cts', 'dist/THIRD_PARTY_NOTICES.txt', 'dist/browser/client.js', 'dist/browser/worker.js', 'dist/browser/asset-manifest.json', 'src/index.js', 'src/index.cjs', 'src/index.d.ts', 'src/browser.d.ts', 'src/engine-runner.js', 'src/render-input.cjs', 'src/copy-browser-assets.cjs', 'src/worker.js', 'src/process-worker.cjs', 'LICENSE', 'README.md', 'package.json']) assert(names.includes(required), required);
 for (const family of ['Liberation', 'NotoSans', 'NotoSansMath', 'NotoSansSymbols', 'NotoSansSymbols2']) {
   const required = `dist/preview-font-notices/LICENSE-${family}.txt`;
@@ -68,9 +69,13 @@ const cjs=createRequire(import.meta.url)('fullbleed');
 assert.equal(hash((await cjs.renderPdf(input)).pdf),hash(result.pdf));
 assert.equal(activeWorkers.size,0,'The CommonJS worker must also exit before success.');
 assert(createdWorkers>=2,'Observe actual rendering workers.');
+const queue = cjs.createRenderQueue({concurrency:1,maxQueue:0});
+assert.equal(hash((await queue.renderPdf(input)).pdf),hash(result.pdf));
+await queue.close();
+assert.equal(queue.closed,true); assert.equal(activeWorkers.size,0);
 await writeFile('installed.pdf',result.pdf);
 await writeFile('installed.png',result.previews[0]);
-console.log(JSON.stringify({ok:true,engine:engineVersion,pdf:hash(result.pdf),png:hash(result.previews[0]),cjs:true,coldTimeoutRecovered:true,settledWorkersReleased:true}));
+console.log(JSON.stringify({ok:true,engine:engineVersion,pdf:hash(result.pdf),png:hash(result.previews[0]),cjs:true,cjsQueue:true,coldTimeoutRecovered:true,settledWorkersReleased:true}));
 `;
 await writeFile(join(install, 'smoke.mjs'), script);
 const env = { ...process.env, PATH: dirname(process.execPath) };
@@ -131,12 +136,26 @@ await writeFile(join(install, 'process-smoke.mjs'), processScript);
 const processRun = spawnSync(process.execPath, ['process-smoke.mjs'], { cwd: install, env, encoding: 'utf8', timeout: 60000 });
 assert.equal(processRun.status, 0, processRun.stderr);
 const processSmoke = JSON.parse(processRun.stdout);
+// Exercise queue admission, cancellation, deadlines, shutdown, snapshots and
+// process-failure recovery through this isolated tarball installation.
+await copyFile(join(root, 'test/render-queue.test.mjs'), join(install, 'render-queue.test.mjs'));
+const queueOutput = join(root, 'output/queue-verification');
+const queueRun = spawnSync(process.execPath, ['--test', '--test-reporter=tap', 'render-queue.test.mjs'], {
+  cwd: install, env: { ...env, FULLBLEED_QUEUE_EVIDENCE: queueOutput }, encoding: 'utf8', timeout: 60000,
+});
+await writeFile(join(output, 'queue-tests.log'), queueRun.stdout + queueRun.stderr);
+assert.equal(queueRun.status, 0, queueRun.stderr || queueRun.stdout);
+const queueTests = Number(queueRun.stdout.match(/^# tests (\d+)$/m)?.[1]);
+const queuePassed = Number(queueRun.stdout.match(/^# pass (\d+)$/m)?.[1]);
+assert(queueTests >= 14 && queueTests === queuePassed, 'All queue lifecycle checks must pass.');
+const queueSmoke = { ...JSON.parse(await readFile(join(queueOutput, 'burst.json'), 'utf8')),
+  tests: queueTests, passed: queuePassed };
 const inline = spawnSync(process.execPath, ['--stack-trace-limit=10', '--input-type=module', '--eval', "import {renderPdf} from 'fullbleed'; for(const isolation of ['worker','process']) console.log((await renderPdf({html:'Inline module works',isolation})).pages)"], { cwd: install, env, encoding: 'utf8', timeout: 60000 });
 assert.equal(inline.status, 0, inline.stderr);
 assert.equal(inline.stdout.trim().replaceAll('\r', ''), '1\n1');
 const report = { ok: true, node: process.version, platform: process.platform, package: packed.filename,
   tarballSha256: createHash('sha256').update(await readFile(tarball)).digest('hex'), files: names,
   freshCacheInstall: true, offlineInstallFromGeneratedLock: true, runtimePath: 'Node executable directory only', installDirectory: install.slice(output.length + 1),
-  inlineModule: true, smoke, processSmoke };
+  inlineModule: true, smoke, processSmoke, queueSmoke };
 await writeFile(join(output, 'verification.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report));

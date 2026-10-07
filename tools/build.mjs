@@ -18,6 +18,8 @@ function run(args, options = {}) {
 }
 run(['build', '--release', '--locked', '--target', 'wasm32-wasip1'], { stdio: 'inherit' });
 const metadata = JSON.parse(run(['metadata', '--format-version', '1', '--locked']));
+assert.equal(metadata.packages.find(p => p.name === 'fullbleed-node-adapter').version, pkg.version,
+  'The npm package and Rust adapter versions must match');
 const core = metadata.packages.find(p => p.name === 'fullbleed');
 assert.equal(core.version, pkg.fullbleed.engineVersion);
 assert(core.source?.startsWith('registry+'), 'Build from the published crate');

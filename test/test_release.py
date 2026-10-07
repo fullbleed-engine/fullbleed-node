@@ -100,6 +100,22 @@ class ReleaseBindingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Browser verification is incomplete'):
             self.verify(version='0.3.2')
 
+    def test_queue_release_requires_installed_queue_evidence(self):
+        self.browser_release()
+        self.release['tag_name'] = 'v0.4.0'
+        self.report['package_version'] = '0.4.0'
+        for browser in self.report['browser_matrix']:
+            browser.update(package_version='0.4.0', checks=105)
+        for installed in self.report['installed_matrix']:
+            installed.update(queue_checks=14, queue_peak_workers=2)
+        self.verify(version='0.4.0')
+        for change in [{'queue_checks': 13}, {'queue_peak_workers': 6}]:
+            with self.subTest(change=change):
+                self.report['installed_matrix'][0].update(queue_checks=14, queue_peak_workers=2)
+                self.report['installed_matrix'][0].update(change)
+                with self.assertRaisesRegex(ValueError, 'Installed queue verification'):
+                    self.verify(version='0.4.0')
+
 
 if __name__ == '__main__':
     unittest.main()

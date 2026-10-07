@@ -31,6 +31,7 @@ jobs:
       - run: npm run check:types
       - run: npm run verify:native
       - run: npm run example
+      - run: node examples/render-queue.mjs
       - run: npm run verify:pack
       - uses: actions/setup-python@v6
         with:
@@ -84,6 +85,9 @@ jobs:
             output/native-verification/**/style.css
             output/pack-verification/verification.json
             output/pack-verification/text-extraction.json
+            output/pack-verification/queue-tests.log
+            output/queue-verification/
+            output/queued-invoices/
             output/font-baseline-consumer/package-lock.json
             output/font-baseline/
             output/font-subsets/
@@ -155,6 +159,8 @@ jobs:
           name: node-installed-${{ matrix.os }}-${{ matrix.node }}
           path: |
             output/pack-verification/verification.json
+            output/pack-verification/queue-tests.log
+            output/queue-verification/
             output/pack-verification/**/*.pdf
             output/pack-verification/**/*.png
           retention-days: 7
