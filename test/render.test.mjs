@@ -7,12 +7,27 @@ import { createRequire } from 'node:module';
 import { renderPdf, FullbleedError, engineVersion } from 'fullbleed';
 import { gradientFixtures } from './gradients.mjs';
 import { decodePng } from './png.mjs';
+import { standardFontFixtures } from './standard-fonts.mjs';
 
 const hash = value => createHash('sha256').update(value).digest('hex');
 const html = '<h1>Invoice NS-1042</h1><p>Consulting: USD 1,200.00</p>';
 const css = '@page {size:A4; margin:20mm} h1 {color:#175c52}';
 const expectCode = code => error => error instanceof FullbleedError && error.code === code;
 let baseline;
+
+test('unembedded Standard 14 faces have visible finalized previews', async () => {
+  for (const { name, html, css } of standardFontFixtures) {
+    const result = await renderPdf({ html, css, previewDpi: 72 });
+    assert.equal(result.pages, 1, name);
+    const image = decodePng(result.previews[0]);
+    let ink = 0;
+    for (let y = 0; y < image.height; y++) for (let x = 0; x < image.width; x++) {
+      const [r, g, b, a] = image.pixel(x, y);
+      if (a > 0 && Math.min(r, g, b) < 250) ink++;
+    }
+    assert(ink > 100, name + ': preview lost its text');
+  }
+});
 
 test('renders an embedded-font PDF and previews the finalized PDF', async () => {
   baseline = await renderPdf({ html, css, previewDpi: 96 });

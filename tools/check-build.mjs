@@ -8,6 +8,12 @@ const pkg = JSON.parse(await readFile(new URL('package.json', root), 'utf8'));
 const manifest = JSON.parse(await readFile(new URL('dist/build.json', root), 'utf8'));
 assert.equal(manifest.packageVersion, pkg.version);
 assert.equal(manifest.engineVersion, pkg.fullbleed.engineVersion);
+const notices = await readFile(new URL('dist/THIRD_PARTY_NOTICES.txt', root), 'utf8');
+for (const family of ['Liberation', 'NotoSans', 'NotoSansMath', 'NotoSansSymbols', 'NotoSansSymbols2']) {
+  const path = `dist/preview-font-notices/LICENSE-${family}.txt`;
+  assert(manifest.files[path], `Preview font license is absent from the build manifest: ${path}`);
+  assert(notices.includes(await readFile(new URL(path, root), 'utf8')), `Browser notices omit ${family}`);
+}
 for (const [name, expected] of Object.entries(manifest.files)) {
   const bytes = await readFile(new URL(name, root));
   assert.equal(bytes.length, expected.bytes, name);

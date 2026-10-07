@@ -48,8 +48,7 @@ def verify(out):
                 with Image.open(folder / 'preview-1.png') as source:
                     image = source.convert('RGB')
                     result['nativePreviewInkBounds'] = ImageChops.difference(image, Image.new('RGB', image.size, 'white')).getbbox()
-                if case['name'] not in ['inline-helvetica', 'inline-times']:
-                    assert result['nativePreviewInkBounds'], 'Embedded-font preview contains no ink'
+                assert result['nativePreviewInkBounds'], 'Finalized preview contains no ink'
                 reader = PdfReader(folder / 'document.pdf')
                 assert len(reader.pages) == 1
                 result['pypdfText'] = ' '.join(reader.pages[0].extract_text().split())
@@ -101,8 +100,8 @@ def verify(out):
             except Exception as error:
                 result['error'] = str(error)
         report['ok'] = all(row['ok'] for row in report['cases'])
-        report['previewScope'] = ('The unembedded Helvetica and Times fixtures are checked with independent PDFium previews. '
-                                  'Their Fullbleed native previews can omit glyphs; pixel equality alone is not visual-fidelity evidence.')
+        report['previewScope'] = ('All finalized previews must contain visible text, including unembedded Helvetica and Times. '
+                                  'Independent PDFium checks establish text order and placement; pixel equality alone is not visual-fidelity evidence.')
         assert report['ok'], '; '.join(f"{r['isolation']}/{r['name']}: {r['error']}" for r in report['cases'] if not r['ok'])
         return report
     finally:

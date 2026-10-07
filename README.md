@@ -14,11 +14,10 @@ also includes a ZIP for local development.
 Using Vue? The [Vue and TypeScript starter](examples/vue) includes editable
 templates, automatic previews, downloads, and a reusable `usePdfPreview` composable.
 
-This is an optional integration around the published **Fullbleed 2.5.10** engine.
-The package has its own version, **0.3.1**. This patch fixes inline text overlap
-and spacing in wrapped paragraphs, and keeps tracked labels at their intended
-width. Affected PDFs can change line breaks,
-pagination, and hashes; review saved baselines when upgrading.
+This is an optional integration around the published **Fullbleed 2.5.11** engine.
+The package has its own version, **0.3.2**. This patch fixes blank previews of
+unembedded Standard 14 fonts, including Helvetica, Times, and Courier. Preview
+pixels change for those fonts; review saved preview baselines when upgrading.
 The browser entry renders in a Web Worker, and the Node API supports worker and
 process isolation. See the [browser guide](docs/browser.md),
 [inline wrapping checks](docs/inline-wrapping.md),
@@ -34,7 +33,7 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.3.1`.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.3.2`.
 Package archives and retained PDF/PNG evidence are attached to each
 [GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
 The [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification)
@@ -151,9 +150,12 @@ Use registered font families in CSS. The engine can substitute an unavailable
 family. Its missing-glyph report checks resolved fonts and is not an exhaustive
 font-substitution or visual-validation report.
 
-Use bundled or explicitly registered fonts for PNG previews. PDFs using the
-unembedded built-in Helvetica or Times faces rely on PDF-reader fonts; the
-Fullbleed preview can omit their text. See the [retained inline checks](docs/inline-wrapping.md).
+Native previews of unembedded Standard 14 fonts use fixed, bundled OFL outline
+substitutes starting with 0.3.2. Register your chosen font files for a specific
+branded appearance in both the PDF and its preview. The [Standard 14 checks](docs/standard-font-previews.md)
+cover the twelve Latin faces, an embedded-font control, and the blank-preview
+failure in public 0.3.1. Font provenance and complete license notices ship with
+both the npm package and copied browser runtime.
 
 ## API
 

@@ -1,0 +1,70 @@
+{
+  "schema": "fullbleed.reviewed_inline_layout.v1",
+  "engineVersion": "2.5.11",
+  "source": "https://github.com/fullbleed-engine/fullbleed-official/pull/47",
+  "reason": "The independently checked 2.5.11 invoice/report PDFs, native previews, PDFium pixels, text, assets and inputs are byte-identical to the visually reviewed 2.5.10 layouts. Standard 14 preview substitutes are checked separately.",
+  "fonts": [
+    {
+      "name": "Inter-Variable.ttf",
+      "path": "fonts/Inter-Variable.ttf",
+      "bytes": 876576,
+      "sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031"
+    },
+    {
+      "name": "DMSerifDisplay-Regular.ttf",
+      "path": "fonts/DMSerifDisplay-Regular.ttf",
+      "bytes": 76580,
+      "sha256": "8cc3643535edf039aa5d95440a8542735e9197e4f4b8d9303e980fefbf5ab616"
+    },
+    {
+      "name": "DMSerifDisplay-Italic.ttf",
+      "path": "fonts/DMSerifDisplay-Italic.ttf",
+      "bytes": 71208,
+      "sha256": "df74c0ac387baeaeb0fe4f2324e1668e6a3ed8c09cd9796fe162c71753e19e45"
+    },
+    {
+      "name": "BebasNeue-Regular.ttf",
+      "path": "fonts/BebasNeue-Regular.ttf",
+      "bytes": 61400,
+      "sha256": "08e4623805102d819f58601e46e345648846075e363b2ceb23313c2d1c83ec73"
+    },
+    {
+      "name": "NotoSansMath-Regular.ttf",
+      "path": "fonts/NotoSansMath-Regular.ttf",
+      "bytes": 590904,
+      "sha256": "80b61fd613d3519197e64fff6f7e71fdc7f3e6526440ea4115b554ef7fd59af7"
+    }
+  ],
+  "fixtures": {
+    "invoice": {
+      "htmlSha256": "195725eeeb32c521e19b47dbacbb55048bebb6df8566ab135cdc41fbf33fe57a",
+      "cssSha256": "cda22b39ab1f7a1eeac7cd76d162b05cd3568c2430c099123ba30a2fbd58a296",
+      "pages": 1,
+      "text": "Northstar\nStudio\nD E S I G N  W I T H  D I R E C T I O N\nB R A N D\nD I G I T A L\nE X P E R I E N C E S\nT H A T  M A T T E R .\n42 Cedar Avenue\nPortland, OR 97205\nhello@example.invalid\nnorthstar.example.invalid\nINVOICE\nGOOD WORK.\nCLEAR DETAILS.\nLET'S MAKE\nWHAT'S NEXT.\nP R E P A R E D  F O R\nMaple & Finch\nAttn. Avery Morgan\nPortland, Oregon\nT H E  P R O J E C T\nAutumn launch\nBrand workshop, digital\ndesign & handoff\nI N V O I C E  N S - 1 0 4 2\nIssued \u00b7 01 October 2026\nDue \u00b7 31 October 2026\nCurrency \u00b7 USD\nDESCRIPTION HOURS RATE AMOUNT\nDiscovery & brand workshop\nPositioning, priorities, and a clear creative direction\n8 $125.00 $1,000.00\nDigital design & implementation\nA cohesive visual system, from layout to launch\n6 $95.00 $570.00\nReview & studio handoff\nFinal refinements, documentation, and delivery\n2 $150.00 $300.00\nA little clarity.\nA lot of possibility.\nThank you for inviting us\nto help shape your next chapter.\nSubtotal $1,870.00\nTax \u00b7 0% in this sample $0.00\nT O T A L  D U E  \u00b7  U S D\n$1,870.00\nP A Y M E N T  D E T A I L S\nReference NS-1042 with your payment.\nPayment instructions are supplied separately.\nA  N O T E  F R O M  T H E  S T U D I O\nQuestions about a line item?\nWrite to hello@example.invalid.\nNORTHSTAR STUDIO / INVOICE NS-1042 FICTIONAL SAMPLE \u00b7 01 / 01",
+      "pdfSha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+      "previewsSha256": [
+        "72420749ccc3deaa8025daf7baffcdf79be716b6e8e93ed605effebed01e86c7"
+      ],
+      "pdfiumPixelSha256": [
+        "d71293741974bef9abffbdf5d88b0827b48fe6523f8d9baf46f46fe1000895a5"
+      ]
+    },
+    "report": {
+      "htmlSha256": "46b0e975d43914c8b4492218feae09ea0ad684091a9f9ee3b18f66a87202e521",
+      "cssSha256": "519591ae75c239ec602324f008dd99108ebeae0b9306df7215fa5f0442905473",
+      "pages": 3,
+      "text": "Common Ground\nC O M M U N I T Y T R U S T\nP E O P L E\nP L A C E S\nP O S S I B I L I T I E S\nCOMMON\nGROUND\nStronger places.\nMore room\nfor everyone.\n2026\nC O M M U N I T Y  R E V I E W\nA  Y E A R\nI N  C O M M O N\n0 2  /  O U R  R E A C H\nSmall actions,\nshared outcomes.\n0 3  /  O U R  R E S O U R C E S\nWhere the\nsupport goes.\nCOMMON GROUND / COMMUNITY REVIEW FICTIONAL DATA \u00b7 01 / 03Common Ground 0 2  /  O U R  R E A C H\nA  P L A C E  T O  B E G I N\nSmall actions.\nShared outcomes.\nAn open door, a working kitchen, a garden plot. This year, our fictional neighborhood\nprograms connected more people with practical spaces to learn, make, and belong.\n1,240\nhouseholds took part\nacross four neighborhoods\n4,860\nvolunteer hours\nshared across our programs\n12\ncommunity spaces\nkept open and active\nMore neighbors, each quarter.\nP A R T I C I P A T I N G H O U S E H O L D S\n420\n560\n790\n980\nQ1 Q2 Q3 Q4\nQuarterly participation counts; a household can participate in more than one quarter.\n\u201cBelonging starts\nwith somewhere\nto show up.\u201d\nO U R  P R O G R A M  P R I N C I P L E\nBuilt around daily life.\nEvening workshops, shared meals, and weekend garden\nsessions made participation easier for people with different\nschedules. The next step is a longer opening window at\neach neighborhood space.\nILLUSTRATIVE ANNUAL REVIEW / NOT AN ACTUAL ORGANIZATION 02 / 03Common Ground 0 3  /  O U R  R E S O U R C E S\nF O L L O W  T H E  S U P P O R T\nGood intentions.\nClear allocations.\nA practical view of this fictional operating budget. Every category supports the same\naim: useful places, open to more people.\nPROGRAM AREA ALLOCATION SHARE\nNeighborhood spaces $168,000.00 40%\nLearning & workshops $126,000.00 30%\nShared meals & gardens $84,000.00 20%\nAccess & transport $42,000.00 10%\nT O T A L O P E R A T I N G A L L O C A T I O N \u00b7 U S D $420,000.00\nWhat we count.\nHouseholds are deduplicated within the annual program\nregister. Volunteer hours include recorded event and\nmaintenance time. Space counts refer to year-round\nlocations, not individual events.\nQuarterly counts show participation within each period and\nmust not be added to estimate unique annual reach.\nWhat comes next.\nExtend evening access. Improve step-free entrances.\nPublish a simple monthly view of program activity and\nspending.\nA shared tomorrow\nis built in the everyday.\nCOMMON GROUND / METHODS & ALLOCATIONS FICTIONAL DATA \u00b7 03 / 03",
+      "pdfSha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802",
+      "previewsSha256": [
+        "33ee3398d59f6836368cdab0f3c725c3cf12cbf2f9f3a3ac6a6b168f6c1886f5",
+        "c8fe5102e9219962ea068201be0a6730cb37de797649f4b5f44478433e79b018",
+        "a3e8acbc7ba4147c56d45b606d3974ec4aecbda1b5d7362451e5e8890491dc7d"
+      ],
+      "pdfiumPixelSha256": [
+        "c7dc8db8fc08a78f74c4477629e0f68f3b34aa37b9b9eba46a977805933d3f03",
+        "c5e9d15bae4f208ecb0466ba3521e22c1f98c83aeab0e1112deec2fe20d8a711",
+        "05d2ebd36749c7421db665a5bba2ab36559e691b5bc5570ebc095d81af2585b7"
+      ]
+    }
+  }
+}
