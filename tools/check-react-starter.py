@@ -12,6 +12,7 @@ from urllib.parse import unquote, urlsplit
 
 from playwright.sync_api import sync_playwright, expect
 from pypdf import PdfReader
+from starter_standard_fonts import verify_edited_preview
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--dist', type=Path, required=True)
@@ -174,11 +175,12 @@ try:
 
             page.locator('#template-editor summary').click()
             page.locator('#html-source').fill('<h1>React template</h1><p>{{customer}} / {{reference}}</p><script>window.documentScriptExecuted = true;</script>')
-            page.locator('#css-source').fill('@page { size: A5; margin: 15mm } h1 { color: {{ink}}; font-size: 24pt }')
+            page.locator('#css-source').fill('@page { size: A5; margin: 15mm } body { font-family: Helvetica } h1 { color: {{ink}}; font-size: 24pt }')
             ready()
             edited = download('edited-template', 1, ['React template', 'Birch & <Briar>', 'REACT-2042'])
             check('edited print CSS changes the page size', abs(float(PdfReader(edited).pages[0].mediabox.width) - 419.52756) < 1)
             check('document scripts are not executed in the app', page.evaluate('window.documentScriptExecuted !== true'))
+            verify_edited_preview(page, edited, out, check)
             page.screenshot(path=str(out / 'edited-template.png'), full_page=True)
             page.locator('#kind').select_option('report')
             ready()

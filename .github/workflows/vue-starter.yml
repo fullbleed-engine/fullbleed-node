@@ -3,9 +3,9 @@ name: Vue starter
 on:
   push:
     branches: [main]
-    paths: ['examples/vue/**', 'tools/check-vue-starter.py', 'tools/prepare-vue-check.mjs', 'tools/browser-requirements.txt', '.github/workflows/vue-starter.yml']
+    paths: ['examples/vue/**', 'tools/check-vue-starter.py', 'tools/prepare-vue-check.mjs', 'tools/browser-requirements.txt', 'tools/starter_standard_fonts.py', '.github/workflows/vue-starter.yml']
   pull_request:
-    paths: ['examples/vue/**', 'tools/check-vue-starter.py', 'tools/prepare-vue-check.mjs', 'tools/browser-requirements.txt', '.github/workflows/vue-starter.yml']
+    paths: ['examples/vue/**', 'tools/check-vue-starter.py', 'tools/prepare-vue-check.mjs', 'tools/browser-requirements.txt', 'tools/starter_standard_fonts.py', '.github/workflows/vue-starter.yml']
   workflow_dispatch:
 
 permissions:

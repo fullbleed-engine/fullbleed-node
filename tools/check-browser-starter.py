@@ -11,6 +11,7 @@ from importlib.metadata import version
 
 from playwright.sync_api import sync_playwright, expect
 from pypdf import PdfReader
+from starter_standard_fonts import verify_edited_preview
 
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--dist',type=Path,required=True)
@@ -88,11 +89,12 @@ try:
             check('customized bytes differ from the default invoice',documents[-1]['sha256']!=documents[0]['sha256'])
             page.locator('#template-editor summary').click()
             page.locator('#html-source').fill('<h1>Edited template</h1><p>{{customer}} / {{reference}}</p><script>window.documentScriptExecuted = true;</script>')
-            page.locator('#css-source').fill('@page { size: A5; margin: 15mm } h1 { color: {{ink}}; font-size: 24pt }')
+            page.locator('#css-source').fill('@page { size: A5; margin: 15mm } body { font-family: Helvetica } h1 { color: {{ink}}; font-size: 24pt }')
             page.locator('#render-source').click();ready()
             path=download('edited',1,['Edited template','Birch & <Briar>','TEST-2042'])
             check('edited print CSS changes the PDF page size',abs(float(PdfReader(path).pages[0].mediabox.width)-419.52756)<1)
             check('document script does not run on the page',page.evaluate('window.documentScriptExecuted !== true'))
+            verify_edited_preview(page, path, out, check)
             page.screenshot(path=str(out/'edited-template.png'),full_page=True)
             page.locator('#kind').select_option('report');page.locator('#generate').click();ready()
             download('report',3,['COMMON','1,240','420,000.00'])

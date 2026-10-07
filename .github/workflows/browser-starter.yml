@@ -3,9 +3,9 @@ name: Browser starter
 on:
   push:
     branches: [main]
-    paths: ['examples/browser/**', 'tools/check-browser-starter.py', 'tools/browser-requirements.txt', '.github/workflows/browser-starter.yml']
+    paths: ['examples/browser/**', 'tools/check-browser-starter.py', 'tools/browser-requirements.txt', 'tools/starter_standard_fonts.py', '.github/workflows/browser-starter.yml']
   pull_request:
-    paths: ['examples/browser/**', 'tools/check-browser-starter.py', 'tools/browser-requirements.txt', '.github/workflows/browser-starter.yml']
+    paths: ['examples/browser/**', 'tools/check-browser-starter.py', 'tools/browser-requirements.txt', 'tools/starter_standard_fonts.py', '.github/workflows/browser-starter.yml']
   workflow_dispatch:
 
 permissions:
