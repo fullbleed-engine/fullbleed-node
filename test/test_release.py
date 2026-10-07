@@ -89,6 +89,17 @@ class ReleaseBindingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Browser verification is incomplete'):
             self.verify(version='0.3.1')
 
+    def test_standard_font_release_requires_its_browser_cases(self):
+        self.browser_release()
+        self.release['tag_name'] = 'v0.3.2'
+        self.report['package_version'] = '0.3.2'
+        for browser in self.report['browser_matrix']:
+            browser.update(package_version='0.3.2', checks=105)
+        self.verify(version='0.3.2')
+        self.report['browser_matrix'][0]['checks'] = 66
+        with self.assertRaisesRegex(ValueError, 'Browser verification is incomplete'):
+            self.verify(version='0.3.2')
+
 
 if __name__ == '__main__':
     unittest.main()

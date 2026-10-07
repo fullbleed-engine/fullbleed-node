@@ -6,6 +6,7 @@ import { spawnSync } from 'node:child_process';
 import { resolve, join, dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { inlineFixtures } from '../test/inline-wrapping.mjs';
+import { standardFontFixtures } from '../test/standard-fonts.mjs';
 
 const root = resolve('.');
 const out = join(root, 'output/browser-verification');
@@ -34,6 +35,7 @@ const node = await import(pathToFileURL(join(installed, 'src/index.js')).href);
 const fixture = async name => ({ html: await readFile(`examples/${name}.html`, 'utf8'), css: await readFile(`examples/${name}.css`, 'utf8'), previewDpi: 72 });
 const inputs = { invoice: await fixture('invoice'), report: await fixture('report'),
   ...Object.fromEntries(inlineFixtures.map(({ name, pages, ...input }) => [name, { ...input, previewDpi: 96 }])),
+  ...Object.fromEntries(standardFontFixtures.map(({ name, font, pages, ...input }) => [name, { ...input, previewDpi: 72 }])),
   custom: { html: '<h1>Local asset test</h1><p>Integral: ⨌</p><img src="assets/brand/logo.svg" width="80" height="40">',
     css: "body {font-family:Inter,'Noto Sans Math'}", previewDpi: 72,
     fontFiles: ['NotoSansMath-Regular.ttf'],

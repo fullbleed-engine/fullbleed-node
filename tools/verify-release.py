@@ -47,7 +47,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
         browsers = report.get('browser_matrix', [])
         require(len(browsers) == 3 and {item.get('browser') for item in browsers} == {'chrome', 'firefox', 'webkit'},
                 'Release does not retain the required browser matrix')
-        required_browser_checks = 66 if tuple(map(int, version.split('.'))) >= (0, 3, 1) else 30
+        release_version = tuple(map(int, version.split('.')))
+        required_browser_checks = 105 if release_version >= (0, 3, 2) else 66 if release_version >= (0, 3, 1) else 30
         require(all(item.get('ok') is True and item.get('package_version') == version and item.get('checks', 0) >= required_browser_checks for item in browsers),
                 'Browser verification is incomplete or tests another package')
 

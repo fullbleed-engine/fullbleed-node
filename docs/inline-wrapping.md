@@ -45,14 +45,12 @@ package checks in Chrome, Firefox, and Playwright WebKit. Browser downloads must
 match the installed Node package. WebKit testing is not branded Safari testing.
 
 The explicit, unembedded Helvetica and Times fixtures produce readable PDFs in
-the independent reader, but their Fullbleed native previews omit the text in
-both 0.3.0 and 0.3.1. Their layout checks use PDFium. Preview equality does not
-prove visual fidelity for those fonts; use the bundled or explicitly registered
-fonts when requesting Fullbleed previews. Embedded-font cases must contain
-visible ink, and their previews are retained for review. The native adapter can
-use host-font fallback for those unembedded faces, while the Wasm package has
-no host fonts. The native check retains both previews and requires PDF equality
-for those two cases; it requires exact preview bytes for the other fixtures.
+the independent reader, but their Fullbleed previews omit the text in both
+0.3.0 and 0.3.1. Version 0.3.2 fixes these previews with bundled outline
+substitutes. Every fixture now requires visible text and exact native/Wasm
+preview bytes, alongside the independent PDFium layout checks. See the
+[Standard 14 preview checks](standard-font-previews.md) for the public negative
+control, font coverage, and upgrade behavior.
 
 The scripts retain PDFs, native previews, independent PDFium previews, word
 coordinates, input HTML/CSS, hashes, and result JSON under

@@ -33,6 +33,16 @@ for (const dep of metadata.packages.filter(p => p.source)) {
     notices.push(`${dep.name} ${dep.version} / ${name}\n\n${await readFile(join(folder, name), 'utf8')}`);
   }
 }
+// These font programs are compiled into the engine's preview renderer. Retain
+// their complete upstream notices as individual files and in the browser bundle.
+const previewFontNotices = ['Liberation', 'NotoSans', 'NotoSansMath', 'NotoSansSymbols', 'NotoSansSymbols2']
+  .map(name => `LICENSE-${name}.txt`);
+await mkdir(join(dist, 'preview-font-notices'), { recursive: true });
+for (const name of previewFontNotices) {
+  const source = join(dirname(core.manifest_path), 'src/preview_fonts', name);
+  await copyFile(source, join(dist, 'preview-font-notices', name));
+  notices.push(`fullbleed ${core.version} / src/preview_fonts/${name}\n\n${await readFile(source, 'utf8')}`);
+}
 notices.push(`@bjorn3/browser_wasi_shim 0.4.2 / MIT\n\n${await readFile(join(root, 'node_modules/@bjorn3/browser_wasi_shim/LICENSE-MIT'), 'utf8')}`);
 for (const name of (await readdir(join(root, 'assets/fonts'))).filter(n => n.endsWith('-OFL.txt')).sort()) {
   notices.push(`${name}\n\n${await readFile(join(root, 'assets/fonts', name), 'utf8')}`);
@@ -40,7 +50,7 @@ for (const name of (await readdir(join(root, 'assets/fonts'))).filter(n => n.end
 await writeFile(join(dist, 'THIRD_PARTY_NOTICES.txt'), notices.join('\n\n'), 'utf8');
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const files = {};
-for (const name of ['dist/engine.wasm', 'dist/THIRD_PARTY_NOTICES.txt', ...(await readdir(join(root, 'assets/fonts'))).sort().map(n => 'assets/fonts/' + n)]) {
+for (const name of ['dist/engine.wasm', 'dist/THIRD_PARTY_NOTICES.txt', ...previewFontNotices.map(name => 'dist/preview-font-notices/' + name), ...(await readdir(join(root, 'assets/fonts'))).sort().map(n => 'assets/fonts/' + n)]) {
   const bytes = await readFile(join(root, name));
   files[name] = { bytes: bytes.length, sha256: hash(bytes) };
 }
