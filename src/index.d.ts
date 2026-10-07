@@ -10,7 +10,7 @@ export interface RenderOptions {
   assets?: Readonly<Record<string, Uint8Array>>;
   /** 0 disables previews (default); otherwise 36–300 DPI. */
   previewDpi?: number;
-  /** Includes initial engine loading. Default: 30000 ms. */
+  /** Includes queue wait and initial engine loading. Default: 30000 ms. */
   timeoutMs?: number;
   /** Reject documents larger than this. Default: 1000. */
   maxPages?: number;
@@ -37,5 +37,23 @@ export class FullbleedError extends Error {
   constructor(code: string, message: string, options?: ErrorOptions);
 }
 export function renderPdf(options: RenderOptions): Promise<RenderResult>;
+export interface RenderQueueOptions {
+  /** Maximum simultaneous renders in this queue. Default: 1. */
+  concurrency?: number;
+  /** Maximum waiting requests, excluding active renders. Default: 16; 0 rejects instead of waiting. */
+  maxQueue?: number;
+}
+export interface RenderQueue {
+  /** Render in FIFO start order, or reject with QUEUE_FULL/QUEUE_CLOSED. Inputs are copied at admission. */
+  renderPdf(options: RenderOptions): Promise<RenderResult>;
+  /** Stop admission, cancel accepted jobs and await worker/process cleanup. Idempotent. */
+  close(): Promise<void>;
+  readonly concurrency: number;
+  readonly maxQueue: number;
+  readonly activeCount: number;
+  readonly pendingCount: number;
+  readonly closed: boolean;
+}
+export function createRenderQueue(options?: RenderQueueOptions): RenderQueue;
 export const engineVersion: string;
 export const version: string;

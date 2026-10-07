@@ -31,6 +31,7 @@ jobs:
       - run: npm run check:types
       - run: npm run verify:native
       - run: npm run example
+      - run: node examples/render-queue.mjs
       - run: npm run verify:pack
       - uses: actions/setup-python@v6
         with:
@@ -84,6 +85,9 @@ jobs:
             output/native-verification/**/style.css
             output/pack-verification/verification.json
             output/pack-verification/text-extraction.json
+            output/pack-verification/queue-tests.log
+            output/queue-verification/
+            output/queued-invoices/
             output/font-baseline-consumer/package-lock.json
             output/font-baseline/
             output/font-subsets/
@@ -155,6 +159,8 @@ jobs:
           name: node-installed-${{ matrix.os }}-${{ matrix.node }}
           path: |
             output/pack-verification/verification.json
+            output/pack-verification/queue-tests.log
+            output/queue-verification/
             output/pack-verification/**/*.pdf
             output/pack-verification/**/*.png
           retention-days: 7
@@ -189,7 +195,18 @@ jobs:
       - run: npm run verify:pack -- --package-dir input
       - run: npm run verify:browser:prepare
       - run: python -m pip install -r tools/browser-requirements.txt
+      - name: Use the reachable official Ubuntu mirrors
+        run: |
+          sudo python3 - <<'PY'
+          from pathlib import Path
+          path = Path('/etc/apt/apt-mirrors.txt')
+          if path.is_file():
+              lines = path.read_text().splitlines()
+              if any(line.startswith('https://archive.ubuntu.com/ubuntu') for line in lines):
+                  path.write_text('\n'.join(line for line in lines if 'azure.archive.ubuntu.com' not in line) + '\n')
+          PY
       - run: python -m playwright install --with-deps ${{ matrix.browser }}
+        timeout-minutes: 5
       - run: python tools/check-browser.py --browser ${{ matrix.browser }} --label ci
       - uses: actions/upload-artifact@v4
         if: always()

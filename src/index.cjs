@@ -9,6 +9,7 @@ const { pathToFileURL } = require('node:url');
 const pkg = require('../package.json');
 
 const { FullbleedError, normalize } = require('./render-input.cjs');
+const { createQueue } = require('./render-queue.cjs');
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const root = join(__dirname, '..');
 let runtimePromise;
@@ -156,6 +157,11 @@ async function renderPdf(options) {
   if (Number(process.versions.node.split('.')[0]) < 22) throw new FullbleedError('UNSUPPORTED_NODE', 'Fullbleed requires Node.js 22 or newer.');
   const start = Date.now();
   const job = normalize(options);
+  return renderJob(job, start);
+}
+
+async function renderJob(job, start) {
+  if (Number(process.versions.node.split('.')[0]) < 22) throw new FullbleedError('UNSUPPORTED_NODE', 'Fullbleed requires Node.js 22 or newer.');
   const aborted = () => new FullbleedError('ABORTED', 'PDF rendering was aborted.');
   if (job.signal?.aborted) throw aborted();
   const remaining = job.timeoutMs - (Date.now() - start);
@@ -211,6 +217,7 @@ async function renderPdf(options) {
 }
 
 exports.renderPdf = renderPdf;
+exports.createRenderQueue = options => createQueue(renderJob, options);
 exports.FullbleedError = FullbleedError;
 exports.engineVersion = pkg.fullbleed.engineVersion;
 exports.version = pkg.version;

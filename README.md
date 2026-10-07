@@ -15,9 +15,9 @@ Using Vue? The [Vue and TypeScript starter](examples/vue) includes editable
 templates, automatic previews, downloads, and a reusable `usePdfPreview` composable.
 
 This is an optional integration around the published **Fullbleed 2.5.11** engine.
-The package has its own version, **0.3.2**. This patch fixes blank previews of
-unembedded Standard 14 fonts, including Helvetica, Times, and Courier. Preview
-pixels change for those fonts; review saved preview baselines when upgrading.
+The package has its own version, **0.4.0**. Node applications can use a shared
+render queue to bound active renders and waiting requests, include queue time in
+deadlines, cancel waiting jobs, and stop rendering cleanly during shutdown.
 The browser entry renders in a Web Worker, and the Node API supports worker and
 process isolation. See the [browser guide](docs/browser.md),
 [inline wrapping checks](docs/inline-wrapping.md),
@@ -33,7 +33,7 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.3.2`.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.4.0`.
 Package archives and retained PDF/PNG evidence are attached to each
 [GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
 The [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification)
@@ -157,6 +157,36 @@ cover the twelve Latin faces, an embedded-font control, and the blank-preview
 failure in public 0.3.1. Font provenance and complete license notices ship with
 both the npm package and copied browser runtime.
 
+## Limit concurrent renders
+
+Create one queue per application process and reuse it across requests:
+
+```javascript
+import { createRenderQueue } from 'fullbleed';
+
+const documents = createRenderQueue({ concurrency: 2, maxQueue: 4 });
+const result = await documents.renderPdf({
+  html: '<h1>Queued invoice</h1>',
+  isolation: 'process',
+  timeoutMs: 30_000,
+});
+// Return result.pdf from your request handler.
+// At application shutdown, cancel outstanding work and await cleanup:
+await documents.close();
+```
+
+This queue admits two active renders and four waiting requests. Further requests
+reject with `QUEUE_FULL`, so a server can return a busy response. Waiting jobs
+can be aborted and their deadlines include the wait. Slots stay occupied until
+their worker or child process has exited. `close()` rejects new work, cancels
+accepted jobs with `QUEUE_CLOSED`, and waits for cleanup.
+
+Choose limits for your host and document sizes. The queue bounds job counts, not
+total memory, and each application process has its own queue. It is an in-memory
+admission control; use your application's durable job system for persistence and
+delivery. See the [queue guide and retained checks](docs/render-queue.md) and the
+[six-invoice batch example](examples/render-queue.mjs).
+
 ## API
 
 This section describes the Node entry. The browser entry returns browser byte
@@ -224,6 +254,14 @@ Error codes include `INVALID_INPUT`, `MISSING_GLYPHS`, `PAGE_LIMIT`, `TIMEOUT`,
 `PREVIEW_FAILED`, `WORKER_FAILED`, and `PROCESS_FAILED`. Process failures may also
 include `exitCode` and `signal`. Failed or cancelled calls do not return a partial
 PDF. Caller-owned asset buffers are copied when a call starts.
+
+`createRenderQueue({ concurrency?, maxQueue? })` exposes `renderPdf()` with the
+same options and result. Defaults are one active render and sixteen waiting
+jobs. `maxQueue: 0` rejects buffering. Accepted calls snapshot their strings and
+asset/font bytes immediately. The queue adds `QUEUE_FULL` and `QUEUE_CLOSED`,
+read-only `activeCount`, `pendingCount`, and `closed` properties, and an
+idempotent asynchronous `close()` method. It does not reuse workers or change
+the standalone `renderPdf()` concurrency behavior.
 
 This API covers ordinary document generation and previews. It does not expose
 PDF/A, PDF/UA, PDF/X, template overlays, or compiled VDP. Use the

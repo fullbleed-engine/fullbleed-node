@@ -51,6 +51,10 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
         required_browser_checks = 105 if release_version >= (0, 3, 2) else 66 if release_version >= (0, 3, 1) else 30
         require(all(item.get('ok') is True and item.get('package_version') == version and item.get('checks', 0) >= required_browser_checks for item in browsers),
                 'Browser verification is incomplete or tests another package')
+        if release_version >= (0, 4, 0):
+            require(all(item.get('queue_checks', 0) >= 14 and item.get('queue_peak_workers') == 2
+                        for item in report['installed_matrix']),
+                    'Installed queue verification is incomplete')
 
 
 def verify_tarball(data, info, report):
