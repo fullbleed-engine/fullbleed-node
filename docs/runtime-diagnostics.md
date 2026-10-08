@@ -51,7 +51,48 @@ and PNGs, and comparison records. This is one bounded experiment in an
 environment different from the original GitHub runner. It is not a throughput
 measurement, capacity test, or proof that the crash is fixed.
 
-## Run the same synthetic diagnostic
+## Cancellation during a Wasm host call, October 8, 2026 (UTC)
+
+The earlier experiment let every render finish. This follow-up tested a different
+condition: terminating a worker while its Wasm engine has an active host-call
+stack, with other render workers alive. It used the same published
+`fullbleed@0.1.3` package and official Node 24.21.0 Linux binary. All 18 package
+files and all 26 WASI dependency files matched their registry tarballs.
+
+The development-only observer intercepts worker creation and wraps the WASI
+log collector. An empty HTML style block makes the engine emit an asset warning.
+Inside that callback, the observer captures a stack containing Wasm frames,
+notifies the parent through a separate message channel, and waits. The parent
+then cancels through Fullbleed's public `AbortSignal` option. The package files,
+Wasm bytes, and Wasm import functions remain unchanged. The observer deliberately
+changes timing: this tests cancellation at a paused host callback, not every
+possible point during normal execution.
+
+A one-round control verified the observer before one bounded, 20-round GDB run
+with the same three diagnostic V8 flags as the earlier experiment. Each round
+started two victims and two ordinary invoice/report renders; preview modes
+alternated. Four serial renders supplied the output baselines.
+
+| Observation | Result |
+| --- | --- |
+| Cancellations with an observed Wasm stack | 40 |
+| Completed renders, including four serial baselines | 44 |
+| Workers created / peak simultaneous / left at completion | 84 / 4 / 0 |
+| Live workers when each abort was requested | 3 or 4 |
+| Logged code-collection starts / wrapper-free events | 41 / 1 |
+| Completed PDF and preview comparisons | All matched their serial baseline |
+| Baseline files compared with published 0.1.3 samples | All eight hashes matched |
+| Native crash or debugger stop | None |
+
+The [verification record](active-cancellation-verification.json) links the
+retained debugger log, per-cancellation stacks, progress journal, PDFs, PNGs,
+and package/runtime checks. Its reviewed GC count comes from the retained trace;
+the initial local runner searched for the wrong trace label and reported zero.
+No diagnostic was rerun to correct that count. This single WSL2 experiment does
+not reproduce the original GitHub-runner crash or establish its cause. Issue #7
+remains open.
+
+## Run a synthetic diagnostic
 
 The diagnostic tools are repository development files, not part of the installed
 npm package. Use a Linux host with Node, npm, and GDB installed. From this checkout,
@@ -65,11 +106,11 @@ fullbleed_diagnostic="$(mktemp -d)"
 cd "$fullbleed_diagnostic"
 npm init --yes
 npm install --ignore-scripts --no-audit --no-fund --save-exact fullbleed@0.1.3
-mkdir evidence empty-home
+mkdir evidence
 
 env -i PATH="$(dirname "$fullbleed_node"):/usr/bin:/bin" \
-  HOME="$fullbleed_diagnostic/empty-home" LANG=C.UTF-8 TZ=UTC SHELL=/bin/sh \
-  timeout --kill-after=10s 180s gdb --batch --return-child-result \
+  LANG=C.UTF-8 TZ=UTC SHELL=/bin/sh \
+  timeout --kill-after=10s 180s gdb --nh --nx --batch --return-child-result \
   -x "$fullbleed_checkout/tools/capture-native.gdb" --args "$fullbleed_node" \
   --stress-wasm-code-gc --wasm-wrapper-tiering-budget=1 --trace-wasm-code-gc \
   --report-on-fatalerror --report-uncaught-exception \
@@ -87,6 +128,14 @@ runtime. The script refuses an existing render-output directory, records job
 starts synchronously, verifies output hashes, and fails on a render error or a
 mismatch. A successful run ends its journal with `phase: "complete"`, 84 completed
 renders, and zero active workers. Do not automatically retry a failed run.
+
+For the cancellation probe, substitute
+`tools/diagnose-active-cancellation.mjs` and use a fresh output directory. Its
+default is 20 rounds; an optional final argument `1` selects the one-round
+observer control. The 20-round completion record must contain 40 observed aborts,
+44 completed renders, 84 workers created, and zero active workers. A missing
+Wasm stack, resumed victim callback, unexpected error, or changed output hash
+fails the probe. Keep the observer confined to this development process.
 
 GDB prints `FULLBLEED_DEBUGGER_STOPPED_WITH_LIVE_INFERIOR` and native thread
 stacks if it stops on a signal. A signal inside WebAssembly still needs analysis;

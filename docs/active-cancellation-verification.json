@@ -1,0 +1,99 @@
+{
+  "schema": "fullbleed.node.active-cancellation-diagnostic.v1",
+  "verifiedAt": "2026-10-08T01:16:16.532686+00:00",
+  "scope": "One bounded synthetic experiment; original issue #7 remains unresolved. The observer changes timing by pausing victims inside a Wasm host callback.",
+  "fixtureSourceCommit": "cf68f246ea91cd5bb8ed80485a2830a00edc612e",
+  "package": {
+    "version": "0.1.3",
+    "engineVersion": "2.5.6",
+    "tarballSha256": "2dec677856edd8c687a5442b43f5f4be7b04d5da0251fff36106dd0af59af47e",
+    "publishedPackageUnchanged": true
+  },
+  "runtime": {
+    "version": "24.21.0",
+    "archiveSha256": "fd8e59d5a511510f6a298afb548f18c7d2b1be404d8b4a27d94fbe49f56cb2d6",
+    "binarySha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c",
+    "binaryMatchesVerifiedArchive": true,
+    "platform": "Linux-6.18.40.1-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "distribution": "Ubuntu 22.04.5 LTS",
+    "v8": "13.6.233.17-node.53",
+    "flags": [
+      "--stress-wasm-code-gc",
+      "--wasm-wrapper-tiering-budget=1",
+      "--trace-wasm-code-gc"
+    ]
+  },
+  "diagnostic": {
+    "script": "tools/diagnose-active-cancellation.mjs",
+    "sha256": "efb2491b400822f3387b13a7b121674ddd5a0be20fa1814f53976a0019c02473",
+    "debuggerScript": "tools/capture-native.gdb",
+    "debuggerScriptSha256": "9688b45a384d70bbd92ff7e0a8c7af5ad27efeac7beafa44d11ceb645e01daa8",
+    "serialBaselines": 4,
+    "rounds": 20,
+    "survivorsPerRound": 2,
+    "victimsPerRound": 2,
+    "victimObservation": "Wasm stack captured from ConsoleStdout log callback invoked by fd_write; callback waits on SharedArrayBuffer until public AbortSignal terminates worker. Dedicated MessagePort does not alter Fullbleed result protocol.",
+    "packageFilesVerifiedAgainstRegistryTarball": 18,
+    "wasiFilesVerifiedAgainstRegistryTarball": 26
+  },
+  "control": {
+    "mode": "control",
+    "exit_code": 0,
+    "elapsed_seconds": 9.895419645999937,
+    "debugger_stopped": false,
+    "debugger_exited": false,
+    "timed_out": false,
+    "platform": "Linux-6.18.40.1-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "node_binary_sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c",
+    "debugger_script_sha256": "9688b45a384d70bbd92ff7e0a8c7af5ad27efeac7beafa44d11ceb645e01daa8",
+    "code_gc_starts": 0,
+    "result": {
+      "phase": "complete",
+      "rounds": 1,
+      "completed": 6,
+      "aborted": 2,
+      "markers": 2,
+      "created": 8,
+      "peak": 4,
+      "active": 0
+    }
+  },
+  "result": {
+    "mode": "stress",
+    "exit_code": 0,
+    "elapsed_seconds": 35.02316656199764,
+    "debugger_stopped": false,
+    "debugger_exited": true,
+    "timed_out": false,
+    "platform": "Linux-6.18.40.1-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "node_binary_sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c",
+    "debugger_script_sha256": "9688b45a384d70bbd92ff7e0a8c7af5ad27efeac7beafa44d11ceb645e01daa8",
+    "code_gc_starts": 41,
+    "result": {
+      "phase": "complete",
+      "rounds": 20,
+      "completed": 44,
+      "aborted": 40,
+      "markers": 40,
+      "created": 84,
+      "peak": 4,
+      "active": 0
+    },
+    "wrapper_free_events": 1,
+    "wrapper_count_freed": 5,
+    "observed_wasm_stacks": 40,
+    "active_workers_at_abort": [
+      3,
+      4
+    ],
+    "published_release_samples_matched": 8,
+    "measurement_note": "GC count parsed from retained Node trace lines; initial runner used an unmatched label."
+  },
+  "evidenceArchive": {
+    "filename": "node-active-cancellation-evidence-20261008.zip",
+    "sha256": "745265cb327ee78ceacb229de804381ab97c1604f2b3d7ca63b2fa034c575600",
+    "bytes": 1303723,
+    "files": 32,
+    "url": "https://github.com/fullbleed-engine/fullbleed-node/releases/download/v0.1.3/node-active-cancellation-evidence-20261008.zip"
+  }
+}
