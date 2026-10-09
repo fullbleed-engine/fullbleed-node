@@ -14,6 +14,7 @@ import tarfile
 import tempfile
 
 REPO = 'fullbleed-engine/fullbleed-node'
+ENGINE_REGRESSION_SOURCE = Path(__file__).resolve().parents[1] / 'test/fixtures/engine-2.5.22.json'
 
 
 def require(condition, message):
@@ -48,13 +49,34 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
         require(len(browsers) == 3 and {item.get('browser') for item in browsers} == {'chrome', 'firefox', 'webkit'},
                 'Release does not retain the required browser matrix')
         release_version = tuple(map(int, version.split('.')))
-        required_browser_checks = 105 if release_version >= (0, 3, 2) else 66 if release_version >= (0, 3, 1) else 30
+        required_browser_checks = 144 if release_version >= (0, 4, 1) else 105 if release_version >= (0, 3, 2) else 66 if release_version >= (0, 3, 1) else 30
         require(all(item.get('ok') is True and item.get('package_version') == version and item.get('checks', 0) >= required_browser_checks for item in browsers),
                 'Browser verification is incomplete or tests another package')
         if release_version >= (0, 4, 0):
             require(all(item.get('queue_checks', 0) >= 14 and item.get('queue_peak_workers') == 2
                         for item in report['installed_matrix']),
                     'Installed queue verification is incomplete')
+        if release_version >= (0, 4, 1):
+            source = ENGINE_REGRESSION_SOURCE.read_bytes()
+            source_sha = hashlib.sha256(source).hexdigest()
+            cases = json.loads(source)['cases']
+            names = {case['name'] for case in cases}
+            families = {case['family'] for case in cases}
+            regressions = report.get('engine_regressions', [])
+            require(len(regressions) == 2 and {item.get('platform') for item in regressions} == {'win32', 'linux'},
+                    'Windows and Linux engine regression evidence is required')
+            require(all(item.get('ok') is True and item.get('package_version') == version
+                        and item.get('engine_version') == report.get('engine_version')
+                        and item.get('source_sha256') == source_sha and item.get('cases') == 2 * len(names)
+                        and set(item.get('families', [])) == families for item in regressions),
+                    'Engine regression evidence is incomplete or targets another source')
+            require(all(item.get('engine_regression_ok') is True and item.get('engine_regression_cases') == len(names)
+                        and item.get('engine_regression_source_sha256') == source_sha for item in browsers),
+                    'Browser engine regression evidence is incomplete')
+            native = {item.get('name'): item for item in report.get('native_wasi_fixtures', [])}
+            require(names.issubset(native) and all(native[name].get('nativeWasiPdfEqual') is True
+                        and native[name].get('nativeWasiPreviewsEqual') is True for name in names),
+                    'Native/WASI engine regression comparison is incomplete')
 
 
 def verify_tarball(data, info, report):

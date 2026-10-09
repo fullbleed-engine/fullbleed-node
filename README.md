@@ -14,8 +14,8 @@ also includes a ZIP for local development.
 Using Vue? The [Vue and TypeScript starter](examples/vue) includes editable
 templates, automatic previews, downloads, and a reusable `usePdfPreview` composable.
 
-This is an optional integration around the published **Fullbleed 2.5.11** engine.
-The package has its own version, **0.4.0**. Node applications can use a shared
+This is an optional integration around the published **Fullbleed 2.5.22** engine.
+The package has its own version, **0.4.1**. Node applications can use a shared
 render queue to bound active renders and waiting requests, include queue time in
 deadlines, cancel waiting jobs, and stop rendering cleanly during shutdown.
 The browser entry renders in a Web Worker, and the Node API supports worker and
@@ -25,6 +25,11 @@ process isolation. See the [browser guide](docs/browser.md),
 [font-family checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-families.md), and
 [embedded-font checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-subsets.md) for the retained fixtures.
 
+Version 0.4.1 brings the engine's recent layout fixes to both JavaScript entries.
+The [engine update checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/engine-2.5.22.md)
+cover nested counters, clipped effects, border-image tiling, and floated initials
+with independent text, color, and Chrome print expectations.
+
 ## Install and render
 
 Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package/fullbleed):
@@ -33,7 +38,7 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.4.0`.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.4.1`.
 Package archives and retained PDF/PNG evidence are attached to each
 [GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
 The [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification)
