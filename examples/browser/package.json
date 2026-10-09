@@ -10,6 +10,6 @@
     "build": "npm run assets && vite build",
     "preview": "vite preview --host 127.0.0.1"
   },
-  "dependencies": { "fullbleed": "0.3.2" },
+  "dependencies": { "fullbleed": "0.4.1" },
   "devDependencies": { "vite": "8.3.2" }
 }

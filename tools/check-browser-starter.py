@@ -12,6 +12,7 @@ from importlib.metadata import version
 from playwright.sync_api import sync_playwright, expect
 from pypdf import PdfReader
 from starter_standard_fonts import verify_edited_preview
+from starter_engine_fixes import verify_engine_fixes
 
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--dist',type=Path,required=True)
@@ -96,6 +97,7 @@ try:
             check('document script does not run on the page',page.evaluate('window.documentScriptExecuted !== true'))
             verify_edited_preview(page, path, out, check)
             page.screenshot(path=str(out/'edited-template.png'),full_page=True)
+            verify_engine_fixes(page, out, check, ready, manual=True)
             page.locator('#kind').select_option('report');page.locator('#generate').click();ready()
             download('report',3,['COMMON','1,240','420,000.00'])
             check('multi-page preview displays all report pages',page.locator('#preview img').count()==3)

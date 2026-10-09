@@ -35,7 +35,7 @@ renders supplied static HTML/CSS rather than capturing the React page.
 ## Reuse the hook
 
 Copy `src/usePdfPreview.ts` into your client application, install
-`fullbleed@0.3.2`, and copy the runtime with
+`fullbleed@0.4.1`, and copy the runtime with
 `npx fullbleed-browser-assets public/fullbleed`. Keep the document input stable
 with `useMemo` so ordinary component updates do not schedule another render:
 
@@ -94,7 +94,7 @@ WebAssembly, and Web Crypto are required.
 
 ## Versions and verification
 
-The lockfile pins Fullbleed 0.3.2 / engine 2.5.11, React 19.3.0, TypeScript 7.0.2,
+The lockfile pins Fullbleed 0.4.1 / engine 2.5.22, React 19.3.0, TypeScript 7.0.2,
 and Vite 8.3.2. No Fullbleed engine or package release is needed for this example.
 
 The repository's `React starter` workflow builds the locked project and checks

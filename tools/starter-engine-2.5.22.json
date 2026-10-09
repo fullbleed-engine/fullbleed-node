@@ -1,0 +1,178 @@
+{
+  "schema": "fullbleed.starter.engine-fixes.v1",
+  "upstreamRelease": "2.5.22",
+  "upstreamCommit": "e41c1b4b4395c9bd3c024935c926ba46cb791440",
+  "sourceFixture": "test/fixtures/engine-2.5.22.json",
+  "sourceSha256": "ef9f11edfbf30060e088e86c02f2420ef38f78502218d894856e503900fea721",
+  "sources": [
+    {
+      "path": "tests/fixtures/first-letter-floats/chrome.json",
+      "sha256": "08052b68e932fe981520ea53463360dde0faf72e63b0a4498e218708b77604ee",
+      "url": "https://github.com/fullbleed-engine/fullbleed-official/blob/e41c1b4b4395c9bd3c024935c926ba46cb791440/tests/fixtures/first-letter-floats/chrome.json"
+    },
+    {
+      "path": "tools/smoke_counter_scopes.py",
+      "sha256": "19fd1b5b196b53992fa301caa5ed8dd874acd1e539987707d64478a9f82324f4",
+      "url": "https://github.com/fullbleed-engine/fullbleed-official/blob/e41c1b4b4395c9bd3c024935c926ba46cb791440/tools/smoke_counter_scopes.py"
+    },
+    {
+      "path": "tools/smoke_filtered_overflow.py",
+      "sha256": "411f6251170eb17a1bc2a97565d96b5066270605576223c1fee8977928f9f487",
+      "url": "https://github.com/fullbleed-engine/fullbleed-official/blob/e41c1b4b4395c9bd3c024935c926ba46cb791440/tools/smoke_filtered_overflow.py"
+    },
+    {
+      "path": "tools/smoke_border_image_tiling.py",
+      "sha256": "0f5b3c035fba92318f8b7dfc160741494f1be62bfa441b3cd7d3fc48d32e6340",
+      "url": "https://github.com/fullbleed-engine/fullbleed-official/blob/e41c1b4b4395c9bd3c024935c926ba46cb791440/tools/smoke_border_image_tiling.py"
+    }
+  ],
+  "cases": [
+    {
+      "name": "engine-counter-sibling-reset",
+      "family": "counter",
+      "html": "<html><body><p>Record Ada</p><div class='chapter'>Alpha</div><div class='section'>One</div><div class='section'>Two</div><div class='chapter'>Beta</div><div class='section'>Three</div></body></html>",
+      "css": "@page { size: 400pt 500pt; margin: 24pt; }\n* { margin: 0; padding: 0; }\nbody { font: 12pt Inter; line-height: 1.5; }\nbody { counter-reset: chapter; } .chapter { counter-increment: chapter; counter-reset: section; } .section { counter-increment: section; } .section::before { content: 'CNT' counter(chapter) '.' counter(section) 'END'; }",
+      "pages": 1,
+      "previewDpi": 96,
+      "expected": {
+        "labels": [
+          "1.1",
+          "1.2",
+          "2.1"
+        ]
+      }
+    },
+    {
+      "name": "engine-overflow-nested-clips",
+      "family": "overflow",
+      "html": "<!doctype html><html><body><div class=\"parent\"><div class=\"inner\"><div class=\"child\"></div></div></div></body></html>",
+      "css": "@page { size: 240px 180px; margin: 0; }\n* { margin: 0; padding: 0; box-sizing: border-box; }\nhtml, body { background: white; }\n.parent { position: absolute; left: 20px; top: 20px; width: 100px; height: 50px;\n  overflow: hidden; border: 4px solid #003366; border-radius: 12px; background: #ddeeff; }\n.child { width: 60px; height: 70px; margin: 20px 10px 0; background: red; filter: contrast(1.1); }\n\n        .parent { width: 100px; height: 60px; border: 0; border-radius: 0; background: lime; }\n        .inner { width: 50px; height: 60px; margin: 20px; overflow: hidden; background: blue; }\n        .child { width: 80px; height: 80px; margin: 10px; }\n        ",
+      "pages": 1,
+      "previewDpi": 96,
+      "expected": {
+        "probes": [
+          {
+            "x": 60,
+            "y": 60,
+            "expected": [
+              255,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 100,
+            "y": 60,
+            "expected": [
+              0,
+              255,
+              0
+            ]
+          },
+          {
+            "x": 60,
+            "y": 90,
+            "expected": [
+              255,
+              255,
+              255
+            ]
+          }
+        ],
+        "size": [
+          240,
+          180
+        ]
+      }
+    },
+    {
+      "name": "engine-border-center-zero-top-falls-back-bottom-svg",
+      "family": "border-image",
+      "html": "<!doctype html><html><body><div class=\"box\"></div></body></html>",
+      "css": "@page { size: 140px 130px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.box { position: absolute; left: 20px; top: 20px; width: 60px; height: 70px;\n  background: white; border: 10px solid red; border-image-source: url(\"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2230%22%20height%3D%2230%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2210%22%20height%3D%2210%22%20fill%3D%22%23ff0000%22%2F%3E%3Crect%20x%3D%2210%22%20y%3D%220%22%20width%3D%2210%22%20height%3D%2210%22%20fill%3D%22%230000ff%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%220%22%20width%3D%2210%22%20height%3D%2210%22%20fill%3D%22%23ff0000%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2210%22%20width%3D%2210%22%20height%3D%2210%22%20fill%3D%22%23ff8000%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2210%22%20width%3D%2210%22%20height%3D%2210%22%20fill%3D%22%23ff8000%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2220%22%20width%3D%2210%22%20height%3D%2210%22%20fill%3D%22%23ff0000%22%2F%3E%3Crect%20x%3D%2210%22%20y%3D%2220%22%20width%3D%2210%22%20height%3D%2210%22%20fill%3D%22%230000ff%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2220%22%20width%3D%2210%22%20height%3D%2210%22%20fill%3D%22%23ff0000%22%2F%3E%3Crect%20x%3D%2210%22%20y%3D%2210%22%20width%3D%225%22%20height%3D%2210%22%20fill%3D%22%2300b400%22%2F%3E%3Crect%20x%3D%2215%22%20y%3D%2210%22%20width%3D%225%22%20height%3D%2210%22%20fill%3D%22%238000b4%22%2F%3E%3C%2Fsvg%3E\");\n  border-image-slice: 10 fill; border-image-width: 0 10px 20px 10px; border-image-repeat: repeat stretch; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "expected": {
+        "probes": [
+          {
+            "x": 35,
+            "y": 35,
+            "expected": [
+              128,
+              0,
+              180
+            ]
+          },
+          {
+            "x": 45,
+            "y": 35,
+            "expected": [
+              0,
+              180,
+              0
+            ]
+          },
+          {
+            "x": 55,
+            "y": 35,
+            "expected": [
+              128,
+              0,
+              180
+            ]
+          },
+          {
+            "x": 65,
+            "y": 35,
+            "expected": [
+              0,
+              180,
+              0
+            ]
+          }
+        ],
+        "size": [
+          140,
+          130
+        ]
+      }
+    },
+    {
+      "name": "engine-first-letter-decorated-left",
+      "family": "first-letter",
+      "html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"></head><body><p>Drop cap leads this short paragraph while the remaining text wraps beside the enlarged initial letter.</p></body></html>",
+      "css": "@page{size:432px 208px;margin:0}*{margin:0;box-sizing:border-box}p{margin:24px;width:300px;font-family:\"Inter\";font-size:20px;line-height:1.35;color:#283618;}p::first-letter{color:#bc6c25;float:left;font-size:44px;line-height:1;padding:3px 7px;border:2px solid #e04020;background:#ffe080;margin:2px 5px 4px 3px;}",
+      "pages": 1,
+      "previewDpi": 96,
+      "expected": {
+        "size": [
+          432,
+          208
+        ],
+        "text": "Drop cap leads this short paragraph while the remaining text wraps beside the enlarged initial letter.",
+        "probes": [
+          {
+            "x": 28,
+            "y": 27,
+            "expected": [
+              224,
+              64,
+              32
+            ]
+          },
+          {
+            "x": 32,
+            "y": 31,
+            "expected": [
+              255,
+              224,
+              128
+            ]
+          }
+        ]
+      },
+      "adaptation": "Uses the existing bundled Inter font. Color probes are inside the CSS border (24px paragraph margin + 3px left / 2px top float margin) and padding; upstream Noto Sans glyph geometry is not reused."
+    }
+  ],
+  "scope": "Four focused editor cases. Independent counter labels and interior color probes in actual downloaded PDFs and displayed finalized-PDF previews; no universal browser parity or conformance claim."
+}
