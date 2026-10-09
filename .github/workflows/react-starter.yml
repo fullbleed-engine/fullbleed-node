@@ -3,9 +3,9 @@ name: React starter
 on:
   push:
     branches: [main]
-    paths: ['examples/react/**', 'tools/check-react-starter.py', 'tools/prepare-react-check.mjs', 'tools/browser-requirements.txt', 'tools/starter_standard_fonts.py', '.github/workflows/react-starter.yml']
+    paths: ['examples/react/**', 'tools/check-react-starter.py', 'tools/prepare-react-check.mjs', 'tools/browser-requirements.txt', 'tools/starter_standard_fonts.py', 'tools/starter_engine_fixes.py', 'tools/starter-engine-2.5.22.json', '.github/workflows/react-starter.yml']
   pull_request:
-    paths: ['examples/react/**', 'tools/check-react-starter.py', 'tools/prepare-react-check.mjs', 'tools/browser-requirements.txt', 'tools/starter_standard_fonts.py', '.github/workflows/react-starter.yml']
+    paths: ['examples/react/**', 'tools/check-react-starter.py', 'tools/prepare-react-check.mjs', 'tools/browser-requirements.txt', 'tools/starter_standard_fonts.py', 'tools/starter_engine_fixes.py', 'tools/starter-engine-2.5.22.json', '.github/workflows/react-starter.yml']
   workflow_dispatch:
 
 permissions:

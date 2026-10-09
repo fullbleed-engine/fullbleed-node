@@ -1,0 +1,1501 @@
+{
+  "ok": true,
+  "checked_at": "2026-10-09T09:18:53.488867+00:00",
+  "package_version": "0.4.1",
+  "engine_version": "2.5.22",
+  "npm_integrity": "sha512-vP/U/gxv/5M0xGwg8itmh0HtMmwP8qpKdDTZRIDQpAnndjt/Yu4quoLvt1O/FJvmIEVF1ClsioCQnpu4FMmvLA==",
+  "source_files": {
+    "examples/browser/.gitignore": "c023fec2bf12476cb47709e859f1fbb785aeb1e03281e52141e0bee1ee7dad72",
+    "examples/browser/LICENSE": "36a2115938f6e68cf0d87eccff7a6a3e57c17017e909cbd640d51aff1fa0c5a9",
+    "examples/browser/README.md": "adc51fb28fcf7db005d31c810fe9e0ba69c33b004152f0239cd59c3ef0c84e55",
+    "examples/browser/index.html": "79baecb0b24716e78799893fc0076d88b2c026354f9f31acdf799c8f305c954b",
+    "examples/browser/package-lock.json": "cb74c22fe1b49cf8f31c979a56975dbd1e390dd899d8bc4cf2186a819482a2f6",
+    "examples/browser/package.json": "b67511c1509889ac90928909dc8a268ddc96c763828611409c779f1b73ef673a",
+    "examples/browser/public/favicon.svg": "3eed6dcf1013e48bc64886fed4cf815c609ed06b404742bdacdc44c1df8d3118",
+    "examples/browser/src/invoice.css": "0b310ce0f2964fd6b9b68e4afafa9307b4ff8c6b2f1fc753367dc755620ce427",
+    "examples/browser/src/invoice.html": "1f065ad6694021649e61b3f666cba6dc01aacdcbd8e80e97425b383e60d7d2fe",
+    "examples/browser/src/main.js": "10312b7064b0b2c19d97194b3953f639cc1f6842c35acf85f5e9543fa9c1d27f",
+    "examples/browser/src/report.css": "519591ae75c239ec602324f008dd99108ebeae0b9306df7215fa5f0442905473",
+    "examples/browser/src/report.html": "46b0e975d43914c8b4492218feae09ea0ad684091a9f9ee3b18f66a87202e521",
+    "examples/browser/src/style.css": "5005045f66a84a038a0f7a0f7e15b8b5e9eac2489f9717d4a581fec5075bf6f4",
+    "examples/browser/vite.config.js": "ec725922705a3c5ba2df191a564c54c0cac6e8997ecd3d00b8a42c647bec8e74",
+    "examples/nextjs/.gitignore": "b4abc38d76926640e3f2cbe3bf25c8f5aec6cc43dd978c48d3ad5cc20d964f66",
+    "examples/nextjs/LICENSE": "36a2115938f6e68cf0d87eccff7a6a3e57c17017e909cbd640d51aff1fa0c5a9",
+    "examples/nextjs/README.md": "b8aad9a871e7e36796e644a34b4bce463bad86e7968966b60c29d58c35d7ba4f",
+    "examples/nextjs/app/api/invoices/[id]/route.js": "d6348ce64b44feac7010e21fb0f55723e0858c7867222ae831c45d3440a3b052",
+    "examples/nextjs/app/globals.css": "02e0b545a14eaf15e6d3d8fc8c0e8c0f1c5ce5c1b8dc461b4343d330f291233e",
+    "examples/nextjs/app/layout.js": "2df89bff0d2f002b432b3fdb73fd64edf59c57641d9ea6df3f0051cf2329cf27",
+    "examples/nextjs/app/page.js": "24c7996f8172992f925cdb1e47455d0095397d0832f747c90ecb409f2a1d460c",
+    "examples/nextjs/lib/invoice.mjs": "fd87dd082fa19659ec572d97255c1902e1e728e43ebbc3e0ade9891fa7736cf2",
+    "examples/nextjs/next.config.mjs": "e93613419f5aaa6264f0405e5afbb6f5eea4c956e42e7ebf30a6c85a4d9d89b3",
+    "examples/nextjs/package-lock.json": "3ce9260ce12072255c15241f11e25a8b84ab389464a56b08f98ccd3255b22fdf",
+    "examples/nextjs/package.json": "50b24d13ec5d29fcd372806b5790d12a9aa319a9c402d931b894f70936f59d6f",
+    "examples/nextjs/public/invoice.png": "72420749ccc3deaa8025daf7baffcdf79be716b6e8e93ed605effebed01e86c7",
+    "examples/nextjs/templates/invoice.css": "cda22b39ab1f7a1eeac7cd76d162b05cd3568c2430c099123ba30a2fbd58a296",
+    "examples/nextjs/templates/invoice.html": "d9a5b1950ddab61f08628b0fcc773cb36f05d9401bb3d87273bca02452b1835e",
+    "examples/nextjs/tools/copy-public.mjs": "25005e2612d90ed5127f268144c45bcd259ceb1e68c832723549e57a06b8d3dd",
+    "examples/nextjs/tools/render-preview.mjs": "0e5f1c0e49e2ec35a77eec460d735a1228ae82a30b86a7eb687af4056c23522b",
+    "examples/nextjs/tools/start.mjs": "4c185a0801ca4f89a30a0c1e75710f1c22c84463d29477900162b05a8bc52eab",
+    "examples/nextjs/tools/verify.mjs": "54623914ff28a47ea63a553d063ac50a206df0424270dacb3f3a99054982a888",
+    "examples/react/.gitignore": "25d896ffa2be7ed008ad87c3956a0a88f54167d04a7cef5cf774d6989d3b5a7b",
+    "examples/react/LICENSE": "36a2115938f6e68cf0d87eccff7a6a3e57c17017e909cbd640d51aff1fa0c5a9",
+    "examples/react/README.md": "b479fe05000f772eecf9c3536561c7fb613932857803f5ebe44797e7b2e09188",
+    "examples/react/index.html": "cadf48a3476088b2efbe9012bb4b2d21fa24f1dd3e99f974f444c88fbf1ee165",
+    "examples/react/package-lock.json": "0c9de5ad9fa94d946f4e9205567f167f7a066e3d20a37807b1f77c96163723b1",
+    "examples/react/package.json": "a374a5201b8f75685d46d78d6cf12f449c1908af6e06ae83cc55003497334168",
+    "examples/react/public/favicon.svg": "3eed6dcf1013e48bc64886fed4cf815c609ed06b404742bdacdc44c1df8d3118",
+    "examples/react/src/App.tsx": "5dbcd45d570a3e4d69f12237d252e30afe71f52cb8411c3ffe094dc72f559b9f",
+    "examples/react/src/invoice.css": "0b310ce0f2964fd6b9b68e4afafa9307b4ff8c6b2f1fc753367dc755620ce427",
+    "examples/react/src/invoice.html": "1f065ad6694021649e61b3f666cba6dc01aacdcbd8e80e97425b383e60d7d2fe",
+    "examples/react/src/main.tsx": "f8f523ef5fc0b1e4095830466e0caa648c01f7b42036694b800c25d43d5e2c84",
+    "examples/react/src/report.css": "519591ae75c239ec602324f008dd99108ebeae0b9306df7215fa5f0442905473",
+    "examples/react/src/report.html": "46b0e975d43914c8b4492218feae09ea0ad684091a9f9ee3b18f66a87202e521",
+    "examples/react/src/style.css": "940621b782b9e39fc48f5a257c119763e11cedd158fb570a82f483ea20aa9951",
+    "examples/react/src/usePdfPreview.ts": "587e8702bd32f42abe2720f9d29dcc68e6d75aba8cb3ceacbdfcf2b583f378cc",
+    "examples/react/tsconfig.json": "382c3c4a68901c016c3038c9653f1adaf145738c68de40a34821181ead2d7289",
+    "examples/react/vite.config.js": "4b74d0189e7f58a4c75d168367e9b8a53000555dd3de594c497f70fb5e02fff0",
+    "examples/vue/.gitignore": "c023fec2bf12476cb47709e859f1fbb785aeb1e03281e52141e0bee1ee7dad72",
+    "examples/vue/LICENSE": "36a2115938f6e68cf0d87eccff7a6a3e57c17017e909cbd640d51aff1fa0c5a9",
+    "examples/vue/README.md": "fcc4050735c6ffe57465bc52b7b8bce54cc10f8680fde2685a887d23982bfd58",
+    "examples/vue/index.html": "30d46eb1b5147bd3d9c580e7adaed5b5202f9b97ab598e189efda7c3d2d405be",
+    "examples/vue/package-lock.json": "980166f69be36389fb07b15c21d9a86cb7f2c17d09d75e21ad114e1e40caea54",
+    "examples/vue/package.json": "298311f0ea393af93d40b37832c3441df0ccf13b4e892fe4be9df20e23969925",
+    "examples/vue/public/favicon.svg": "3eed6dcf1013e48bc64886fed4cf815c609ed06b404742bdacdc44c1df8d3118",
+    "examples/vue/src/App.vue": "0afa15196ccedd0b0f91293cc5e362799149a2752c59deaa377f4533825ea2af",
+    "examples/vue/src/DocumentEditor.vue": "a3f3f8096d194e1eed6cd0cf2fb0a0606a04d40823ff7b794b9b1a0dbfd8c28a",
+    "examples/vue/src/invoice.css": "0b310ce0f2964fd6b9b68e4afafa9307b4ff8c6b2f1fc753367dc755620ce427",
+    "examples/vue/src/invoice.html": "1f065ad6694021649e61b3f666cba6dc01aacdcbd8e80e97425b383e60d7d2fe",
+    "examples/vue/src/main.ts": "d6d44427a8c817da9a1a8f6809a0d6e1fff87f73ee695442f174fca32db8e6f6",
+    "examples/vue/src/report.css": "519591ae75c239ec602324f008dd99108ebeae0b9306df7215fa5f0442905473",
+    "examples/vue/src/report.html": "46b0e975d43914c8b4492218feae09ea0ad684091a9f9ee3b18f66a87202e521",
+    "examples/vue/src/style.css": "940621b782b9e39fc48f5a257c119763e11cedd158fb570a82f483ea20aa9951",
+    "examples/vue/src/usePdfPreview.ts": "cc0c57d0d8733ca4bfe257ce5fc08acfb78693ca63a4298c169dc6608a89c893",
+    "examples/vue/tsconfig.json": "0d0065f1a795408837fd69a8ec9e5c5e7c6eb23b304d9710c6dbfaa96573a453",
+    "examples/vue/vite.config.js": "dfcc6c065fb26ada03802def672108735f4c2c35e0f30d11965ddfa796b8a0c0"
+  },
+  "browsers": [
+    {
+      "starter": "browser",
+      "browser_engine": "chrome",
+      "browser": "154.0.8037.98",
+      "checks": [
+        "runtime resolves beneath a nested deployment path",
+        "bundled UI font loads",
+        "invoice: download has the expected pages and text",
+        "1440px: no horizontal overflow",
+        "390px: no horizontal overflow",
+        "320px: no horizontal overflow",
+        "color-only: download has the expected pages and text",
+        "changing only ink color changes the rendered PDF",
+        "changed inputs clear the previous preview",
+        "customized: download has the expected pages and text",
+        "customized bytes differ from the default invoice",
+        "edited: download has the expected pages and text",
+        "edited print CSS changes the PDF page size",
+        "document script does not run on the page",
+        "edited template uses unembedded standard Helvetica faces",
+        "edited standard-font preview contains visible text",
+        "engine-counter-sibling-reset: downloaded PDF has the expected page count",
+        "engine-counter-sibling-reset: sibling counter resets produce the required labels",
+        "engine-overflow-nested-clips: downloaded PDF has the expected page count",
+        "engine-overflow-nested-clips: downloaded PDF has the expected dimensions",
+        "engine-overflow-nested-clips: downloaded PDF matches independent color probes",
+        "engine-overflow-nested-clips: displayed preview has the expected dimensions",
+        "engine-overflow-nested-clips: displayed preview matches independent color probes",
+        "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF has the expected page count",
+        "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF has the expected dimensions",
+        "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF matches independent color probes",
+        "engine-border-center-zero-top-falls-back-bottom-svg: displayed preview has the expected dimensions",
+        "engine-border-center-zero-top-falls-back-bottom-svg: displayed preview matches independent color probes",
+        "engine-first-letter-decorated-left: downloaded PDF has the expected page count",
+        "engine-first-letter-decorated-left: decorated initial preserves the paragraph text",
+        "engine-first-letter-decorated-left: downloaded PDF has the expected dimensions",
+        "engine-first-letter-decorated-left: downloaded PDF matches independent color probes",
+        "engine-first-letter-decorated-left: displayed preview has the expected dimensions",
+        "engine-first-letter-decorated-left: displayed preview matches independent color probes",
+        "report: download has the expected pages and text",
+        "multi-page preview displays all report pages",
+        "each design preserves its template edits",
+        "reset restores only the selected template",
+        "invalid input displays an error without a stale download",
+        "cancellation restores controls without a stale download",
+        "recovered: download has the expected pages and text",
+        "no document uploads or cross-origin runtime requests",
+        "no uncaught page errors"
+      ],
+      "documents": [
+        {
+          "name": "invoice",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "color-only",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "a2b69ba41f7ad4c9bcbd38d803a46e70f0b9ccacd90ffbab5b0f7d87ffca5e4b"
+        },
+        {
+          "name": "customized",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "31ff314b44a6f13534cc383e0cf24929f0695c1dd3d84769dedf8828c6486a93"
+        },
+        {
+          "name": "edited",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "f5c6c1927fc6c636cee592a3ebc7bb7b3e91dd645ab34a9370590571506d278b"
+        },
+        {
+          "name": "report",
+          "filename": "community-report.pdf",
+          "pages": 3,
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802"
+        },
+        {
+          "name": "recovered",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "31ff314b44a6f13534cc383e0cf24929f0695c1dd3d84769dedf8828c6486a93"
+        }
+      ],
+      "engine_fixes": {
+        "ok": true,
+        "fixturesSha256": "5efcee821e4b641e15b5dc99c31a30f0e7234a03fb0439a80ce52c633883ae40",
+        "readers": {
+          "pypdf": "6.19.0",
+          "pypdfium2": "5.14.0",
+          "pillow": "12.3.0"
+        },
+        "scope": "Four focused editor cases. Independent counter labels and interior color probes in actual downloaded PDFs and displayed finalized-PDF previews; no universal browser parity or conformance claim.",
+        "cases": [
+          {
+            "name": "engine-counter-sibling-reset",
+            "pages": 1,
+            "text": "Record Ada\nAlpha\nCNT1.1ENDOne\nCNT1.2ENDTwo\nBeta\nCNT2.1ENDThree",
+            "probes": [],
+            "labels": [
+              "1.1",
+              "1.2",
+              "2.1"
+            ],
+            "pdfSha256": "3a353c203c5ae356f20a19e7c585229dc9e6dea3225f4a1a7960c5d943154675",
+            "previewSha256": "ce37f3e85fcdcdff6731873d8f3ad5d453d82fb4ddd6e7f57188c6d5d6cb9280",
+            "suggestedFilename": "invoice-TEST-2042.pdf"
+          },
+          {
+            "name": "engine-overflow-nested-clips",
+            "pages": 1,
+            "text": "",
+            "probes": [
+              {
+                "source": "downloaded PDF",
+                "values": [
+                  {
+                    "x": 60,
+                    "y": 60,
+                    "expected": [
+                      255,
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      255,
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 100,
+                    "y": 60,
+                    "expected": [
+                      0,
+                      255,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      255,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 60,
+                    "y": 90,
+                    "expected": [
+                      255,
+                      255,
+                      255
+                    ],
+                    "actual": [
+                      255,
+                      255,
+                      255
+                    ]
+                  }
+                ]
+              },
+              {
+                "source": "displayed preview",
+                "values": [
+                  {
+                    "x": 60,
+                    "y": 60,
+                    "expected": [
+                      255,
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      255,
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 100,
+                    "y": 60,
+                    "expected": [
+                      0,
+                      255,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      255,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 60,
+                    "y": 90,
+                    "expected": [
+                      255,
+                      255,
+                      255
+                    ],
+                    "actual": [
+                      255,
+                      255,
+                      255
+                    ]
+                  }
+                ]
+              }
+            ],
+            "pdfSha256": "3cc5f42eb90c4fe0942088f47e5f342e4f3d820b0ccf985cdf92fb0985e6ce7a",
+            "previewSha256": "21fe48aa84247cec012b40c7e28c64b139824e6a2e2c5a7603b44898148f93c7",
+            "suggestedFilename": "invoice-TEST-2042.pdf"
+          },
+          {
+            "name": "engine-border-center-zero-top-falls-back-bottom-svg",
+            "pages": 1,
+            "text": "",
+            "probes": [
+              {
+                "source": "downloaded PDF",
+                "values": [
+                  {
+                    "x": 35,
+                    "y": 35,
+                    "expected": [
+                      128,
+                      0,
+                      180
+                    ],
+                    "actual": [
+                      128,
+                      0,
+                      180
+                    ]
+                  },
+                  {
+                    "x": 45,
+                    "y": 35,
+                    "expected": [
+                      0,
+                      180,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      180,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 55,
+                    "y": 35,
+                    "expected": [
+                      128,
+                      0,
+                      180
+                    ],
+                    "actual": [
+                      128,
+                      0,
+                      180
+                    ]
+                  },
+                  {
+                    "x": 65,
+                    "y": 35,
+                    "expected": [
+                      0,
+                      180,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      180,
+                      0
+                    ]
+                  }
+                ]
+              },
+              {
+                "source": "displayed preview",
+                "values": [
+                  {
+                    "x": 35,
+                    "y": 35,
+                    "expected": [
+                      128,
+                      0,
+                      180
+                    ],
+                    "actual": [
+                      128,
+                      0,
+                      180
+                    ]
+                  },
+                  {
+                    "x": 45,
+                    "y": 35,
+                    "expected": [
+                      0,
+                      180,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      180,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 55,
+                    "y": 35,
+                    "expected": [
+                      128,
+                      0,
+                      180
+                    ],
+                    "actual": [
+                      128,
+                      0,
+                      180
+                    ]
+                  },
+                  {
+                    "x": 65,
+                    "y": 35,
+                    "expected": [
+                      0,
+                      180,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      180,
+                      0
+                    ]
+                  }
+                ]
+              }
+            ],
+            "pdfSha256": "8e335b31a03779f8cc7cb64b0fa599fcf70345fdc6091605f899b5b3f1f732b5",
+            "previewSha256": "3880a460b4e3888d863bc47594f29674d8bda496273e604fccac03b74f95524d",
+            "suggestedFilename": "invoice-TEST-2042.pdf"
+          },
+          {
+            "name": "engine-first-letter-decorated-left",
+            "pages": 1,
+            "text": "D\nrop cap leads this short\nparagraph while the\nremaining text wraps\nbeside the enlarged initial\nletter.",
+            "probes": [
+              {
+                "source": "downloaded PDF",
+                "values": [
+                  {
+                    "x": 28,
+                    "y": 27,
+                    "expected": [
+                      224,
+                      64,
+                      32
+                    ],
+                    "actual": [
+                      224,
+                      64,
+                      32
+                    ]
+                  },
+                  {
+                    "x": 32,
+                    "y": 31,
+                    "expected": [
+                      255,
+                      224,
+                      128
+                    ],
+                    "actual": [
+                      255,
+                      224,
+                      128
+                    ]
+                  }
+                ]
+              },
+              {
+                "source": "displayed preview",
+                "values": [
+                  {
+                    "x": 28,
+                    "y": 27,
+                    "expected": [
+                      224,
+                      64,
+                      32
+                    ],
+                    "actual": [
+                      224,
+                      64,
+                      32
+                    ]
+                  },
+                  {
+                    "x": 32,
+                    "y": 31,
+                    "expected": [
+                      255,
+                      224,
+                      128
+                    ],
+                    "actual": [
+                      255,
+                      224,
+                      128
+                    ]
+                  }
+                ]
+              }
+            ],
+            "pdfSha256": "9c527d1432bd5cdb07147442551ffcd5f509aab5928c0745861d4a351ec75ec8",
+            "previewSha256": "33a7c7d8115e558d246179aefe292c64c2e29b5bab80312afc1d6820262490fc",
+            "suggestedFilename": "invoice-TEST-2042.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "starter": "react",
+      "browser_engine": "chrome",
+      "browser": "154.0.8037.98",
+      "checks": [
+        "invoice: real PDF has expected pages and text",
+        "invoice matches the installed Node package",
+        "initial automatic render starts one worker",
+        "settled render terminates its worker",
+        "runtime resolves beneath a nested deployment path",
+        "bundled interface font loads",
+        "1440px: no horizontal overflow",
+        "390px: no horizontal overflow",
+        "320px: no horizontal overflow",
+        "on-demand mode does not schedule a render after edits",
+        "manual: real PDF has expected pages and text",
+        "automatic rendering can be re-enabled",
+        "edits immediately hide the old preview and release its URLs",
+        "latest-input: real PDF has expected pages and text",
+        "superseded render cannot overwrite the latest input",
+        "a burst of edits is debounced into one new worker",
+        "replacement does not overlap active worker handles",
+        "only current PDF and preview URLs remain",
+        "edited-template: real PDF has expected pages and text",
+        "edited print CSS changes the page size",
+        "document scripts are not executed in the app",
+        "edited template uses unembedded standard Helvetica faces",
+        "edited standard-font preview contains visible text",
+        "engine-counter-sibling-reset: downloaded PDF has the expected page count",
+        "engine-counter-sibling-reset: sibling counter resets produce the required labels",
+        "engine-overflow-nested-clips: downloaded PDF has the expected page count",
+        "engine-overflow-nested-clips: downloaded PDF has the expected dimensions",
+        "engine-overflow-nested-clips: downloaded PDF matches independent color probes",
+        "engine-overflow-nested-clips: displayed preview has the expected dimensions",
+        "engine-overflow-nested-clips: displayed preview matches independent color probes",
+        "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF has the expected page count",
+        "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF has the expected dimensions",
+        "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF matches independent color probes",
+        "engine-border-center-zero-top-falls-back-bottom-svg: displayed preview has the expected dimensions",
+        "engine-border-center-zero-top-falls-back-bottom-svg: displayed preview matches independent color probes",
+        "engine-first-letter-decorated-left: downloaded PDF has the expected page count",
+        "engine-first-letter-decorated-left: decorated initial preserves the paragraph text",
+        "engine-first-letter-decorated-left: downloaded PDF has the expected dimensions",
+        "engine-first-letter-decorated-left: downloaded PDF matches independent color probes",
+        "engine-first-letter-decorated-left: displayed preview has the expected dimensions",
+        "engine-first-letter-decorated-left: displayed preview matches independent color probes",
+        "report: real PDF has expected pages and text",
+        "report matches the installed Node package",
+        "all report pages have previews",
+        "each design preserves its template edits",
+        "invalid input cannot leave an old download",
+        "cancel removes the worker and stale download",
+        "recovered: real PDF has expected pages and text",
+        "unmount releases ready PDF and preview URLs",
+        "unmount aborts a pending worker",
+        "remounted: real PDF has expected pages and text",
+        "remount starts from clean state and recovers",
+        "all created URLs and workers are released at final unmount",
+        "no uploads or cross-origin document requests",
+        "no uncaught page errors"
+      ],
+      "documents": [
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883"
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be"
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "f3d3f491c3c38a71f873f2a46de9fd6434ade3d938eb1a3d15a40ddc9d414c52"
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802"
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be"
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        }
+      ],
+      "engine_fixes": {
+        "ok": true,
+        "fixturesSha256": "5efcee821e4b641e15b5dc99c31a30f0e7234a03fb0439a80ce52c633883ae40",
+        "readers": {
+          "pypdf": "6.19.0",
+          "pypdfium2": "5.14.0",
+          "pillow": "12.3.0"
+        },
+        "scope": "Four focused editor cases. Independent counter labels and interior color probes in actual downloaded PDFs and displayed finalized-PDF previews; no universal browser parity or conformance claim.",
+        "cases": [
+          {
+            "name": "engine-counter-sibling-reset",
+            "pages": 1,
+            "text": "Record Ada\nAlpha\nCNT1.1ENDOne\nCNT1.2ENDTwo\nBeta\nCNT2.1ENDThree",
+            "probes": [],
+            "labels": [
+              "1.1",
+              "1.2",
+              "2.1"
+            ],
+            "pdfSha256": "3a353c203c5ae356f20a19e7c585229dc9e6dea3225f4a1a7960c5d943154675",
+            "previewSha256": "ce37f3e85fcdcdff6731873d8f3ad5d453d82fb4ddd6e7f57188c6d5d6cb9280",
+            "suggestedFilename": "invoice-REACT-2042.pdf"
+          },
+          {
+            "name": "engine-overflow-nested-clips",
+            "pages": 1,
+            "text": "",
+            "probes": [
+              {
+                "source": "downloaded PDF",
+                "values": [
+                  {
+                    "x": 60,
+                    "y": 60,
+                    "expected": [
+                      255,
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      255,
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 100,
+                    "y": 60,
+                    "expected": [
+                      0,
+                      255,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      255,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 60,
+                    "y": 90,
+                    "expected": [
+                      255,
+                      255,
+                      255
+                    ],
+                    "actual": [
+                      255,
+                      255,
+                      255
+                    ]
+                  }
+                ]
+              },
+              {
+                "source": "displayed preview",
+                "values": [
+                  {
+                    "x": 60,
+                    "y": 60,
+                    "expected": [
+                      255,
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      255,
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 100,
+                    "y": 60,
+                    "expected": [
+                      0,
+                      255,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      255,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 60,
+                    "y": 90,
+                    "expected": [
+                      255,
+                      255,
+                      255
+                    ],
+                    "actual": [
+                      255,
+                      255,
+                      255
+                    ]
+                  }
+                ]
+              }
+            ],
+            "pdfSha256": "3cc5f42eb90c4fe0942088f47e5f342e4f3d820b0ccf985cdf92fb0985e6ce7a",
+            "previewSha256": "21fe48aa84247cec012b40c7e28c64b139824e6a2e2c5a7603b44898148f93c7",
+            "suggestedFilename": "invoice-REACT-2042.pdf"
+          },
+          {
+            "name": "engine-border-center-zero-top-falls-back-bottom-svg",
+            "pages": 1,
+            "text": "",
+            "probes": [
+              {
+                "source": "downloaded PDF",
+                "values": [
+                  {
+                    "x": 35,
+                    "y": 35,
+                    "expected": [
+                      128,
+                      0,
+                      180
+                    ],
+                    "actual": [
+                      128,
+                      0,
+                      180
+                    ]
+                  },
+                  {
+                    "x": 45,
+                    "y": 35,
+                    "expected": [
+                      0,
+                      180,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      180,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 55,
+                    "y": 35,
+                    "expected": [
+                      128,
+                      0,
+                      180
+                    ],
+                    "actual": [
+                      128,
+                      0,
+                      180
+                    ]
+                  },
+                  {
+                    "x": 65,
+                    "y": 35,
+                    "expected": [
+                      0,
+                      180,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      180,
+                      0
+                    ]
+                  }
+                ]
+              },
+              {
+                "source": "displayed preview",
+                "values": [
+                  {
+                    "x": 35,
+                    "y": 35,
+                    "expected": [
+                      128,
+                      0,
+                      180
+                    ],
+                    "actual": [
+                      128,
+                      0,
+                      180
+                    ]
+                  },
+                  {
+                    "x": 45,
+                    "y": 35,
+                    "expected": [
+                      0,
+                      180,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      180,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 55,
+                    "y": 35,
+                    "expected": [
+                      128,
+                      0,
+                      180
+                    ],
+                    "actual": [
+                      128,
+                      0,
+                      180
+                    ]
+                  },
+                  {
+                    "x": 65,
+                    "y": 35,
+                    "expected": [
+                      0,
+                      180,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      180,
+                      0
+                    ]
+                  }
+                ]
+              }
+            ],
+            "pdfSha256": "8e335b31a03779f8cc7cb64b0fa599fcf70345fdc6091605f899b5b3f1f732b5",
+            "previewSha256": "3880a460b4e3888d863bc47594f29674d8bda496273e604fccac03b74f95524d",
+            "suggestedFilename": "invoice-REACT-2042.pdf"
+          },
+          {
+            "name": "engine-first-letter-decorated-left",
+            "pages": 1,
+            "text": "D\nrop cap leads this short\nparagraph while the\nremaining text wraps\nbeside the enlarged initial\nletter.",
+            "probes": [
+              {
+                "source": "downloaded PDF",
+                "values": [
+                  {
+                    "x": 28,
+                    "y": 27,
+                    "expected": [
+                      224,
+                      64,
+                      32
+                    ],
+                    "actual": [
+                      224,
+                      64,
+                      32
+                    ]
+                  },
+                  {
+                    "x": 32,
+                    "y": 31,
+                    "expected": [
+                      255,
+                      224,
+                      128
+                    ],
+                    "actual": [
+                      255,
+                      224,
+                      128
+                    ]
+                  }
+                ]
+              },
+              {
+                "source": "displayed preview",
+                "values": [
+                  {
+                    "x": 28,
+                    "y": 27,
+                    "expected": [
+                      224,
+                      64,
+                      32
+                    ],
+                    "actual": [
+                      224,
+                      64,
+                      32
+                    ]
+                  },
+                  {
+                    "x": 32,
+                    "y": 31,
+                    "expected": [
+                      255,
+                      224,
+                      128
+                    ],
+                    "actual": [
+                      255,
+                      224,
+                      128
+                    ]
+                  }
+                ]
+              }
+            ],
+            "pdfSha256": "9c527d1432bd5cdb07147442551ffcd5f509aab5928c0745861d4a351ec75ec8",
+            "previewSha256": "33a7c7d8115e558d246179aefe292c64c2e29b5bab80312afc1d6820262490fc",
+            "suggestedFilename": "invoice-REACT-2042.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "starter": "vue",
+      "browser_engine": "chrome",
+      "browser": "154.0.8037.98",
+      "checks": [
+        "invoice: real PDF has expected pages and text",
+        "invoice matches the installed Node package",
+        "invoice: displayed previews match the installed Node package",
+        "initial automatic render starts one worker",
+        "settled render terminates its worker",
+        "runtime resolves beneath a nested deployment path",
+        "bundled interface font loads",
+        "1440px: no horizontal overflow",
+        "390px: no horizontal overflow",
+        "320px: no horizontal overflow",
+        "on-demand mode does not schedule a render after edits",
+        "manual: real PDF has expected pages and text",
+        "automatic rendering can be re-enabled",
+        "edits immediately hide the old preview and release its URLs",
+        "latest-input: real PDF has expected pages and text",
+        "superseded render cannot overwrite the latest input",
+        "a burst of edits is debounced into one new worker",
+        "replacement does not overlap active worker handles",
+        "only current PDF and preview URLs remain",
+        "edited-template: real PDF has expected pages and text",
+        "edited print CSS changes the page size",
+        "document scripts are not executed in the app",
+        "edited template uses unembedded standard Helvetica faces",
+        "edited standard-font preview contains visible text",
+        "engine-counter-sibling-reset: downloaded PDF has the expected page count",
+        "engine-counter-sibling-reset: sibling counter resets produce the required labels",
+        "engine-overflow-nested-clips: downloaded PDF has the expected page count",
+        "engine-overflow-nested-clips: downloaded PDF has the expected dimensions",
+        "engine-overflow-nested-clips: downloaded PDF matches independent color probes",
+        "engine-overflow-nested-clips: displayed preview has the expected dimensions",
+        "engine-overflow-nested-clips: displayed preview matches independent color probes",
+        "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF has the expected page count",
+        "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF has the expected dimensions",
+        "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF matches independent color probes",
+        "engine-border-center-zero-top-falls-back-bottom-svg: displayed preview has the expected dimensions",
+        "engine-border-center-zero-top-falls-back-bottom-svg: displayed preview matches independent color probes",
+        "engine-first-letter-decorated-left: downloaded PDF has the expected page count",
+        "engine-first-letter-decorated-left: decorated initial preserves the paragraph text",
+        "engine-first-letter-decorated-left: downloaded PDF has the expected dimensions",
+        "engine-first-letter-decorated-left: downloaded PDF matches independent color probes",
+        "engine-first-letter-decorated-left: displayed preview has the expected dimensions",
+        "engine-first-letter-decorated-left: displayed preview matches independent color probes",
+        "report: real PDF has expected pages and text",
+        "report matches the installed Node package",
+        "all report pages have previews",
+        "report: displayed previews match the installed Node package",
+        "each design preserves its template edits",
+        "invalid input cannot leave an old download",
+        "cancelling a queued preview prevents its worker from starting",
+        "runtime load failure clears previews and releases the worker",
+        "outage-recovery: real PDF has expected pages and text",
+        "cancel removes the worker and stale download",
+        "recovered: real PDF has expected pages and text",
+        "unmount releases ready PDF and preview URLs",
+        "unmount aborts a pending worker",
+        "remounted: real PDF has expected pages and text",
+        "remount starts from clean state and recovers",
+        "all created URLs and workers are released at final unmount",
+        "no uploads or cross-origin document requests",
+        "no uncaught page errors"
+      ],
+      "documents": [
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883"
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "e23fdd55b186015b830a970af7842a5bd19e3bdc321505ff83fa11c4991fa63c"
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802"
+        },
+        {
+          "name": "outage-recovery",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        }
+      ],
+      "engine_fixes": {
+        "ok": true,
+        "fixturesSha256": "5efcee821e4b641e15b5dc99c31a30f0e7234a03fb0439a80ce52c633883ae40",
+        "readers": {
+          "pypdf": "6.19.0",
+          "pypdfium2": "5.14.0",
+          "pillow": "12.3.0"
+        },
+        "scope": "Four focused editor cases. Independent counter labels and interior color probes in actual downloaded PDFs and displayed finalized-PDF previews; no universal browser parity or conformance claim.",
+        "cases": [
+          {
+            "name": "engine-counter-sibling-reset",
+            "pages": 1,
+            "text": "Record Ada\nAlpha\nCNT1.1ENDOne\nCNT1.2ENDTwo\nBeta\nCNT2.1ENDThree",
+            "probes": [],
+            "labels": [
+              "1.1",
+              "1.2",
+              "2.1"
+            ],
+            "pdfSha256": "3a353c203c5ae356f20a19e7c585229dc9e6dea3225f4a1a7960c5d943154675",
+            "previewSha256": "ce37f3e85fcdcdff6731873d8f3ad5d453d82fb4ddd6e7f57188c6d5d6cb9280",
+            "suggestedFilename": "invoice-VUE-2042.pdf"
+          },
+          {
+            "name": "engine-overflow-nested-clips",
+            "pages": 1,
+            "text": "",
+            "probes": [
+              {
+                "source": "downloaded PDF",
+                "values": [
+                  {
+                    "x": 60,
+                    "y": 60,
+                    "expected": [
+                      255,
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      255,
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 100,
+                    "y": 60,
+                    "expected": [
+                      0,
+                      255,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      255,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 60,
+                    "y": 90,
+                    "expected": [
+                      255,
+                      255,
+                      255
+                    ],
+                    "actual": [
+                      255,
+                      255,
+                      255
+                    ]
+                  }
+                ]
+              },
+              {
+                "source": "displayed preview",
+                "values": [
+                  {
+                    "x": 60,
+                    "y": 60,
+                    "expected": [
+                      255,
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      255,
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 100,
+                    "y": 60,
+                    "expected": [
+                      0,
+                      255,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      255,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 60,
+                    "y": 90,
+                    "expected": [
+                      255,
+                      255,
+                      255
+                    ],
+                    "actual": [
+                      255,
+                      255,
+                      255
+                    ]
+                  }
+                ]
+              }
+            ],
+            "pdfSha256": "3cc5f42eb90c4fe0942088f47e5f342e4f3d820b0ccf985cdf92fb0985e6ce7a",
+            "previewSha256": "21fe48aa84247cec012b40c7e28c64b139824e6a2e2c5a7603b44898148f93c7",
+            "suggestedFilename": "invoice-VUE-2042.pdf"
+          },
+          {
+            "name": "engine-border-center-zero-top-falls-back-bottom-svg",
+            "pages": 1,
+            "text": "",
+            "probes": [
+              {
+                "source": "downloaded PDF",
+                "values": [
+                  {
+                    "x": 35,
+                    "y": 35,
+                    "expected": [
+                      128,
+                      0,
+                      180
+                    ],
+                    "actual": [
+                      128,
+                      0,
+                      180
+                    ]
+                  },
+                  {
+                    "x": 45,
+                    "y": 35,
+                    "expected": [
+                      0,
+                      180,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      180,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 55,
+                    "y": 35,
+                    "expected": [
+                      128,
+                      0,
+                      180
+                    ],
+                    "actual": [
+                      128,
+                      0,
+                      180
+                    ]
+                  },
+                  {
+                    "x": 65,
+                    "y": 35,
+                    "expected": [
+                      0,
+                      180,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      180,
+                      0
+                    ]
+                  }
+                ]
+              },
+              {
+                "source": "displayed preview",
+                "values": [
+                  {
+                    "x": 35,
+                    "y": 35,
+                    "expected": [
+                      128,
+                      0,
+                      180
+                    ],
+                    "actual": [
+                      128,
+                      0,
+                      180
+                    ]
+                  },
+                  {
+                    "x": 45,
+                    "y": 35,
+                    "expected": [
+                      0,
+                      180,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      180,
+                      0
+                    ]
+                  },
+                  {
+                    "x": 55,
+                    "y": 35,
+                    "expected": [
+                      128,
+                      0,
+                      180
+                    ],
+                    "actual": [
+                      128,
+                      0,
+                      180
+                    ]
+                  },
+                  {
+                    "x": 65,
+                    "y": 35,
+                    "expected": [
+                      0,
+                      180,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      180,
+                      0
+                    ]
+                  }
+                ]
+              }
+            ],
+            "pdfSha256": "8e335b31a03779f8cc7cb64b0fa599fcf70345fdc6091605f899b5b3f1f732b5",
+            "previewSha256": "3880a460b4e3888d863bc47594f29674d8bda496273e604fccac03b74f95524d",
+            "suggestedFilename": "invoice-VUE-2042.pdf"
+          },
+          {
+            "name": "engine-first-letter-decorated-left",
+            "pages": 1,
+            "text": "D\nrop cap leads this short\nparagraph while the\nremaining text wraps\nbeside the enlarged initial\nletter.",
+            "probes": [
+              {
+                "source": "downloaded PDF",
+                "values": [
+                  {
+                    "x": 28,
+                    "y": 27,
+                    "expected": [
+                      224,
+                      64,
+                      32
+                    ],
+                    "actual": [
+                      224,
+                      64,
+                      32
+                    ]
+                  },
+                  {
+                    "x": 32,
+                    "y": 31,
+                    "expected": [
+                      255,
+                      224,
+                      128
+                    ],
+                    "actual": [
+                      255,
+                      224,
+                      128
+                    ]
+                  }
+                ]
+              },
+              {
+                "source": "displayed preview",
+                "values": [
+                  {
+                    "x": 28,
+                    "y": 27,
+                    "expected": [
+                      224,
+                      64,
+                      32
+                    ],
+                    "actual": [
+                      224,
+                      64,
+                      32
+                    ]
+                  },
+                  {
+                    "x": 32,
+                    "y": 31,
+                    "expected": [
+                      255,
+                      224,
+                      128
+                    ],
+                    "actual": [
+                      255,
+                      224,
+                      128
+                    ]
+                  }
+                ]
+              }
+            ],
+            "pdfSha256": "9c527d1432bd5cdb07147442551ffcd5f509aab5928c0745861d4a351ec75ec8",
+            "previewSha256": "33a7c7d8115e558d246179aefe292c64c2e29b5bab80312afc1d6820262490fc",
+            "suggestedFilename": "invoice-VUE-2042.pdf"
+          }
+        ]
+      }
+    }
+  ],
+  "nextjs": {
+    "checkedAt": "2026-10-09T09:07:37.317Z",
+    "node": "v22.23.3",
+    "platform": "win32",
+    "next": "16.3.8",
+    "nodePackage": "0.4.1",
+    "engineVersion": "2.5.22",
+    "isolation": "process",
+    "packageLockSha256": "3ce9260ce12072255c15241f11e25a8b84ab389464a56b08f98ccd3255b22fdf",
+    "pages": 1,
+    "pdfSha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+    "burst": [
+      200,
+      503,
+      503,
+      503,
+      503,
+      503,
+      503,
+      503,
+      503,
+      503,
+      503,
+      503
+    ],
+    "checks": [
+      {
+        "name": "standalone artifact is isolated from the source application",
+        "passed": true
+      },
+      {
+        "name": "standalone tracing retains the verified engine and all bundled fonts",
+        "passed": true
+      },
+      {
+        "name": "isolated production server starts on loopback",
+        "passed": true
+      },
+      {
+        "name": "app exposes the sample download without a prefetched render",
+        "passed": true
+      },
+      {
+        "name": "standalone server includes the actual PDF preview asset",
+        "passed": true
+      },
+      {
+        "name": "production route returns complete private PDF bytes with a useful filename",
+        "passed": true
+      },
+      {
+        "name": "unknown invoice IDs return a private JSON error",
+        "passed": true
+      },
+      {
+        "name": "unsupported writes are rejected by the route",
+        "passed": true
+      },
+      {
+        "name": "a concurrent burst receives explicit capacity errors instead of an unbounded queue",
+        "passed": true
+      },
+      {
+        "name": "normal PDF downloads recover after a capacity burst",
+        "passed": true
+      },
+      {
+        "name": "a real missing-glyph failure returns a generic non-PDF error",
+        "passed": true
+      },
+      {
+        "name": "a valid document renders after an engine failure",
+        "passed": true
+      },
+      {
+        "name": "the route enforces its page cap against a real multipage document",
+        "passed": true
+      },
+      {
+        "name": "a valid document renders after the page limit rejects a job",
+        "passed": true
+      },
+      {
+        "name": "a failed render child returns an HTTP error while the production server stays alive",
+        "passed": true
+      },
+      {
+        "name": "the production server returns a valid PDF after a render-process failure",
+        "passed": true
+      },
+      {
+        "name": "client JavaScript excludes the server PDF engine and worker",
+        "passed": true
+      }
+    ],
+    "scope": "Real next build standalone server with released Fullbleed npm package and fictional data; HTTP recovery after deliberate child failure. No hosted platform or application-authentication claim."
+  },
+  "scope": "Local Windows Chrome verification of installed public npm0.4.1: four focused edited-template layout cases per JavaScript/React/Vue editor, actual PDF/preview downloads, lifecycle and error recovery; Next.js isolated production artifact. Cross-browser and platform checks run separately in CI."
+}
