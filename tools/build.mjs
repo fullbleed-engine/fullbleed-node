@@ -23,6 +23,8 @@ assert.equal(metadata.packages.find(p => p.name === 'fullbleed-node-adapter').ve
 const core = metadata.packages.find(p => p.name === 'fullbleed');
 assert.equal(core.version, pkg.fullbleed.engineVersion);
 assert(core.source?.startsWith('registry+'), 'Build from the published crate');
+const engineFeatures = metadata.resolve.nodes.find(node => node.id === core.id).features.sort();
+assert.deepEqual(engineFeatures, ['svg_raster'], 'Build with the native SVG fallback enabled');
 await mkdir(dist, { recursive: true });
 await copyFile(join(root, 'src/index.d.ts'), join(dist, 'index.d.cts'));
 await copyFile(join(engine, 'target/wasm32-wasip1/release/fullbleed-node-adapter.wasm'), join(dist, 'engine.wasm'));
@@ -58,6 +60,7 @@ for (const name of ['dist/engine.wasm', 'dist/THIRD_PARTY_NOTICES.txt', ...previ
 }
 const manifest = {
   packageVersion: pkg.version, engineVersion: core.version, engineSource: `https://crates.io/crates/fullbleed/${core.version}`,
+  engineFeatures,
   target: 'wasm32-wasip1', memoryMaximumBytes: 536870912,
   fonts: ['Inter-Variable.ttf', 'DMSerifDisplay-Regular.ttf', 'DMSerifDisplay-Italic.ttf', 'BebasNeue-Regular.ttf'],
   dependencies: metadata.packages.filter(p => p.source).map(p => ({ name: p.name, version: p.version, source: p.source, license: p.license })),

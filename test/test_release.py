@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: MIT
 import importlib.util
+import hashlib
+import json
 from pathlib import Path
 import unittest
 
@@ -115,6 +117,48 @@ class ReleaseBindingTests(unittest.TestCase):
                 self.report['installed_matrix'][0].update(change)
                 with self.assertRaisesRegex(ValueError, 'Installed queue verification'):
                     self.verify(version='0.4.0')
+
+    def engine_release(self):
+        self.browser_release()
+        self.release['tag_name'] = 'v0.4.1'
+        source = release_check.ENGINE_REGRESSION_SOURCE.read_bytes()
+        cases = json.loads(source)['cases']
+        source_sha = hashlib.sha256(source).hexdigest()
+        self.report.update(package_version='0.4.1', engine_version='2.5.22',
+            engine_regressions=[dict(platform=platform, ok=True, package_version='0.4.1', engine_version='2.5.22',
+                source_sha256=source_sha, cases=2*len(cases), families=sorted({case['family'] for case in cases})) for platform in ['win32','linux']],
+            native_wasi_fixtures=[dict(name=case['name'], nativeWasiPdfEqual=True, nativeWasiPreviewsEqual=True) for case in cases])
+        for browser in self.report['browser_matrix']:
+            browser.update(package_version='0.4.1', checks=144, engine_regression_ok=True,
+                engine_regression_cases=len(cases), engine_regression_source_sha256=source_sha)
+        for installed in self.report['installed_matrix']:
+            installed.update(queue_checks=14, queue_peak_workers=2)
+
+    def test_engine_release_requires_independent_windows_and_linux_evidence(self):
+        self.engine_release()
+        self.verify(version='0.4.1')
+        for change in [{'ok':False}, {'cases':2}, {'source_sha256':'0'*64}, {'engine_version':'2.5.11'}, {'families':['counter']}, {'platform':'linux'}]:
+            with self.subTest(change=change):
+                self.engine_release()
+                self.report['engine_regressions'][0].update(change)
+                with self.assertRaisesRegex(ValueError, 'engine regression|Engine regression'):
+                    self.verify(version='0.4.1')
+
+    def test_engine_release_rejects_browser_or_native_evidence_gaps(self):
+        for change in [{'engine_regression_ok':False}, {'engine_regression_cases':0}, {'engine_regression_source_sha256':'0'*64}]:
+            with self.subTest(change=change):
+                self.engine_release()
+                self.report['browser_matrix'][0].update(change)
+                with self.assertRaisesRegex(ValueError, 'Browser engine regression'):
+                    self.verify(version='0.4.1')
+        self.engine_release()
+        self.report['native_wasi_fixtures'].pop()
+        with self.assertRaisesRegex(ValueError, 'Native/WASI'):
+            self.verify(version='0.4.1')
+        self.engine_release()
+        self.report['native_wasi_fixtures'][0]['nativeWasiPreviewsEqual'] = False
+        with self.assertRaisesRegex(ValueError, 'Native/WASI'):
+            self.verify(version='0.4.1')
 
 
 if __name__ == '__main__':

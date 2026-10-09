@@ -8,6 +8,7 @@ const pkg = JSON.parse(await readFile(new URL('package.json', root), 'utf8'));
 const manifest = JSON.parse(await readFile(new URL('dist/build.json', root), 'utf8'));
 assert.equal(manifest.packageVersion, pkg.version);
 assert.equal(manifest.engineVersion, pkg.fullbleed.engineVersion);
+assert.deepEqual(manifest.engineFeatures, ['svg_raster']);
 const notices = await readFile(new URL('dist/THIRD_PARTY_NOTICES.txt', root), 'utf8');
 for (const family of ['Liberation', 'NotoSans', 'NotoSansMath', 'NotoSansSymbols', 'NotoSansSymbols2']) {
   const path = `dist/preview-font-notices/LICENSE-${family}.txt`;
@@ -23,6 +24,7 @@ assert.deepEqual(await readFile(new URL('src/index.d.ts', root)), await readFile
 const browser = JSON.parse(await readFile(new URL('dist/browser/asset-manifest.json', root), 'utf8'));
 assert.equal(browser.packageVersion, pkg.version);
 assert.equal(browser.engineVersion, pkg.fullbleed.engineVersion);
+assert.deepEqual(browser.engineFeatures, manifest.engineFeatures);
 for (const record of Object.values(browser.files)) {
   const bytes = await readFile(new URL(record.source, root));
   assert.equal(bytes.length, record.bytes, record.source);

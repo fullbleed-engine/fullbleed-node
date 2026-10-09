@@ -34,7 +34,7 @@ export async function buildBrowser(root, manifest) {
     files[name] = { source, bytes: data.length, sha256: hash(data) };
   }
   const publicManifest = { schema: 'fullbleed.browser-assets.v1', packageVersion: manifest.packageVersion,
-    engineVersion: manifest.engineVersion, files };
+    engineVersion: manifest.engineVersion, engineFeatures: manifest.engineFeatures, files };
   await writeFile(join(output, 'asset-manifest.json'), JSON.stringify(publicManifest, null, 2) + '\n');
   const outputs = {};
   for (const name of ['client.js', 'worker.js', 'asset-manifest.json']) {

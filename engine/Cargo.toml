@@ -1,12 +1,12 @@
 [package]
 name = "fullbleed-node-adapter"
-version = "0.4.0"
+version = "0.4.1"
 edition = "2024"
 license = "MIT"
 publish = false
 
 [dependencies]
-fullbleed = "=2.5.11"
+fullbleed = { version = "=2.5.22", features = ["svg_raster"] }
 
 [profile.release]
 lto = true

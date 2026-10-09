@@ -35,7 +35,7 @@ async function main() {
     await writeFile(path, file.data);
   }
   await writeFile(join(destination, 'build.json'), JSON.stringify({ schema: manifest.schema,
-    packageVersion: pkg.version, engineVersion: manifest.engineVersion,
+    packageVersion: pkg.version, engineVersion: manifest.engineVersion, engineFeatures: manifest.engineFeatures,
     files: Object.fromEntries(files.map(({ name, bytes, sha256 }) => [name, { bytes, sha256 }])) }, null, 2) + '\n');
   console.log(JSON.stringify({ ok: true, directory: destination, packageVersion: pkg.version,
     engineVersion: manifest.engineVersion, files: files.length + 1, bytes: files.reduce((sum, file) => sum + file.bytes, 0) }));

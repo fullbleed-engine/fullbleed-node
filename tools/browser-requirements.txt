@@ -1,2 +1,4 @@
 playwright==1.63.0
 pypdf==6.19.0
+pypdfium2==5.14.0
+pillow==12.3.0
