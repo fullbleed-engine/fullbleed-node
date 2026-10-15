@@ -10,6 +10,7 @@ import { gradientFixtures } from '../test/gradients.mjs';
 import { inlineFixtures } from '../test/inline-wrapping.mjs';
 import { standardFontFixtures } from '../test/standard-fonts.mjs';
 import { loadEngineRegressionFixtures } from '../test/engine-regressions.mjs';
+import { hiddenTextFixtures } from '../test/hidden-text.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const engine = join(root, 'engine');
@@ -26,6 +27,7 @@ fixtures.push(...gradientFixtures);
 fixtures.push(...inlineFixtures);
 fixtures.push(...standardFontFixtures);
 fixtures.push(...await loadEngineRegressionFixtures());
+fixtures.push(...hiddenTextFixtures);
 for (const [name, pages] of [['invoice', 1], ['report', 3]]) {
   fixtures.push({ name, pages, html: await readFile(join(root, 'examples', name + '.html'), 'utf8'), css: await readFile(join(root, 'examples', name + '.css'), 'utf8') });
 }
@@ -47,11 +49,12 @@ for (const fixture of fixtures) {
     await writeFile(target, bytes);
   }
   await writeFile(join(directory, 'input.html'), fixture.html);
-  await writeFile(join(directory, 'style.css'), 'body { font-family: Inter; }\n' + fixture.css);
+  await writeFile(join(directory, 'style.css'), (fixture.defaultStyles === false ? '' : 'body { font-family: Inter; }\n') + fixture.css);
   const dpi = fixture.previewDpi ?? 96;
   const native = spawnSync(executable, ['1000', String(dpi), 'reject', ...names], { cwd: directory, encoding: 'utf8', timeout: 60000 });
   assert.equal(native.status, 0, native.stderr);
-  const options = { html: fixture.html, css: fixture.css, previewDpi: dpi, fonts: fixture.fonts, assets: fixture.assets };
+  const options = { html: fixture.html, css: fixture.css, previewDpi: dpi, fonts: fixture.fonts, assets: fixture.assets,
+    ...(fixture.defaultStyles === undefined ? {} : { defaultStyles: fixture.defaultStyles }) };
   const wasi = await renderPdf(options);
   assert.equal(wasi.pages, fixture.pages);
   assert.equal(wasi.missingGlyphs, 0);

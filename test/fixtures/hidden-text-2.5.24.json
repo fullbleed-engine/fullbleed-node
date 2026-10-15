@@ -1,0 +1,1608 @@
+{
+  "schema": "fullbleed.javascript.hidden-text-fixtures.v1",
+  "engineVersion": "2.5.24",
+  "sourceCommit": "6251674614fff698ce685733e81bf481e6e81313",
+  "sourceReview": "https://github.com/fullbleed-engine/fullbleed-official/pull/79",
+  "sourceVerificationSha256": "7d5a431ca20aa50d94022494a0d6acdbfd73632aca7159f6aa60a0cfc541a7cd",
+  "scope": "Visible-content controls from the installed core candidate; finalized native PNGs at 96 DPI. No browser/engine pixel parity or PDF conformance claim.",
+  "cases": [
+    {
+      "name": "script-blocks",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before</p><script class=\"probe\">SOURCE_SENTINEL</script><p>After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before</p><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "script-paragraph",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before  After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "17cd57e1c75e11561e6a2328aed0ec906a2e6994397cdde064ab56bc14c90f2e",
+        "png": "4deab8e90ee41a7be394e225a4b419e922f290d4501446750a892ba99aafd9a3",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "script-styled-inline",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <span class=\"decorated\"><script class=\"probe\">SOURCE_SENTINEL</script> After</span></p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <span class=\"decorated\"> After</span></p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "b40ab03462771d4b765e8490348ff3f8bebd582c9bbdcdbbbc05872c8685a493",
+        "png": "9613f7a59130dc1203f9e588e9b75ff5749d392ad30784fa3f13a196cbd2deec",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "script-contents",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><div class=\"contents\"><p>Before</p><script class=\"probe\">SOURCE_SENTINEL</script><p>After</p></div>",
+      "controlHtml": "<h1>Document AAA</h1><div class=\"contents\"><p>Before</p><p>After</p></div>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "script-flex",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><div class=\"flex\"><p>Before</p><script class=\"probe\">SOURCE_SENTINEL</script><p>After</p></div>",
+      "controlHtml": "<h1>Document AAA</h1><div class=\"flex\"><p>Before</p><p>After</p></div>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "f868c1d73ebb61bec2211c83351302c6aaa8f3de925e36d0fdf037babfcc1216",
+        "png": "b8afb7c6cd5ff169df66e658abc333b7de40307f4070924b9ff80c8a04c72ca1",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "script-grid",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><div class=\"grid\"><p>Before</p><script class=\"probe\">SOURCE_SENTINEL</script><p>After</p></div>",
+      "controlHtml": "<h1>Document AAA</h1><div class=\"grid\"><p>Before</p><p>After</p></div>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "3b1b0bbeb64dc0eb2b168ff4be2084f3c2f222e741a77ea8572c9511d30f6911",
+        "png": "4afde76d0b10d3bf469feb88de809609df596f426083586a06caad6c73f56dcf",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "script-table-cell",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><table><tr><td>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><tr><td>Before  After</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "3b81e86ebbada8ae848562469d42d7e0d8b9703b235c23ef2c524ab13551d7d9",
+        "png": "52cb5ae6ffdba415ad630fdb2bc5b56f59cf48800f3d91fb69a7f311407469c2",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "script-empty-table-cell",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before</p><table><tr><td><script class=\"probe\">SOURCE_SENTINEL</script></td></tr></table><p>After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before</p><table><tr><td></td></tr></table><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "690fef7da0f3008f0708198ed90b9ab713b9a7a83ce7c38692ea52af3edf365a",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "script-caption",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><table><caption>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</caption><tr><td>Cell</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><caption>Before  After</caption><tr><td>Cell</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "1249da015de7e7e3665b3b02235f26be4869f10a2176695d67923f2feca3931b",
+        "png": "52cf159fef02af27e765c56fb05036c3b5ba45a81488ff14d9ddd92a33a99462",
+        "text": [
+          "Document AAA Before After Cell"
+        ]
+      }
+    },
+    {
+      "name": "script-css-caption",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><div style=\"display:table\"><div style=\"display:table-caption\">Before <script class=\"probe\">SOURCE_SENTINEL</script> After</div><div style=\"display:table-row\"><div style=\"display:table-cell\">Cell</div></div></div>",
+      "controlHtml": "<h1>Document AAA</h1><div style=\"display:table\"><div style=\"display:table-caption\">Before  After</div><div style=\"display:table-row\"><div style=\"display:table-cell\">Cell</div></div></div>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "1249da015de7e7e3665b3b02235f26be4869f10a2176695d67923f2feca3931b",
+        "png": "52cf159fef02af27e765c56fb05036c3b5ba45a81488ff14d9ddd92a33a99462",
+        "text": [
+          "Document AAA Before After Cell"
+        ]
+      }
+    },
+    {
+      "name": "script-list",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</li></ul>",
+      "controlHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before  After</li></ul>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "cc91d796958dc8df00956918bc1922e030ef796595a39dfc9ddc9b1ad1ab6b49",
+        "png": "e1d51f4165e613fe8358416f58c77db8adae82ba676489059ff402ea6ab5a756",
+        "text": [
+          "Document AAA \u2022 Before After"
+        ]
+      }
+    },
+    {
+      "name": "script-pre",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><pre>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>Before  After</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "f97d20870474202e71dace2f2d246f5704a8305cf21f0e579edcf72b43664887",
+        "png": "f9c59793360f5f60b27dc4130156814133fb96fcc24385d71e9653fbc75591f2",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "script-inline-paragraph",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-inline-pre",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><pre>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-inline-caption",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><table><caption>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</caption><tr><td>Cell</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><caption>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</caption><tr><td>Cell</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "5b10a1e7d1b570481d2f9c64f57af1f373b0d2b1c421695ceb32880356253f5a",
+        "png": "20286bef12b5dfdf7b152ea3101927425fb5d14db2dd1fb6f4449492d6321b82",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After Cell"
+        ]
+      }
+    },
+    {
+      "name": "script-inline-list",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</li></ul>",
+      "controlHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</li></ul>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "1c847135162b5a9f207a0a4d7a7972ce796ff307680cfacd9bb5929191e42ce3",
+        "png": "47b4f7d2779d8b2036dc988dbc0a88f9a6e21a9a8b1ef80e3a0d7a0d4975defb",
+        "text": [
+          "Document AAA \u2022 Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-block-paragraph",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:block}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "9f544031ce1ca7ec3bf0f22724c6eb27922a4763deb948316ab568e7c9e8a329",
+        "png": "1c0368d02c106d934801f456cb1343425331b7830ee4a811d7c3449d7cd77c2e",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-block-pre",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><pre>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:block}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-block-caption",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><table><caption>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</caption><tr><td>Cell</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><caption>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</caption><tr><td>Cell</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:block}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "5b10a1e7d1b570481d2f9c64f57af1f373b0d2b1c421695ceb32880356253f5a",
+        "png": "20286bef12b5dfdf7b152ea3101927425fb5d14db2dd1fb6f4449492d6321b82",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After Cell"
+        ]
+      }
+    },
+    {
+      "name": "script-block-list",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</li></ul>",
+      "controlHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</li></ul>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:block}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "f58b8fc1c5cbda2ce13b72b67744ab1c742a2510c4a71a9caf01cac4d01617ab",
+        "png": "d668ab0f0b0cb89a76dac3c38b9779d8bc481e1bcd8944a9b53955ea971e1b1a",
+        "text": [
+          "Document AAA \u2022 Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-contents-paragraph",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:contents}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-contents-pre",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><pre>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:contents}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-contents-caption",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><table><caption>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</caption><tr><td>Cell</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><caption>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</caption><tr><td>Cell</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:contents}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "5b10a1e7d1b570481d2f9c64f57af1f373b0d2b1c421695ceb32880356253f5a",
+        "png": "20286bef12b5dfdf7b152ea3101927425fb5d14db2dd1fb6f4449492d6321b82",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After Cell"
+        ]
+      }
+    },
+    {
+      "name": "script-contents-list",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</li></ul>",
+      "controlHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</li></ul>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:contents}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "1c847135162b5a9f207a0a4d7a7972ce796ff307680cfacd9bb5929191e42ce3",
+        "png": "47b4f7d2779d8b2036dc988dbc0a88f9a6e21a9a8b1ef80e3a0d7a0d4975defb",
+        "text": [
+          "Document AAA \u2022 Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-initial-paragraph",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:initial}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-initial-pre",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><pre>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:initial}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-initial-caption",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><table><caption>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</caption><tr><td>Cell</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><caption>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</caption><tr><td>Cell</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:initial}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "5b10a1e7d1b570481d2f9c64f57af1f373b0d2b1c421695ceb32880356253f5a",
+        "png": "20286bef12b5dfdf7b152ea3101927425fb5d14db2dd1fb6f4449492d6321b82",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After Cell"
+        ]
+      }
+    },
+    {
+      "name": "script-initial-list",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</li></ul>",
+      "controlHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</li></ul>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:initial}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "1c847135162b5a9f207a0a4d7a7972ce796ff307680cfacd9bb5929191e42ce3",
+        "png": "47b4f7d2779d8b2036dc988dbc0a88f9a6e21a9a8b1ef80e3a0d7a0d4975defb",
+        "text": [
+          "Document AAA \u2022 Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-unset-paragraph",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:unset}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-unset-pre",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><pre>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:unset}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-unset-caption",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><table><caption>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</caption><tr><td>Cell</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><caption>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</caption><tr><td>Cell</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:unset}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "5b10a1e7d1b570481d2f9c64f57af1f373b0d2b1c421695ceb32880356253f5a",
+        "png": "20286bef12b5dfdf7b152ea3101927425fb5d14db2dd1fb6f4449492d6321b82",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After Cell"
+        ]
+      }
+    },
+    {
+      "name": "script-unset-list",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</li></ul>",
+      "controlHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</li></ul>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:unset}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "1c847135162b5a9f207a0a4d7a7972ce796ff307680cfacd9bb5929191e42ce3",
+        "png": "47b4f7d2779d8b2036dc988dbc0a88f9a6e21a9a8b1ef80e3a0d7a0d4975defb",
+        "text": [
+          "Document AAA \u2022 Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-inline-attribute",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <script style=\"display:inline\">SOURCE_SENTINEL</script> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source style=\"display:inline\">SOURCE_SENTINEL</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "script-revert",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before</p><script class=\"probe\">SOURCE_SENTINEL</script><p>After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before</p><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:block;display:revert}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "script-hidden-parent",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <span style=\"display:none\"><script class=\"probe\">SOURCE_SENTINEL</script></span> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <span style=\"display:none\"></span> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "17cd57e1c75e11561e6a2328aed0ec906a2e6994397cdde064ab56bc14c90f2e",
+        "png": "4deab8e90ee41a7be394e225a4b419e922f290d4501446750a892ba99aafd9a3",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "script-hidden-decoration",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before</p><script class=\"probe\">SOURCE_SENTINEL</script><p>After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before</p><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {padding:30px;border:4px solid red;margin:20px} .probe::before {content:\"UNEXPECTED\"}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "script-leading-space",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><div class=\"decorated\"><script class=\"probe\">SOURCE_SENTINEL</script> After</div>",
+      "controlHtml": "<h1>Document AAA</h1><div class=\"decorated\"><fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</div>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline;color:#751b38} .decorated::before {content:\"Prefix\"} .decorated::after {content:\"Suffix\"}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "89d52efd9e29c4070ee1804a9342f6cdf3c8c9eeb325acf4d81e70bdb49f6243",
+        "png": "e12cf00ce6bc040c2aa0ad5a22bbe05ac09f5719d96351ddb157b6023e9d3c36",
+        "text": [
+          "Document AAA Prefix SOURCE_SENTINEL AfterSuffix"
+        ]
+      }
+    },
+    {
+      "name": "script-trailing-space",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><div class=\"decorated\">Before <script class=\"probe\">SOURCE_SENTINEL</script></div>",
+      "controlHtml": "<h1>Document AAA</h1><div class=\"decorated\">Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source></div>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline;color:#751b38} .decorated::before {content:\"Prefix\"} .decorated::after {content:\"Suffix\"}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "82648411357033aedf6e2659f4d3d2848d61aeeb0776dc78eeebe4e30eeec0b0",
+        "png": "de90aba95e05b72658a3490a96ce25d6b681aef57ecfb7e0fa1db6106e215e51",
+        "text": [
+          "Document AAA Prefix Before SOURCE_SENTINELSuffix"
+        ]
+      }
+    },
+    {
+      "name": "script-pseudo-space",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p><span class=\"decorated\"><script class=\"probe\">SOURCE_SENTINEL</script> After </span></p>",
+      "controlHtml": "<h1>Document AAA</h1><p><span class=\"decorated\"><fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After </span></p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline;color:#751b38} .decorated::before {content:\"Prefix\"} .decorated::after {content:\"Suffix\"}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "e46ff578f9e91b4793d7c8cf7803b7499fb3851419e1a7a1bcb266fcc03a6051",
+        "png": "b300120859a09897a0a7791afdf753b1c3e833021684be4183af709680ad5a7c",
+        "text": [
+          "Document AAA Prefix SOURCE_SENTINEL After Suffix"
+        ]
+      }
+    },
+    {
+      "name": "script-literal-source",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <script class=\"probe\">if (1 < 2) & \"quoted\";</script> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source class=\"probe\">if (1 &lt; 2) &amp; &quot;quoted&quot;;</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "4a153ab4eabd901c9b77be59df59e1b2f3df53d7d316cf1c9f041ece3886fcdd",
+        "png": "4e303f73337fd8bf79b568b1e68148a8b5f780759f69b8b5d73afd2a92ba683c",
+        "text": [
+          "Document AAA Before if (1 < 2) & \"quoted\"; After"
+        ]
+      }
+    },
+    {
+      "name": "style-blocks",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before</p><style class=\"probe\">SOURCE_SENTINEL</style><p>After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before</p><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "style-paragraph",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before  After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "17cd57e1c75e11561e6a2328aed0ec906a2e6994397cdde064ab56bc14c90f2e",
+        "png": "4deab8e90ee41a7be394e225a4b419e922f290d4501446750a892ba99aafd9a3",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "style-styled-inline",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <span class=\"decorated\"><style class=\"probe\">SOURCE_SENTINEL</style> After</span></p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <span class=\"decorated\"> After</span></p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "b40ab03462771d4b765e8490348ff3f8bebd582c9bbdcdbbbc05872c8685a493",
+        "png": "9613f7a59130dc1203f9e588e9b75ff5749d392ad30784fa3f13a196cbd2deec",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "style-contents",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><div class=\"contents\"><p>Before</p><style class=\"probe\">SOURCE_SENTINEL</style><p>After</p></div>",
+      "controlHtml": "<h1>Document AAA</h1><div class=\"contents\"><p>Before</p><p>After</p></div>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "style-flex",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><div class=\"flex\"><p>Before</p><style class=\"probe\">SOURCE_SENTINEL</style><p>After</p></div>",
+      "controlHtml": "<h1>Document AAA</h1><div class=\"flex\"><p>Before</p><p>After</p></div>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "f868c1d73ebb61bec2211c83351302c6aaa8f3de925e36d0fdf037babfcc1216",
+        "png": "b8afb7c6cd5ff169df66e658abc333b7de40307f4070924b9ff80c8a04c72ca1",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "style-grid",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><div class=\"grid\"><p>Before</p><style class=\"probe\">SOURCE_SENTINEL</style><p>After</p></div>",
+      "controlHtml": "<h1>Document AAA</h1><div class=\"grid\"><p>Before</p><p>After</p></div>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "3b1b0bbeb64dc0eb2b168ff4be2084f3c2f222e741a77ea8572c9511d30f6911",
+        "png": "4afde76d0b10d3bf469feb88de809609df596f426083586a06caad6c73f56dcf",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "style-table-cell",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><table><tr><td>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><tr><td>Before  After</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "3b81e86ebbada8ae848562469d42d7e0d8b9703b235c23ef2c524ab13551d7d9",
+        "png": "52cb5ae6ffdba415ad630fdb2bc5b56f59cf48800f3d91fb69a7f311407469c2",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "style-empty-table-cell",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before</p><table><tr><td><style class=\"probe\">SOURCE_SENTINEL</style></td></tr></table><p>After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before</p><table><tr><td></td></tr></table><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "690fef7da0f3008f0708198ed90b9ab713b9a7a83ce7c38692ea52af3edf365a",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "style-caption",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><table><caption>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</caption><tr><td>Cell</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><caption>Before  After</caption><tr><td>Cell</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "1249da015de7e7e3665b3b02235f26be4869f10a2176695d67923f2feca3931b",
+        "png": "52cf159fef02af27e765c56fb05036c3b5ba45a81488ff14d9ddd92a33a99462",
+        "text": [
+          "Document AAA Before After Cell"
+        ]
+      }
+    },
+    {
+      "name": "style-css-caption",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><div style=\"display:table\"><div style=\"display:table-caption\">Before <style class=\"probe\">SOURCE_SENTINEL</style> After</div><div style=\"display:table-row\"><div style=\"display:table-cell\">Cell</div></div></div>",
+      "controlHtml": "<h1>Document AAA</h1><div style=\"display:table\"><div style=\"display:table-caption\">Before  After</div><div style=\"display:table-row\"><div style=\"display:table-cell\">Cell</div></div></div>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "1249da015de7e7e3665b3b02235f26be4869f10a2176695d67923f2feca3931b",
+        "png": "52cf159fef02af27e765c56fb05036c3b5ba45a81488ff14d9ddd92a33a99462",
+        "text": [
+          "Document AAA Before After Cell"
+        ]
+      }
+    },
+    {
+      "name": "style-list",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</li></ul>",
+      "controlHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before  After</li></ul>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "cc91d796958dc8df00956918bc1922e030ef796595a39dfc9ddc9b1ad1ab6b49",
+        "png": "e1d51f4165e613fe8358416f58c77db8adae82ba676489059ff402ea6ab5a756",
+        "text": [
+          "Document AAA \u2022 Before After"
+        ]
+      }
+    },
+    {
+      "name": "style-pre",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><pre>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>Before  After</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "f97d20870474202e71dace2f2d246f5704a8305cf21f0e579edcf72b43664887",
+        "png": "f9c59793360f5f60b27dc4130156814133fb96fcc24385d71e9653fbc75591f2",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "style-inline-paragraph",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-inline-pre",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><pre>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-inline-caption",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><table><caption>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</caption><tr><td>Cell</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><caption>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</caption><tr><td>Cell</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "5b10a1e7d1b570481d2f9c64f57af1f373b0d2b1c421695ceb32880356253f5a",
+        "png": "20286bef12b5dfdf7b152ea3101927425fb5d14db2dd1fb6f4449492d6321b82",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After Cell"
+        ]
+      }
+    },
+    {
+      "name": "style-inline-list",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</li></ul>",
+      "controlHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</li></ul>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "1c847135162b5a9f207a0a4d7a7972ce796ff307680cfacd9bb5929191e42ce3",
+        "png": "47b4f7d2779d8b2036dc988dbc0a88f9a6e21a9a8b1ef80e3a0d7a0d4975defb",
+        "text": [
+          "Document AAA \u2022 Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-block-paragraph",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:block}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "9f544031ce1ca7ec3bf0f22724c6eb27922a4763deb948316ab568e7c9e8a329",
+        "png": "1c0368d02c106d934801f456cb1343425331b7830ee4a811d7c3449d7cd77c2e",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-block-pre",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><pre>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:block}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-block-caption",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><table><caption>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</caption><tr><td>Cell</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><caption>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</caption><tr><td>Cell</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:block}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "5b10a1e7d1b570481d2f9c64f57af1f373b0d2b1c421695ceb32880356253f5a",
+        "png": "20286bef12b5dfdf7b152ea3101927425fb5d14db2dd1fb6f4449492d6321b82",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After Cell"
+        ]
+      }
+    },
+    {
+      "name": "style-block-list",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</li></ul>",
+      "controlHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</li></ul>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:block}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "f58b8fc1c5cbda2ce13b72b67744ab1c742a2510c4a71a9caf01cac4d01617ab",
+        "png": "d668ab0f0b0cb89a76dac3c38b9779d8bc481e1bcd8944a9b53955ea971e1b1a",
+        "text": [
+          "Document AAA \u2022 Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-contents-paragraph",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:contents}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-contents-pre",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><pre>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:contents}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-contents-caption",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><table><caption>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</caption><tr><td>Cell</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><caption>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</caption><tr><td>Cell</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:contents}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "5b10a1e7d1b570481d2f9c64f57af1f373b0d2b1c421695ceb32880356253f5a",
+        "png": "20286bef12b5dfdf7b152ea3101927425fb5d14db2dd1fb6f4449492d6321b82",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After Cell"
+        ]
+      }
+    },
+    {
+      "name": "style-contents-list",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</li></ul>",
+      "controlHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</li></ul>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:contents}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "1c847135162b5a9f207a0a4d7a7972ce796ff307680cfacd9bb5929191e42ce3",
+        "png": "47b4f7d2779d8b2036dc988dbc0a88f9a6e21a9a8b1ef80e3a0d7a0d4975defb",
+        "text": [
+          "Document AAA \u2022 Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-initial-paragraph",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:initial}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-initial-pre",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><pre>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:initial}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-initial-caption",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><table><caption>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</caption><tr><td>Cell</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><caption>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</caption><tr><td>Cell</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:initial}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "5b10a1e7d1b570481d2f9c64f57af1f373b0d2b1c421695ceb32880356253f5a",
+        "png": "20286bef12b5dfdf7b152ea3101927425fb5d14db2dd1fb6f4449492d6321b82",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After Cell"
+        ]
+      }
+    },
+    {
+      "name": "style-initial-list",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</li></ul>",
+      "controlHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</li></ul>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:initial}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "1c847135162b5a9f207a0a4d7a7972ce796ff307680cfacd9bb5929191e42ce3",
+        "png": "47b4f7d2779d8b2036dc988dbc0a88f9a6e21a9a8b1ef80e3a0d7a0d4975defb",
+        "text": [
+          "Document AAA \u2022 Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-unset-paragraph",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:unset}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-unset-pre",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><pre>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:unset}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-unset-caption",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><table><caption>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</caption><tr><td>Cell</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><caption>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</caption><tr><td>Cell</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:unset}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "5b10a1e7d1b570481d2f9c64f57af1f373b0d2b1c421695ceb32880356253f5a",
+        "png": "20286bef12b5dfdf7b152ea3101927425fb5d14db2dd1fb6f4449492d6321b82",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After Cell"
+        ]
+      }
+    },
+    {
+      "name": "style-unset-list",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <style class=\"probe\">SOURCE_SENTINEL</style> After</li></ul>",
+      "controlHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</li></ul>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:unset}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "1c847135162b5a9f207a0a4d7a7972ce796ff307680cfacd9bb5929191e42ce3",
+        "png": "47b4f7d2779d8b2036dc988dbc0a88f9a6e21a9a8b1ef80e3a0d7a0d4975defb",
+        "text": [
+          "Document AAA \u2022 Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-inline-attribute",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <style style=\"display:inline\">SOURCE_SENTINEL</style> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source style=\"display:inline\">SOURCE_SENTINEL</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+        "png": "4c9806bbd8cc2dc9121683bdfdc761c414aad2c83d6eb0f3ff39150e631d26b7",
+        "text": [
+          "Document AAA Before SOURCE_SENTINEL After"
+        ]
+      }
+    },
+    {
+      "name": "style-revert",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before</p><style class=\"probe\">SOURCE_SENTINEL</style><p>After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before</p><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:block;display:revert}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "style-hidden-parent",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <span style=\"display:none\"><style class=\"probe\">SOURCE_SENTINEL</style></span> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <span style=\"display:none\"></span> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "17cd57e1c75e11561e6a2328aed0ec906a2e6994397cdde064ab56bc14c90f2e",
+        "png": "4deab8e90ee41a7be394e225a4b419e922f290d4501446750a892ba99aafd9a3",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "style-hidden-decoration",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before</p><style class=\"probe\">SOURCE_SENTINEL</style><p>After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before</p><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {padding:30px;border:4px solid red;margin:20px} .probe::before {content:\"UNEXPECTED\"}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "style-leading-space",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><div class=\"decorated\"><style class=\"probe\">SOURCE_SENTINEL</style> After</div>",
+      "controlHtml": "<h1>Document AAA</h1><div class=\"decorated\"><fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After</div>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline;color:#751b38} .decorated::before {content:\"Prefix\"} .decorated::after {content:\"Suffix\"}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "89d52efd9e29c4070ee1804a9342f6cdf3c8c9eeb325acf4d81e70bdb49f6243",
+        "png": "e12cf00ce6bc040c2aa0ad5a22bbe05ac09f5719d96351ddb157b6023e9d3c36",
+        "text": [
+          "Document AAA Prefix SOURCE_SENTINEL AfterSuffix"
+        ]
+      }
+    },
+    {
+      "name": "style-trailing-space",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><div class=\"decorated\">Before <style class=\"probe\">SOURCE_SENTINEL</style></div>",
+      "controlHtml": "<h1>Document AAA</h1><div class=\"decorated\">Before <fb-source class=\"probe\">SOURCE_SENTINEL</fb-source></div>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline;color:#751b38} .decorated::before {content:\"Prefix\"} .decorated::after {content:\"Suffix\"}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "82648411357033aedf6e2659f4d3d2848d61aeeb0776dc78eeebe4e30eeec0b0",
+        "png": "de90aba95e05b72658a3490a96ce25d6b681aef57ecfb7e0fa1db6106e215e51",
+        "text": [
+          "Document AAA Prefix Before SOURCE_SENTINELSuffix"
+        ]
+      }
+    },
+    {
+      "name": "style-pseudo-space",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p><span class=\"decorated\"><style class=\"probe\">SOURCE_SENTINEL</style> After </span></p>",
+      "controlHtml": "<h1>Document AAA</h1><p><span class=\"decorated\"><fb-source class=\"probe\">SOURCE_SENTINEL</fb-source> After </span></p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline;color:#751b38} .decorated::before {content:\"Prefix\"} .decorated::after {content:\"Suffix\"}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "e46ff578f9e91b4793d7c8cf7803b7499fb3851419e1a7a1bcb266fcc03a6051",
+        "png": "b300120859a09897a0a7791afdf753b1c3e833021684be4183af709680ad5a7c",
+        "text": [
+          "Document AAA Prefix SOURCE_SENTINEL After Suffix"
+        ]
+      }
+    },
+    {
+      "name": "style-literal-source",
+      "kind": "visible",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <style class=\"probe\">if (1 < 2) & \"quoted\";</style> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before <fb-source class=\"probe\">if (1 &lt; 2) &amp; &quot;quoted&quot;;</fb-source> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "4a153ab4eabd901c9b77be59df59e1b2f3df53d7d316cf1c9f041ece3886fcdd",
+        "png": "4e303f73337fd8bf79b568b1e68148a8b5f780759f69b8b5d73afd2a92ba683c",
+        "text": [
+          "Document AAA Before if (1 < 2) & \"quoted\"; After"
+        ]
+      }
+    },
+    {
+      "name": "hidden-span-paragraph",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before <span style=\"display:none\">HIDDEN_SENTINEL<br>LEAK</span> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before  After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "17cd57e1c75e11561e6a2328aed0ec906a2e6994397cdde064ab56bc14c90f2e",
+        "png": "4deab8e90ee41a7be394e225a4b419e922f290d4501446750a892ba99aafd9a3",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "hidden-span-pre",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><pre>Before <span style=\"display:none\">HIDDEN_SENTINEL<br>LEAK</span> After</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>Before  After</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "f97d20870474202e71dace2f2d246f5704a8305cf21f0e579edcf72b43664887",
+        "png": "f9c59793360f5f60b27dc4130156814133fb96fcc24385d71e9653fbc75591f2",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "hidden-span-caption",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><table><caption>Before <span style=\"display:none\">HIDDEN_SENTINEL<br>LEAK</span> After</caption><tr><td>Cell</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><caption>Before  After</caption><tr><td>Cell</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "1249da015de7e7e3665b3b02235f26be4869f10a2176695d67923f2feca3931b",
+        "png": "52cf159fef02af27e765c56fb05036c3b5ba45a81488ff14d9ddd92a33a99462",
+        "text": [
+          "Document AAA Before After Cell"
+        ]
+      }
+    },
+    {
+      "name": "hidden-span-list",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before <span style=\"display:none\">HIDDEN_SENTINEL<br>LEAK</span> After</li></ul>",
+      "controlHtml": "<h1>Document AAA</h1><ul style=\"list-style-position:inside\"><li>Before  After</li></ul>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "cc91d796958dc8df00956918bc1922e030ef796595a39dfc9ddc9b1ad1ab6b49",
+        "png": "e1d51f4165e613fe8358416f58c77db8adae82ba676489059ff402ea6ab5a756",
+        "text": [
+          "Document AAA \u2022 Before After"
+        ]
+      }
+    },
+    {
+      "name": "hidden-span-css-caption",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><div style=\"display:table\"><div style=\"display:table-caption\">Before <span style=\"display:none\">HIDDEN_SENTINEL<br>LEAK</span> After</div><div style=\"display:table-row\"><div style=\"display:table-cell\">Cell</div></div></div>",
+      "controlHtml": "<h1>Document AAA</h1><div style=\"display:table\"><div style=\"display:table-caption\">Before  After</div><div style=\"display:table-row\"><div style=\"display:table-cell\">Cell</div></div></div>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "1249da015de7e7e3665b3b02235f26be4869f10a2176695d67923f2feca3931b",
+        "png": "52cf159fef02af27e765c56fb05036c3b5ba45a81488ff14d9ddd92a33a99462",
+        "text": [
+          "Document AAA Before After Cell"
+        ]
+      }
+    },
+    {
+      "name": "hidden-span-table-cell",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><table><tr><td>Before <span style=\"display:none\">HIDDEN_SENTINEL<br>LEAK</span> After</td></tr></table>",
+      "controlHtml": "<h1>Document AAA</h1><table><tr><td>Before  After</td></tr></table>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "3b81e86ebbada8ae848562469d42d7e0d8b9703b235c23ef2c524ab13551d7d9",
+        "png": "52cb5ae6ffdba415ad630fdb2bc5b56f59cf48800f3d91fb69a7f311407469c2",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "hidden-span-empty-table-cell",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before</p><table><tr><td><span style=\"display:none\">HIDDEN_SENTINEL<br>LEAK</span></td></tr></table><p>After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before</p><table><tr><td></td></tr></table><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "690fef7da0f3008f0708198ed90b9ab713b9a7a83ce7c38692ea52af3edf365a",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "descendant-selector",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p class=\"owner\">Before <span><span class=\"probe\">HIDDEN_SENTINEL</span></span> After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p class=\"owner\">Before  After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\np.owner > span > .probe {display:none}",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "17cd57e1c75e11561e6a2328aed0ec906a2e6994397cdde064ab56bc14c90f2e",
+        "png": "4deab8e90ee41a7be394e225a4b419e922f290d4501446750a892ba99aafd9a3",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "hidden-break",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before<br style=\"display:none\">After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>BeforeAfter</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "cc3e864abc271a1b6a3b5a991736c71777951fefc5e3528ed23c4572e15e5dfd",
+        "png": "5cbf12604a4352d5ccd68c07497b9b6f5caf5cb38e1511c210ab1c29e7678048",
+        "text": [
+          "Document AAA BeforeAfter"
+        ]
+      }
+    },
+    {
+      "name": "json-script",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before</p><script type=\"application/json\">{\"key\":\"HIDDEN_SENTINEL\"}</script><p>After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before</p><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "external-script",
+      "kind": "hidden",
+      "sourceHtml": "<h1>Document AAA</h1><p>Before</p><script src=\"https://example.invalid/never.js\">HIDDEN_SENTINEL</script><p>After</p>",
+      "controlHtml": "<h1>Document AAA</h1><p>Before</p><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "escaped-literal-control",
+      "kind": "control",
+      "sourceHtml": "<h1>Document AAA</h1><pre>&lt;script&gt;VISIBLE_LITERAL&lt;/script&gt;</pre>",
+      "controlHtml": "<h1>Document AAA</h1><pre>&lt;script&gt;VISIBLE_LITERAL&lt;/script&gt;</pre>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": false,
+      "expected": {
+        "pdf": "266c1ada69da597c0092e06822e81b827a3b7bbf921e8acb3ffd2362bf341dae",
+        "png": "1276c1268c80ab9398f7b0c1f7b7fec7e3a8e61eb53e5c6e8744251f28da2e90",
+        "text": [
+          "Document AAA <script>VISIBLE_LITERAL</script>"
+        ]
+      }
+    },
+    {
+      "name": "full-document",
+      "kind": "hidden",
+      "sourceHtml": "<html><head><title>Visibility probe</title></head><body><h1>Document AAA</h1><p>Before</p><script>HIDDEN_SENTINEL</script><p>After</p></body></html>",
+      "controlHtml": "<html><head><title>Visibility probe</title></head><body><h1>Document AAA</h1><p>Before</p><p>After</p></body></html>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    },
+    {
+      "name": "head-source",
+      "kind": "hidden",
+      "sourceHtml": "<html><head><title>Visibility probe</title><script>HEAD_SENTINEL</script><style>HEAD_STYLE</style></head><body><h1>Document AAA</h1><p>Before</p><script>HIDDEN_SENTINEL</script><p>After</p></body></html>",
+      "controlHtml": "<html><head><title>Visibility probe</title><script>HEAD_SENTINEL</script><style>HEAD_STYLE</style></head><body><h1>Document AAA</h1><p>Before</p><p>After</p></body></html>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "previewDpi": 96,
+      "pages": 1,
+      "affectedInPreviousCore": true,
+      "expected": {
+        "pdf": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+        "png": "a602dde65015c5ed2945dad9d84381e122adfc7c5577d8ea18bb68e80e471410",
+        "text": [
+          "Document AAA Before After"
+        ]
+      }
+    }
+  ]
+}

@@ -8,7 +8,8 @@ import { parseArgs } from 'node:util';
 import { loadEngineRegressionFixtures } from '../test/engine-regressions.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const { values } = parseArgs({ options: { 'package-root': { type: 'string' }, out: { type: 'string' } } });
+const { values } = parseArgs({ options: { 'package-root': { type: 'string' }, out: { type: 'string' },
+  'decoration-only': { type: 'boolean', default: false } } });
 let packageRoot = values['package-root'], packed;
 if (!packageRoot) {
   packed = JSON.parse(await readFile(join(root, 'output/pack-verification/verification.json'), 'utf8'));
@@ -27,9 +28,10 @@ await mkdir(join(out, '..'), { recursive: true });
 await mkdir(out);
 const report = { schema: 'fullbleed.javascript.engine-regressions.renders.v1', ok: false,
   packageVersion: version, engineVersion, node: process.version, platform: process.platform,
+  decorationOnly: values['decoration-only'],
   wasmSha256: build.files['dist/engine.wasm'].sha256, installedTarballSha256: packed?.tarballSha256 ?? null, cases: [] };
 try {
-  const fixtures = await loadEngineRegressionFixtures();
+  const fixtures = await loadEngineRegressionFixtures({ decorationOnly: values['decoration-only'] });
   for (const isolation of ['worker', 'process']) {
     for (const { name, pages, ...input } of fixtures) {
       const directory = isolation + '-' + name;

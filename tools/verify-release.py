@@ -15,6 +15,8 @@ import tempfile
 
 REPO = 'fullbleed-engine/fullbleed-node'
 ENGINE_REGRESSION_SOURCE = Path(__file__).resolve().parents[1] / 'test/fixtures/engine-2.5.22.json'
+DECORATION_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('decoration-thickness.json')
+HIDDEN_TEXT_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('hidden-text-2.5.24.json')
 
 
 def require(condition, message):
@@ -49,7 +51,7 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
         require(len(browsers) == 3 and {item.get('browser') for item in browsers} == {'chrome', 'firefox', 'webkit'},
                 'Release does not retain the required browser matrix')
         release_version = tuple(map(int, version.split('.')))
-        required_browser_checks = 144 if release_version >= (0, 4, 1) else 105 if release_version >= (0, 3, 2) else 66 if release_version >= (0, 3, 1) else 30
+        required_browser_checks = 816 if release_version >= (0, 5, 1) else 144 if release_version >= (0, 4, 1) else 105 if release_version >= (0, 3, 2) else 66 if release_version >= (0, 3, 1) else 30
         require(all(item.get('ok') is True and item.get('package_version') == version and item.get('checks', 0) >= required_browser_checks for item in browsers),
                 'Browser verification is incomplete or tests another package')
         if release_version >= (0, 4, 0):
@@ -60,6 +62,10 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             source = ENGINE_REGRESSION_SOURCE.read_bytes()
             source_sha = hashlib.sha256(source).hexdigest()
             cases = json.loads(source)['cases']
+            if release_version >= (0, 5, 1):
+                decoration = DECORATION_SOURCE.read_bytes()
+                decoration_sha = hashlib.sha256(decoration).hexdigest()
+                cases += json.loads(decoration)['cases']
             names = {case['name'] for case in cases}
             families = {case['family'] for case in cases}
             regressions = report.get('engine_regressions', [])
@@ -77,6 +83,40 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             require(names.issubset(native) and all(native[name].get('nativeWasiPdfEqual') is True
                         and native[name].get('nativeWasiPreviewsEqual') is True for name in names),
                     'Native/WASI engine regression comparison is incomplete')
+            if release_version >= (0, 5, 1):
+                require(all(item.get('decoration_source_sha256') == decoration_sha
+                            and item.get('tarball_sha256') == report.get('package_sha256')
+                            and item.get('negative_control') is False for item in regressions),
+                        'Decoration evidence targets another fixture, tarball, or negative control')
+                require(all(item.get('decoration_source_sha256') == decoration_sha for item in browsers),
+                        'Browser decoration evidence targets another fixture')
+                hidden_source = HIDDEN_TEXT_SOURCE.read_bytes()
+                hidden_sha = hashlib.sha256(hidden_source).hexdigest()
+                hidden_fixture = json.loads(hidden_source)
+                hidden_cases = hidden_fixture['cases']
+                require(report.get('engine_version') == hidden_fixture['engineVersion'],
+                        'Hidden-text fixtures target another engine')
+                hidden = report.get('hidden_text', [])
+                require(len(hidden) == 2 and {item.get('platform') for item in hidden} == {'win32', 'linux'},
+                        'Windows and Linux hidden-text evidence is required')
+                require(all(item.get('ok') is True and item.get('package_version') == version
+                            and item.get('engine_version') == report.get('engine_version')
+                            and item.get('source_sha256') == hidden_sha and item.get('cases') == 2 * len(hidden_cases)
+                            and item.get('tarball_sha256') == report.get('package_sha256')
+                            and item.get('negative_control') is False for item in hidden),
+                        'Hidden-text evidence is incomplete or targets another input')
+                require(all(item.get('hidden_text_ok') is True
+                            and item.get('hidden_text_cases') == len(hidden_cases)
+                            and item.get('hidden_text_source_sha256') == hidden_sha
+                            and item.get('hidden_text_negative_control') is False for item in browsers),
+                        'Browser hidden-text evidence is incomplete or targets another input')
+                hidden_names = {f'visibility-{case["name"]}-{variant}' for case in hidden_cases
+                                for variant in ('source', 'control')}
+                require(len(native) == len(report['native_wasi_fixtures'])
+                            and hidden_names.issubset(native)
+                            and all(native[name].get('nativeWasiPdfEqual') is True
+                                    and native[name].get('nativeWasiPreviewsEqual') is True for name in hidden_names),
+                        'Native/WASI hidden-text comparison is incomplete or duplicated')
 
 
 def verify_tarball(data, info, report):
