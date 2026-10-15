@@ -58,6 +58,9 @@ def main():
     if negative:assert (origin['packageVersion'],origin['engineVersion'])==('0.5.0','2.5.22')
     else:assert origin['engine' if args.browser else 'engineVersion']==source['engineVersion']
     report={'ok':False,'checked_at':datetime.now(timezone.utc).isoformat(),'negativeControl':negative,
+        'packageVersion':origin['package' if args.browser else 'packageVersion'],
+        'engineVersion':origin['engine' if args.browser else 'engineVersion'],
+        'installedTarballSha256':origin.get('installedTarballSha256'),
         'browser':args.browser,'fixture_sha256':sha256(fixture.read_bytes()).hexdigest(),
         'versions':{name:version(name) for name in ('pypdf','pypdfium2','pillow')},'cases':[],'failures':[],
         'scope':'Independent text, page size, and PNG decoding; PDFium source/control pixels are compared within this platform only.'}

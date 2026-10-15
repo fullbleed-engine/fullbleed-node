@@ -160,6 +160,90 @@ class ReleaseBindingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Native/WASI'):
             self.verify(version='0.4.1')
 
+    def hidden_text_release(self):
+        self.engine_release()
+        self.release['tag_name'] = 'v0.5.1'
+        decoration = release_check.DECORATION_SOURCE.read_bytes()
+        decoration_sha = hashlib.sha256(decoration).hexdigest()
+        decoration_cases = json.loads(decoration)['cases']
+        hidden = release_check.HIDDEN_TEXT_SOURCE.read_bytes()
+        hidden_sha = hashlib.sha256(hidden).hexdigest()
+        hidden_fixture = json.loads(hidden)
+        engine = hidden_fixture['engineVersion']
+        self.report.update(package_version='0.5.1', engine_version=engine, package_sha256='d' * 64)
+        for item in self.report['engine_regressions']:
+            item.update(package_version='0.5.1', engine_version=engine,
+                cases=item['cases'] + 2 * len(decoration_cases),
+                families=sorted(set(item['families']) | {'decoration'}),
+                decoration_source_sha256=decoration_sha, tarball_sha256='d' * 64, negative_control=False)
+        self.report['hidden_text'] = [dict(platform=platform, ok=True, package_version='0.5.1',
+            engine_version=engine, source_sha256=hidden_sha, cases=2 * len(hidden_fixture['cases']),
+            tarball_sha256='d' * 64, negative_control=False) for platform in ['win32', 'linux']]
+        for browser in self.report['browser_matrix']:
+            browser.update(package_version='0.5.1', checks=816,
+                engine_regression_cases=browser['engine_regression_cases'] + len(decoration_cases),
+                decoration_source_sha256=decoration_sha, hidden_text_ok=True,
+                hidden_text_cases=len(hidden_fixture['cases']), hidden_text_source_sha256=hidden_sha,
+                hidden_text_negative_control=False)
+        names = [case['name'] for case in decoration_cases]
+        names += [f'visibility-{case["name"]}-{variant}' for case in hidden_fixture['cases']
+                  for variant in ['source', 'control']]
+        self.report['native_wasi_fixtures'] += [dict(name=name, nativeWasiPdfEqual=True,
+            nativeWasiPreviewsEqual=True) for name in names]
+
+    def test_hidden_text_release_accepts_complete_current_evidence(self):
+        self.hidden_text_release()
+        self.verify(version='0.5.1')
+
+    def test_hidden_text_release_rejects_missing_platform_or_wrong_evidence(self):
+        for change in [{'ok': False}, {'cases': 94}, {'source_sha256': '0' * 64},
+                       {'engine_version': '2.5.22'}, {'package_version': '0.5.0'},
+                       {'tarball_sha256': '0' * 64}, {'negative_control': True}, {'platform': 'linux'}]:
+            with self.subTest(change=change):
+                self.hidden_text_release()
+                self.report['hidden_text'][0].update(change)
+                with self.assertRaisesRegex(ValueError, 'hidden-text|Hidden-text'):
+                    self.verify(version='0.5.1')
+        self.hidden_text_release()
+        self.report['hidden_text'].pop()
+        with self.assertRaisesRegex(ValueError, 'Windows and Linux hidden-text'):
+            self.verify(version='0.5.1')
+
+    def test_hidden_text_release_rejects_browser_or_native_gaps(self):
+        for change in [{'hidden_text_ok': False}, {'hidden_text_cases': 0},
+                       {'hidden_text_source_sha256': '0' * 64}, {'hidden_text_negative_control': True}]:
+            with self.subTest(change=change):
+                self.hidden_text_release()
+                self.report['browser_matrix'][0].update(change)
+                with self.assertRaisesRegex(ValueError, 'Browser hidden-text'):
+                    self.verify(version='0.5.1')
+        for mutation in ['missing', 'changed', 'duplicate']:
+            with self.subTest(mutation=mutation):
+                self.hidden_text_release()
+                fixtures = self.report['native_wasi_fixtures']
+                if mutation == 'missing': fixtures.pop()
+                elif mutation == 'changed': fixtures[-1]['nativeWasiPreviewsEqual'] = False
+                else: fixtures.append(dict(fixtures[-1]))
+                with self.assertRaisesRegex(ValueError, 'Native/WASI hidden-text'):
+                    self.verify(version='0.5.1')
+
+    def test_hidden_text_release_rejects_stale_decoration_or_browser_coverage(self):
+        for change in [{'decoration_source_sha256': '0' * 64}, {'tarball_sha256': '0' * 64},
+                       {'negative_control': True}]:
+            with self.subTest(change=change):
+                self.hidden_text_release()
+                self.report['engine_regressions'][0].update(change)
+                with self.assertRaisesRegex(ValueError, 'Decoration evidence'):
+                    self.verify(version='0.5.1')
+        self.hidden_text_release()
+        self.report['browser_matrix'][0]['decoration_source_sha256'] = '0' * 64
+        with self.assertRaisesRegex(ValueError, 'Browser decoration'):
+            self.verify(version='0.5.1')
+        self.hidden_text_release()
+        self.report['browser_matrix'][0]['checks'] = 180
+        with self.assertRaisesRegex(ValueError, 'Browser verification is incomplete'):
+            self.verify(version='0.5.1')
+
 
 if __name__ == '__main__':
     unittest.main()

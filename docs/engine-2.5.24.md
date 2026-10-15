@@ -48,6 +48,11 @@ package's defects, use `render-hidden-text.mjs --negative-control`, or render
 engine regressions with `--decoration-only` and verify them with
 `verify-engine-regressions.py --negative-decoration-control`.
 
+The publication gate requires both Windows and Linux evidence for the complete
+fixture sets, all three browser reports, and native/WASI comparisons for every
+source and control. It rejects stale fixture hashes, a different tarball,
+negative-control reports, and incomplete coverage.
+
 Independent PDFium source/control pixels are compared within each platform.
 These checks do not claim identical PDFium rasterization across operating
 systems, general browser pixel parity, or PDF standards conformance.
