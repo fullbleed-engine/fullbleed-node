@@ -48,7 +48,7 @@ See [supported print CSS](https://docs.fullbleed.dev/css-coverage/) for layout f
 
 ## Reuse the hook
 
-Copy `src/usePdfPreview.ts` into your client application, install
+Copy `src/usePdfPreview.ts` and the `src/documents/` directory into your client application, install
 `fullbleed@0.6.0`, and copy the runtime with
 `npx fullbleed-browser-assets public/fullbleed`. Keep the document input stable
 with `useMemo` so ordinary component updates do not schedule another render:
