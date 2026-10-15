@@ -54,7 +54,7 @@ class Handler(BaseHTTPRequestHandler):
             data = b'self.postMessage({type:"ready",protocol:1,version:"0.0.0",engineVersion:"0.0.0"});'
         if prefix == 'corrupt' and relative.endswith('/engine.wasm'):
             data = data[:-1] + bytes([data[-1] ^ 1])
-        mime = 'application/javascript' if file.suffix == '.js' else 'application/wasm' if file.suffix == '.wasm' else mimetypes.guess_type(file.name)[0] or 'application/octet-stream'
+        mime = 'application/javascript' if file.suffix in ('.js', '.mjs') else 'application/wasm' if file.suffix == '.wasm' else mimetypes.guess_type(file.name)[0] or 'application/octet-stream'
         try:
             self.send_response(200)
             self.send_header('Content-Type', mime)
@@ -81,12 +81,13 @@ try:
         browser = pw.chromium.launch(channel='chrome', headless=True) if args.browser == 'chrome' else getattr(pw, args.browser).launch(headless=True)
         context = browser.new_context(accept_downloads=True)
         network = []
-        context.on('request', lambda request: network.append({'url': request.url, 'method': request.method, 'body': request.post_data}))
+        context.on('request', lambda request: network.append({'url': request.url, 'method': request.method, 'body': request.post_data,
+                                                            'resourceType': request.resource_type}))
         page = context.new_page()
         page.on('pageerror', lambda error: errors.append(str(error)))
         try:
             page.goto(base, wait_until='networkidle')
-            page.wait_for_function('Boolean(globalThis.harness)')
+            page.locator('html[data-harness-ready="true"]').wait_for()
             check('browser entry has the expected package and engine versions', page.evaluate('harness.api.version') == prepared['package'] and page.evaluate('harness.api.engineVersion') == prepared['engine'])
             for name, baseline in prepared['baselines'].items():
                 result = page.evaluate('name => harness.render(name)', name)
@@ -109,6 +110,19 @@ try:
                 reference = PdfReader(root / 'output/browser-verification' / (name + '.pdf'))
                 check(name + ': independent reader confirms every page and text', [p.extract_text() for p in actual.pages] == [p.extract_text() for p in reference.pages])
             check('document scripts did not execute on the page', page.evaluate('globalThis.documentUploadExecuted === undefined'))
+            page.locator('#component-customer').fill('Browser edit <safe> & Company')
+            page.locator('#component-render').click()
+            page.get_by_text('PDF ready', exact=True).wait_for()
+            with page.expect_download() as download:
+                page.locator('#component-download').click()
+            edited = out / 'component-edited.pdf'
+            download.value.save_as(edited)
+            edited_pdf = PdfReader(edited)
+            check('TSX editor produces a downloadable PDF containing escaped edited data',
+                  len(edited_pdf.pages) == 1 and 'Browser edit <safe> & Company' in edited_pdf.pages[0].extract_text())
+            page.screenshot(path=str(out / 'component-editor.png'), full_page=True)
+            component_cases = [row for row in prepared['components'] if row['name'] in prepared['baselines']]
+            check('all seven named component/TSX cases were compared and downloaded', len(component_cases) == 7)
             copied = page.evaluate("() => harness.render('custom', true)")
             check('caller-owned font and asset buffers are copied before awaiting', copied['pdf'] == prepared['baselines']['custom']['pdf'])
 
@@ -167,14 +181,18 @@ try:
                     check('mismatched workers receive no document payload', page.evaluate('harness.stats().postedMessages') == before['postedMessages'])
             recovered = page.evaluate("() => harness.render('invoice')")
             check('a normal render recovers after errors, timeout and cancellation', recovered['pdf'] == prepared['baselines']['invoice']['pdf'] and recovered['stats']['allTerminatedOnce'])
-            check('all observed network requests are same-origin GETs without document upload', all(row['method'] == 'GET' and not row['body'] and row['url'].startswith(base) and 'PRIVATE_BROWSER_MARKER' not in row['url'] for row in network))
+            check('all requests are same-origin GETs or local image blobs without document upload',
+                  all(row['method'] == 'GET' and not row['body'] and 'PRIVATE_BROWSER_MARKER' not in row['url']
+                      and (row['url'].startswith(base) or (row['resourceType'] == 'image' and row['url'].startswith('blob:' + base)))
+                      for row in network))
             check('no uncaught page exceptions', not errors)
             record = {'ok': True, 'checkedAt': datetime.now(timezone.utc).isoformat(), 'browserEngine': args.browser,
               'browser': browser.version, 'playwright': version('playwright'), 'pypdf': version('pypdf'), 'package': prepared['package'],
               'engine': prepared['engine'], 'installedTarballSha256': prepared['installedTarballSha256'],
               'contentSecurityPolicy': policy, 'mainThreadWebAssemblyDisabled': True, 'checks': checks,
               'documents': documents, 'workerCalls': page.evaluate('harness.stats()'), 'network': network, 'serverRequests': requests,
-              'pageErrors': errors, 'scope': 'Owned browser with synthetic fixtures. Termination instrumentation observes calls to the browser API, not OS thread-exit events. Playwright WebKit is not branded Safari.'}
+              'pageErrors': errors, 'componentCases': len(component_cases), 'componentEditorDownload': True,
+              'scope': 'Owned browser with synthetic fixtures. Termination instrumentation observes calls to the browser API, not OS thread-exit events. Playwright WebKit is not branded Safari.'}
             (out / 'verification.json').write_text(json.dumps(record, indent=2) + '\n', encoding='utf-8')
         except Exception:
             page.screenshot(path=str(out / 'failure.png'), full_page=True)

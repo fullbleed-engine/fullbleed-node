@@ -21,6 +21,11 @@ for (const [name, expected] of Object.entries(manifest.files)) {
   assert.equal(createHash('sha256').update(bytes).digest('hex'), expected.sha256, name);
 }
 assert.deepEqual(await readFile(new URL('src/index.d.ts', root)), await readFile(new URL('dist/index.d.cts', root)));
+assert.deepEqual(await readFile(new URL('src/ui.d.ts', root)), await readFile(new URL('dist/ui.d.cts', root)));
+assert.equal((await readFile(new URL('src/jsx-runtime.d.ts', root), 'utf8')).replaceAll('./ui.js', './ui.cjs'),
+  await readFile(new URL('dist/jsx-runtime.d.cts', root), 'utf8'));
+assert(manifest.files['dist/ui.js'], 'Browser component module must be recorded in the build');
+assert(manifest.files['dist/jsx-runtime.js'], 'Browser JSX runtime must be recorded in the build');
 const browser = JSON.parse(await readFile(new URL('dist/browser/asset-manifest.json', root), 'utf8'));
 assert.equal(browser.packageVersion, pkg.version);
 assert.equal(browser.engineVersion, pkg.fullbleed.engineVersion);

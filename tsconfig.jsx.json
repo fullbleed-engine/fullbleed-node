@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "fullbleed/ui", "allowJs": true },
+  "include": ["test/types/ui.tsx", "test/types/ui-render.mts", "examples/components/invoice.tsx"]
+}

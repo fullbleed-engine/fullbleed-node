@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { build } from 'esbuild';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const output = join(root, 'output/pack-verification');
@@ -23,6 +24,9 @@ const packed = args.length ? JSON.parse(await readFile(join(packageDirectory, 'p
   : JSON.parse(npm(['pack', '--json', '--pack-destination', output], root))[0];
 if (!args.length) await writeFile(join(output, 'package-info.json'), JSON.stringify(packed, null, 2) + '\n');
 const names = packed.files.map(f => f.path);
+for (const name of ['src/ui.js', 'src/ui.cjs', 'src/ui.d.ts', 'dist/ui.js', 'dist/ui.d.cts',
+  'src/jsx-runtime.js', 'src/jsx-runtime.cjs', 'src/jsx-runtime.d.ts', 'dist/jsx-runtime.js', 'dist/jsx-runtime.d.cts'])
+  assert(names.includes(name), 'Missing component authoring export: ' + name);
 assert(names.includes('src/render-queue.cjs'), 'The Node render queue must ship in the tarball.');
 for (const required of ['dist/engine.wasm', 'dist/build.json', 'dist/index.d.cts', 'dist/THIRD_PARTY_NOTICES.txt', 'dist/browser/client.js', 'dist/browser/worker.js', 'dist/browser/asset-manifest.json', 'src/index.js', 'src/index.cjs', 'src/index.d.ts', 'src/browser.d.ts', 'src/engine-runner.js', 'src/render-input.cjs', 'src/copy-browser-assets.cjs', 'src/worker.js', 'src/process-worker.cjs', 'LICENSE', 'README.md', 'package.json']) assert(names.includes(required), required);
 for (const family of ['Liberation', 'NotoSans', 'NotoSansMath', 'NotoSansSymbols', 'NotoSansSymbols2']) {
@@ -161,12 +165,26 @@ await writeFile(join(output, 'default-styles-tests.log'), styleRun.stdout + styl
 assert.equal(styleRun.status, 0, styleRun.stderr || styleRun.stdout);
 const styleSmoke = JSON.parse(await readFile(join(styleOutput, 'verification.json'), 'utf8'));
 assert(styleSmoke.ok && styleSmoke.records.length === 48, 'All original-style and compatibility fixtures must pass.');
+await mkdir(join(install, 'components'), { recursive: true });
+for (const name of ['document.mjs', 'styles.mjs', 'data.json'])
+  await copyFile(join(root, 'examples/components', name), join(install, 'components', name));
+await copyFile(join(root, 'test/component-cases.mjs'), join(install, 'components/cases.mjs'));
+await build({ entryPoints: [join(root, 'examples/components/invoice.tsx')], outfile: join(install, 'components/invoice-tsx.mjs'),
+  bundle: true, packages: 'external', platform: 'node', format: 'esm', jsx: 'automatic', logLevel: 'silent' });
+await copyFile(join(root, 'tools/check-installed-components.mjs'), join(install, 'check-components.mjs'));
+const componentOutput = join(root, 'output/component-verification');
+const componentRun = spawnSync(process.execPath, ['check-components.mjs', componentOutput], { cwd: install, env, encoding: 'utf8', timeout: 120000 });
+await writeFile(join(output, 'component-tests.log'), componentRun.stdout + componentRun.stderr);
+assert.equal(componentRun.status, 0, componentRun.stderr || componentRun.stdout);
+const componentSmoke = JSON.parse(await readFile(join(componentOutput, 'verification.json'), 'utf8'));
+componentSmoke.tarballSha256 = createHash('sha256').update(await readFile(tarball)).digest('hex');
+await writeFile(join(componentOutput, 'verification.json'), JSON.stringify(componentSmoke, null, 2) + '\n');
 const inline = spawnSync(process.execPath, ['--stack-trace-limit=10', '--input-type=module', '--eval', "import {renderPdf} from 'fullbleed'; for(const isolation of ['worker','process']) console.log((await renderPdf({html:'Inline module works',isolation})).pages)"], { cwd: install, env, encoding: 'utf8', timeout: 60000 });
 assert.equal(inline.status, 0, inline.stderr);
 assert.equal(inline.stdout.trim().replaceAll('\r', ''), '1\n1');
 const report = { ok: true, node: process.version, platform: process.platform, package: packed.filename,
   tarballSha256: createHash('sha256').update(await readFile(tarball)).digest('hex'), files: names,
   freshCacheInstall: true, offlineInstallFromGeneratedLock: true, runtimePath: 'Node executable directory only', installDirectory: install.slice(output.length + 1),
-  inlineModule: true, smoke, processSmoke, queueSmoke, styleSmoke };
+  inlineModule: true, smoke, processSmoke, queueSmoke, styleSmoke, componentSmoke };
 await writeFile(join(output, 'verification.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report));

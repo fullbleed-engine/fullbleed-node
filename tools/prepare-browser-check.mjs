@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { resolve, join, dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { build } from 'esbuild';
 import { inlineFixtures } from '../test/inline-wrapping.mjs';
 import { standardFontFixtures } from '../test/standard-fonts.mjs';
 import { engineRegressionFixtures } from '../test/engine-regressions.mjs';
@@ -34,11 +35,30 @@ const browser = await import(pathToFileURL(join(installed, 'dist/browser/client.
 assert.equal(browser.version, pkg.version);
 assert.throws(() => browser.createRenderer({ assetBaseUrl: '/fullbleed/' }), error => error instanceof browser.FullbleedError && error.code === 'UNSUPPORTED_BROWSER');
 const node = await import(pathToFileURL(join(installed, 'src/index.js')).href);
+await mkdir(join(site, 'ui'), { recursive: true });
+await mkdir(join(site, 'components'), { recursive: true });
+for (const name of ['ui.js', 'jsx-runtime.js']) await copyFile(join(installed, 'dist', name), join(site, 'ui', name));
+const consumer = dirname(dirname(installed));
+for (const name of ['document.mjs', 'styles.mjs', 'cases.mjs']) {
+  const source = await readFile(join(consumer, 'components', name), 'utf8');
+  await writeFile(join(site, 'components', name), source.replace(/(['"])fullbleed\/ui\1/g, "'../ui/ui.js'"));
+}
+await copyFile(join(consumer, 'components/data.json'), join(site, 'components/data.json'));
+await build({ entryPoints: ['examples/components/invoice.tsx'], outfile: join(site, 'components/invoice-tsx.js'),
+  bundle: true, platform: 'browser', format: 'esm', jsx: 'automatic', logLevel: 'silent', plugins: [{ name: 'installed-browser-ui', setup(build) {
+    build.onResolve({ filter: /^fullbleed\/ui(?:\/jsx-runtime)?$/ }, ({ path }) =>
+      ({ path: path.endsWith('jsx-runtime') ? '../ui/jsx-runtime.js' : '../ui/ui.js', external: true }));
+  } }] });
+const { componentCases } = await import(pathToFileURL(join(consumer, 'components/cases.mjs')).href);
+const { Invoice } = await import(pathToFileURL(join(consumer, 'components/document.mjs')).href);
+const componentData = JSON.parse(await readFile(join(consumer, 'components/data.json'), 'utf8'));
+const components = componentCases(componentData, Invoice);
 const fixture = async name => ({ html: await readFile(`examples/${name}.html`, 'utf8'), css: await readFile(`examples/${name}.css`, 'utf8'), previewDpi: 72 });
 const styleFixtures = JSON.parse(await readFile('test/fixtures/default-styles.json', 'utf8'));
 const styleInputs = Object.fromEntries(styleFixtures.cases.flatMap(({ name, html, css, previewDpi }) =>
   [false, true].map(defaultStyles => [`styles-${name}-${defaultStyles}`, { html, css, previewDpi, defaultStyles }])));
 const inputs = { invoice: await fixture('invoice'), report: await fixture('report'),
+  ...Object.fromEntries(components.map(({ name, node }) => [name, { html: node.toHtml(), css: node.toCss(), previewDpi: 96, defaultStyles: false }])),
   ...styleInputs,
   ...Object.fromEntries(inlineFixtures.map(({ name, pages, ...input }) => [name, { ...input, previewDpi: 96 }])),
   ...Object.fromEntries(standardFontFixtures.map(({ name, font, pages, ...input }) => [name, { ...input, previewDpi: 72 }])),
@@ -83,8 +103,8 @@ for (const { name, expected } of hiddenTextSource.cases) {
     assert.deepEqual(actual.previews, [expected.png], name + ': core finalized preview');
   }
 }
-for (const name of ['index.html', 'harness.js']) await copyFile('test/browser/' + name, join(site, name));
+for (const name of ['index.html', 'harness.js', 'components.css']) await copyFile('test/browser/' + name, join(site, name));
 const record = { package: pkg.version, engine: pkg.fullbleed.engineVersion, installedTarballSha256: pack.tarballSha256,
-  ssrImportSafe: true, copyCommand: JSON.parse(copy.stdout), baselines };
+  ssrImportSafe: true, copyCommand: JSON.parse(copy.stdout), baselines, components: components.map(({ name, pages, text }) => ({ name, pages, text })) };
 await writeFile(join(out, 'prepared.json'), JSON.stringify(record, null, 2) + '\n');
 console.log(JSON.stringify({ ok: true, fixtures: Object.keys(baselines).length, files: Object.keys(manifest.files).length, package: pkg.version }));

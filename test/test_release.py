@@ -245,5 +245,48 @@ class ReleaseBindingTests(unittest.TestCase):
             self.verify(version='0.5.1')
 
 
+class ComponentReleaseEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        source = hashlib.sha256(release_check.COMPONENT_SOURCE.read_bytes()).hexdigest()
+        self.report = dict(package_version='0.6.0', engine_version='2.5.24', package_sha256='a' * 64,
+            component_authoring=[dict(platform=platform, ok=True, package_version='0.6.0', engine_version='2.5.24',
+                tarball_sha256='a' * 64, source_sha256=source, documents=7, pages=13) for platform in ['win32', 'linux']],
+            installed_matrix=[dict(component_documents=7, component_pages=13, component_jsx_equal=True, component_recovery=True) for _ in range(9)],
+            browser_matrix=[dict(component_cases=7, component_editor_download=True, component_source_sha256=source) for _ in range(3)])
+
+    def test_matching_component_evidence_is_accepted(self):
+        release_check.verify_component_evidence(self.report)
+
+    def test_stale_or_incomplete_pdf_inspections_are_rejected(self):
+        for key, value in [('package_version', '0.5.1'), ('engine_version', 'old'), ('tarball_sha256', 'b' * 64),
+                           ('source_sha256', 'b' * 64), ('documents', 6), ('pages', 12), ('ok', False)]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['component_authoring'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'Component PDF evidence'):
+                    release_check.verify_component_evidence(self.report)
+
+    def test_missing_platform_inspection_is_rejected(self):
+        self.report['component_authoring'].pop()
+        with self.assertRaisesRegex(ValueError, 'Windows and Linux'):
+            release_check.verify_component_evidence(self.report)
+
+    def test_missing_installed_jsx_or_recovery_is_rejected(self):
+        for key, value in [('component_documents', 6), ('component_pages', 12), ('component_jsx_equal', False), ('component_recovery', False)]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['installed_matrix'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'Installed component'):
+                    release_check.verify_component_evidence(self.report)
+
+    def test_missing_browser_edit_or_wrong_fixture_is_rejected(self):
+        for key, value in [('component_cases', 0), ('component_editor_download', False), ('component_source_sha256', 'b' * 64)]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['browser_matrix'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'Browser component'):
+                    release_check.verify_component_evidence(self.report)
+
+
 if __name__ == '__main__':
     unittest.main()

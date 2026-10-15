@@ -27,6 +27,8 @@ const engineFeatures = metadata.resolve.nodes.find(node => node.id === core.id).
 assert.deepEqual(engineFeatures, ['svg_raster'], 'Build with the native SVG fallback enabled');
 await mkdir(dist, { recursive: true });
 await copyFile(join(root, 'src/index.d.ts'), join(dist, 'index.d.cts'));
+await copyFile(join(root, 'src/ui.d.ts'), join(dist, 'ui.d.cts'));
+await writeFile(join(dist, 'jsx-runtime.d.cts'), (await readFile(join(root, 'src/jsx-runtime.d.ts'), 'utf8')).replaceAll('./ui.js', './ui.cjs'));
 await copyFile(join(engine, 'target/wasm32-wasip1/release/fullbleed-node-adapter.wasm'), join(dist, 'engine.wasm'));
 const notices = [];
 for (const dep of metadata.packages.filter(p => p.source)) {
