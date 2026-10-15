@@ -8,6 +8,7 @@ import { pathToFileURL } from 'node:url';
 import { inlineFixtures } from '../test/inline-wrapping.mjs';
 import { standardFontFixtures } from '../test/standard-fonts.mjs';
 import { engineRegressionFixtures } from '../test/engine-regressions.mjs';
+import { hiddenTextFixtures, hiddenTextSource } from '../test/hidden-text.mjs';
 
 const root = resolve('.');
 const out = join(root, 'output/browser-verification');
@@ -42,6 +43,7 @@ const inputs = { invoice: await fixture('invoice'), report: await fixture('repor
   ...Object.fromEntries(inlineFixtures.map(({ name, pages, ...input }) => [name, { ...input, previewDpi: 96 }])),
   ...Object.fromEntries(standardFontFixtures.map(({ name, font, pages, ...input }) => [name, { ...input, previewDpi: 72 }])),
   ...Object.fromEntries(engineRegressionFixtures.map(({ name, pages, ...input }) => [name, input])),
+  ...Object.fromEntries(hiddenTextFixtures.map(({ name, pages, ...input }) => [name, input])),
   custom: { html: '<h1>Local asset test</h1><p>Integral: ⨌</p><img src="assets/brand/logo.svg" width="80" height="40">',
     css: "body {font-family:Inter,'Noto Sans Math'}", previewDpi: 72,
     fontFiles: ['NotoSansMath-Regular.ttf'],
@@ -71,6 +73,14 @@ for (const { name, engine, legacy } of styleFixtures.cases) {
     const actual = baselines[`styles-${name}-${choice}`];
     assert.equal(actual.pdf, expected.pdf, name + ': independent PDF baseline');
     assert.deepEqual(actual.previews, [expected.png], name + ': independent preview baseline');
+  }
+}
+assert.equal(pkg.fullbleed.engineVersion, hiddenTextSource.engineVersion);
+for (const { name, expected } of hiddenTextSource.cases) {
+  for (const variant of ['source', 'control']) {
+    const actual = baselines[`visibility-${name}-${variant}`];
+    assert.equal(actual.pdf, expected.pdf, name + ': core visible-content PDF');
+    assert.deepEqual(actual.previews, [expected.png], name + ': core finalized preview');
   }
 }
 for (const name of ['index.html', 'harness.js']) await copyFile('test/browser/' + name, join(site, name));

@@ -1,0 +1,398 @@
+{
+  "schema": "fullbleed.javascript.decoration-thickness-fixtures.v1",
+  "upstreamRelease": "2.5.23",
+  "source": "https://github.com/fullbleed-engine/fullbleed-official/releases/tag/v2.5.23",
+  "font": {
+    "file": "Inter-Variable.ttf",
+    "sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
+    "unitsPerEm": 2048,
+    "underlineThickness": 140
+  },
+  "scope": "Independent OpenType post-table expectations for emitted colored stroke widths; public Node 0.5.0 is the pre-fix control.",
+  "cases": [
+    {
+      "name": "decoration-inter-40-underline-font",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:underline;text-decoration-thickness:from-font}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "font",
+        "fontSizePx": 40,
+        "lines": "underline",
+        "widthPt": 2.051,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-40-underline-length",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:underline;text-decoration-thickness:2.051pt}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "length",
+        "fontSizePx": 40,
+        "lines": "underline",
+        "widthPt": 2.051,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-40-underline-auto",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:underline;text-decoration-thickness:auto}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "auto",
+        "fontSizePx": 40,
+        "lines": "underline",
+        "widthPt": 3.0,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-40-overline-font",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:overline;text-decoration-thickness:from-font}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "font",
+        "fontSizePx": 40,
+        "lines": "overline",
+        "widthPt": 2.051,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-40-overline-length",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:overline;text-decoration-thickness:2.051pt}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "length",
+        "fontSizePx": 40,
+        "lines": "overline",
+        "widthPt": 2.051,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-40-overline-auto",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:overline;text-decoration-thickness:auto}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "auto",
+        "fontSizePx": 40,
+        "lines": "overline",
+        "widthPt": 3.0,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-40-line-through-font",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:line-through;text-decoration-thickness:from-font}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "font",
+        "fontSizePx": 40,
+        "lines": "line-through",
+        "widthPt": 2.051,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-40-line-through-length",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:line-through;text-decoration-thickness:2.051pt}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "length",
+        "fontSizePx": 40,
+        "lines": "line-through",
+        "widthPt": 2.051,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-40-line-through-auto",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:line-through;text-decoration-thickness:auto}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "auto",
+        "fontSizePx": 40,
+        "lines": "line-through",
+        "widthPt": 3.0,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-40-underline-overline-line-through-font",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:underline overline line-through;text-decoration-thickness:from-font}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "font",
+        "fontSizePx": 40,
+        "lines": "underline overline line-through",
+        "widthPt": 2.051,
+        "strokes": 3,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-40-underline-overline-line-through-length",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:underline overline line-through;text-decoration-thickness:2.051pt}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "length",
+        "fontSizePx": 40,
+        "lines": "underline overline line-through",
+        "widthPt": 2.051,
+        "strokes": 3,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-40-underline-overline-line-through-auto",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:underline overline line-through;text-decoration-thickness:auto}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "auto",
+        "fontSizePx": 40,
+        "lines": "underline overline line-through",
+        "widthPt": 3.0,
+        "strokes": 3,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-12-underline-font",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:12px;text-decoration-line:underline;text-decoration-thickness:from-font}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "font",
+        "fontSizePx": 12,
+        "lines": "underline",
+        "widthPt": 0.75,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-12-underline-length",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:12px;text-decoration-line:underline;text-decoration-thickness:0.75pt}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "length",
+        "fontSizePx": 12,
+        "lines": "underline",
+        "widthPt": 0.75,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-12-underline-auto",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:12px;text-decoration-line:underline;text-decoration-thickness:auto}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "auto",
+        "fontSizePx": 12,
+        "lines": "underline",
+        "widthPt": 0.75,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-12-overline-font",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:12px;text-decoration-line:overline;text-decoration-thickness:from-font}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "font",
+        "fontSizePx": 12,
+        "lines": "overline",
+        "widthPt": 0.75,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-12-overline-length",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:12px;text-decoration-line:overline;text-decoration-thickness:0.75pt}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "length",
+        "fontSizePx": 12,
+        "lines": "overline",
+        "widthPt": 0.75,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-12-overline-auto",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:12px;text-decoration-line:overline;text-decoration-thickness:auto}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "auto",
+        "fontSizePx": 12,
+        "lines": "overline",
+        "widthPt": 0.75,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-12-line-through-font",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:12px;text-decoration-line:line-through;text-decoration-thickness:from-font}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "font",
+        "fontSizePx": 12,
+        "lines": "line-through",
+        "widthPt": 0.75,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-12-line-through-length",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:12px;text-decoration-line:line-through;text-decoration-thickness:0.75pt}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "length",
+        "fontSizePx": 12,
+        "lines": "line-through",
+        "widthPt": 0.75,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-12-line-through-auto",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:12px;text-decoration-line:line-through;text-decoration-thickness:auto}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "auto",
+        "fontSizePx": 12,
+        "lines": "line-through",
+        "widthPt": 0.75,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-12-underline-overline-line-through-font",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:12px;text-decoration-line:underline overline line-through;text-decoration-thickness:from-font}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "font",
+        "fontSizePx": 12,
+        "lines": "underline overline line-through",
+        "widthPt": 0.75,
+        "strokes": 3,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-12-underline-overline-line-through-length",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:12px;text-decoration-line:underline overline line-through;text-decoration-thickness:0.75pt}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "length",
+        "fontSizePx": 12,
+        "lines": "underline overline line-through",
+        "widthPt": 0.75,
+        "strokes": 3,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-12-underline-overline-line-through-auto",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:12px;text-decoration-line:underline overline line-through;text-decoration-thickness:auto}",
+      "pages": 1,
+      "previewDpi": 144,
+      "expected": {
+        "variant": "auto",
+        "fontSizePx": 12,
+        "lines": "underline overline line-through",
+        "widthPt": 0.75,
+        "strokes": 3,
+        "text": "Invoice AAA HHH"
+      }
+    }
+  ]
+}

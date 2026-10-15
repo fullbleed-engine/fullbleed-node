@@ -43,6 +43,10 @@ jobs:
         run: |
           node tools/render-engine-regressions.mjs
           python tools/verify-engine-regressions.py
+      - name: Verify hidden text and author display overrides in installed output
+        run: |
+          node tools/render-hidden-text.mjs
+          python tools/verify-hidden-text.py
       - name: Verify inline wrapping from the installed package
         run: |
           npm run render:inline
@@ -103,6 +107,7 @@ jobs:
             output/standard-baseline/
             output/standard-fonts/
             output/engine-regressions/
+            output/hidden-text/
           retention-days: 7
 
   installed:
@@ -152,6 +157,8 @@ jobs:
           npm run verify:standard
           node tools/render-engine-regressions.mjs
           python tools/verify-engine-regressions.py
+          node tools/render-hidden-text.mjs
+          python tools/verify-hidden-text.py
       - uses: actions/upload-artifact@v4
         if: always() && matrix.os == 'windows-latest' && matrix.node == '22'
         with:
@@ -162,6 +169,7 @@ jobs:
             output/inline-wrapping/
             output/standard-fonts/
             output/engine-regressions/
+            output/hidden-text/
           retention-days: 7
       - uses: actions/upload-artifact@v4
         if: always()
@@ -221,6 +229,7 @@ jobs:
         timeout-minutes: 5
       - run: python tools/check-browser.py --browser ${{ matrix.browser }} --label ci
       - run: python tools/verify-engine-regressions.py output/browser-${{ matrix.browser }}-ci --browser
+      - run: python tools/verify-hidden-text.py output/browser-${{ matrix.browser }}-ci --browser
       - uses: actions/upload-artifact@v4
         if: always()
         with:
