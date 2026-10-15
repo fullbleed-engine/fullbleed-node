@@ -13,10 +13,37 @@ import re
 from PIL import Image
 from playwright.sync_api import expect
 from pypdf import PdfReader
+from pypdf.generic import ContentStream
 import pypdfium2 as pdfium
 
 
 FIXTURES = Path(__file__).with_name('starter-engine-2.5.22.json')
+CURRENT_FIXTURES = Path(__file__).with_name('starter-engine-2.5.24.json')
+
+
+def decoration_widths(page, reader):
+    """Read the red decoration strokes, including nested form objects."""
+    widths = []
+    def visit(stream, resources, width=1.0, color=None, depth=0):
+        assert depth < 12
+        stack = []
+        for args, op in ContentStream(stream, reader).operations:
+            if op == b'q':
+                stack.append((width, color))
+            elif op == b'Q':
+                width, color = stack.pop()
+            elif op == b'w':
+                width = float(args[0])
+            elif op == b'RG':
+                color = tuple(map(float, args))
+            elif op in (b'S', b's') and color and color[0] > .7 and color[1:] == (0., 0.):
+                widths.append(width)
+            elif op == b'Do':
+                obj = resources['/XObject'][args[0]].get_object()
+                if obj.get('/Subtype') == '/Form':
+                    visit(obj, obj.get('/Resources', resources), width, color, depth + 1)
+    visit(page.get_contents(), page['/Resources'])
+    return widths
 
 
 def inspect_outputs(case, pdf_path, preview_path, out, check):
@@ -32,8 +59,17 @@ def inspect_outputs(case, pdf_path, preview_path, out, check):
         check(name + ': sibling counter resets produce the required labels', labels == expected['labels'])
         record['labels'] = labels
     if 'text' in expected:
-        check(name + ': decorated initial preserves the paragraph text',
+        check(name + ': downloaded text matches the expected visible content',
               re.sub(r'\s+', '', text) == re.sub(r'\s+', '', expected['text']))
+    if 'pdfSha256' in expected:
+        check(name + ': PDF matches the released source/control fixture',
+              hashlib.sha256(pdf_path.read_bytes()).hexdigest() == expected['pdfSha256'])
+    if case['family'] == 'decoration':
+        widths = decoration_widths(reader.pages[0], reader)
+        check(name + ': decoration stroke count matches', len(widths) == expected['strokes'])
+        check(name + ': decoration uses the released font or CSS width',
+              all(abs(width - expected['widthPt']) <= .002 for width in widths))
+        record['strokeWidthsPt'] = widths
     if 'probes' in expected:
         document = pdfium.PdfDocument(pdf_path)
         try:
@@ -71,6 +107,7 @@ def verify_engine_fixes(page, out, check, ready, *, manual=False,
                         preview_selector='#preview img', edit_sources=None):
     """Paste focused cases, inspect actual downloads, then restore the editor."""
     fixtures = json.loads(FIXTURES.read_text(encoding='utf-8'))
+    current = json.loads(CURRENT_FIXTURES.read_text(encoding='utf-8'))
     evidence = out / 'engine-fixes'
     evidence.mkdir(exist_ok=False)
     original_html = page.locator(html_selector).input_value()
@@ -82,7 +119,7 @@ def verify_engine_fixes(page, out, check, ready, *, manual=False,
             page.locator(html_selector).fill(html)
             page.locator(css_selector).fill(css)
     records = []
-    for case in fixtures['cases']:
+    for case in [*fixtures['cases'], *current['cases']]:
         name = case['name']
         (evidence / (name + '.html')).write_text(case['html'], encoding='utf-8', newline='\n')
         (evidence / (name + '.css')).write_text(case['css'], encoding='utf-8', newline='\n')
@@ -113,7 +150,8 @@ def verify_engine_fixes(page, out, check, ready, *, manual=False,
         page.locator(render_selector).click()
     ready()
     result = {'ok': True, 'fixturesSha256': hashlib.sha256(FIXTURES.read_bytes()).hexdigest(),
+              'additionalFixturesSha256': hashlib.sha256(CURRENT_FIXTURES.read_bytes()).hexdigest(),
               'readers': {package: version(package) for package in ['pypdf', 'pypdfium2', 'pillow']},
-              'scope': fixtures['scope'], 'cases': records}
+              'scope': fixtures['scope'] + ' ' + current['scope'], 'cases': records}
     (evidence / 'verification.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8', newline='\n')
     return result
