@@ -150,12 +150,23 @@ const queuePassed = Number(queueRun.stdout.match(/^# pass (\d+)$/m)?.[1]);
 assert(queueTests >= 14 && queueTests === queuePassed, 'All queue lifecycle checks must pass.');
 const queueSmoke = { ...JSON.parse(await readFile(join(queueOutput, 'burst.json'), 'utf8')),
   tests: queueTests, passed: queuePassed };
+await mkdir(join(install, 'fixtures'), { recursive: true });
+await copyFile(join(root, 'test/default-styles.test.mjs'), join(install, 'default-styles.test.mjs'));
+await copyFile(join(root, 'test/fixtures/default-styles.json'), join(install, 'fixtures/default-styles.json'));
+const styleOutput = join(root, 'output/default-styles');
+const styleRun = spawnSync(process.execPath, ['--test', '--test-reporter=tap', 'default-styles.test.mjs'], {
+  cwd: install, env: { ...env, FULLBLEED_STYLE_EVIDENCE: styleOutput }, encoding: 'utf8', timeout: 120000,
+});
+await writeFile(join(output, 'default-styles-tests.log'), styleRun.stdout + styleRun.stderr);
+assert.equal(styleRun.status, 0, styleRun.stderr || styleRun.stdout);
+const styleSmoke = JSON.parse(await readFile(join(styleOutput, 'verification.json'), 'utf8'));
+assert(styleSmoke.ok && styleSmoke.records.length === 48, 'All original-style and compatibility fixtures must pass.');
 const inline = spawnSync(process.execPath, ['--stack-trace-limit=10', '--input-type=module', '--eval', "import {renderPdf} from 'fullbleed'; for(const isolation of ['worker','process']) console.log((await renderPdf({html:'Inline module works',isolation})).pages)"], { cwd: install, env, encoding: 'utf8', timeout: 60000 });
 assert.equal(inline.status, 0, inline.stderr);
 assert.equal(inline.stdout.trim().replaceAll('\r', ''), '1\n1');
 const report = { ok: true, node: process.version, platform: process.platform, package: packed.filename,
   tarballSha256: createHash('sha256').update(await readFile(tarball)).digest('hex'), files: names,
   freshCacheInstall: true, offlineInstallFromGeneratedLock: true, runtimePath: 'Node executable directory only', installDirectory: install.slice(output.length + 1),
-  inlineModule: true, smoke, processSmoke, queueSmoke };
+  inlineModule: true, smoke, processSmoke, queueSmoke, styleSmoke };
 await writeFile(join(output, 'verification.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report));

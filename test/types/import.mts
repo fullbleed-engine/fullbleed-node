@@ -1,6 +1,6 @@
 import { renderPdf, createRenderQueue, FullbleedError, type RenderOptions, type RenderResult, type RenderQueue } from 'fullbleed';
 import type { Buffer } from 'node:buffer';
-const options: RenderOptions = { html: '<h1>Typed PDF</h1>', fonts: [new Uint8Array([1])], previewDpi: 96, isolation: 'process' };
+const options: RenderOptions = { html: '<h1>Typed PDF</h1>', defaultStyles: false, fonts: [new Uint8Array([1])], previewDpi: 96, isolation: 'process' };
 const result: RenderResult = await renderPdf(options);
 const bytes: Buffer = result.pdf;
 const code: string = new FullbleedError('EXAMPLE', 'Example').code;
@@ -18,3 +18,5 @@ createRenderQueue({ assetBaseUrl: '/fullbleed/' });
 renderPdf({ html: 'Hello', pdfProfile: 'pdfua1' });
 // @ts-expect-error Isolation modes are explicit, not arbitrary executables.
 renderPdf({ html: 'Hello', isolation: 'browser' });
+// @ts-expect-error Style injection is a boolean choice.
+renderPdf({ html: 'Hello', defaultStyles: 'false' });

@@ -34,7 +34,11 @@ assert.equal(browser.version, pkg.version);
 assert.throws(() => browser.createRenderer({ assetBaseUrl: '/fullbleed/' }), error => error instanceof browser.FullbleedError && error.code === 'UNSUPPORTED_BROWSER');
 const node = await import(pathToFileURL(join(installed, 'src/index.js')).href);
 const fixture = async name => ({ html: await readFile(`examples/${name}.html`, 'utf8'), css: await readFile(`examples/${name}.css`, 'utf8'), previewDpi: 72 });
+const styleFixtures = JSON.parse(await readFile('test/fixtures/default-styles.json', 'utf8'));
+const styleInputs = Object.fromEntries(styleFixtures.cases.flatMap(({ name, html, css, previewDpi }) =>
+  [false, true].map(defaultStyles => [`styles-${name}-${defaultStyles}`, { html, css, previewDpi, defaultStyles }])));
 const inputs = { invoice: await fixture('invoice'), report: await fixture('report'),
+  ...styleInputs,
   ...Object.fromEntries(inlineFixtures.map(({ name, pages, ...input }) => [name, { ...input, previewDpi: 96 }])),
   ...Object.fromEntries(standardFontFixtures.map(({ name, font, pages, ...input }) => [name, { ...input, previewDpi: 72 }])),
   ...Object.fromEntries(engineRegressionFixtures.map(({ name, pages, ...input }) => [name, input])),
@@ -61,6 +65,13 @@ for (const [name, fixture] of Object.entries(inputs)) {
     previews.push(hash(png));
   }
   baselines[name] = { pages: result.pages, missingGlyphs: result.missingGlyphs, pdf: hash(result.pdf), previews };
+}
+for (const { name, engine, legacy } of styleFixtures.cases) {
+  for (const [choice, expected] of [[false, engine], [true, legacy]]) {
+    const actual = baselines[`styles-${name}-${choice}`];
+    assert.equal(actual.pdf, expected.pdf, name + ': independent PDF baseline');
+    assert.deepEqual(actual.previews, [expected.png], name + ': independent preview baseline');
+  }
 }
 for (const name of ['index.html', 'harness.js']) await copyFile('test/browser/' + name, join(site, name));
 const record = { package: pkg.version, engine: pkg.fullbleed.engineVersion, installedTarballSha256: pack.tarballSha256,

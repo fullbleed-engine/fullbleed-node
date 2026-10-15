@@ -14,12 +14,13 @@ const assetLimit = 64 * 1024 * 1024;
 
 function normalize(options, { browser = false } = {}) {
   if (!options || typeof options !== 'object' || Array.isArray(options)) invalid('Pass an options object with an html string.');
-  const supported = new Set(['html', 'css', 'fonts', 'assets', 'previewDpi', 'timeoutMs', 'maxPages', 'allowMissingGlyphs', 'signal']);
+  const supported = new Set(['html', 'css', 'defaultStyles', 'fonts', 'assets', 'previewDpi', 'timeoutMs', 'maxPages', 'allowMissingGlyphs', 'signal']);
   if (!browser) supported.add('isolation');
   for (const key of Object.keys(options)) if (!supported.has(key)) invalid(`Unknown option: ${key}`);
-  const { html, css = '', fonts = [], assets = {}, previewDpi = 0, timeoutMs = 30000, maxPages = 1000, allowMissingGlyphs = false, signal, isolation = 'worker' } = options;
+  const { html, css = '', defaultStyles = true, fonts = [], assets = {}, previewDpi = 0, timeoutMs = 30000, maxPages = 1000, allowMissingGlyphs = false, signal, isolation = 'worker' } = options;
   if (typeof html !== 'string' || !html.trim()) invalid('html must be a nonempty string.');
   if (typeof css !== 'string') invalid('css must be a string.');
+  if (typeof defaultStyles !== 'boolean') invalid('defaultStyles must be a boolean.');
   if (new TextEncoder().encode(html).byteLength + new TextEncoder().encode(css).byteLength > sourceLimit) invalid('HTML and CSS together must not exceed 4,000,000 UTF-8 bytes.');
   if (!Number.isInteger(previewDpi) || (previewDpi !== 0 && (previewDpi < 36 || previewDpi > 300))) invalid('previewDpi must be 0 (disabled) or an integer from 36 to 300.');
   if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 2147483647) invalid('timeoutMs must be a positive integer no greater than 2147483647.');
@@ -45,7 +46,11 @@ function normalize(options, { browser = false } = {}) {
     for (let i = 1; i < segments.length; i++) if (fileNames.has(segments.slice(0, i).join('/'))) invalid(`Asset is both a file and a directory: ${name}`);
     return { name: 'assets/' + name, data: bytes(assets[name], `assets[${name}]`) };
   });
-  return { html, css, customFonts, assetFiles, previewDpi, timeoutMs, maxPages, allowMissingGlyphs, signal, isolation };
+  return { html, css, defaultStyles, customFonts, assetFiles, previewDpi, timeoutMs, maxPages, allowMissingGlyphs, signal, isolation };
 }
 
-module.exports = { FullbleedError, normalize };
+function stylesheet(job) {
+  return (job.defaultStyles ? 'body { font-family: Inter; }\n' : '') + job.css;
+}
+
+module.exports = { FullbleedError, normalize, stylesheet };

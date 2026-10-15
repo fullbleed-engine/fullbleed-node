@@ -1,0 +1,92 @@
+{
+  "engineVersion": "2.5.22",
+  "legacyPackage": "0.4.1",
+  "baseline": "Playground WASI renderer with unchanged HTML/CSS; legacy hashes from the published fullbleed@0.4.1 package.",
+  "wasmSha256": "2fc9dc5548df93a1d8bac7a7f898781ae7a46c4112911294a07756123d895c40",
+  "cases": [
+    {
+      "name": "default",
+      "html": "<html><body><p>Faithful export: same template, same type.</p></body></html>",
+      "css": "@page { size: 360px 120px; margin: 12px; } p { font-size: 20px; } ",
+      "previewDpi": 96,
+      "engine": {
+        "pdf": "ed62c8f7b64583a5608af9a7f9eb3cbc0d1284942e0e83da055a9d1018cc863d",
+        "png": "dfca7003e8b34b97fb042a20fc84213603c53c93780905f7cbf0d599a746236e"
+      },
+      "legacy": {
+        "pdf": "fab2fa73a9f33963d65793c1903fe8746f4f2319a57b6fbb17e858c027e628a5",
+        "png": "00667c2a9d0edf8f7ed069853ee9a2c4f75a3ea604793120c0d899ac0a278775"
+      }
+    },
+    {
+      "name": "html-inheritance",
+      "html": "<html><body><p>Faithful export: same template, same type.</p></body></html>",
+      "css": "@page { size: 360px 120px; margin: 12px; } p { font-size: 20px; } html { font-family: \"DM Serif Display\"; }",
+      "previewDpi": 96,
+      "engine": {
+        "pdf": "a1cb6d68857a0ac6e5770cc1986ae3005b16e326f866860dc8a8f15ab3b61356",
+        "png": "a557621cf91940a3aeec1d2f421e019d4068f53ff1b4983599daf0caab0e1241"
+      },
+      "legacy": {
+        "pdf": "fab2fa73a9f33963d65793c1903fe8746f4f2319a57b6fbb17e858c027e628a5",
+        "png": "00667c2a9d0edf8f7ed069853ee9a2c4f75a3ea604793120c0d899ac0a278775"
+      }
+    },
+    {
+      "name": "body-explicit",
+      "html": "<html><body><p>Faithful export: same template, same type.</p></body></html>",
+      "css": "@page { size: 360px 120px; margin: 12px; } p { font-size: 20px; } body { font-family: \"DM Serif Display\"; }",
+      "previewDpi": 96,
+      "engine": {
+        "pdf": "a1cb6d68857a0ac6e5770cc1986ae3005b16e326f866860dc8a8f15ab3b61356",
+        "png": "a557621cf91940a3aeec1d2f421e019d4068f53ff1b4983599daf0caab0e1241"
+      },
+      "legacy": {
+        "pdf": "a1cb6d68857a0ac6e5770cc1986ae3005b16e326f866860dc8a8f15ab3b61356",
+        "png": "a557621cf91940a3aeec1d2f421e019d4068f53ff1b4983599daf0caab0e1241"
+      }
+    },
+    {
+      "name": "universal",
+      "html": "<html><body><p>Faithful export: same template, same type.</p></body></html>",
+      "css": "@page { size: 360px 120px; margin: 12px; } p { font-size: 20px; } * { font-family: \"DM Serif Display\"; }",
+      "previewDpi": 96,
+      "engine": {
+        "pdf": "a1cb6d68857a0ac6e5770cc1986ae3005b16e326f866860dc8a8f15ab3b61356",
+        "png": "a557621cf91940a3aeec1d2f421e019d4068f53ff1b4983599daf0caab0e1241"
+      },
+      "legacy": {
+        "pdf": "a1cb6d68857a0ac6e5770cc1986ae3005b16e326f866860dc8a8f15ab3b61356",
+        "png": "a557621cf91940a3aeec1d2f421e019d4068f53ff1b4983599daf0caab0e1241"
+      }
+    },
+    {
+      "name": "low-specificity",
+      "html": "<html><body><p>Faithful export: same template, same type.</p></body></html>",
+      "css": "@page { size: 360px 120px; margin: 12px; } p { font-size: 20px; } :where(body) { font-family: \"DM Serif Display\"; }",
+      "previewDpi": 96,
+      "engine": {
+        "pdf": "a1cb6d68857a0ac6e5770cc1986ae3005b16e326f866860dc8a8f15ab3b61356",
+        "png": "a557621cf91940a3aeec1d2f421e019d4068f53ff1b4983599daf0caab0e1241"
+      },
+      "legacy": {
+        "pdf": "fab2fa73a9f33963d65793c1903fe8746f4f2319a57b6fbb17e858c027e628a5",
+        "png": "00667c2a9d0edf8f7ed069853ee9a2c4f75a3ea604793120c0d899ac0a278775"
+      }
+    },
+    {
+      "name": "layered-body",
+      "html": "<html><body><p>Faithful export: same template, same type.</p></body></html>",
+      "css": "@page { size: 360px 120px; margin: 12px; } p { font-size: 20px; } @layer design { body { font-family: \"DM Serif Display\"; } }",
+      "previewDpi": 96,
+      "engine": {
+        "pdf": "a1cb6d68857a0ac6e5770cc1986ae3005b16e326f866860dc8a8f15ab3b61356",
+        "png": "a557621cf91940a3aeec1d2f421e019d4068f53ff1b4983599daf0caab0e1241"
+      },
+      "legacy": {
+        "pdf": "fab2fa73a9f33963d65793c1903fe8746f4f2319a57b6fbb17e858c027e628a5",
+        "png": "00667c2a9d0edf8f7ed069853ee9a2c4f75a3ea604793120c0d899ac0a278775"
+      }
+    }
+  ]
+}

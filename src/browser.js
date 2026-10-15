@@ -66,7 +66,7 @@ export function createRenderer(options) {
             ready = true;
             try {
               worker.postMessage({ type: 'render', job: {
-                html: job.html, css: 'body { font-family: Inter; }\n' + job.css,
+                html: job.html, css: input.stylesheet(job),
                 fonts: job.customFonts, assets: job.assetFiles, previewDpi: job.previewDpi,
                 maxPages: job.maxPages, allowMissingGlyphs: job.allowMissingGlyphs,
               } });
