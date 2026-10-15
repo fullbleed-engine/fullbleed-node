@@ -13,8 +13,9 @@ runtime or build step is required for ordinary JavaScript functions.
 
 Try a complete project online: [JavaScript + Vite](https://docs.fullbleed.dev/assets/browser-starter/edit-online.html)
 or [React + TypeScript](https://docs.fullbleed.dev/assets/react-starter/edit-online.html).
-Edit the HTML/CSS templates, preview the result, and download a PDF. Each starter
-also includes a ZIP for local development.
+The React project starts with a typed component invoice and editable line items;
+the JavaScript project includes HTML/CSS templates. Preview the result and
+download a PDF. Each starter also includes a ZIP for local development.
 
 Using Vue? The [Vue and TypeScript starter](examples/vue) includes editable
 templates, automatic previews, downloads, and a reusable `usePdfPreview` composable.
@@ -125,8 +126,9 @@ data; connect your own authenticated record lookup when adapting it.
 
 ## Use it in a browser
 
-For React, use the [React and TypeScript starter](examples/react) with automatic
-previews, editable templates, cancellation, and a reusable component-lifecycle hook.
+For React, use the [React and TypeScript starter](examples/react) with a
+component-authored invoice, automatic previews, editable data, cancellation and
+a reusable preview hook. Its dedicated print TSX files use Fullbleed's JSX runtime.
 
 Start with the [complete browser application](examples/browser): editable HTML/CSS,
 invoice and report designs, previews, cancellation, and PDF downloads.

@@ -1,0 +1,331 @@
+{
+  "ok": true,
+  "checked_at": "2026-10-15T20:31:38.545392+00:00",
+  "package": "fullbleed@0.6.0",
+  "engine": "2.5.24",
+  "source_hashes": {
+    ".github/workflows/react-starter.yml": "e6f3388ee24a4e3c1edcd2ae35a07d898a81753878aaaa5f01d81af7cb8d5e7e",
+    "README.md": "a6fce7efb878cc8790c49e0c1d97cc721645e7fa3a4b1826378f0870fa674c53",
+    "docs/components.md": "f3f3747be460bf4be16aed100679c2d8fe281cdf962f82dc96101aecf4a1a9f5",
+    "examples/react/.gitignore": "0c8c1daabb918a54d7e75061883a887e9e0039d533487324a895ebe46afe15d8",
+    "examples/react/README.md": "c4305bc2ca5def8a79e2dc786bd13d187a4307a536335a13285c38202947a633",
+    "examples/react/index.html": "cc0a93261ffb0c47e5c7aa808e03caab7c94ca2dc505d278411d96a3a703f1b3",
+    "examples/react/package-lock.json": "7a16d41978c8c5002a3b72d09c99e7a7f0d2f83c9a93cddb1ab925acd2847a73",
+    "examples/react/package.json": "d9c56c1953348c135f190e9b57cf84e54c2f960120c1c47f7959d7e1673244f1",
+    "examples/react/src/App.tsx": "be531b4b19f86fe2b56ebb652efca23c3ce5e5c0cc656951e4e6ac13aa738d7e",
+    "examples/react/src/documents/Invoice.tsx": "df2a087615a31c95094ac8797f17e352b3bac8c0c477476989904429349cff3a",
+    "examples/react/src/documents/data.ts": "c05c98fb07deaef2140f53df4f83670f138d6cad4a453fe09f423f7adb076f70",
+    "examples/react/src/documents/invoiceStyles.ts": "1cd818aec8cf2e9def15b51ce043bfdfcfc06626fd9df63372f34f9a43160a59",
+    "examples/react/src/style.css": "ba8ab6a591cb4b0291b119275d9ea86da5d19fd94ed2b7279595f5498229b70f",
+    "examples/react/src/usePdfPreview.ts": "95de2c228838f2737bc5137327710a20751d5c543065f6defab44e1504ec8bdb",
+    "examples/react/vite.config.js": "2a300aafa93df7e0269d06d104960ee5ac4d64989d37d61ca482c4b88db3629c",
+    "tools/check-react-development.py": "8469eb0978ba776dfae0ce0bb9ef433e68046c0bd0c92fe08fe37d86f6872e1e",
+    "tools/check-react-starter.py": "17e8aec832e44175152c72500821261e53af34d82cef1fd846c6419fbadcc931",
+    "tools/prepare-react-check.mjs": "222100b851401e99596e568ced852771b943045cd2153d5caecf8a4a04de93ba",
+    "tools/react_component_checks.py": "665c7adc7df6f90f9ab0fa3ea4e49d75e2c879386d2b8a708a1ebbc4dbd6a39f"
+  },
+  "local_checks": [
+    {
+      "mode": "production",
+      "checks": 124,
+      "browser": "155.0.8059.40",
+      "documents": [
+        {
+          "name": "component-invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "7ab921d0f55604f84fd519514586f8d162e2912e925ea4071a59dfbd93993f56",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-paid",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "f4efce68a8f64f3f2219b9056cf2d3d345e9622fc9b3dbc355325ddbf62f02f3",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-edited",
+          "pages": 1,
+          "filename": "invoice-TSX-2042.pdf",
+          "sha256": "709f3438a1d4b363a86bf71025a8e883670354116c0d703b46b3ff16ae668709",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-empty",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "d4f19a2559476236fe19acf76124f28ea5faa351731c7ee5585dd59f16f07122",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-credit",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "b6b5f473e297c0c5d05f5bd1711c5ce3149dfbcbdb7234d0aeb54d2372622abf",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-long",
+          "pages": 3,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "8ea549b4429c7f9b7e7b5d5b7491bbaf7b908b3cdaee63e385e2e979cdedb0d4",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "c1fe667a39ac3eaae3292c3a1fab1c466999e798a5ab0a4616b73689acc79880",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+          "whitespace_normalized_text_checks": false
+        }
+      ]
+    },
+    {
+      "mode": "development StrictMode",
+      "checks": 124,
+      "browser": "155.0.8059.40",
+      "documents": [
+        {
+          "name": "component-invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "7ab921d0f55604f84fd519514586f8d162e2912e925ea4071a59dfbd93993f56",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-paid",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "f4efce68a8f64f3f2219b9056cf2d3d345e9622fc9b3dbc355325ddbf62f02f3",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-edited",
+          "pages": 1,
+          "filename": "invoice-TSX-2042.pdf",
+          "sha256": "709f3438a1d4b363a86bf71025a8e883670354116c0d703b46b3ff16ae668709",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-empty",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "d4f19a2559476236fe19acf76124f28ea5faa351731c7ee5585dd59f16f07122",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-credit",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "b6b5f473e297c0c5d05f5bd1711c5ce3149dfbcbdb7234d0aeb54d2372622abf",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-long",
+          "pages": 3,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "8ea549b4429c7f9b7e7b5d5b7491bbaf7b908b3cdaee63e385e2e979cdedb0d4",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "c1fe667a39ac3eaae3292c3a1fab1c466999e798a5ab0a4616b73689acc79880",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+          "whitespace_normalized_text_checks": false
+        }
+      ]
+    },
+    {
+      "mode": "actual Vite development server",
+      "checks": 9,
+      "browser": "155.0.8059.40",
+      "documents": [
+        {
+          "name": "initial",
+          "pages": 1,
+          "sha256": "7ab921d0f55604f84fd519514586f8d162e2912e925ea4071a59dfbd93993f56"
+        },
+        {
+          "name": "data-edit",
+          "pages": 1,
+          "sha256": "f3e49e3ca5ef908db85c57517c7cffd238c8cbcaef642b3a5da4366c12cddafc"
+        },
+        {
+          "name": "tsx-edit",
+          "pages": 1,
+          "sha256": "d7db713e176d39a48e428425a905fb515ce535d55b8383fb110234e221987718"
+        },
+        {
+          "name": "style-edit",
+          "pages": 1,
+          "sha256": "ede81f9c05b6e322131239ba24c27e57b01cdf4063216b0d7aa4e569be333480"
+        }
+      ]
+    }
+  ],
+  "baselines": [
+    {
+      "design": "invoice",
+      "pages": 1,
+      "pdfSha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+      "previews": [
+        "72420749ccc3deaa8025daf7baffcdf79be716b6e8e93ed605effebed01e86c7"
+      ]
+    },
+    {
+      "design": "report",
+      "pages": 3,
+      "pdfSha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802",
+      "previews": [
+        "33ee3398d59f6836368cdab0f3c725c3cf12cbf2f9f3a3ac6a6b168f6c1886f5",
+        "c8fe5102e9219962ea068201be0a6730cb37de797649f4b5f44478433e79b018",
+        "a3e8acbc7ba4147c56d45b606d3974ec4aecbda1b5d7362451e5e8890491dc7d"
+      ]
+    },
+    {
+      "design": "component-invoice",
+      "pages": 1,
+      "pdfSha256": "7ab921d0f55604f84fd519514586f8d162e2912e925ea4071a59dfbd93993f56",
+      "previews": [
+        "0fa59b3ea2938c413d8c58a02e4b08bec8349aaf93500c16b17652ba92679199"
+      ],
+      "repeatedPdfPreviewsEqual": true
+    },
+    {
+      "design": "component-paid",
+      "pages": 1,
+      "pdfSha256": "f4efce68a8f64f3f2219b9056cf2d3d345e9622fc9b3dbc355325ddbf62f02f3",
+      "previews": [
+        "d040a9e8e435f7baa1498db9b9571508bd174b745d44eca7fc0ff5416eb46721"
+      ],
+      "repeatedPdfPreviewsEqual": true
+    },
+    {
+      "design": "component-edited",
+      "pages": 1,
+      "pdfSha256": "709f3438a1d4b363a86bf71025a8e883670354116c0d703b46b3ff16ae668709",
+      "previews": [
+        "aba217ddb0b2b068a6c649bff1510e6627fbd82ba1febfd745a1f9b722955e52"
+      ],
+      "repeatedPdfPreviewsEqual": true
+    },
+    {
+      "design": "component-empty",
+      "pages": 1,
+      "pdfSha256": "d4f19a2559476236fe19acf76124f28ea5faa351731c7ee5585dd59f16f07122",
+      "previews": [
+        "7d386f278ce859efde193a30ab3981ddc26e481370fb56bd49f9f703c5f21c65"
+      ],
+      "repeatedPdfPreviewsEqual": true
+    },
+    {
+      "design": "component-credit",
+      "pages": 1,
+      "pdfSha256": "b6b5f473e297c0c5d05f5bd1711c5ce3149dfbcbdb7234d0aeb54d2372622abf",
+      "previews": [
+        "6dd0b56df6bf3bdca9c19d01fc0227dd838657c93b4c095de064cf844ce506b8"
+      ],
+      "repeatedPdfPreviewsEqual": true
+    },
+    {
+      "design": "component-long",
+      "pages": 3,
+      "pdfSha256": "8ea549b4429c7f9b7e7b5d5b7491bbaf7b908b3cdaee63e385e2e979cdedb0d4",
+      "previews": [
+        "692d7e7ef7d2cafb225b1823fb4646e055fe6fee374f1f00c5c95e8d467ba7d4",
+        "61e388cdd7c7d133c647b07886bd818d91382b072323c79281c80c698983b24b",
+        "7648f8591967cf8be2ad40f7743cc95464606687f8bcd14ac48098d9f48560c5"
+      ],
+      "repeatedPdfPreviewsEqual": true
+    }
+  ],
+  "legacy_pdf_bytes_unchanged": true,
+  "component_pdf_png_equal_node": true,
+  "scope": "Local Chrome production and development StrictMode, real Vite TSX/style edits and installed public package. Source CI separately checks all three browser engines."
+}

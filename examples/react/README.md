@@ -1,9 +1,10 @@
 # Fullbleed React PDF starter
 
-A React and TypeScript application with automatic PDF previews, editable HTML/CSS
-templates, cancellation, and downloads. Change a form field and the actual PDF
-updates after a short pause. Includes a designed invoice and three-page report;
-all sample organizations, records, and amounts are fictional. MIT licensed.
+A React and TypeScript application with a component-authored invoice, automatic
+PDF previews, cancellation, and downloads. Change the customer, line items,
+color or payment status and the actual PDF updates after a short pause. The
+print template uses typed functions, props, mapped rows, conditional content and
+attached styles. All sample data is fictional. MIT licensed.
 
 ## Run
 
@@ -21,32 +22,47 @@ Turn off **Update automatically** to render only when you choose **Generate PDF*
 
 ## Connect your data
 
-`src/App.tsx` holds the React form, templates, and preview UI. The invoice uses
-`{{customer}}` and `{{reference}}` in HTML and `{{ink}}` in CSS. The app escapes
-customer text before filling the template and accepts a six-digit hex ink color.
-Replace the fixed line items, totals, addresses, and dates with your data and
-calculations when building a real application.
+`src/App.tsx` holds the React form and preview UI. `src/documents/Invoice.tsx`
+builds the document with Fullbleed components. Its `@jsxImportSource fullbleed/ui`
+pragma selects the print JSX runtime for that file; the web UI still uses React.
+Call `Invoice({ data, ink })` to compose a document and pass it to the preview
+hook. Use ordinary functions for reusable print pieces. React hooks belong in
+the UI, outside these synchronous document functions.
 
-Use **Edit the HTML & CSS** to try another layout. To keep it, edit the matching
-`src/invoice.html`, `src/invoice.css`, `src/report.html`, or `src/report.css` file.
-Use [supported print CSS](https://docs.fullbleed.dev/css-coverage/); the engine
-renders supplied static HTML/CSS rather than capturing the React page.
+`src/documents/data.ts` defines the data, integer-cents formatting and form
+validation. The demo accepts up to 20 line items and whole hours; negative rates
+create credits. `src/documents/invoiceStyles.ts` holds reusable print styles,
+composed with the chosen ink color. Supply your own dates and records when
+building an application. Text is escaped by the component authoring layer.
+
+Edit either print source file while Vite is running to update the PDF. The Vite
+config excludes `src/documents/` from React Fast Refresh so print-component and
+style changes propagate to the React form. See the React plugin's
+[exclude option](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#exclude).
+
+The design selector also includes the existing HTML/CSS invoice and three-page
+report. These have an **Edit the HTML & CSS** panel and keep edits until reload.
+Their source files remain `src/invoice.html`, `src/invoice.css`, `src/report.html`
+and `src/report.css`. Open `?design=invoice` or `?design=report` for a direct link.
+See [supported print CSS](https://docs.fullbleed.dev/css-coverage/) for layout features.
 
 ## Reuse the hook
 
-Copy `src/usePdfPreview.ts` into your client application, install
-`fullbleed@0.5.1`, and copy the runtime with
+Copy `src/usePdfPreview.ts` and the `src/documents/` directory into your client application, install
+`fullbleed@0.6.0`, and copy the runtime with
 `npx fullbleed-browser-assets public/fullbleed`. Keep the document input stable
 with `useMemo` so ordinary component updates do not schedule another render:
 
 ```tsx
 import { useMemo } from 'react';
 import { usePdfPreview } from './usePdfPreview';
+import { Invoice } from './documents/Invoice';
+import type { InvoiceData } from './documents/data';
 
-export function DocumentPreview({ html, css }: { html: string; css: string }) {
+export function DocumentPreview({ data }: { data: InvoiceData }) {
   const input = useMemo(() => ({
-    html, css, previewDpi: 96, maxPages: 20, timeoutMs: 30_000,
-  }), [html, css]);
+    document: Invoice({ data }), previewDpi: 96, maxPages: 20, timeoutMs: 30_000,
+  }), [data]);
   const pdf = usePdfPreview(input, '/fullbleed/');
   return <section>
     <button onClick={() => { void pdf.generate(); }}>Generate PDF</button>
@@ -65,6 +81,8 @@ The hook schedules a preview after 450 ms without input changes. Use its third
 argument `{ auto: false }` for on-demand generation, or `{ delayMs: 800 }` for a
 longer pause. Cancel stops a pending timer or active job until the next input
 change or `generate()` call. Changing preview mode also resets its output.
+Pass `null` while inputs are invalid to clear old output without starting a
+worker. The hook also accepts `{ html, css, ...options }` for existing templates.
 
 It hides stale downloads immediately, aborts superseded work, ignores obsolete
 results, and revokes replaced Blob URLs. Unmounting aborts the active request and
@@ -94,15 +112,20 @@ WebAssembly, and Web Crypto are required.
 
 ## Versions and verification
 
-The lockfile pins Fullbleed 0.5.1 / engine 2.5.24, React 19.3.0, TypeScript 7.0.2,
+The lockfile pins Fullbleed 0.6.0 / engine 2.5.24, React 19.3.0, TypeScript 7.0.2,
 and Vite 8.3.2. No Fullbleed engine or package release is needed for this example.
 
 The repository's `React starter` workflow builds the locked project and checks
-real PDF downloads with an independent reader. It compares default invoice and
-report PDF bytes with the installed Node package, checks mobile layout, exercises
-input races, cancellation, editing, recovery, and unmount/remount, and records
+real PDF downloads with an independent reader. Six component cases cover the
+default invoice, paid state, edited text/color, empty items, a credit and twenty
+rows across three pages. Their PDFs and every preview match the installed Node
+package. The existing HTML invoice and report also keep their output checks.
+The workflow checks mobile layout, input races, cancellation, editing, recovery,
+and unmount/remount, and records
 worker API handles and Blob URL cleanup. A separate React development build
-checks the same flow with StrictMode enabled. Checks run in Chrome, Firefox and
+checks the same flow with StrictMode enabled. A real Vite development-server
+check edits print TSX and stylesheet files, verifies the resulting PDFs, and
+checks that form values survive the updates. Checks run in Chrome, Firefox and
 Playwright WebKit; WebKit testing is not branded Safari certification.
 
 This is ordinary PDF generation and preview rendering. PDF/A, PDF/UA, PDF/X and

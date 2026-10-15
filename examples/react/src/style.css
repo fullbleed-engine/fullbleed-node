@@ -1,5 +1,14 @@
 /* Match the pinned renderer's URL so the page and worker can share the cached font. */
 @font-face{font-family:Inter;src:url('/fullbleed/fonts/Inter-Variable.ttf?v=0.3.1') format('truetype');font-weight:100 900;font-display:swap}
+.project-link{display:inline-block;margin-top:18px;font-size:13px;font-weight:650;text-underline-offset:4px}
+.controls .paid-toggle{margin-top:16px}
+.item-editor{border-top:1px solid #bdc7bd;border-bottom:1px solid #bdc7bd;padding:13px 0;margin:20px 0}
+.item-editor summary{cursor:pointer;font-size:13px;font-weight:650}
+.item-editor fieldset{min-width:0;border:1px solid #d0d8cd;padding:12px;margin:20px 0;background:#fffef9}
+.item-editor legend{font-size:11px;font-weight:700;padding:0 5px}
+.item-editor label{margin-top:9px}.item-numbers{display:grid;grid-template-columns:1fr 1fr;gap:10px;min-width:0}
+.item-numbers>div{min-width:0}.remove-item{margin-top:10px}.item-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.component-code{max-height:32rem;overflow:auto;white-space:pre;background:#fdfcf6;border:1px solid #d0d8cd;padding:20px;font-size:12px;line-height:1.7;tab-size:2}
 :root{font-family:Inter,sans-serif;color:#173b35;background:#f6f5ef;font-synthesis:none;font-size:15px;line-height:1.5}
 *{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button,a,input,select{touch-action:manipulation}a{color:inherit}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #d45d34;outline-offset:4px}
 .site-header{max-width:1440px;margin:auto;padding:22px 5vw;display:flex;align-items:center;gap:28px;border-bottom:1px solid #d8ded5}.wordmark{font-weight:850;font-size:29px;letter-spacing:-1.6px;text-decoration:none}.wordmark span{color:#d85330}.header-note{font-size:10px;letter-spacing:2px;font-weight:700;margin-left:8px}.docs-link{margin-left:auto;text-decoration:none;font-size:13px;font-weight:650}.docs-link span{margin-left:10px}

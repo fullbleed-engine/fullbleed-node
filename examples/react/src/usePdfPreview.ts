@@ -1,9 +1,13 @@
 // SPDX-License-Identifier: MIT
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createRenderer, FullbleedError } from 'fullbleed/browser';
-import type { BrowserRenderOptions } from 'fullbleed/browser';
+import type { BrowserRenderOptions, BrowserRenderResult } from 'fullbleed/browser';
+import { renderDocument } from 'fullbleed/ui';
+import type { Renderable } from 'fullbleed/ui';
 
-export type PdfInput = Omit<BrowserRenderOptions, 'signal'>;
+export type PdfInput = Omit<BrowserRenderOptions, 'signal'> | (
+  Omit<BrowserRenderOptions, 'html' | 'css' | 'signal'> & { document: Renderable }
+);
 export interface PdfPreview {
   url: string;
   previews: string[];
@@ -13,7 +17,7 @@ export interface PdfPreview {
 }
 type Status = 'idle' | 'queued' | 'rendering' | 'ready' | 'cancelled' | 'error';
 interface State {
-  input: PdfInput;
+  input: PdfInput | null;
   assetBaseUrl: string;
   status: Status;
   result?: PdfPreview;
@@ -21,7 +25,7 @@ interface State {
 }
 
 /** Keep input stable with useMemo. This hook owns its workers, timers and Blob URLs. */
-export function usePdfPreview(input: PdfInput, assetBaseUrl: string, { auto = true, delayMs = 450 } = {}) {
+export function usePdfPreview(input: PdfInput | null, assetBaseUrl: string, { auto = true, delayMs = 450 } = {}) {
   const [state, setState] = useState<State>({ input, assetBaseUrl, status: 'idle' });
   const work = useRef({ mounted: false, serial: 0, controller: null as AbortController | null,
     timer: undefined as ReturnType<typeof setTimeout> | undefined, urls: [] as string[] });
@@ -40,14 +44,20 @@ export function usePdfPreview(input: PdfInput, assetBaseUrl: string, { auto = tr
   const generate = useCallback(async () => {
     const current = work.current;
     release();
-    if (!current.mounted) return;
+    if (!current.mounted || input === null) return;
     const serial = current.serial;
     const controller = new AbortController();
     current.controller = controller;
     setState({ input, assetBaseUrl, status: 'rendering' });
     try {
       const renderer = createRenderer({ assetBaseUrl });
-      const rendered = await renderer.renderPdf({ ...input, signal: controller.signal });
+      let rendered: BrowserRenderResult;
+      if ('document' in input) {
+        const { document, ...options } = input;
+        rendered = await renderDocument(document, renderer, { ...options, signal: controller.signal });
+      } else {
+        rendered = await renderer.renderPdf({ ...input, signal: controller.signal });
+      }
       // An aborted or superseded request must never replace a newer document.
       if (!current.mounted || serial !== current.serial) return;
       const makeUrl = (bytes: Uint8Array<ArrayBuffer>, type: string) => {
@@ -75,8 +85,8 @@ export function usePdfPreview(input: PdfInput, assetBaseUrl: string, { auto = tr
   useEffect(() => {
     work.current.mounted = true;
     release();
-    setState({ input, assetBaseUrl, status: auto ? 'queued' : 'idle' });
-    if (auto) work.current.timer = setTimeout(() => { void generate(); }, delayMs);
+    setState({ input, assetBaseUrl, status: auto && input !== null ? 'queued' : 'idle' });
+    if (auto && input !== null) work.current.timer = setTimeout(() => { void generate(); }, delayMs);
     return () => {
       work.current.mounted = false;
       release();
@@ -90,6 +100,6 @@ export function usePdfPreview(input: PdfInput, assetBaseUrl: string, { auto = tr
 
   // Hide an old download during the render before the input-change Effect runs.
   const visible: State = state.input === input && state.assetBaseUrl === assetBaseUrl
-    ? state : { input, assetBaseUrl, status: auto ? 'queued' : 'idle' };
+    ? state : { input, assetBaseUrl, status: auto && input !== null ? 'queued' : 'idle' };
   return { ...visible, generate, cancel };
 }

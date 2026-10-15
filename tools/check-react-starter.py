@@ -14,6 +14,7 @@ from playwright.sync_api import sync_playwright, expect
 from pypdf import PdfReader
 from starter_standard_fonts import verify_edited_preview
 from starter_engine_fixes import verify_engine_fixes
+from react_component_checks import check_components
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--dist', type=Path, required=True)
@@ -82,7 +83,7 @@ def check(name, passed):
 
 
 audit_script = """(() => {
-  const live = new Set(), urls = new Set();
+  const live = new Set(), urls = new Set(), blobs = new Map();
   const audit = {started: 0, terminated: 0, peak: 0, created: 0, revoked: 0};
   const RealWorker = window.Worker;
   window.Worker = class extends RealWorker {
@@ -90,8 +91,9 @@ audit_script = """(() => {
     terminate() { if (live.delete(this)) audit.terminated++; return super.terminate(); }
   };
   const create = URL.createObjectURL.bind(URL), revoke = URL.revokeObjectURL.bind(URL);
-  URL.createObjectURL = (...args) => { const url = create(...args); urls.add(url); audit.created++; return url; };
-  URL.revokeObjectURL = url => { if (urls.delete(url)) audit.revoked++; return revoke(url); };
+  URL.createObjectURL = (...args) => { const url = create(...args); urls.add(url); blobs.set(url, args[0]); audit.created++; return url; };
+  URL.revokeObjectURL = url => { blobs.delete(url); if (urls.delete(url)) audit.revoked++; return revoke(url); };
+  window.pdfBlobBytes = async url => Array.from(new Uint8Array(await blobs.get(url).arrayBuffer()));
   window.pdfLifecycle = () => ({...audit, live: live.size, urls: urls.size});
 })();"""
 try:
@@ -116,20 +118,26 @@ try:
             paused.clear()
             released.set()
 
-        def download(name, count, text):
+        def download(name, count, text, normalize_whitespace=False):
             with page.expect_download() as event:
                 page.locator('#download').click()
             path = out / (name + '.pdf')
             event.value.save_as(path)
             pdf = PdfReader(path)
             contents = '\n'.join(item.extract_text() for item in pdf.pages)
-            check(name + ': real PDF has expected pages and text', len(pdf.pages) == count and all(item in contents for item in text))
+            # Letter-spaced PDF glyphs may be returned as separate reader lines.
+            actual = ''.join(contents.split()) if normalize_whitespace else contents
+            expected = [''.join(item.split()) for item in text] if normalize_whitespace else text
+            check(name + ': real PDF has expected pages and text', len(pdf.pages) == count and all(item in actual for item in expected))
             documents.append({'name': name, 'pages': len(pdf.pages), 'filename': event.value.suggested_filename,
-                              'sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
+                              'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+                              'whitespace_normalized_text_checks': normalize_whitespace})
             return path
 
         try:
             page.goto(url, wait_until='domcontentloaded')
+            check_components(page, out, args.baseline, check, ready, download, hold_engine, resume_engine, requested)
+            page.goto(url + '?design=invoice', wait_until='domcontentloaded')
             ready()
             initial = download('invoice', 1, ['Maple & Finch', 'NS-1042', '1,870.00'])
             check('invoice matches the installed Node package', initial.read_bytes() == (args.baseline / 'invoice.pdf').read_bytes())

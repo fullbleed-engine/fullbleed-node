@@ -1,0 +1,110 @@
+"""Exercise the component-authored invoice in the actual React browser app."""
+from hashlib import sha256
+import json
+
+from playwright.sync_api import expect
+from pypdf import PdfReader
+
+
+def check_components(page, out, baseline, check, ready, download, hold_engine, resume_engine, requested):
+    records = {row['design']: row for row in json.loads((baseline / 'verification.json').read_text())['records']}
+
+    def compare(name, text):
+        ready()
+        row = records[name]
+        path = download(name, row['pages'], text, normalize_whitespace=True)
+        check(name + ': matches the installed Node component renderer', path.read_bytes() == (baseline / (name + '.pdf')).read_bytes())
+        images = page.locator('#preview img')
+        check(name + ': every page has a preview', images.count() == row['pages'])
+        for index in range(images.count()):
+            value = images.nth(index).evaluate('image => window.pdfBlobBytes(image.src)')
+            data = bytes(value)
+            (out / f'{name}-{index + 1}.png').write_bytes(data)
+            check(name + f': page {index + 1} preview matches Node', sha256(data).hexdigest() == row['previews'][index])
+        return path
+
+    ready()
+    check('components are the initial design', page.locator('#kind').input_value() == 'components')
+    compare('component-invoice', ['Maple & Finch', 'NS-1042', '8,100.00'])
+    check('component design needs no HTML editor', page.locator('#html-source').count() == 0)
+    page.locator('#component-source summary').click()
+    source = page.locator('#component-source code').last.inner_text()
+    check('component source shows typed JSX, mapping and conditional content', all(value in source for value in ['@jsxImportSource fullbleed/ui', 'items.map', 'paid &&', 'new StyleSheet']))
+    page.locator('#component-source summary').click()
+    for width, height in [(1440, 1000), (390, 844), (320, 760)]:
+        page.set_viewport_size({'width': width, 'height': height})
+        check(f'components at {width}px: no horizontal overflow', page.evaluate('document.documentElement.scrollWidth <= innerWidth'))
+        page.screenshot(path=str(out / f'components-{width}.png'), full_page=True)
+    page.set_viewport_size({'width': 1440, 'height': 1000})
+    page.locator('#paid').check()
+    compare('component-paid', ['PAID IN FULL', 'This invoice has been settled.', '8,100.00'])
+    page.locator('#paid').uncheck()
+    ready()
+    page.locator('#line-items summary').click()
+    starts = page.evaluate('pdfLifecycle().started')
+    page.locator('[data-field=quantity]').first.fill('1.5')
+    expect(page.locator('#status')).to_contain_text('whole hours')
+    page.wait_for_timeout(650)
+    check('invalid component data clears stale output without starting a worker', page.locator('#download').is_disabled() and page.locator('#preview img').count() == 0 and page.evaluate('pdfLifecycle().started') == starts)
+    page.locator('[data-field=quantity]').first.fill('12')
+    ready()
+    page.locator('[data-field=rate]').first.fill('12.345')
+    expect(page.locator('#status')).to_contain_text('two decimal places')
+    check('invalid cents cannot generate or retain a download', page.locator('#generate').is_disabled() and page.locator('#download').is_disabled())
+    page.locator('[data-field=rate]').first.fill('150.00')
+    ready()
+    hold_engine()
+    page.locator('#customer').fill('Obsolete component input')
+    assert requested.wait(8), 'Expected a held component renderer.'
+    page.locator('#customer').fill('Birch & <Briar>')
+    page.locator('#reference').fill('TSX-2042')
+    page.locator('#accent').fill('#233b79')
+    resume_engine()
+    edited = compare('component-edited', ['Birch & <Briar>', 'TSX-2042'])
+    check('superseded component results cannot replace newer input', 'Obsolete component input' not in PdfReader(edited).pages[0].extract_text())
+    page.screenshot(path=str(out / 'component-edited.png'), full_page=True)
+    page.locator('#auto-preview').uncheck()
+    page.locator('#customer').fill('Maple & Finch')
+    page.locator('#reference').fill('NS-1042')
+    page.locator('#accent').fill('#17382e')
+    while page.locator('.remove-item').count():
+        page.locator('.remove-item').first.click()
+    starts = page.evaluate('pdfLifecycle().started')
+    page.wait_for_timeout(650)
+    check('component manual mode waits for an explicit render', page.evaluate('pdfLifecycle().started') == starts and page.locator('#download').is_disabled())
+    page.locator('#generate').click()
+    compare('component-empty', ['No billable items.', '$0.00'])
+    page.locator('#add-item').click()
+    page.locator('[data-field=name]').first.fill('Credit & <revision>')
+    page.locator('[data-field=quantity]').first.fill('2')
+    page.locator('[data-field=rate]').first.fill('-12.55')
+    page.locator('#generate').click()
+    compare('component-credit', ['Credit & <revision>', '-$12.55', '-$25.10'])
+    page.locator('.remove-item').first.click()
+    for index in range(20):
+        page.locator('#add-item').click()
+        page.locator('[data-field=name]').last.fill(f'Work {index + 1:02}')
+    check('demo line-item bound is visible', page.locator('#add-item').is_disabled())
+    page.locator('#generate').click()
+    long = compare('component-long', ['Work 01', 'Work 20', '$2,000.00'])
+    text = '\n'.join(p.extract_text() for p in PdfReader(long).pages)
+    check('all twenty component rows appear once', all(text.count(f'Work {index + 1:02}') == 1 for index in range(20)))
+    page.set_viewport_size({'width': 320, 'height': 760})
+    check('expanded line-item controls fit 320px', page.evaluate('document.documentElement.scrollWidth <= innerWidth'))
+    page.screenshot(path=str(out / 'component-items-320.png'), full_page=True)
+    page.set_viewport_size({'width': 1440, 'height': 1000})
+    page.locator('#reset-items').click()
+    page.locator('#auto-preview').check()
+    ready()
+    hold_engine()
+    page.locator('#generate').click()
+    assert requested.wait(8), 'Expected a held component request before cancellation.'
+    page.locator('#cancel').click()
+    expect(page.locator('#status')).to_contain_text('Cancelled.')
+    check('component cancellation releases worker and URLs', page.locator('#download').is_disabled() and page.evaluate('pdfLifecycle().live === 0 && pdfLifecycle().urls === 0'))
+    resume_engine()
+    page.locator('#generate').click()
+    ready()
+    check('component cancellation recovers', page.locator('#download').get_attribute('href').startswith('blob:'))
+    page.locator('#toggle-editor').click()
+    check('component unmount releases workers and output URLs', page.evaluate('pdfLifecycle().live === 0 && pdfLifecycle().urls === 0 && pdfLifecycle().created === pdfLifecycle().revoked && pdfLifecycle().started === pdfLifecycle().terminated'))
