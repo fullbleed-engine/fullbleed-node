@@ -6,6 +6,8 @@ export interface BrowserRendererOptions {
 export interface BrowserRenderOptions {
   html: string;
   css?: string;
+  /** Default true: prepend the package's Inter body rule. False passes CSS unchanged. */
+  defaultStyles?: boolean;
   /** Additional TrueType font bytes; use the font family names in CSS. */
   fonts?: readonly Uint8Array[];
   /** Relative names referenced as assets/name.svg in document HTML/CSS. */

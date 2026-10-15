@@ -1,6 +1,6 @@
 {
   "name": "fullbleed",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Generate PDFs from HTML and CSS in Node.js or a browser worker with the Fullbleed Rust engine, bundled fonts, and optional PNG previews.",
   "type": "module",
   "main": "./src/index.cjs",

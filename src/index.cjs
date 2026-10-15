@@ -8,7 +8,7 @@ const { fork } = require('node:child_process');
 const { pathToFileURL } = require('node:url');
 const pkg = require('../package.json');
 
-const { FullbleedError, normalize } = require('./render-input.cjs');
+const { FullbleedError, normalize, stylesheet } = require('./render-input.cjs');
 const { createQueue } = require('./render-queue.cjs');
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const root = join(__dirname, '..');
@@ -136,7 +136,7 @@ function renderProcess(job, remaining) {
       child.send({ type: 'render', options: {
         html: job.html, css: job.css, fonts: job.customFonts.map(font => font.data),
         assets: Object.fromEntries(job.assetFiles.map(file => [file.name.slice('assets/'.length), file.data])),
-        previewDpi: job.previewDpi, maxPages: job.maxPages, allowMissingGlyphs: job.allowMissingGlyphs,
+        previewDpi: job.previewDpi, maxPages: job.maxPages, allowMissingGlyphs: job.allowMissingGlyphs, defaultStyles: job.defaultStyles,
         timeoutMs: remaining,
       } }, error => {
         if (error) stop(new FullbleedError('PROCESS_FAILED', 'Could not send the rendering request.', { cause: error }));
@@ -198,7 +198,7 @@ async function renderJob(job, start) {
         eval: true,
         workerData: {
           module: loaded.module, fonts: [...loaded.fonts, ...job.customFonts], assets: job.assetFiles,
-          html: job.html, css: 'body { font-family: Inter; }\n' + job.css, previewDpi: job.previewDpi, maxPages: job.maxPages,
+          html: job.html, css: stylesheet(job), previewDpi: job.previewDpi, maxPages: job.maxPages,
           allowMissingGlyphs: job.allowMissingGlyphs,
         },
       });

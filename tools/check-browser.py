@@ -115,6 +115,7 @@ try:
             invalid = page.evaluate("""async () => {
               const before = harness.stats().created;
               const inputs = [{html:'x',isolation:'process'},{html:'x',profile:'pdfua1'},
+                {html:'x',defaultStyles:'false'},{html:'x',defaultStyles:null},
                 {html:'x',assets:{'../secret':new Uint8Array([1])}},{html:'€'.repeat(1333334)}];
               const results = await Promise.all(inputs.map(input => harness.capture(harness.renderer.renderPdf(input))));
               return {results,created:harness.stats().created-before};

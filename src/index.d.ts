@@ -4,6 +4,8 @@ import type { Buffer } from 'node:buffer';
 export interface RenderOptions {
   html: string;
   css?: string;
+  /** Default true: prepend the package's Inter body rule. False passes CSS unchanged. */
+  defaultStyles?: boolean;
   /** Additional TrueType font files, as bytes. Use their family names in CSS. */
   fonts?: readonly Uint8Array[];
   /** Relative asset names; reference them as assets/name.svg in HTML/CSS. */
