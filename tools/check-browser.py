@@ -54,7 +54,7 @@ class Handler(BaseHTTPRequestHandler):
             data = b'self.postMessage({type:"ready",protocol:1,version:"0.0.0",engineVersion:"0.0.0"});'
         if prefix == 'corrupt' and relative.endswith('/engine.wasm'):
             data = data[:-1] + bytes([data[-1] ^ 1])
-        mime = 'application/javascript' if file.suffix == '.js' else 'application/wasm' if file.suffix == '.wasm' else mimetypes.guess_type(file.name)[0] or 'application/octet-stream'
+        mime = 'application/javascript' if file.suffix in ('.js', '.mjs') else 'application/wasm' if file.suffix == '.wasm' else mimetypes.guess_type(file.name)[0] or 'application/octet-stream'
         try:
             self.send_response(200)
             self.send_header('Content-Type', mime)
