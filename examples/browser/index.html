@@ -50,13 +50,18 @@
     </div>
     <details class="template-editor" id="template-editor">
       <summary>Edit the HTML &amp; CSS</summary>
-      <p class="editor-note">Make the template your own. Invoice fields replace <code>{{customer}}</code> and <code>{{reference}}</code>; <code>{{ink}}</code> applies the color in CSS. Edits stay in this tab until you reload. Fullbleed uses static print HTML and CSS; document scripts do not run.</p>
+      <p class="editor-note">Make the template your own. Invoice fields replace <code>{{customer}}</code> and <code>{{reference}}</code>; <code>{{ink}}</code> applies the color in CSS. Save your HTML and CSS before leaving to keep your edits, including these placeholders. Fullbleed uses static print HTML and CSS; document scripts do not run.</p>
       <fieldset id="editor-fields"><legend class="sr-only">Template source</legend><div class="editor-grid">
         <div><label for="html-source">HTML</label><textarea id="html-source" spellcheck="false" aria-label="Document HTML"></textarea></div>
         <div><label for="css-source">Print CSS</label><textarea id="css-source" spellcheck="false" aria-label="Document print CSS"></textarea></div>
       </div></fieldset>
-      <div class="editor-actions"><button type="button" id="render-source">Generate edited PDF</button><button type="button" class="secondary" id="reset-source">Reset this template</button></div>
+      <div class="editor-actions"><button type="button" id="render-source">Generate edited PDF</button><button type="button" class="secondary" id="reset-source">Reset this template</button><div class="source-downloads" aria-label="Save template source"><button type="button" class="source-save" id="save-html">Save HTML</button><button type="button" class="source-save" id="save-css">Save CSS</button></div></div>
     </details>
+    <section class="next-step" aria-labelledby="next-step-heading">
+      <h2 id="next-step-heading">Use this in your app</h2>
+      <p>Download the complete browser starter, then put your saved HTML and CSS in its <code>src/</code> folder. It includes the templates, renderer setup, and dependency lockfile.</p>
+      <div><a href="https://docs.fullbleed.dev/assets/browser-starter/project.zip">Download starter <span aria-hidden="true">↓</span></a><a href="https://docs.fullbleed.dev/guides/browser-pdf/">Setup guide <span aria-hidden="true">↗</span></a></div>
+    </section>
     <footer><p>Static HTML. Deterministic print layout. Open source.</p><a href="https://docs.fullbleed.dev/">Built with Fullbleed <span aria-hidden="true">↗</span></a></footer>
   </main>
   <script type="module" src="/src/main.js"></script>

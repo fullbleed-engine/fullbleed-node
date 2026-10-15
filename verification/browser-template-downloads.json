@@ -1,0 +1,160 @@
+{
+  "checked_at": "2026-10-15T01:28:40.149449+00:00",
+  "scope": "Browser starter source downloads and existing PDF rendering/recovery; no SDK or engine change.",
+  "package_version": "0.4.1",
+  "engine_version": "2.5.22",
+  "browser": "155.0.8059.40",
+  "playwright": "1.63.0",
+  "checks": [
+    "runtime resolves beneath a nested deployment path",
+    "bundled UI font loads",
+    "invoice: download has the expected pages and text",
+    "1440px: no horizontal overflow",
+    "390px: no horizontal overflow",
+    "320px: no horizontal overflow",
+    "color-only: download has the expected pages and text",
+    "changing only ink color changes the rendered PDF",
+    "changed inputs clear the previous preview",
+    "customized: download has the expected pages and text",
+    "customized bytes differ from the default invoice",
+    "source can be saved before rendering pending edits",
+    "edited-invoice: source download preserves the edited UTF-8 bytes and template filename",
+    "edited-invoice: source download preserves the edited UTF-8 bytes and template filename",
+    "edited: download has the expected pages and text",
+    "edited print CSS changes the PDF page size",
+    "document script does not run on the page",
+    "edited template uses unembedded standard Helvetica faces",
+    "edited standard-font preview contains visible text",
+    "390px: expanded editor and source downloads fit the viewport",
+    "320px: expanded editor and source downloads fit the viewport",
+    "engine-counter-sibling-reset: downloaded PDF has the expected page count",
+    "engine-counter-sibling-reset: sibling counter resets produce the required labels",
+    "engine-overflow-nested-clips: downloaded PDF has the expected page count",
+    "engine-overflow-nested-clips: downloaded PDF has the expected dimensions",
+    "engine-overflow-nested-clips: downloaded PDF matches independent color probes",
+    "engine-overflow-nested-clips: displayed preview has the expected dimensions",
+    "engine-overflow-nested-clips: displayed preview matches independent color probes",
+    "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF has the expected page count",
+    "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF has the expected dimensions",
+    "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF matches independent color probes",
+    "engine-border-center-zero-top-falls-back-bottom-svg: displayed preview has the expected dimensions",
+    "engine-border-center-zero-top-falls-back-bottom-svg: displayed preview matches independent color probes",
+    "engine-first-letter-decorated-left: downloaded PDF has the expected page count",
+    "engine-first-letter-decorated-left: decorated initial preserves the paragraph text",
+    "engine-first-letter-decorated-left: downloaded PDF has the expected dimensions",
+    "engine-first-letter-decorated-left: downloaded PDF matches independent color probes",
+    "engine-first-letter-decorated-left: displayed preview has the expected dimensions",
+    "engine-first-letter-decorated-left: displayed preview matches independent color probes",
+    "edited-report: source download preserves the edited UTF-8 bytes and template filename",
+    "edited-report: source download preserves the edited UTF-8 bytes and template filename",
+    "report: download has the expected pages and text",
+    "multi-page preview displays all report pages",
+    "each design preserves its template edits",
+    "invoice-after-switch: source download preserves the edited UTF-8 bytes and template filename",
+    "reset restores only the selected template",
+    "invalid input displays an error without a stale download",
+    "empty-html-after-error: source download preserves the edited UTF-8 bytes and template filename",
+    "cancellation restores controls without a stale download",
+    "recovered: download has the expected pages and text",
+    "no document uploads or cross-origin runtime requests",
+    "no uncaught page errors"
+  ],
+  "source_downloads": [
+    {
+      "name": "edited-invoice",
+      "filename": "invoice.html",
+      "bytes": 156,
+      "sha256": "d5b529705775dd9bd524d8aac1ccd3aac2d57456c93e72d4f419c6d8c3e977ae"
+    },
+    {
+      "name": "edited-invoice",
+      "filename": "invoice.css",
+      "bytes": 131,
+      "sha256": "a757ddab08467b8b23a98158fef5eb7715286e2c42cbe8c843d41312697cd59b"
+    },
+    {
+      "name": "edited-report",
+      "filename": "report.html",
+      "bytes": 7783,
+      "sha256": "904c7079213638d6166c1cdf1b6e7cb3820a3824a084af7634e843f4291304b3"
+    },
+    {
+      "name": "edited-report",
+      "filename": "report.css",
+      "bytes": 4277,
+      "sha256": "519591ae75c239ec602324f008dd99108ebeae0b9306df7215fa5f0442905473"
+    },
+    {
+      "name": "invoice-after-switch",
+      "filename": "invoice.html",
+      "bytes": 156,
+      "sha256": "d5b529705775dd9bd524d8aac1ccd3aac2d57456c93e72d4f419c6d8c3e977ae"
+    },
+    {
+      "name": "empty-html-after-error",
+      "filename": "invoice.html",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "documents": [
+    {
+      "name": "invoice",
+      "filename": "invoice-NS-1042.pdf",
+      "pages": 1,
+      "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+    },
+    {
+      "name": "color-only",
+      "filename": "invoice-NS-1042.pdf",
+      "pages": 1,
+      "sha256": "a2b69ba41f7ad4c9bcbd38d803a46e70f0b9ccacd90ffbab5b0f7d87ffca5e4b"
+    },
+    {
+      "name": "customized",
+      "filename": "invoice-TEST-2042.pdf",
+      "pages": 1,
+      "sha256": "31ff314b44a6f13534cc383e0cf24929f0695c1dd3d84769dedf8828c6486a93"
+    },
+    {
+      "name": "edited",
+      "filename": "invoice-TEST-2042.pdf",
+      "pages": 1,
+      "sha256": "f5c6c1927fc6c636cee592a3ebc7bb7b3e91dd645ab34a9370590571506d278b"
+    },
+    {
+      "name": "report",
+      "filename": "community-report.pdf",
+      "pages": 3,
+      "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802"
+    },
+    {
+      "name": "recovered",
+      "filename": "invoice-TEST-2042.pdf",
+      "pages": 1,
+      "sha256": "31ff314b44a6f13534cc383e0cf24929f0695c1dd3d84769dedf8828c6486a93"
+    }
+  ],
+  "example_files": {
+    "examples/browser/.gitignore": "c023fec2bf12476cb47709e859f1fbb785aeb1e03281e52141e0bee1ee7dad72",
+    "examples/browser/LICENSE": "36a2115938f6e68cf0d87eccff7a6a3e57c17017e909cbd640d51aff1fa0c5a9",
+    "examples/browser/README.md": "5b2b8a4462e2fadf836a0f8022cae13b7824883f351c3297a6aea6d9c9643613",
+    "examples/browser/index.html": "08e7a0777827c94f1a3a1009f0e89a61dcd9bec2a5a76352a3b8d262650fddc1",
+    "examples/browser/package-lock.json": "cb74c22fe1b49cf8f31c979a56975dbd1e390dd899d8bc4cf2186a819482a2f6",
+    "examples/browser/package.json": "b67511c1509889ac90928909dc8a268ddc96c763828611409c779f1b73ef673a",
+    "examples/browser/public/favicon.svg": "3eed6dcf1013e48bc64886fed4cf815c609ed06b404742bdacdc44c1df8d3118",
+    "examples/browser/src/invoice.css": "0b310ce0f2964fd6b9b68e4afafa9307b4ff8c6b2f1fc753367dc755620ce427",
+    "examples/browser/src/invoice.html": "1f065ad6694021649e61b3f666cba6dc01aacdcbd8e80e97425b383e60d7d2fe",
+    "examples/browser/src/main.js": "3ffcbe09c7117e635c21c39ad9be1aa3e7af16be7fc325683a7baaecae04d275",
+    "examples/browser/src/report.css": "519591ae75c239ec602324f008dd99108ebeae0b9306df7215fa5f0442905473",
+    "examples/browser/src/report.html": "46b0e975d43914c8b4492218feae09ea0ad684091a9f9ee3b18f66a87202e521",
+    "examples/browser/src/style.css": "131426c760df6f64f5890d03f2b3301bf2003f63008b7f90aea311c400db6f17",
+    "examples/browser/vite.config.js": "ec725922705a3c5ba2df191a564c54c0cac6e8997ecd3d00b8a42c647bec8e74"
+  },
+  "visual_review": {
+    "1440px": "Source actions and complete-project links readable beneath the editor.",
+    "390px_and_320px": "Source actions wrap without overlap or horizontal overflow; project links readable."
+  },
+  "local_evidence": "Fullbleed maintainer workspace: target/growth/browser-template-downloads-20261015/chrome",
+  "limitations": "Chrome locally; CI supplies Firefox and Playwright WebKit coverage. This is not branded Safari certification."
+}

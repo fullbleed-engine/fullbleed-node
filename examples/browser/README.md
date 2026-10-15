@@ -20,7 +20,12 @@ not upload document inputs to a PDF service. Nothing persists after a reload.
 ## Make your template
 
 Change the invoice fields, or open **Edit the HTML & CSS** below the preview.
-Edits in that editor last until reload. To keep them in the project, edit:
+Use **Save HTML** and **Save CSS** to download the selected template's current
+source, including your edits and any placeholders. Saving does not require a
+successful PDF render. The files are named `invoice.html` / `invoice.css` or
+`report.html` / `report.css`; put them in the project's `src/` folder to use them
+after a reload. The downloads contain template source, not the values filled
+into the last PDF. You can also edit these files directly:
 
 - `src/invoice.html` and `src/invoice.css`
 - `src/report.html` and `src/report.css`

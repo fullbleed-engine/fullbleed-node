@@ -45,7 +45,7 @@ class Handler(SimpleHTTPRequestHandler):
 server=ThreadingHTTPServer(('127.0.0.1',0),Handler)
 thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
 url=f'http://127.0.0.1:{server.server_port}{prefix}'
-checks=[];network=[];errors=[];documents=[]
+checks=[];network=[];errors=[];documents=[];sources=[]
 def check(name,passed):
     assert passed,name
     checks.append(name);print(name+': passed',flush=True)
@@ -66,6 +66,13 @@ try:
             check(name+': download has the expected pages and text',len(pdf.pages)==pages and all(t in contents for t in text))
             documents.append({'name':name,'filename':item.suggested_filename,'pages':len(pdf.pages),'sha256':hashlib.sha256(path.read_bytes()).hexdigest()})
             return path
+        def save_source(design,extension,expected,name):
+            with page.expect_download() as event:page.locator('#save-'+extension).click()
+            item=event.value;path=out/(name+'.'+extension);item.save_as(path)
+            check(name+': source download preserves the edited UTF-8 bytes and template filename',
+                  item.suggested_filename==design+'.'+extension and path.read_bytes()==expected.encode('utf-8'))
+            sources.append({'name':name,'filename':item.suggested_filename,'bytes':path.stat().st_size,
+                            'sha256':hashlib.sha256(path.read_bytes()).hexdigest()})
         try:
             page.goto(url,wait_until='domcontentloaded');ready()
             check('runtime resolves beneath a nested deployment path',any('/nested/demo/fullbleed/worker.js' in r['url'] for r in network))
@@ -89,26 +96,43 @@ try:
             download('customized',1,['Birch & <Briar>','TEST-2042'])
             check('customized bytes differ from the default invoice',documents[-1]['sha256']!=documents[0]['sha256'])
             page.locator('#template-editor summary').click()
-            page.locator('#html-source').fill('<h1>Edited template</h1><p>{{customer}} / {{reference}}</p><script>window.documentScriptExecuted = true;</script>')
-            page.locator('#css-source').fill('@page { size: A5; margin: 15mm } body { font-family: Helvetica } h1 { color: {{ink}}; font-size: 24pt }')
+            edited_html='<h1>Edited template</h1>\n<p>{{customer}} / {{reference}}</p><!-- Montréal, 日本語, 😀, &<>" -->\n<script>window.documentScriptExecuted = true;</script>'
+            edited_css='/* Color: café & "ink" */\n@page { size: A5; margin: 15mm } body { font-family: Helvetica } h1 { color: {{ink}}; font-size: 24pt }\n'
+            page.locator('#html-source').fill(edited_html)
+            page.locator('#css-source').fill(edited_css)
+            check('source can be saved before rendering pending edits',page.locator('#download').is_disabled())
+            save_source('invoice','html',edited_html,'edited-invoice')
+            save_source('invoice','css',edited_css,'edited-invoice')
             page.locator('#render-source').click();ready()
             path=download('edited',1,['Edited template','Birch & <Briar>','TEST-2042'])
             check('edited print CSS changes the PDF page size',abs(float(PdfReader(path).pages[0].mediabox.width)-419.52756)<1)
             check('document script does not run on the page',page.evaluate('window.documentScriptExecuted !== true'))
             verify_edited_preview(page, path, out, check)
             page.screenshot(path=str(out/'edited-template.png'),full_page=True)
+            for width,height in [(390,844),(320,760)]:
+                page.set_viewport_size({'width':width,'height':height})
+                check(f'{width}px: expanded editor and source downloads fit the viewport',page.evaluate('document.documentElement.scrollWidth <= innerWidth'))
+                page.screenshot(path=str(out/f'editor-width-{width}.png'),full_page=True)
+            page.set_viewport_size({'width':1440,'height':1000})
             verify_engine_fixes(page, out, check, ready, manual=True)
-            page.locator('#kind').select_option('report');page.locator('#generate').click();ready()
+            page.locator('#kind').select_option('report')
+            report_html=page.locator('#html-source').input_value()+'\n<!-- Saved report edit -->'
+            page.locator('#html-source').fill(report_html)
+            save_source('report','html',report_html,'edited-report')
+            save_source('report','css',page.locator('#css-source').input_value(),'edited-report')
+            page.locator('#generate').click();ready()
             download('report',3,['COMMON','1,240','420,000.00'])
             check('multi-page preview displays all report pages',page.locator('#preview img').count()==3)
             page.locator('#kind').select_option('invoice')
             check('each design preserves its template edits',page.locator('#html-source').input_value().startswith('<h1>Edited template'))
+            save_source('invoice','html',edited_html,'invoice-after-switch')
             page.locator('#reset-source').click()
             check('reset restores only the selected template', 'Northstar' in page.locator('#html-source').input_value())
             page.locator('#html-source').fill('')
             page.locator('#render-source').click()
             expect(page.locator('#status')).to_contain_text('nonempty')
             check('invalid input displays an error without a stale download',page.locator('#download').is_disabled())
+            save_source('invoice','html','','empty-html-after-error')
             page.locator('#reset-source').click()
             pause_engine.set()
             page.locator('#generate').click()
@@ -122,7 +146,7 @@ try:
             local_blob=f'blob:http://127.0.0.1:{server.server_port}/'
             check('no document uploads or cross-origin runtime requests',all(r['method']=='GET' and not r['body'] and r['url'].startswith((url,local_blob)) for r in network))
             check('no uncaught page errors',not errors)
-            report={'ok':True,'checked_at':datetime.now(timezone.utc).isoformat(),'browser_engine':args.browser,'browser':browser.version,'playwright':version('playwright'),'pypdf':version('pypdf'),'checks':checks,'documents':documents,'network':network,'page_errors':errors,'csp':policy,'scope':'Owned browser; synthetic inputs; production build served at /nested/demo/ with no PDF server.'}
+            report={'ok':True,'checked_at':datetime.now(timezone.utc).isoformat(),'browser_engine':args.browser,'browser':browser.version,'playwright':version('playwright'),'pypdf':version('pypdf'),'checks':checks,'documents':documents,'source_downloads':sources,'network':network,'page_errors':errors,'csp':policy,'scope':'Owned browser; synthetic inputs; production build served at /nested/demo/ with no PDF server; exact source downloads including unsaved edits and failed renders.'}
             (out/'verification.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
         except Exception:
             page.screenshot(path=str(out/'failure.png'),full_page=True)
