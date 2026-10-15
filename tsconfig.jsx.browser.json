@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.browser.json",
+  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "fullbleed/ui" },
+  "include": ["test/types/ui.tsx", "test/types/ui-browser.mts"]
+}

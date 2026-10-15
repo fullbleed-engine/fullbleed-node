@@ -109,6 +109,19 @@ try:
                 reference = PdfReader(root / 'output/browser-verification' / (name + '.pdf'))
                 check(name + ': independent reader confirms every page and text', [p.extract_text() for p in actual.pages] == [p.extract_text() for p in reference.pages])
             check('document scripts did not execute on the page', page.evaluate('globalThis.documentUploadExecuted === undefined'))
+            page.locator('#component-customer').fill('Browser edit <safe> & Company')
+            page.locator('#component-render').click()
+            page.wait_for_function("document.querySelector('#component-status').textContent === 'PDF ready'")
+            with page.expect_download() as download:
+                page.locator('#component-download').click()
+            edited = out / 'component-edited.pdf'
+            download.value.save_as(edited)
+            edited_pdf = PdfReader(edited)
+            check('TSX editor produces a downloadable PDF containing escaped edited data',
+                  len(edited_pdf.pages) == 1 and 'Browser edit <safe> & Company' in edited_pdf.pages[0].extract_text())
+            page.screenshot(path=str(out / 'component-editor.png'), full_page=True)
+            component_cases = [row for row in prepared['components'] if row['name'] in prepared['baselines']]
+            check('all seven named component/TSX cases were compared and downloaded', len(component_cases) == 7)
             copied = page.evaluate("() => harness.render('custom', true)")
             check('caller-owned font and asset buffers are copied before awaiting', copied['pdf'] == prepared['baselines']['custom']['pdf'])
 
@@ -174,7 +187,8 @@ try:
               'engine': prepared['engine'], 'installedTarballSha256': prepared['installedTarballSha256'],
               'contentSecurityPolicy': policy, 'mainThreadWebAssemblyDisabled': True, 'checks': checks,
               'documents': documents, 'workerCalls': page.evaluate('harness.stats()'), 'network': network, 'serverRequests': requests,
-              'pageErrors': errors, 'scope': 'Owned browser with synthetic fixtures. Termination instrumentation observes calls to the browser API, not OS thread-exit events. Playwright WebKit is not branded Safari.'}
+              'pageErrors': errors, 'componentCases': len(component_cases), 'componentEditorDownload': True,
+              'scope': 'Owned browser with synthetic fixtures. Termination instrumentation observes calls to the browser API, not OS thread-exit events. Playwright WebKit is not branded Safari.'}
             (out / 'verification.json').write_text(json.dumps(record, indent=2) + '\n', encoding='utf-8')
         except Exception:
             page.screenshot(path=str(out / 'failure.png'), full_page=True)

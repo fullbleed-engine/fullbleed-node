@@ -9,6 +9,12 @@ const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 export async function buildBrowser(root, manifest) {
   const output = join(root, 'dist/browser');
   await mkdir(output, { recursive: true });
+  const ui = await build({ absWorkingDir: root, entryPoints: ['src/ui.js'], outfile: join(root, 'dist/ui.js'),
+    bundle: true, platform: 'browser', format: 'esm', target: 'es2022', metafile: true, legalComments: 'inline' });
+  if (Object.values(ui.metafile.outputs).some(item => item.imports.length)) throw new Error('UI authoring must have no runtime imports.');
+  // Preserve the import: bundling a second Element class breaks mixed UI/JSX trees.
+  await build({ absWorkingDir: root, entryPoints: ['src/jsx-runtime.js'], outfile: join(root, 'dist/jsx-runtime.js'),
+    bundle: false, platform: 'browser', format: 'esm', target: 'es2022', legalComments: 'inline' });
   const runtimeFiles = { 'engine.wasm': manifest.files['dist/engine.wasm'] };
   for (const name of manifest.fonts) runtimeFiles['fonts/' + name] = manifest.files['assets/fonts/' + name];
   const define = {
@@ -37,6 +43,10 @@ export async function buildBrowser(root, manifest) {
     engineVersion: manifest.engineVersion, engineFeatures: manifest.engineFeatures, files };
   await writeFile(join(output, 'asset-manifest.json'), JSON.stringify(publicManifest, null, 2) + '\n');
   const outputs = {};
+  for (const path of ['dist/ui.js', 'dist/jsx-runtime.js']) {
+    const bytes = await readFile(join(root, path));
+    outputs[path] = { bytes: bytes.length, sha256: hash(bytes) };
+  }
   for (const name of ['client.js', 'worker.js', 'asset-manifest.json']) {
     const path = 'dist/browser/' + name;
     const bytes = await readFile(join(root, path));

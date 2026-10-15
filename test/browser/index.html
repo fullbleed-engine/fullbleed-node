@@ -1,3 +1,9 @@
 <!doctype html>
-<html lang="en"><meta charset="utf-8"><title>Fullbleed browser verification</title>
-<body><h1>Fullbleed browser verification</h1><p>Synthetic inputs only.</p><script type="module" src="./harness.js"></script></body></html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fullbleed component verification</title><link rel="stylesheet" href="./components.css">
+<body><main><section><p class="eyebrow">FULLBLEED / COMPONENTS</p><h1>One template.<br>Real document output.</h1>
+<p>This synthetic invoice is composed with TSX and rendered in a browser worker.</p>
+<label for="component-customer">Customer name</label><input id="component-customer" value="Maple &amp; Finch">
+<div class="actions"><button id="component-render">Create PDF</button><button id="component-download" disabled>Download PDF</button></div>
+<p id="component-status" role="status">Ready to render</p></section>
+<img id="component-preview" alt="Rendered invoice preview"></main><script type="module" src="./harness.js"></script></body></html>

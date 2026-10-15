@@ -1,10 +1,15 @@
 # Fullbleed for Node.js and browsers
 
-Generate PDFs from static HTML and CSS in Node.js or a browser worker. The package includes the
+Generate PDFs from reusable function components, JSX, or static HTML and CSS in Node.js or a browser worker. The package includes the
 Fullbleed Rust engine compiled to WebAssembly and four font faces, so installing
 it does not require Python, Rust, a browser, or system fonts. MIT licensed.
 
 Import `fullbleed` for Node.js or `fullbleed/browser` for a web application.
+
+Use [`fullbleed/ui`](docs/components.md) to compose documents without writing HTML
+strings. Named components, typed props, ordinary conditions and arrays, reusable
+styles, and an optional JSX/TSX runtime work with either renderer. No React
+runtime or build step is required for ordinary JavaScript functions.
 
 Try a complete project online: [JavaScript + Vite](https://docs.fullbleed.dev/assets/browser-starter/edit-online.html)
 or [React + TypeScript](https://docs.fullbleed.dev/assets/react-starter/edit-online.html).
@@ -15,7 +20,7 @@ Using Vue? The [Vue and TypeScript starter](examples/vue) includes editable
 templates, automatic previews, downloads, and a reusable `usePdfPreview` composable.
 
 This is an optional integration around the published **Fullbleed 2.5.24** engine.
-The package has its own version, **0.5.1**. Node applications can use a shared
+The package has its own version, **0.6.0**. Node applications can use a shared
 render queue to bound active renders and waiting requests, include queue time in
 deadlines, cancel waiting jobs, and stop rendering cleanly during shutdown.
 The browser entry renders in a Web Worker, and the Node API supports worker and
@@ -25,7 +30,11 @@ process isolation. See the [browser guide](docs/browser.md),
 [font-family checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-families.md), and
 [embedded-font checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-subsets.md) for the retained fixtures.
 
-Version 0.5.1 brings the engine's hidden-text and font-decoration fixes to both
+Version 0.6.0 adds component authoring, attached stylesheets and explicit document
+rendering. The engine remains pinned to 2.5.24. The [component guide](docs/components.md)
+includes zero-build JavaScript and TSX versions of a complete designed invoice.
+
+Version 0.5.1 brought the engine's hidden-text and font-decoration fixes to both
 JavaScript entries. Script/style elements and `display:none` descendants stay
 hidden, while explicit author display overrides remain supported. Font-selected
 decoration thickness uses the selected face's metrics. The
@@ -51,7 +60,7 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.5.1`.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.6.0`.
 Package archives and retained PDF/PNG evidence are attached to each
 [GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
 The [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification)
@@ -63,12 +72,17 @@ Save this as `invoice.mjs` and run `node invoice.mjs`:
 ```javascript
 import { writeFile } from 'node:fs/promises';
 import { renderPdf } from 'fullbleed';
+import { Document, Heading, Paragraph, Strong, Stack, StyleSheet } from 'fullbleed/ui';
 
-const result = await renderPdf({
-  html: '<h1>Invoice NS-1042</h1><p>Consulting: USD 1,200.00</p>',
-  css: '@page { size: A4; margin: 20mm } h1 { color: #175c52 }',
-  previewDpi: 96,
-});
+const Line = ({ label, amount }) => Paragraph(Strong(label), ': ', amount);
+const invoice = Document({ title: 'Invoice', styles: new StyleSheet({
+  '@page': { size: 'A4', margin: '20mm' },
+  h1: { color: '#175c52' },
+}) }, Stack({ gap: '12pt' },
+  Heading({ level: 1 }, 'Invoice NS-1042'),
+  Line({ label: 'Consulting', amount: 'USD 1,200.00' }),
+));
+const result = await invoice.renderPdf(renderPdf, { previewDpi: 96 });
 
 await writeFile('invoice.pdf', result.pdf);
 await writeFile('invoice.png', result.previews[0]);
@@ -77,6 +91,7 @@ console.log(`${result.pages} page; engine ${result.engineVersion}`);
 
 Inter is the default font. CommonJS also works:
 `const { renderPdf } = require('fullbleed')`. TypeScript declarations are included.
+Existing templates can still call `renderPdf({ html, css })` directly.
 
 [Try the browser playground](https://docs.fullbleed.dev/playground/) ·
 [Fullbleed documentation](https://docs.fullbleed.dev/) ·

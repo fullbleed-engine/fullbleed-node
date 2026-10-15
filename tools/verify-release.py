@@ -17,11 +17,30 @@ REPO = 'fullbleed-engine/fullbleed-node'
 ENGINE_REGRESSION_SOURCE = Path(__file__).resolve().parents[1] / 'test/fixtures/engine-2.5.22.json'
 DECORATION_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('decoration-thickness.json')
 HIDDEN_TEXT_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('hidden-text-2.5.24.json')
+COMPONENT_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'component-cases.mjs'
 
 
 def require(condition, message):
     if not condition:
         raise ValueError(message)
+
+
+def verify_component_evidence(report):
+    source_sha = hashlib.sha256(COMPONENT_SOURCE.read_bytes()).hexdigest()
+    inspections = report.get('component_authoring', [])
+    require(len(inspections) == 2 and {item.get('platform') for item in inspections} == {'win32', 'linux'},
+            'Component PDF inspection requires Windows and Linux evidence')
+    require(all(item.get('ok') is True and item.get('package_version') == report['package_version']
+                and item.get('engine_version') == report['engine_version']
+                and item.get('tarball_sha256') == report['package_sha256'] and item.get('source_sha256') == source_sha
+                and item.get('documents') == 7 and item.get('pages') == 13 for item in inspections),
+            'Component PDF evidence is incomplete or targets another package, source or tarball')
+    require(all(item.get('component_documents') == 7 and item.get('component_pages') == 13
+                and item.get('component_jsx_equal') is True and item.get('component_recovery') is True
+                for item in report['installed_matrix']), 'Installed component/JSX or recovery evidence is incomplete')
+    require(all(item.get('component_cases') == 7 and item.get('component_editor_download') is True
+                and item.get('component_source_sha256') == source_sha for item in report['browser_matrix']),
+            'Browser component/JSX or editor download evidence is incomplete')
 
 
 def verify_binding(version, run_id, run, release, tag_commit, report):
@@ -117,6 +136,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
                             and all(native[name].get('nativeWasiPdfEqual') is True
                                     and native[name].get('nativeWasiPreviewsEqual') is True for name in hidden_names),
                         'Native/WASI hidden-text comparison is incomplete or duplicated')
+        if release_version >= (0, 6, 0):
+            verify_component_evidence(report)
 
 
 def verify_tarball(data, info, report):
@@ -148,6 +169,10 @@ def verify_tarball(data, info, report):
         require({'dist/browser/client.js', 'dist/browser/worker.js', 'dist/browser/asset-manifest.json', 'src/browser.d.ts', 'src/copy-browser-assets.cjs'}.issubset(names),
                 'Browser package files are missing')
         require(all(item['tarball_sha256'] == sha for item in report['browser_matrix']), 'Browser matrix tested another tarball')
+    if tuple(map(int, info['version'].split('.'))) >= (0, 6, 0):
+        require({'src/ui.js', 'src/ui.cjs', 'src/ui.d.ts', 'dist/ui.js', 'dist/ui.d.cts',
+                 'src/jsx-runtime.js', 'src/jsx-runtime.cjs', 'src/jsx-runtime.d.ts',
+                 'dist/jsx-runtime.js', 'dist/jsx-runtime.d.cts'}.issubset(names), 'Component/JSX package files are missing')
     return sha
 
 
