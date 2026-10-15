@@ -91,3 +91,5 @@ document.querySelector('#component-render').addEventListener('click', async () =
   finally { button.disabled = false; }
 });
 document.querySelector('#component-download').addEventListener('click', () => globalThis.harness.download('component-edited'));
+document.querySelector('#component-render').disabled = false;
+document.documentElement.dataset.harnessReady = 'true';

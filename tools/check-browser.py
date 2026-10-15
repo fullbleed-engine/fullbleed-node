@@ -86,7 +86,7 @@ try:
         page.on('pageerror', lambda error: errors.append(str(error)))
         try:
             page.goto(base, wait_until='networkidle')
-            page.wait_for_function('Boolean(globalThis.harness)')
+            page.locator('html[data-harness-ready="true"]').wait_for()
             check('browser entry has the expected package and engine versions', page.evaluate('harness.api.version') == prepared['package'] and page.evaluate('harness.api.engineVersion') == prepared['engine'])
             for name, baseline in prepared['baselines'].items():
                 result = page.evaluate('name => harness.render(name)', name)
@@ -111,7 +111,7 @@ try:
             check('document scripts did not execute on the page', page.evaluate('globalThis.documentUploadExecuted === undefined'))
             page.locator('#component-customer').fill('Browser edit <safe> & Company')
             page.locator('#component-render').click()
-            page.wait_for_function("document.querySelector('#component-status').textContent === 'PDF ready'")
+            page.get_by_text('PDF ready', exact=True).wait_for()
             with page.expect_download() as download:
                 page.locator('#component-download').click()
             edited = out / 'component-edited.pdf'
