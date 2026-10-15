@@ -81,7 +81,8 @@ try:
         browser = pw.chromium.launch(channel='chrome', headless=True) if args.browser == 'chrome' else getattr(pw, args.browser).launch(headless=True)
         context = browser.new_context(accept_downloads=True)
         network = []
-        context.on('request', lambda request: network.append({'url': request.url, 'method': request.method, 'body': request.post_data}))
+        context.on('request', lambda request: network.append({'url': request.url, 'method': request.method, 'body': request.post_data,
+                                                            'resourceType': request.resource_type}))
         page = context.new_page()
         page.on('pageerror', lambda error: errors.append(str(error)))
         try:
@@ -180,7 +181,10 @@ try:
                     check('mismatched workers receive no document payload', page.evaluate('harness.stats().postedMessages') == before['postedMessages'])
             recovered = page.evaluate("() => harness.render('invoice')")
             check('a normal render recovers after errors, timeout and cancellation', recovered['pdf'] == prepared['baselines']['invoice']['pdf'] and recovered['stats']['allTerminatedOnce'])
-            check('all observed network requests are same-origin GETs without document upload', all(row['method'] == 'GET' and not row['body'] and row['url'].startswith(base) and 'PRIVATE_BROWSER_MARKER' not in row['url'] for row in network))
+            check('all requests are same-origin GETs or local image blobs without document upload',
+                  all(row['method'] == 'GET' and not row['body'] and 'PRIVATE_BROWSER_MARKER' not in row['url']
+                      and (row['url'].startswith(base) or (row['resourceType'] == 'image' and row['url'].startswith('blob:' + base)))
+                      for row in network))
             check('no uncaught page exceptions', not errors)
             record = {'ok': True, 'checkedAt': datetime.now(timezone.utc).isoformat(), 'browserEngine': args.browser,
               'browser': browser.version, 'playwright': version('playwright'), 'pypdf': version('pypdf'), 'package': prepared['package'],
