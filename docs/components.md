@@ -67,6 +67,12 @@ For a whole document project, TypeScript options are `"jsx": "react-jsx"` and
 CommonJS are supported. JSX expressions use `renderDocument` because their
 TypeScript type can represent a document, element, fragment or text.
 
+In a React/Vite application, keep print modules outside React Fast Refresh
+boundaries so edits to their imported styles reach the preview. The
+[React starter](../examples/react) includes the per-file pragma, Vite exclusion
+and a document-aware preview hook. Its development check edits both TSX and
+styles while preserving form values.
+
 This is React-inspired synchronous composition for print output. React hooks,
 events, refs, React component libraries and async components are not supported.
 Fetch data before composing the document. `key` is accepted and ignored because

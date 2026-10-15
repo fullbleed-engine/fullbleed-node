@@ -3,9 +3,9 @@ name: React starter
 on:
   push:
     branches: [main]
-    paths: ['examples/react/**', 'tools/check-react-starter.py', 'tools/prepare-react-check.mjs', 'tools/browser-requirements.txt', 'tools/starter_standard_fonts.py', 'tools/starter_engine_fixes.py', 'tools/starter-engine-2.5.22.json', 'tools/starter-engine-2.5.24.json', '.github/workflows/react-starter.yml']
+    paths: ['examples/react/**', 'tools/check-react-starter.py', 'tools/check-react-development.py', 'tools/prepare-react-check.mjs', 'tools/react_component_checks.py', 'tools/browser-requirements.txt', 'tools/starter_standard_fonts.py', 'tools/starter_engine_fixes.py', 'tools/starter-engine-2.5.22.json', 'tools/starter-engine-2.5.24.json', '.github/workflows/react-starter.yml']
   pull_request:
-    paths: ['examples/react/**', 'tools/check-react-starter.py', 'tools/prepare-react-check.mjs', 'tools/browser-requirements.txt', 'tools/starter_standard_fonts.py', 'tools/starter_engine_fixes.py', 'tools/starter-engine-2.5.22.json', 'tools/starter-engine-2.5.24.json', '.github/workflows/react-starter.yml']
+    paths: ['examples/react/**', 'tools/check-react-starter.py', 'tools/check-react-development.py', 'tools/prepare-react-check.mjs', 'tools/react_component_checks.py', 'tools/browser-requirements.txt', 'tools/starter_standard_fonts.py', 'tools/starter_engine_fixes.py', 'tools/starter-engine-2.5.22.json', 'tools/starter-engine-2.5.24.json', '.github/workflows/react-starter.yml']
   workflow_dispatch:
 
 permissions:
@@ -47,6 +47,9 @@ jobs:
       - name: Check StrictMode lifecycle and downloads
         if: matrix.browser == 'chrome'
         run: python tools/check-react-starter.py --dist examples/react/dist-strict --out output/react-strict --browser chrome --strict
+      - name: Check actual TSX and stylesheet edits in the Vite development server
+        if: matrix.browser == 'chrome'
+        run: python tools/check-react-development.py --project examples/react --out output/react-development
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -55,4 +58,5 @@ jobs:
             output/react-baseline/
             output/react-${{ matrix.browser }}/
             output/react-strict/
+            output/react-development/
           retention-days: 14

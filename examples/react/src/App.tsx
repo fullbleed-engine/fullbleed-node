@@ -1,44 +1,63 @@
 // SPDX-License-Identifier: MIT
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { usePdfPreview } from './usePdfPreview';
+import type { PdfInput } from './usePdfPreview';
+import { Invoice } from './documents/Invoice';
+import { initialItems, parseItems, sample } from './documents/data';
+import type { ItemDraft } from './documents/data';
+import componentSource from './documents/Invoice.tsx?raw';
 import invoiceHtml from './invoice.html?raw';
 import invoiceCss from './invoice.css?raw';
 import reportHtml from './report.html?raw';
 import reportCss from './report.css?raw';
 
 const defaults = { invoice: { html: invoiceHtml, css: invoiceCss }, report: { html: reportHtml, css: reportCss } };
-type Design = keyof typeof defaults;
+type Design = keyof typeof defaults | 'components';
+const requestedDesign = new URL(location.href).searchParams.get('design');
+const initialDesign: Design = requestedDesign === 'invoice' || requestedDesign === 'report' ? requestedDesign : 'components';
 const assetBaseUrl = new URL('fullbleed/', new URL(import.meta.env.BASE_URL, location.href)).href;
 const escapeHtml = (value: string) => value.replace(/[&<>"']/g, character => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
 })[character]!);
 
 function DocumentEditor() {
-  const [design, setDesign] = useState<Design>('invoice');
+  const [design, setDesign] = useState<Design>(initialDesign);
   const [templates, setTemplates] = useState(defaults);
   const [customer, setCustomer] = useState('Maple & Finch');
   const [reference, setReference] = useState('NS-1042');
   const [ink, setInk] = useState('#17382e');
+  const [paid, setPaid] = useState(false);
+  const [items, setItems] = useState(initialItems);
+  const nextItem = useRef(sample.items.length + 1);
   const [autoPreview, setAutoPreview] = useState(true);
-  const template = templates[design];
-  const inputError = !template.html.trim() ? 'Enter document HTML before generating.'
-    : design === 'invoice' && (!customer.trim() || !reference.trim()) ? 'Enter a customer name and invoice reference.'
-    : design === 'invoice' && !/^#[\da-f]{6}$/i.test(ink) ? 'Enter a six-digit ink color, such as #17382e.' : '';
-  const input = useMemo(() => {
-    const values: Record<string, string> = { customer: customer.trim(), reference: reference.trim() };
-    const valid = design !== 'invoice' || (values.customer && values.reference && /^#[\da-f]{6}$/i.test(ink));
-    return {
-      html: valid ? template.html.replace(/{{(customer|reference)}}/g, (_, key: string) => escapeHtml(values[key])) : '',
-      css: template.css.replaceAll('{{ink}}', /^#[\da-f]{6}$/i.test(ink) ? ink : '#17382e'),
+  const template = design === 'components' ? null : templates[design];
+  const parsed = useMemo(() => parseItems(items), [items]);
+  const isInvoice = design !== 'report';
+  const inputError = template && !template.html.trim() ? 'Enter document HTML before generating.'
+    : isInvoice && (!customer.trim() || !reference.trim()) ? 'Enter a customer name and invoice reference.'
+    : isInvoice && !/^#[\da-f]{6}$/i.test(ink) ? 'Enter a six-digit ink color, such as #17382e.'
+    : design === 'components' ? parsed.error : '';
+  const input = useMemo<PdfInput | null>(() => {
+    if (inputError) return null;
+    if (design === 'components') return {
+      document: Invoice({ data: { ...sample, customer: customer.trim(), number: reference.trim(), paid, items: parsed.items }, ink }),
       previewDpi: 96, maxPages: 20, timeoutMs: 30_000,
     };
-  }, [template, customer, reference, ink, design]);
+    const values: Record<string, string> = { customer: customer.trim(), reference: reference.trim() };
+    return {
+      html: template!.html.replace(/{{(customer|reference)}}/g, (_, key: string) => escapeHtml(values[key])),
+      css: template!.css.replaceAll('{{ink}}', /^#[\da-f]{6}$/i.test(ink) ? ink : '#17382e'),
+      previewDpi: 96, maxPages: 20, timeoutMs: 30_000,
+    };
+  }, [template, customer, reference, ink, design, paid, parsed, inputError]);
   const pdf = usePdfPreview(input, assetBaseUrl, { auto: autoPreview });
-  const filename = design === 'invoice' ? `invoice-${reference.replace(/[^\w-]+/g, '-').slice(0, 32)}.pdf` : 'community-report.pdf';
+  const filename = isInvoice ? `invoice-${reference.replace(/[^\w-]+/g, '-').slice(0, 32)}.pdf` : 'community-report.pdf';
   const pending = pdf.status === 'queued' || pdf.status === 'rendering';
-  const editTemplate = (field: 'html' | 'css', value: string) => setTemplates(previous => ({
-    ...previous, [design]: { ...previous[design], [field]: value },
-  }));
+  const editTemplate = (field: 'html' | 'css', value: string) => {
+    if (design !== 'components') setTemplates(previous => ({ ...previous, [design]: { ...previous[design], [field]: value } }));
+  };
+  const editItem = (id: number, field: keyof Omit<ItemDraft, 'id' | 'progress'>, value: string) =>
+    setItems(previous => previous.map(item => item.id === id ? { ...item, [field]: value } : item));
   const messages: Record<string, string> = {
     MISSING_GLYPHS: 'Some characters need another font. Add font bytes to the input or edit the text.',
     ENGINE_LOAD_FAILED: 'The PDF runtime could not load. Check that all runtime files were deployed.',
@@ -52,6 +71,7 @@ function DocumentEditor() {
   if (pdf.status === 'error') status = inputError ? inputError
     : messages[pdf.error!.code] ?? pdf.error!.message;
   if (pdf.result) status = `Ready. ${pdf.result.pages} ${pdf.result.pages === 1 ? 'page' : 'pages'} · ${Math.ceil(pdf.result.bytes / 1024)} KiB. Your PDF is ready to download.`;
+  if (inputError) status = inputError;
 
   return <>
     <div className="workspace">
@@ -59,9 +79,9 @@ function DocumentEditor() {
         <div className="panel-heading"><span className="step">01</span><h2 id="controls-title">Change the details</h2></div>
         <label htmlFor="kind">Start with a design</label>
         <select id="kind" value={design} onChange={event => setDesign(event.target.value as Design)}>
-          <option value="invoice">Studio invoice</option><option value="report">Community report · 3 pages</option>
+          <option value="components">Component invoice · JSX</option><option value="invoice">HTML/CSS invoice</option><option value="report">Community report · 3 pages</option>
         </select>
-        {design === 'invoice' && <>
+        {isInvoice && <>
           <label htmlFor="customer">Customer name</label>
           <input id="customer" value={customer} maxLength={100} onChange={event => setCustomer(event.target.value)} />
           <label htmlFor="reference">Invoice reference</label>
@@ -72,13 +92,32 @@ function DocumentEditor() {
             onChange={event => setInk(event.target.value)} />
             <span>{ink.toUpperCase()}</span><span className="color-hint">Your print palette</span></div>
         </>}
-        <p className="sample-note">{design === 'invoice' ? 'Fictional invoice. Items and amounts are fixed for this example.' : 'A three-page report. All organizations, records and amounts are fictional.'}</p>
+        {design === 'components' && <>
+          <label className="auto-toggle paid-toggle"><input id="paid" type="checkbox" checked={paid} onChange={event => setPaid(event.target.checked)} />Paid in full</label>
+          <details className="item-editor" id="line-items"><summary>Edit line items ({items.length})</summary>
+            {items.map((item, index) => <fieldset data-item key={item.id}>
+              <legend>Item {index + 1}</legend>
+              <label htmlFor={`name-${item.id}`}>Project</label><input id={`name-${item.id}`} data-field="name" value={item.name} maxLength={80} onChange={event => editItem(item.id, 'name', event.target.value)} />
+              <label htmlFor={`detail-${item.id}`}>Description</label><input id={`detail-${item.id}`} data-field="detail" value={item.detail} maxLength={150} onChange={event => editItem(item.id, 'detail', event.target.value)} />
+              <div className="item-numbers"><div><label htmlFor={`quantity-${item.id}`}>Whole hours</label><input id={`quantity-${item.id}`} data-field="quantity" inputMode="numeric" value={item.quantity} maxLength={4} onChange={event => editItem(item.id, 'quantity', event.target.value)} /></div>
+                <div><label htmlFor={`rate-${item.id}`}>Rate · USD</label><input id={`rate-${item.id}`} data-field="rate" inputMode="decimal" value={item.rate} maxLength={10} onChange={event => editItem(item.id, 'rate', event.target.value)} /></div></div>
+              <button className="text-button remove-item" aria-label={`Remove item ${index + 1}`} onClick={() => setItems(previous => previous.filter(row => row.id !== item.id))}>Remove item</button>
+            </fieldset>)}
+            <div className="item-actions"><button id="add-item" className="secondary" disabled={items.length >= 20} onClick={() => {
+              const id = nextItem.current++;
+              setItems(previous => [...previous, { id, name: 'Additional work', detail: '', quantity: '1', rate: '100.00', progress: 100 }]);
+            }}>Add item</button>
+              <button id="reset-items" className="text-button" onClick={() => { setItems(initialItems()); nextItem.current = sample.items.length + 1; }}>Reset line items</button></div>
+            <p className="sample-note">Up to 20 items. Use a negative rate for a credit. Amounts are calculated in cents.</p>
+          </details>
+        </>}
+        <p className="sample-note">{design === 'components' ? 'Fictional sample data. Change the rows and payment status to see components respond.' : design === 'invoice' ? 'Fictional invoice. Items and amounts are fixed for this example.' : 'A three-page report. All organizations, records and amounts are fictional.'}</p>
         <label className="auto-toggle"><input id="auto-preview" type="checkbox" checked={autoPreview} onChange={event => setAutoPreview(event.target.checked)} />Update automatically</label>
         <div className="actions">
-          <button id="generate" onClick={() => { void pdf.generate(); }}>Generate PDF <span aria-hidden="true">→</span></button>
+          <button id="generate" disabled={Boolean(inputError)} onClick={() => { void pdf.generate(); }}>Generate PDF <span aria-hidden="true">→</span></button>
           {pending && <button id="cancel" className="secondary" onClick={pdf.cancel}>Cancel</button>}
         </div>
-        <p id="status" role="status" aria-live="polite" className={pdf.status === 'error' ? 'error' : ''}>{status}</p>
+        <p id="status" role="status" aria-live="polite" className={inputError || pdf.status === 'error' ? 'error' : ''}>{status}</p>
         <div className="local-note"><span className="local-dot" aria-hidden="true" /><p><strong>Local rendering. Your document.</strong><br />{autoPreview ? 'Changes render after a short pause.' : 'Choose Generate PDF to apply your changes.'} Your document inputs stay in this browser.</p></div>
       </section>
       <section className="preview-panel" aria-labelledby="preview-title">
@@ -93,16 +132,20 @@ function DocumentEditor() {
         </div>
       </section>
     </div>
-    <details id="template-editor" className="template-editor">
+    {design === 'components' ? <details id="component-source" className="template-editor">
+      <summary>See the document component</summary>
+      <p className="editor-note">This invoice is built with functions, typed props, mapped rows and conditional content. Edit <code>src/documents/Invoice.tsx</code> and <code>invoiceStyles.ts</code> in the <a href="https://docs.fullbleed.dev/assets/react-starter/edit-online.html">online project</a> or <a href="https://docs.fullbleed.dev/assets/react-starter/project.zip">downloaded source</a>.</p>
+      <pre className="component-code"><code>{componentSource}</code></pre>
+    </details> : <details id="template-editor" className="template-editor">
       <summary>Edit the HTML &amp; CSS</summary>
       <p className="editor-note">Paste your own print template. {autoPreview ? 'Changes update the PDF automatically.' : 'Choose Generate PDF to apply your changes.'} Invoice values use <code>{'{{customer}}'}</code>, <code>{'{{reference}}'}</code>, and <code>{'{{ink}}'}</code>. These edits last until reload.</p>
       <div className="editor-grid">
-        <div><label htmlFor="html-source">Document HTML</label><textarea id="html-source" value={template.html} spellCheck={false} onChange={event => editTemplate('html', event.target.value)} /></div>
-        <div><label htmlFor="css-source">Print CSS</label><textarea id="css-source" value={template.css} spellCheck={false} onChange={event => editTemplate('css', event.target.value)} /></div>
+        <div><label htmlFor="html-source">Document HTML</label><textarea id="html-source" value={template!.html} spellCheck={false} onChange={event => editTemplate('html', event.target.value)} /></div>
+        <div><label htmlFor="css-source">Print CSS</label><textarea id="css-source" value={template!.css} spellCheck={false} onChange={event => editTemplate('css', event.target.value)} /></div>
       </div>
       <div className="editor-actions"><button id="reset-source" className="secondary" onClick={() => setTemplates(previous => ({ ...previous, [design]: defaults[design] }))}>Reset this template</button>
         <p>Keep templates in the downloaded project's <code>src/</code> directory.</p></div>
-    </details>
+    </details>}
   </>;
 }
 
@@ -111,11 +154,12 @@ export default function App() {
   return <>
     <header className="site-header"><a className="wordmark" href="https://www.fullbleed.dev/">fullbleed<span>.</span></a>
       <span className="header-note">REACT + TYPESCRIPT / MIT</span>
-      <a className="docs-link" href="https://docs.fullbleed.dev/guides/browser-pdf/">Browser guide <span aria-hidden="true">↗</span></a></header>
+      <a className="docs-link" href="https://docs.fullbleed.dev/guides/react-pdf/">React guide <span aria-hidden="true">↗</span></a></header>
     <main>
       <div className="intro"><p className="eyebrow"><span />YOUR FORM → YOUR PDF</p>
         <h1>A change in your form.<br />A change on the page.</h1>
-        <p className="lede">Edit the details. Watch the actual PDF update.<br className="wide-only" /> A React starter with HTML/CSS templates and local rendering.</p></div>
+        <p className="lede">Edit the details. Watch the actual PDF update.<br className="wide-only" /> Reusable PDF components, typed data, and local rendering.</p>
+        <a className="project-link" href="https://docs.fullbleed.dev/assets/react-starter/edit-online.html">Edit the component source online ↗</a></div>
       <div className="workspace-switch"><span><span className="live-dot" />{open ? 'Document editor' : 'Editor closed'}</span>
         <button id="toggle-editor" className="text-button" onClick={() => setOpen(value => !value)}>{open ? 'Close editor' : 'Open editor'}</button></div>
       {open ? <DocumentEditor /> : <section className="closed-panel"><h2>Ready when you are.</h2><p>Open the editor to start a fresh document.</p></section>}

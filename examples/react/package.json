@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22.12.0" },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "assets": "fullbleed-browser-assets public/fullbleed",
     "dev": "npm run assets && vite --host 127.0.0.1",
@@ -12,7 +14,7 @@
     "preview": "vite preview --host 127.0.0.1"
   },
   "dependencies": {
-    "fullbleed": "0.5.1",
+    "fullbleed": "0.6.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
