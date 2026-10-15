@@ -116,6 +116,97 @@ Layout containers accept a constrained semantic `as` tag, such as
 `Stack({ as: 'section' }, ...)`. `List({ as: 'ol' }, ...)` creates an ordered list.
 `el(tag, props, ...children)` remains the lower-level escape hatch.
 
+## Class names and styles
+
+`className` labels an element so stylesheet selectors can match it. It does not
+create or load a style. Define the rules in a `StyleSheet` and pass that sheet
+to the outer `Document` through its `styles` prop.
+
+| Prop | What it accepts | Where it applies |
+| --- | --- | --- |
+| `className="notice is-paid"` | Space-separated class names, without dots | The element returned by a built-in component |
+| `style={{ color: '#a64232' }}` | Inline declarations, without a selector | That element |
+| `<Document styles={sheet}>` | A stylesheet containing selectors and declarations | Matching elements throughout this document |
+
+This example prints **Paid in full** in blue at 18 pt:
+
+```tsx
+/** @jsxImportSource fullbleed/ui */
+import { Document, Paragraph, StyleSheet } from 'fullbleed/ui';
+
+const paymentStyles = new StyleSheet({
+  '@page': { size: 'A5', margin: '15mm' },
+  body: { fontFamily: 'Inter' },
+  '.notice': { color: '#245541', fontSize: '18pt', margin: 0 },
+  '.notice.is-paid': { color: '#315d9b' },
+});
+
+const payment = <Document title="Payment" styles={paymentStyles}>
+  <Paragraph className="notice is-paid">Paid in full</Paragraph>
+</Document>;
+```
+
+Pass `payment` to `renderDocument(payment, renderer)`, using a Node or browser
+renderer. That call includes the attached stylesheet. In ordinary JavaScript,
+the same child is `Paragraph({ className: 'notice is-paid' }, 'Paid in full')`.
+
+The dots belong in selectors: `.notice` matches `className="notice"`.
+`.notice.is-paid` matches one element with **both** classes; `.notice .notice-title`
+matches a descendant with `notice-title` inside a `notice`. Class order in the
+string does not set precedence. A function named `Notice` is not itself a CSS
+selector, and classes are not automatically scoped to a component or source file.
+
+### Forward styling props in your own components
+
+Your function decides which element receives `className` and `style`. Building
+on `paymentStyles` above, accept and forward those props to make the root
+customizable:
+
+```tsx
+import { Card } from 'fullbleed/ui';
+import type { ElementProps } from 'fullbleed/ui';
+
+function Notice({ children, className = '', style }:
+  Pick<ElementProps, 'children' | 'className' | 'style'>) {
+  return <Card className={`notice ${className}`.trim()} style={style}>
+    {children}
+  </Card>;
+}
+
+const noticeStyles = new StyleSheet(paymentStyles, {
+  '.notice': { padding: '12pt', border: '2pt solid #245541' },
+  '.notice .notice-title': { fontSize: '14pt', fontWeight: 700 },
+});
+
+const styledNotice = <Document title="Styled notice" styles={noticeStyles}>
+  <Notice className="is-paid" style={{ borderColor: '#a64232' }}>
+    <Paragraph className="notice-title">Payment</Paragraph>
+    <Paragraph>Paid in full</Paragraph>
+  </Notice>
+</Document>;
+```
+
+`Notice` keeps its base `notice` class and adds the caller's `is-paid` class.
+`Card` also retains its built-in `ui-card` class. The document combines shared
+and component rules through `new StyleSheet(paymentStyles, ...)`; defining a
+sheet beside a function does not attach it automatically. When splitting files,
+export both the component and its sheet, then compose the sheets on the document.
+
+The title's descendant rule sets 14 pt bold text. The inline `borderColor`
+changes this one notice's border to rust red. Ordinary stylesheet rules follow
+selector specificity, then source order for ties. Inline declarations override
+ordinary stylesheet declarations on the same element; `!important` changes that
+priority. Text properties such as color can inherit into children, while padding
+and borders apply to the element itself. Layout props such as `<Stack gap="12pt">`
+produce inline styles too; an explicit `style` prop can override those values.
+
+Use component-specific class names when combining designs to avoid unintended
+matches. A CSS import in the React app styles the web interface; it does not
+attach that CSS to the PDF. Fullbleed does not generate CSS Modules names or load
+a framework's stylesheet from a class string. Pass print rules through
+`Document.styles`, using the supported print CSS.
+
+
 ## Styles and layout
 
 `Stack` accepts `gap` and `align`; `Row` adds `justify` and boolean `wrap`.
