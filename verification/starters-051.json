@@ -1,0 +1,1460 @@
+{
+  "ok": true,
+  "checkedAt": "2026-10-15T15:09:56.646201+00:00",
+  "package": "0.5.1",
+  "engine": "2.5.24",
+  "localBrowser": {
+    "browser": {
+      "browser": "155.0.8059.40",
+      "checks": 79,
+      "documents": [
+        {
+          "name": "invoice",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "color-only",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "a2b69ba41f7ad4c9bcbd38d803a46e70f0b9ccacd90ffbab5b0f7d87ffca5e4b"
+        },
+        {
+          "name": "customized",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "31ff314b44a6f13534cc383e0cf24929f0695c1dd3d84769dedf8828c6486a93"
+        },
+        {
+          "name": "edited",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "fecff59c1bfd6b59de2f0fb56965a5668023b3b88e64b5c6c30f95875592c4b2"
+        },
+        {
+          "name": "report",
+          "filename": "community-report.pdf",
+          "pages": 3,
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802"
+        },
+        {
+          "name": "recovered",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "31ff314b44a6f13534cc383e0cf24929f0695c1dd3d84769dedf8828c6486a93"
+        }
+      ],
+      "engineCases": [
+        {
+          "name": "engine-counter-sibling-reset",
+          "pages": 1,
+          "text": "Record Ada\nAlpha\nCNT1.1ENDOne\nCNT1.2ENDTwo\nBeta\nCNT2.1ENDThree",
+          "probes": [],
+          "labels": [
+            "1.1",
+            "1.2",
+            "2.1"
+          ],
+          "pdfSha256": "3a353c203c5ae356f20a19e7c585229dc9e6dea3225f4a1a7960c5d943154675",
+          "previewSha256": "ce37f3e85fcdcdff6731873d8f3ad5d453d82fb4ddd6e7f57188c6d5d6cb9280",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        },
+        {
+          "name": "engine-overflow-nested-clips",
+          "pages": 1,
+          "text": "",
+          "probes": [
+            {
+              "source": "downloaded PDF",
+              "values": [
+                {
+                  "x": 60,
+                  "y": 60,
+                  "expected": [
+                    255,
+                    0,
+                    0
+                  ],
+                  "actual": [
+                    255,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 100,
+                  "y": 60,
+                  "expected": [
+                    0,
+                    255,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    255,
+                    0
+                  ]
+                },
+                {
+                  "x": 60,
+                  "y": 90,
+                  "expected": [
+                    255,
+                    255,
+                    255
+                  ],
+                  "actual": [
+                    255,
+                    255,
+                    255
+                  ]
+                }
+              ]
+            },
+            {
+              "source": "displayed preview",
+              "values": [
+                {
+                  "x": 60,
+                  "y": 60,
+                  "expected": [
+                    255,
+                    0,
+                    0
+                  ],
+                  "actual": [
+                    255,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 100,
+                  "y": 60,
+                  "expected": [
+                    0,
+                    255,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    255,
+                    0
+                  ]
+                },
+                {
+                  "x": 60,
+                  "y": 90,
+                  "expected": [
+                    255,
+                    255,
+                    255
+                  ],
+                  "actual": [
+                    255,
+                    255,
+                    255
+                  ]
+                }
+              ]
+            }
+          ],
+          "pdfSha256": "3cc5f42eb90c4fe0942088f47e5f342e4f3d820b0ccf985cdf92fb0985e6ce7a",
+          "previewSha256": "21fe48aa84247cec012b40c7e28c64b139824e6a2e2c5a7603b44898148f93c7",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        },
+        {
+          "name": "engine-border-center-zero-top-falls-back-bottom-svg",
+          "pages": 1,
+          "text": "",
+          "probes": [
+            {
+              "source": "downloaded PDF",
+              "values": [
+                {
+                  "x": 35,
+                  "y": 35,
+                  "expected": [
+                    128,
+                    0,
+                    180
+                  ],
+                  "actual": [
+                    128,
+                    0,
+                    180
+                  ]
+                },
+                {
+                  "x": 45,
+                  "y": 35,
+                  "expected": [
+                    0,
+                    180,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    180,
+                    0
+                  ]
+                },
+                {
+                  "x": 55,
+                  "y": 35,
+                  "expected": [
+                    128,
+                    0,
+                    180
+                  ],
+                  "actual": [
+                    128,
+                    0,
+                    180
+                  ]
+                },
+                {
+                  "x": 65,
+                  "y": 35,
+                  "expected": [
+                    0,
+                    180,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    180,
+                    0
+                  ]
+                }
+              ]
+            },
+            {
+              "source": "displayed preview",
+              "values": [
+                {
+                  "x": 35,
+                  "y": 35,
+                  "expected": [
+                    128,
+                    0,
+                    180
+                  ],
+                  "actual": [
+                    128,
+                    0,
+                    180
+                  ]
+                },
+                {
+                  "x": 45,
+                  "y": 35,
+                  "expected": [
+                    0,
+                    180,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    180,
+                    0
+                  ]
+                },
+                {
+                  "x": 55,
+                  "y": 35,
+                  "expected": [
+                    128,
+                    0,
+                    180
+                  ],
+                  "actual": [
+                    128,
+                    0,
+                    180
+                  ]
+                },
+                {
+                  "x": 65,
+                  "y": 35,
+                  "expected": [
+                    0,
+                    180,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    180,
+                    0
+                  ]
+                }
+              ]
+            }
+          ],
+          "pdfSha256": "8e335b31a03779f8cc7cb64b0fa599fcf70345fdc6091605f899b5b3f1f732b5",
+          "previewSha256": "3880a460b4e3888d863bc47594f29674d8bda496273e604fccac03b74f95524d",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        },
+        {
+          "name": "engine-first-letter-decorated-left",
+          "pages": 1,
+          "text": "D\nrop cap leads this short\nparagraph while the\nremaining text wraps\nbeside the enlarged initial\nletter.",
+          "probes": [
+            {
+              "source": "downloaded PDF",
+              "values": [
+                {
+                  "x": 28,
+                  "y": 27,
+                  "expected": [
+                    224,
+                    64,
+                    32
+                  ],
+                  "actual": [
+                    224,
+                    64,
+                    32
+                  ]
+                },
+                {
+                  "x": 32,
+                  "y": 31,
+                  "expected": [
+                    255,
+                    224,
+                    128
+                  ],
+                  "actual": [
+                    255,
+                    224,
+                    128
+                  ]
+                }
+              ]
+            },
+            {
+              "source": "displayed preview",
+              "values": [
+                {
+                  "x": 28,
+                  "y": 27,
+                  "expected": [
+                    224,
+                    64,
+                    32
+                  ],
+                  "actual": [
+                    224,
+                    64,
+                    32
+                  ]
+                },
+                {
+                  "x": 32,
+                  "y": 31,
+                  "expected": [
+                    255,
+                    224,
+                    128
+                  ],
+                  "actual": [
+                    255,
+                    224,
+                    128
+                  ]
+                }
+              ]
+            }
+          ],
+          "pdfSha256": "9c527d1432bd5cdb07147442551ffcd5f509aab5928c0745861d4a351ec75ec8",
+          "previewSha256": "33a7c7d8115e558d246179aefe292c64c2e29b5bab80312afc1d6820262490fc",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        },
+        {
+          "name": "visibility-script-blocks",
+          "pages": 1,
+          "text": "Document AAA\nBefore\nAfter",
+          "probes": [],
+          "pdfSha256": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+          "previewSha256": "fc257aa698b0ae28303656ea66ac3efd25542c0d9626f07b19a64b3f8f28920b",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        },
+        {
+          "name": "visibility-style-blocks",
+          "pages": 1,
+          "text": "Document AAA\nBefore\nAfter",
+          "probes": [],
+          "pdfSha256": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+          "previewSha256": "fc257aa698b0ae28303656ea66ac3efd25542c0d9626f07b19a64b3f8f28920b",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        },
+        {
+          "name": "visibility-hidden-span-paragraph",
+          "pages": 1,
+          "text": "Document AAA\nBefore After",
+          "probes": [],
+          "pdfSha256": "17cd57e1c75e11561e6a2328aed0ec906a2e6994397cdde064ab56bc14c90f2e",
+          "previewSha256": "8651823d0af4cd652ab6c35598d260b467d74a8b7256cf3e66f49356e904401c",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        },
+        {
+          "name": "visibility-script-revert",
+          "pages": 1,
+          "text": "Document AAA\nBefore\nAfter",
+          "probes": [],
+          "pdfSha256": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+          "previewSha256": "fc257aa698b0ae28303656ea66ac3efd25542c0d9626f07b19a64b3f8f28920b",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        },
+        {
+          "name": "visibility-script-inline-paragraph",
+          "pages": 1,
+          "text": "Document AAA\nBefore SOURCE_SENTINEL After",
+          "probes": [],
+          "pdfSha256": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+          "previewSha256": "44483eea283bae46fdd816f2784cef751d5ab48bd01f34043366fb9ccedea8ac",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        },
+        {
+          "name": "decoration-inter-40-underline-font",
+          "pages": 1,
+          "text": "Invoice AAA HHH",
+          "probes": [],
+          "strokeWidthsPt": [
+            2.051
+          ],
+          "pdfSha256": "8c431024572d470f85ce6b82cec990ad7b34d3aed8e77760d5ee378a1bf1f25c",
+          "previewSha256": "4195165f1f347b30610440c5419b8c0e3a6c7a52c86142e54a47bf5ddba1ac1a",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        },
+        {
+          "name": "decoration-inter-40-underline-length",
+          "pages": 1,
+          "text": "Invoice AAA HHH",
+          "probes": [],
+          "strokeWidthsPt": [
+            2.051
+          ],
+          "pdfSha256": "8c431024572d470f85ce6b82cec990ad7b34d3aed8e77760d5ee378a1bf1f25c",
+          "previewSha256": "4195165f1f347b30610440c5419b8c0e3a6c7a52c86142e54a47bf5ddba1ac1a",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        },
+        {
+          "name": "decoration-inter-40-underline-auto",
+          "pages": 1,
+          "text": "Invoice AAA HHH",
+          "probes": [],
+          "strokeWidthsPt": [
+            3.0
+          ],
+          "pdfSha256": "bdf2de5e5f1a102aa2b81a931eb35517cba323136742572fae95eb134f5b13bd",
+          "previewSha256": "903ba24e63b532b16d8e8571ae634bfbc6455c36b4618d5447f1b928bca43ee1",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        }
+      ]
+    },
+    "react": {
+      "browser": "155.0.8059.40",
+      "checks": 82,
+      "documents": [
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883"
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be"
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "c1fe667a39ac3eaae3292c3a1fab1c466999e798a5ab0a4616b73689acc79880"
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802"
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be"
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        }
+      ],
+      "engineCases": [
+        {
+          "name": "engine-counter-sibling-reset",
+          "pages": 1,
+          "text": "Record Ada\nAlpha\nCNT1.1ENDOne\nCNT1.2ENDTwo\nBeta\nCNT2.1ENDThree",
+          "probes": [],
+          "labels": [
+            "1.1",
+            "1.2",
+            "2.1"
+          ],
+          "pdfSha256": "3a353c203c5ae356f20a19e7c585229dc9e6dea3225f4a1a7960c5d943154675",
+          "previewSha256": "ce37f3e85fcdcdff6731873d8f3ad5d453d82fb4ddd6e7f57188c6d5d6cb9280",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        },
+        {
+          "name": "engine-overflow-nested-clips",
+          "pages": 1,
+          "text": "",
+          "probes": [
+            {
+              "source": "downloaded PDF",
+              "values": [
+                {
+                  "x": 60,
+                  "y": 60,
+                  "expected": [
+                    255,
+                    0,
+                    0
+                  ],
+                  "actual": [
+                    255,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 100,
+                  "y": 60,
+                  "expected": [
+                    0,
+                    255,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    255,
+                    0
+                  ]
+                },
+                {
+                  "x": 60,
+                  "y": 90,
+                  "expected": [
+                    255,
+                    255,
+                    255
+                  ],
+                  "actual": [
+                    255,
+                    255,
+                    255
+                  ]
+                }
+              ]
+            },
+            {
+              "source": "displayed preview",
+              "values": [
+                {
+                  "x": 60,
+                  "y": 60,
+                  "expected": [
+                    255,
+                    0,
+                    0
+                  ],
+                  "actual": [
+                    255,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 100,
+                  "y": 60,
+                  "expected": [
+                    0,
+                    255,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    255,
+                    0
+                  ]
+                },
+                {
+                  "x": 60,
+                  "y": 90,
+                  "expected": [
+                    255,
+                    255,
+                    255
+                  ],
+                  "actual": [
+                    255,
+                    255,
+                    255
+                  ]
+                }
+              ]
+            }
+          ],
+          "pdfSha256": "3cc5f42eb90c4fe0942088f47e5f342e4f3d820b0ccf985cdf92fb0985e6ce7a",
+          "previewSha256": "21fe48aa84247cec012b40c7e28c64b139824e6a2e2c5a7603b44898148f93c7",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        },
+        {
+          "name": "engine-border-center-zero-top-falls-back-bottom-svg",
+          "pages": 1,
+          "text": "",
+          "probes": [
+            {
+              "source": "downloaded PDF",
+              "values": [
+                {
+                  "x": 35,
+                  "y": 35,
+                  "expected": [
+                    128,
+                    0,
+                    180
+                  ],
+                  "actual": [
+                    128,
+                    0,
+                    180
+                  ]
+                },
+                {
+                  "x": 45,
+                  "y": 35,
+                  "expected": [
+                    0,
+                    180,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    180,
+                    0
+                  ]
+                },
+                {
+                  "x": 55,
+                  "y": 35,
+                  "expected": [
+                    128,
+                    0,
+                    180
+                  ],
+                  "actual": [
+                    128,
+                    0,
+                    180
+                  ]
+                },
+                {
+                  "x": 65,
+                  "y": 35,
+                  "expected": [
+                    0,
+                    180,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    180,
+                    0
+                  ]
+                }
+              ]
+            },
+            {
+              "source": "displayed preview",
+              "values": [
+                {
+                  "x": 35,
+                  "y": 35,
+                  "expected": [
+                    128,
+                    0,
+                    180
+                  ],
+                  "actual": [
+                    128,
+                    0,
+                    180
+                  ]
+                },
+                {
+                  "x": 45,
+                  "y": 35,
+                  "expected": [
+                    0,
+                    180,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    180,
+                    0
+                  ]
+                },
+                {
+                  "x": 55,
+                  "y": 35,
+                  "expected": [
+                    128,
+                    0,
+                    180
+                  ],
+                  "actual": [
+                    128,
+                    0,
+                    180
+                  ]
+                },
+                {
+                  "x": 65,
+                  "y": 35,
+                  "expected": [
+                    0,
+                    180,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    180,
+                    0
+                  ]
+                }
+              ]
+            }
+          ],
+          "pdfSha256": "8e335b31a03779f8cc7cb64b0fa599fcf70345fdc6091605f899b5b3f1f732b5",
+          "previewSha256": "3880a460b4e3888d863bc47594f29674d8bda496273e604fccac03b74f95524d",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        },
+        {
+          "name": "engine-first-letter-decorated-left",
+          "pages": 1,
+          "text": "D\nrop cap leads this short\nparagraph while the\nremaining text wraps\nbeside the enlarged initial\nletter.",
+          "probes": [
+            {
+              "source": "downloaded PDF",
+              "values": [
+                {
+                  "x": 28,
+                  "y": 27,
+                  "expected": [
+                    224,
+                    64,
+                    32
+                  ],
+                  "actual": [
+                    224,
+                    64,
+                    32
+                  ]
+                },
+                {
+                  "x": 32,
+                  "y": 31,
+                  "expected": [
+                    255,
+                    224,
+                    128
+                  ],
+                  "actual": [
+                    255,
+                    224,
+                    128
+                  ]
+                }
+              ]
+            },
+            {
+              "source": "displayed preview",
+              "values": [
+                {
+                  "x": 28,
+                  "y": 27,
+                  "expected": [
+                    224,
+                    64,
+                    32
+                  ],
+                  "actual": [
+                    224,
+                    64,
+                    32
+                  ]
+                },
+                {
+                  "x": 32,
+                  "y": 31,
+                  "expected": [
+                    255,
+                    224,
+                    128
+                  ],
+                  "actual": [
+                    255,
+                    224,
+                    128
+                  ]
+                }
+              ]
+            }
+          ],
+          "pdfSha256": "9c527d1432bd5cdb07147442551ffcd5f509aab5928c0745861d4a351ec75ec8",
+          "previewSha256": "33a7c7d8115e558d246179aefe292c64c2e29b5bab80312afc1d6820262490fc",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        },
+        {
+          "name": "visibility-script-blocks",
+          "pages": 1,
+          "text": "Document AAA\nBefore\nAfter",
+          "probes": [],
+          "pdfSha256": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+          "previewSha256": "fc257aa698b0ae28303656ea66ac3efd25542c0d9626f07b19a64b3f8f28920b",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        },
+        {
+          "name": "visibility-style-blocks",
+          "pages": 1,
+          "text": "Document AAA\nBefore\nAfter",
+          "probes": [],
+          "pdfSha256": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+          "previewSha256": "fc257aa698b0ae28303656ea66ac3efd25542c0d9626f07b19a64b3f8f28920b",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        },
+        {
+          "name": "visibility-hidden-span-paragraph",
+          "pages": 1,
+          "text": "Document AAA\nBefore After",
+          "probes": [],
+          "pdfSha256": "17cd57e1c75e11561e6a2328aed0ec906a2e6994397cdde064ab56bc14c90f2e",
+          "previewSha256": "8651823d0af4cd652ab6c35598d260b467d74a8b7256cf3e66f49356e904401c",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        },
+        {
+          "name": "visibility-script-revert",
+          "pages": 1,
+          "text": "Document AAA\nBefore\nAfter",
+          "probes": [],
+          "pdfSha256": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+          "previewSha256": "fc257aa698b0ae28303656ea66ac3efd25542c0d9626f07b19a64b3f8f28920b",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        },
+        {
+          "name": "visibility-script-inline-paragraph",
+          "pages": 1,
+          "text": "Document AAA\nBefore SOURCE_SENTINEL After",
+          "probes": [],
+          "pdfSha256": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+          "previewSha256": "44483eea283bae46fdd816f2784cef751d5ab48bd01f34043366fb9ccedea8ac",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        },
+        {
+          "name": "decoration-inter-40-underline-font",
+          "pages": 1,
+          "text": "Invoice AAA HHH",
+          "probes": [],
+          "strokeWidthsPt": [
+            2.051
+          ],
+          "pdfSha256": "8c431024572d470f85ce6b82cec990ad7b34d3aed8e77760d5ee378a1bf1f25c",
+          "previewSha256": "4195165f1f347b30610440c5419b8c0e3a6c7a52c86142e54a47bf5ddba1ac1a",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        },
+        {
+          "name": "decoration-inter-40-underline-length",
+          "pages": 1,
+          "text": "Invoice AAA HHH",
+          "probes": [],
+          "strokeWidthsPt": [
+            2.051
+          ],
+          "pdfSha256": "8c431024572d470f85ce6b82cec990ad7b34d3aed8e77760d5ee378a1bf1f25c",
+          "previewSha256": "4195165f1f347b30610440c5419b8c0e3a6c7a52c86142e54a47bf5ddba1ac1a",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        },
+        {
+          "name": "decoration-inter-40-underline-auto",
+          "pages": 1,
+          "text": "Invoice AAA HHH",
+          "probes": [],
+          "strokeWidthsPt": [
+            3.0
+          ],
+          "pdfSha256": "bdf2de5e5f1a102aa2b81a931eb35517cba323136742572fae95eb134f5b13bd",
+          "previewSha256": "903ba24e63b532b16d8e8571ae634bfbc6455c36b4618d5447f1b928bca43ee1",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        }
+      ]
+    },
+    "vue": {
+      "browser": "155.0.8059.40",
+      "checks": 87,
+      "documents": [
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883"
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "071d2bd98b7b90b52aa5b60e74ce0934ef54d3c6032c222d7237786dc12fc953"
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802"
+        },
+        {
+          "name": "outage-recovery",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        }
+      ],
+      "engineCases": [
+        {
+          "name": "engine-counter-sibling-reset",
+          "pages": 1,
+          "text": "Record Ada\nAlpha\nCNT1.1ENDOne\nCNT1.2ENDTwo\nBeta\nCNT2.1ENDThree",
+          "probes": [],
+          "labels": [
+            "1.1",
+            "1.2",
+            "2.1"
+          ],
+          "pdfSha256": "3a353c203c5ae356f20a19e7c585229dc9e6dea3225f4a1a7960c5d943154675",
+          "previewSha256": "ce37f3e85fcdcdff6731873d8f3ad5d453d82fb4ddd6e7f57188c6d5d6cb9280",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        },
+        {
+          "name": "engine-overflow-nested-clips",
+          "pages": 1,
+          "text": "",
+          "probes": [
+            {
+              "source": "downloaded PDF",
+              "values": [
+                {
+                  "x": 60,
+                  "y": 60,
+                  "expected": [
+                    255,
+                    0,
+                    0
+                  ],
+                  "actual": [
+                    255,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 100,
+                  "y": 60,
+                  "expected": [
+                    0,
+                    255,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    255,
+                    0
+                  ]
+                },
+                {
+                  "x": 60,
+                  "y": 90,
+                  "expected": [
+                    255,
+                    255,
+                    255
+                  ],
+                  "actual": [
+                    255,
+                    255,
+                    255
+                  ]
+                }
+              ]
+            },
+            {
+              "source": "displayed preview",
+              "values": [
+                {
+                  "x": 60,
+                  "y": 60,
+                  "expected": [
+                    255,
+                    0,
+                    0
+                  ],
+                  "actual": [
+                    255,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 100,
+                  "y": 60,
+                  "expected": [
+                    0,
+                    255,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    255,
+                    0
+                  ]
+                },
+                {
+                  "x": 60,
+                  "y": 90,
+                  "expected": [
+                    255,
+                    255,
+                    255
+                  ],
+                  "actual": [
+                    255,
+                    255,
+                    255
+                  ]
+                }
+              ]
+            }
+          ],
+          "pdfSha256": "3cc5f42eb90c4fe0942088f47e5f342e4f3d820b0ccf985cdf92fb0985e6ce7a",
+          "previewSha256": "21fe48aa84247cec012b40c7e28c64b139824e6a2e2c5a7603b44898148f93c7",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        },
+        {
+          "name": "engine-border-center-zero-top-falls-back-bottom-svg",
+          "pages": 1,
+          "text": "",
+          "probes": [
+            {
+              "source": "downloaded PDF",
+              "values": [
+                {
+                  "x": 35,
+                  "y": 35,
+                  "expected": [
+                    128,
+                    0,
+                    180
+                  ],
+                  "actual": [
+                    128,
+                    0,
+                    180
+                  ]
+                },
+                {
+                  "x": 45,
+                  "y": 35,
+                  "expected": [
+                    0,
+                    180,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    180,
+                    0
+                  ]
+                },
+                {
+                  "x": 55,
+                  "y": 35,
+                  "expected": [
+                    128,
+                    0,
+                    180
+                  ],
+                  "actual": [
+                    128,
+                    0,
+                    180
+                  ]
+                },
+                {
+                  "x": 65,
+                  "y": 35,
+                  "expected": [
+                    0,
+                    180,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    180,
+                    0
+                  ]
+                }
+              ]
+            },
+            {
+              "source": "displayed preview",
+              "values": [
+                {
+                  "x": 35,
+                  "y": 35,
+                  "expected": [
+                    128,
+                    0,
+                    180
+                  ],
+                  "actual": [
+                    128,
+                    0,
+                    180
+                  ]
+                },
+                {
+                  "x": 45,
+                  "y": 35,
+                  "expected": [
+                    0,
+                    180,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    180,
+                    0
+                  ]
+                },
+                {
+                  "x": 55,
+                  "y": 35,
+                  "expected": [
+                    128,
+                    0,
+                    180
+                  ],
+                  "actual": [
+                    128,
+                    0,
+                    180
+                  ]
+                },
+                {
+                  "x": 65,
+                  "y": 35,
+                  "expected": [
+                    0,
+                    180,
+                    0
+                  ],
+                  "actual": [
+                    0,
+                    180,
+                    0
+                  ]
+                }
+              ]
+            }
+          ],
+          "pdfSha256": "8e335b31a03779f8cc7cb64b0fa599fcf70345fdc6091605f899b5b3f1f732b5",
+          "previewSha256": "3880a460b4e3888d863bc47594f29674d8bda496273e604fccac03b74f95524d",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        },
+        {
+          "name": "engine-first-letter-decorated-left",
+          "pages": 1,
+          "text": "D\nrop cap leads this short\nparagraph while the\nremaining text wraps\nbeside the enlarged initial\nletter.",
+          "probes": [
+            {
+              "source": "downloaded PDF",
+              "values": [
+                {
+                  "x": 28,
+                  "y": 27,
+                  "expected": [
+                    224,
+                    64,
+                    32
+                  ],
+                  "actual": [
+                    224,
+                    64,
+                    32
+                  ]
+                },
+                {
+                  "x": 32,
+                  "y": 31,
+                  "expected": [
+                    255,
+                    224,
+                    128
+                  ],
+                  "actual": [
+                    255,
+                    224,
+                    128
+                  ]
+                }
+              ]
+            },
+            {
+              "source": "displayed preview",
+              "values": [
+                {
+                  "x": 28,
+                  "y": 27,
+                  "expected": [
+                    224,
+                    64,
+                    32
+                  ],
+                  "actual": [
+                    224,
+                    64,
+                    32
+                  ]
+                },
+                {
+                  "x": 32,
+                  "y": 31,
+                  "expected": [
+                    255,
+                    224,
+                    128
+                  ],
+                  "actual": [
+                    255,
+                    224,
+                    128
+                  ]
+                }
+              ]
+            }
+          ],
+          "pdfSha256": "9c527d1432bd5cdb07147442551ffcd5f509aab5928c0745861d4a351ec75ec8",
+          "previewSha256": "33a7c7d8115e558d246179aefe292c64c2e29b5bab80312afc1d6820262490fc",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        },
+        {
+          "name": "visibility-script-blocks",
+          "pages": 1,
+          "text": "Document AAA\nBefore\nAfter",
+          "probes": [],
+          "pdfSha256": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+          "previewSha256": "fc257aa698b0ae28303656ea66ac3efd25542c0d9626f07b19a64b3f8f28920b",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        },
+        {
+          "name": "visibility-style-blocks",
+          "pages": 1,
+          "text": "Document AAA\nBefore\nAfter",
+          "probes": [],
+          "pdfSha256": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+          "previewSha256": "fc257aa698b0ae28303656ea66ac3efd25542c0d9626f07b19a64b3f8f28920b",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        },
+        {
+          "name": "visibility-hidden-span-paragraph",
+          "pages": 1,
+          "text": "Document AAA\nBefore After",
+          "probes": [],
+          "pdfSha256": "17cd57e1c75e11561e6a2328aed0ec906a2e6994397cdde064ab56bc14c90f2e",
+          "previewSha256": "8651823d0af4cd652ab6c35598d260b467d74a8b7256cf3e66f49356e904401c",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        },
+        {
+          "name": "visibility-script-revert",
+          "pages": 1,
+          "text": "Document AAA\nBefore\nAfter",
+          "probes": [],
+          "pdfSha256": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7",
+          "previewSha256": "fc257aa698b0ae28303656ea66ac3efd25542c0d9626f07b19a64b3f8f28920b",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        },
+        {
+          "name": "visibility-script-inline-paragraph",
+          "pages": 1,
+          "text": "Document AAA\nBefore SOURCE_SENTINEL After",
+          "probes": [],
+          "pdfSha256": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947",
+          "previewSha256": "44483eea283bae46fdd816f2784cef751d5ab48bd01f34043366fb9ccedea8ac",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        },
+        {
+          "name": "decoration-inter-40-underline-font",
+          "pages": 1,
+          "text": "Invoice AAA HHH",
+          "probes": [],
+          "strokeWidthsPt": [
+            2.051
+          ],
+          "pdfSha256": "8c431024572d470f85ce6b82cec990ad7b34d3aed8e77760d5ee378a1bf1f25c",
+          "previewSha256": "4195165f1f347b30610440c5419b8c0e3a6c7a52c86142e54a47bf5ddba1ac1a",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        },
+        {
+          "name": "decoration-inter-40-underline-length",
+          "pages": 1,
+          "text": "Invoice AAA HHH",
+          "probes": [],
+          "strokeWidthsPt": [
+            2.051
+          ],
+          "pdfSha256": "8c431024572d470f85ce6b82cec990ad7b34d3aed8e77760d5ee378a1bf1f25c",
+          "previewSha256": "4195165f1f347b30610440c5419b8c0e3a6c7a52c86142e54a47bf5ddba1ac1a",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        },
+        {
+          "name": "decoration-inter-40-underline-auto",
+          "pages": 1,
+          "text": "Invoice AAA HHH",
+          "probes": [],
+          "strokeWidthsPt": [
+            3.0
+          ],
+          "pdfSha256": "bdf2de5e5f1a102aa2b81a931eb35517cba323136742572fae95eb134f5b13bd",
+          "previewSha256": "903ba24e63b532b16d8e8571ae634bfbc6455c36b4618d5447f1b928bca43ee1",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        }
+      ]
+    }
+  },
+  "nextjs": {
+    "node": "v22.23.3",
+    "platform": "win32",
+    "next": "16.3.8",
+    "isolation": "process",
+    "packageLockSha256": "a48102d9affaa7d6f424b69835ea837737848abcfd321c8f5f12db88ad63de94",
+    "pages": 1,
+    "pdfSha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+    "checks": [
+      {
+        "name": "standalone artifact is isolated from the source application",
+        "passed": true
+      },
+      {
+        "name": "standalone tracing retains the verified engine and all bundled fonts",
+        "passed": true
+      },
+      {
+        "name": "isolated production server starts on loopback",
+        "passed": true
+      },
+      {
+        "name": "app exposes the sample download without a prefetched render",
+        "passed": true
+      },
+      {
+        "name": "standalone server includes the actual PDF preview asset",
+        "passed": true
+      },
+      {
+        "name": "production route returns complete private PDF bytes with a useful filename",
+        "passed": true
+      },
+      {
+        "name": "unknown invoice IDs return a private JSON error",
+        "passed": true
+      },
+      {
+        "name": "unsupported writes are rejected by the route",
+        "passed": true
+      },
+      {
+        "name": "a concurrent burst receives explicit capacity errors instead of an unbounded queue",
+        "passed": true
+      },
+      {
+        "name": "normal PDF downloads recover after a capacity burst",
+        "passed": true
+      },
+      {
+        "name": "a real missing-glyph failure returns a generic non-PDF error",
+        "passed": true
+      },
+      {
+        "name": "a valid document renders after an engine failure",
+        "passed": true
+      },
+      {
+        "name": "the route enforces its page cap against a real multipage document",
+        "passed": true
+      },
+      {
+        "name": "a valid document renders after the page limit rejects a job",
+        "passed": true
+      },
+      {
+        "name": "a failed render child returns an HTTP error while the production server stays alive",
+        "passed": true
+      },
+      {
+        "name": "the production server returns a valid PDF after a render-process failure",
+        "passed": true
+      },
+      {
+        "name": "client JavaScript excludes the server PDF engine and worker",
+        "passed": true
+      }
+    ]
+  },
+  "fixturesSha256": "0ec4c2e4c137ed5519b3a0d55b74d95653826e6423cc5af3f7e41ca5b99cac8e",
+  "scope": "Fresh published-package installations, Chrome editor/PDF downloads, and isolated Next.js production HTTP checks. Firefox, WebKit and React StrictMode are CI gates; no hosted-provider, authentication, universal CSS or conformance claim."
+}

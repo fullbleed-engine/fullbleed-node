@@ -1,0 +1,133 @@
+{
+  "schema": "fullbleed.starter.engine-fixes.v1",
+  "upstreamRelease": "2.5.24",
+  "sources": [
+    {
+      "path": "test/fixtures/hidden-text-2.5.24.json",
+      "sha256": "d33c73024b1886825af3bbd164aae6c1857232aabf86aa2129cd6e4ce37aa639",
+      "url": "https://github.com/fullbleed-engine/fullbleed-node/blob/v0.5.1/test/fixtures/hidden-text-2.5.24.json"
+    },
+    {
+      "path": "test/fixtures/decoration-thickness.json",
+      "sha256": "61d464532afbdcafb5579cc8875d761eb69b771a835bcf8483f1bf732e5f8181",
+      "url": "https://github.com/fullbleed-engine/fullbleed-node/blob/v0.5.1/test/fixtures/decoration-thickness.json"
+    }
+  ],
+  "font": {
+    "file": "Inter-Variable.ttf",
+    "sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
+    "unitsPerEm": 2048,
+    "underlineThickness": 140
+  },
+  "cases": [
+    {
+      "name": "visibility-script-blocks",
+      "family": "visibility",
+      "html": "<h1>Document AAA</h1><p>Before</p><script class=\"probe\">SOURCE_SENTINEL</script><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "expected": {
+        "text": "Document AAA Before After",
+        "pdfSha256": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7"
+      }
+    },
+    {
+      "name": "visibility-style-blocks",
+      "family": "visibility",
+      "html": "<h1>Document AAA</h1><p>Before</p><style class=\"probe\">SOURCE_SENTINEL</style><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "expected": {
+        "text": "Document AAA Before After",
+        "pdfSha256": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7"
+      }
+    },
+    {
+      "name": "visibility-hidden-span-paragraph",
+      "family": "visibility",
+      "html": "<h1>Document AAA</h1><p>Before <span style=\"display:none\">HIDDEN_SENTINEL<br>LEAK</span> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "expected": {
+        "text": "Document AAA Before After",
+        "pdfSha256": "17cd57e1c75e11561e6a2328aed0ec906a2e6994397cdde064ab56bc14c90f2e"
+      }
+    },
+    {
+      "name": "visibility-script-revert",
+      "family": "visibility",
+      "html": "<h1>Document AAA</h1><p>Before</p><script class=\"probe\">SOURCE_SENTINEL</script><p>After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:block;display:revert}",
+      "pages": 1,
+      "previewDpi": 96,
+      "expected": {
+        "text": "Document AAA Before After",
+        "pdfSha256": "941b22bd5f30bf0f3a46faa6d749ee865eb785dfa623089f3dad0fe7d14a61f7"
+      }
+    },
+    {
+      "name": "visibility-script-inline-paragraph",
+      "family": "visibility",
+      "html": "<h1>Document AAA</h1><p>Before <script class=\"probe\">SOURCE_SENTINEL</script> After</p>",
+      "css": "@page {size:500px 300px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Helvetica;font-size:16px;line-height:24px}\nh1 {font-size:18px;line-height:26px;margin:0 0 12px}\np,pre {margin:0} table {border-collapse:collapse} td {padding:0}\n.flex {display:flex;gap:12px} .grid {display:grid;grid-template-columns:1fr 1fr}\n.contents {display:contents} .decorated {color:#173b6b}\n.probe {display:inline}",
+      "pages": 1,
+      "previewDpi": 96,
+      "expected": {
+        "text": "Document AAA Before SOURCE_SENTINEL After",
+        "pdfSha256": "0ff638f747481f71797696ff4b0c191b4505ca6bb9bf13fb073822d0c59f2947"
+      }
+    },
+    {
+      "name": "decoration-inter-40-underline-font",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:underline;text-decoration-thickness:from-font}",
+      "pages": 1,
+      "previewDpi": 96,
+      "expected": {
+        "variant": "font",
+        "fontSizePx": 40,
+        "lines": "underline",
+        "widthPt": 2.051,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-40-underline-length",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:underline;text-decoration-thickness:2.051pt}",
+      "pages": 1,
+      "previewDpi": 96,
+      "expected": {
+        "variant": "length",
+        "fontSizePx": 40,
+        "lines": "underline",
+        "widthPt": 2.051,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    },
+    {
+      "name": "decoration-inter-40-underline-auto",
+      "family": "decoration",
+      "html": "<p>Invoice AAA HHH</p>",
+      "css": "@page {size:480px 140px;margin:0}\nhtml,body {margin:0;padding:0;color:black;background:white}\np {position:absolute;left:24px;top:30px;margin:0;line-height:64px;text-decoration-color:#d00000;text-decoration-skip-ink:none;text-underline-offset:8px}\np {font-family:Inter;font-size:40px;text-decoration-line:underline;text-decoration-thickness:auto}",
+      "pages": 1,
+      "previewDpi": 96,
+      "expected": {
+        "variant": "auto",
+        "fontSizePx": 40,
+        "lines": "underline",
+        "widthPt": 3.0,
+        "strokes": 1,
+        "text": "Invoice AAA HHH"
+      }
+    }
+  ],
+  "scope": "Five released visibility fixtures and three underline-thickness variants through real editors and downloads; no universal CSS parity claim."
+}
