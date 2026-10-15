@@ -64,7 +64,7 @@ jobs:
           npm run render:fonts -- --package-root output/font-baseline-consumer/node_modules/fullbleed --out output/font-baseline
           npm run verify:fonts -- --evidence-root output/font-baseline --allow-legacy-metadata
           npm run render:fonts
-          npm run verify:fonts -- --baseline output/font-baseline --reviewed-layout test/fixtures/inline-layout-2.5.22.json
+          npm run verify:fonts -- --baseline output/font-baseline --reviewed-layout test/fixtures/inline-layout-2.5.24.json
       - name: Verify installed custom font families against explicit faces
         run: |
           npm run render:families
@@ -148,7 +148,7 @@ jobs:
         run: |
           python -m pip install pypdf==6.19.0 pypdfium2==5.14.0 fonttools==4.65.0 pillow==12.3.0
           npm run render:fonts
-          npm run verify:fonts -- --reviewed-layout test/fixtures/inline-layout-2.5.22.json
+          npm run verify:fonts -- --reviewed-layout test/fixtures/inline-layout-2.5.24.json
           npm run render:families
           npm run verify:families
           npm run render:inline

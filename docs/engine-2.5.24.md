@@ -1,8 +1,8 @@
 # Engine 2.5.24 update checks
 
-The engine update is being prepared. Publishing it requires the unmodified
-published 2.5.24 crate, a locked WebAssembly build, an isolated npm-tarball
-installation, and the Node and browser checks below.
+Version 0.5.1 wraps the unmodified published 2.5.24 crate. The checks below
+cover the locked WebAssembly build, an isolated npm-tarball installation,
+independent PDF readers, and actual browser downloads.
 
 The update carries two fixes:
 

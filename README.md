@@ -14,8 +14,8 @@ also includes a ZIP for local development.
 Using Vue? The [Vue and TypeScript starter](examples/vue) includes editable
 templates, automatic previews, downloads, and a reusable `usePdfPreview` composable.
 
-This is an optional integration around the published **Fullbleed 2.5.22** engine.
-The package has its own version, **0.5.0**. Node applications can use a shared
+This is an optional integration around the published **Fullbleed 2.5.24** engine.
+The package has its own version, **0.5.1**. Node applications can use a shared
 render queue to bound active renders and waiting requests, include queue time in
 deadlines, cancel waiting jobs, and stop rendering cleanly during shutdown.
 The browser entry renders in a Web Worker, and the Node API supports worker and
@@ -24,6 +24,14 @@ process isolation. See the [browser guide](docs/browser.md),
 [process isolation guide](docs/process-isolation.md),
 [font-family checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-families.md), and
 [embedded-font checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-subsets.md) for the retained fixtures.
+
+Version 0.5.1 brings the engine's hidden-text and font-decoration fixes to both
+JavaScript entries. Script/style elements and `display:none` descendants stay
+hidden, while explicit author display overrides remain supported. Font-selected
+decoration thickness uses the selected face's metrics. The
+[engine update checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/engine-2.5.24.md)
+cover source/control PDFs, font metrics, and browser downloads. Embedded
+stylesheets are still ignored; supply template CSS through the `css` option.
 
 Version 0.5.0 adds `defaultStyles: false` to both JavaScript entries. Use it to
 preserve a template's original CSS, including font inheritance from `html`,
@@ -43,7 +51,7 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.5.0`.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.5.1`.
 Package archives and retained PDF/PNG evidence are attached to each
 [GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
 The [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification)
