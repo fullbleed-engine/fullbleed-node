@@ -1,6 +1,6 @@
 /** @jsxImportSource fullbleed/ui */
 import { Document, Paragraph, Strong, Heading, Stack, Row, LayoutGrid, Image, Link,
-  StyleSheet, component, type Child } from 'fullbleed/ui';
+  StyleSheet, component, toHtml, type Child } from 'fullbleed/ui';
 
 const Label = component(({ value, children }: { value: string; children?: Child }) =>
   <Paragraph><Strong>{value}</Strong>{children}</Paragraph>);
@@ -12,6 +12,11 @@ const Page = () => <Document title="Report" styles={new StyleSheet({ '@page': { 
   <><p data-amount={0} aria-hidden={false}>Intrinsic tags remain available</p></>
 </Document>;
 const result: Child = <Page />;
+const styled: string = toHtml(<Page />, { includeStyles: true });
+const plain: string = toHtml(<><Paragraph>One</Paragraph><Paragraph>Two</Paragraph></>, { includeStyles: false });
+// @ts-expect-error Export styles cannot be silently discarded in JSX either.
+toHtml(<Page />, { includeStyles: false, styles: 'p {}' });
+void [styled, plain];
 void result;
 // @ts-expect-error Custom component props remain checked.
 const missing = <Label />;

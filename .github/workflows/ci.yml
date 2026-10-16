@@ -234,6 +234,7 @@ jobs:
       - run: python -m playwright install --with-deps ${{ matrix.browser }}
         timeout-minutes: 5
       - run: python tools/check-browser.py --browser ${{ matrix.browser }} --label ci
+      - run: python tools/check-html-export.py --browser ${{ matrix.browser }} --label ci
       - run: python tools/verify-engine-regressions.py output/browser-${{ matrix.browser }}-ci --browser
       - run: python tools/verify-hidden-text.py output/browser-${{ matrix.browser }}-ci --browser
       - uses: actions/upload-artifact@v4
@@ -246,4 +247,5 @@ jobs:
             output/browser-verification/*.pdf
             output/browser-verification/*.png
             output/browser-${{ matrix.browser }}-ci/
+            output/html-export-${{ matrix.browser }}-ci/
           retention-days: 14

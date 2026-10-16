@@ -288,5 +288,39 @@ class ComponentReleaseEvidenceTests(unittest.TestCase):
                     release_check.verify_component_evidence(self.report)
 
 
+class HtmlExportReleaseEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        source = hashlib.sha256(release_check.HTML_EXPORT_SOURCE.read_bytes()).hexdigest()
+        self.report = dict(package_version='0.7.0', package_sha256='a' * 64,
+            html_export=[dict(browser=browser, ok=True, package_version='0.7.0', tarball_sha256='a' * 64,
+                source_sha256=source, documents=8, checks=48) for browser in ['chrome', 'firefox', 'webkit']],
+            installed_matrix=[dict(component_html_exports_equal=True, html_export_fixtures=8) for _ in range(9)])
+
+    def test_matching_html_export_evidence_is_accepted(self):
+        release_check.verify_html_export_evidence(self.report)
+
+    def test_missing_or_duplicate_browser_is_rejected(self):
+        self.report['html_export'][2]['browser'] = 'chrome'
+        with self.assertRaisesRegex(ValueError, 'all three browser'):
+            release_check.verify_html_export_evidence(self.report)
+
+    def test_stale_or_incomplete_exports_are_rejected(self):
+        for key, value in [('package_version', '0.6.0'), ('tarball_sha256', 'b' * 64),
+                           ('source_sha256', 'b' * 64), ('documents', 7), ('checks', 0), ('ok', False)]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['html_export'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'Static HTML export evidence'):
+                    release_check.verify_html_export_evidence(self.report)
+
+    def test_missing_installed_export_evidence_is_rejected(self):
+        for key, value in [('component_html_exports_equal', False), ('html_export_fixtures', 7)]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['installed_matrix'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'Installed styled and unstyled'):
+                    release_check.verify_html_export_evidence(self.report)
+
+
 if __name__ == '__main__':
     unittest.main()

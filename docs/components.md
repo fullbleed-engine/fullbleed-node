@@ -32,7 +32,7 @@ await writeFile('invoice.pdf', result.pdf);
 await writeFile('invoice.png', result.previews[0]);
 ```
 
-Save this as `invoice.mjs`, install `fullbleed@0.6.0`, and run `node invoice.mjs`
+Save this as `invoice.mjs`, install `fullbleed@0.7.0`, and run `node invoice.mjs`
 with Node 22 or newer. Functions need no special wrapper. The optional
 `component(fn)` identity helper preserves the function and its types.
 
@@ -233,13 +233,68 @@ stylesheets; use raw CSS for nested at-rules.
 `document.toCss(...overrides)` returns layout defaults, document styles and then
 overrides in cascade order. `document.toHtml()` returns HTML only. When calling
 the underlying API yourself, pass both: `renderPdf({ html: doc.toHtml(), css: doc.toCss() })`.
-Fullbleed does not load embedded stylesheets or remote CSS implicitly.
+The pinned PDF engine does not load embedded stylesheets or remote CSS implicitly.
 
 The document's `title` and `lang` describe its HTML. `page` and `margin` are
 authoring metadata; set actual PDF page geometry in `@page` CSS. They do not set
 PDF metadata or imply a standards profile. The renderer's existing
 `defaultStyles` option is preserved; use `false` when your stylesheet owns all
 font defaults.
+
+## Export HTML with or without styles
+
+Version 0.7.0 adds explicit HTML export options. Import only `fullbleed/ui` to use
+the authoring layer without starting the PDF engine, a worker, or a browser.
+
+```javascript
+import { Document, Heading, Paragraph, Row, toHtml } from 'fullbleed/ui';
+
+const summary = Row(
+  Paragraph({ className: 'customer' }, 'Northstar Studio'),
+  Paragraph({ className: 'amount' }, 'USD 1,200.00'),
+);
+const report = Document({ title: 'Account summary', styles: {
+  '.amount': { color: '#175c52', fontWeight: 700 },
+} }, Heading({ level: 1 }, 'Account summary'), summary);
+
+const styledPage = report.toHtml({ includeStyles: true });
+const unstyledPage = report.toHtml({ includeStyles: false });
+const styledFragment = toHtml(summary, {
+  includeStyles: true,
+  styles: { '.amount': { color: '#175c52', fontWeight: 700 } },
+});
+```
+
+| Call | Result |
+| --- | --- |
+| `doc.toHtml({ includeStyles: true })` | Complete HTML document with component defaults and attached CSS in one generated `<style>` element in its head; inline styles remain |
+| `doc.toHtml({ includeStyles: true, styles: overrides })` | The same document, with extra CSS appended after its attached styles |
+| `doc.toHtml({ includeStyles: false })` | Complete HTML document with inline styles, authored `<style>` elements and stylesheet `<link>` elements removed recursively |
+| `node.toHtml(options)` or `toHtml(children, options)` | An HTML fragment; styled mode prefixes component defaults and explicit `styles` once |
+| `doc.toHtml()` | The existing separate HTML/CSS form: inline styles remain and no stylesheet is added |
+
+Class names, content and semantic tags remain in unstyled mode, ready for the
+host application's stylesheet. SVG presentation attributes such as `fill` remain
+part of the artwork. Export does not mutate the component tree or its styles.
+The same options work with JSX: `toHtml(<Report />, { includeStyles: true })`.
+Supply `styles` only together with `includeStyles: true`; contradictory options
+throw instead of silently discarding your CSS.
+
+Styled fragments include their own component rules and the CSS supplied in that
+call. They do not inherit a separate `Document`'s stylesheet. When composing many
+fragments, export their array once, or attach your CSS to a host document.
+Use `Document({ includeComponentStyles: false, styles: yourStyles }, ...)` to
+control the complete stylesheet yourself.
+
+Export adds no JavaScript or Bootstrap behavior. Fonts, images and external CSS
+are not fetched or embedded; authored URLs remain URLs. Browsers apply their own
+CSS support and pagination, so browser HTML is not a promise of identical PDF
+layout. Values used as text and attributes are escaped, but developer-authored
+CSS, tags and URLs are not sanitized. Unstyled export is not a security sanitizer.
+
+For PDFs, continue using `report.renderPdf(renderer)` or
+`renderDocument(report, renderer)`. These pass HTML and CSS separately to the
+pinned engine; `includeStyles` changes HTML export only.
 
 ## Queues and browsers
 
@@ -267,8 +322,10 @@ node examples/components/render-tsx.mjs
 Package checks install the exact tarball in isolated consumers with spaces in
 their paths, then render seven fixtures: default, paid, empty, escaped, credit,
 60-row invoices and named layouts. They compare function/TSX HTML, CSS, PDFs and
-all previews; exercise the queue and recovery paths; and inspect PDF text, fonts,
+all previews; compare styled and unstyled exports; exercise the queue and recovery paths; and inspect PDF text, fonts,
 page bounds and layout coordinates with independent readers. Browser checks use
 the installed UI/JSX assets, compare and download every fixture, and edit a
-customer name through a real form. These are scoped fixture checks, not a claim
+customer name through a real form. Separate static HTML checks compare installed
+Node/browser export bytes, inspect computed styles and CSS removal, and prohibit
+worker/Wasm startup while importing only the authoring modules. These are scoped fixture checks, not a claim
 of full Python/JavaScript API parity or standards conformance.
