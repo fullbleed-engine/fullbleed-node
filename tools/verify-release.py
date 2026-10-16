@@ -18,6 +18,7 @@ ENGINE_REGRESSION_SOURCE = Path(__file__).resolve().parents[1] / 'test/fixtures/
 DECORATION_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('decoration-thickness.json')
 HIDDEN_TEXT_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('hidden-text-2.5.24.json')
 COMPONENT_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'component-cases.mjs'
+HTML_EXPORT_SOURCE = Path(__file__).resolve().parent / 'html-export-fixtures.mjs'
 
 
 def require(condition, message):
@@ -41,6 +42,21 @@ def verify_component_evidence(report):
     require(all(item.get('component_cases') == 7 and item.get('component_editor_download') is True
                 and item.get('component_source_sha256') == source_sha for item in report['browser_matrix']),
             'Browser component/JSX or editor download evidence is incomplete')
+
+
+def verify_html_export_evidence(report):
+    source_sha = hashlib.sha256(HTML_EXPORT_SOURCE.read_bytes()).hexdigest()
+    browsers = report.get('html_export', [])
+    require(len(browsers) == 3 and {item.get('browser') for item in browsers} == {'chrome', 'firefox', 'webkit'},
+            'Static HTML export requires all three browser checks')
+    require(all(item.get('ok') is True and item.get('package_version') == report['package_version']
+                and item.get('tarball_sha256') == report['package_sha256'] and item.get('source_sha256') == source_sha
+                and item.get('documents') == 8 and item.get('checks', 0) >= 48 for item in browsers),
+            'Static HTML export evidence is incomplete or targets another package, source or tarball')
+    installed = report.get('installed_matrix', [])
+    require(len(installed) == 9 and all(item.get('component_html_exports_equal') is True
+                and item.get('html_export_fixtures') == 8 for item in installed),
+            'Installed styled and unstyled HTML evidence is incomplete')
 
 
 def verify_binding(version, run_id, run, release, tag_commit, report):
@@ -138,6 +154,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
                         'Native/WASI hidden-text comparison is incomplete or duplicated')
         if release_version >= (0, 6, 0):
             verify_component_evidence(report)
+        if release_version >= (0, 7, 0):
+            verify_html_export_evidence(report)
 
 
 def verify_tarball(data, info, report):

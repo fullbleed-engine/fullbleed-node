@@ -172,6 +172,7 @@ await copyFile(join(root, 'test/component-cases.mjs'), join(install, 'components
 await build({ entryPoints: [join(root, 'examples/components/invoice.tsx')], outfile: join(install, 'components/invoice-tsx.mjs'),
   bundle: true, packages: 'external', platform: 'node', format: 'esm', jsx: 'automatic', logLevel: 'silent' });
 await copyFile(join(root, 'tools/check-installed-components.mjs'), join(install, 'check-components.mjs'));
+await copyFile(join(root, 'tools/html-export-fixtures.mjs'), join(install, 'html-export-fixtures.mjs'));
 const componentOutput = join(root, 'output/component-verification');
 const componentRun = spawnSync(process.execPath, ['check-components.mjs', componentOutput], { cwd: install, env, encoding: 'utf8', timeout: 120000 });
 await writeFile(join(output, 'component-tests.log'), componentRun.stdout + componentRun.stderr);

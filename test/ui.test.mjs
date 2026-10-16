@@ -126,3 +126,64 @@ test('document adapter preserves renderer inputs, binding, results and errors', 
   assert.throws(() => renderDocument(doc, renderer, { html: 'Override' }), /owns html and css/);
   assert.throws(() => renderDocument(doc), /explicit renderPdf/);
 });
+
+test('styled HTML export embeds document CSS once in cascade order without changing legacy export', () => {
+  const doc = Document({ title: 'Order & copy', styles: { '.notice': { color: 'green' } } },
+    Stack(Paragraph({ className: 'notice', style: { fontWeight: 700 } }, 'Ready')));
+  const legacy = doc.toHtml(), css = doc.toCss();
+  const html = doc.toHtml({ includeStyles: true, styles: { '.notice': { color: 'blue' } } });
+  assert.equal((html.match(/<style>/g) ?? []).length, 1);
+  assert(html.includes(`<style>${css}\n.notice { color: blue; }</style></head>`));
+  assert(html.includes('<title>Order &amp; copy</title>'));
+  assert(html.includes('style="font-weight: 700;"'));
+  assert.equal(toHtml(doc, { includeStyles: true }), doc.toHtml({ includeStyles: true }));
+  assert.equal(doc.toHtml(), legacy);
+  assert.equal(doc.toCss(), css);
+  assert(!legacy.includes('<style>'));
+  assert(!Document({ includeComponentStyles: false }, 'Plain').toHtml({ includeStyles: true }).includes('<style>'));
+});
+
+test('unstyled export removes nested CSS sources and inline attributes while preserving content and classes', () => {
+  const tree = Box({ className: 'custom', style: { padding: '12pt' } },
+    el('STYLE', null, '.custom { color:red }'),
+    el('link', { REL: 'alternate\tStyleSheet', href: 'theme.css' }),
+    el('link', { rel: 'icon', href: 'icon.png' }),
+    el('p', { STYLE: 'color:red', className: 'note', 'data-state': 'ready' }, 'A & B'));
+  const legacy = tree.toHtml();
+  assert.equal(tree.toHtml({ includeStyles: false }),
+    '<div class="ui-box custom"><link rel="icon" href="icon.png"><p class="note" data-state="ready">A &amp; B</p></div>');
+  const doc = Document({ styles: '.note { color:blue }' }, tree);
+  assert(!/\bstyle[= >]|stylesheet|theme\.css/i.test(doc.toHtml({ includeStyles: false })));
+  assert.equal(tree.toHtml(), legacy);
+  assert(doc.toCss().includes('.note { color:blue }'));
+});
+
+test('fragment export collects one stylesheet for ordered children and supports CommonJS objects', () => {
+  let consumed = 0;
+  function* children() { consumed++; yield Paragraph({ className: 'note' }, 'One'); yield Strong('Two'); }
+  const html = toHtml(children(), { includeStyles: true, styles: '.note { color:blue }' });
+  assert.equal(consumed, 1);
+  assert.equal((html.match(/<style>/g) ?? []).length, 1);
+  assert(html.endsWith('<p class="note">One</p><strong>Two</strong>'));
+  const cjs = createRequire(import.meta.url)('fullbleed/ui');
+  assert.equal(cjs.toHtml(cjs.Paragraph({ style: 'color:red' }, 'CJS'), { includeStyles: false }), '<p>CJS</p>');
+});
+
+test('generated style text cannot terminate its HTML element', () => {
+  const css = '.note::before { content: "</StYle><script>bad()</script>"; }';
+  const html = Document({ styles: css }, Paragraph({ className: 'note' }, 'Text')).toHtml({ includeStyles: true });
+  assert.equal((html.match(/<\/style>/gi) ?? []).length, 1);
+  assert(html.includes('content: "<\\/StYle><script>bad()</script>"'));
+  const media = '@media (width < 600px) { .note { color:red } }';
+  assert(Document({ styles: media }, 'Text').toHtml({ includeStyles: true }).includes(media));
+});
+
+test('HTML export rejects misspelled and contradictory options', () => {
+  const node = Paragraph('Text'), doc = Document(node);
+  for (const options of [null, true, [], { include_styles: true }, { includeStyles: 'yes' },
+    { styles: 'p{}' }, { includeStyles: false, styles: 'p{}' }]) {
+    assert.throws(() => node.toHtml(options), TypeError);
+    assert.throws(() => doc.toHtml(options), TypeError);
+    assert.throws(() => toHtml([node], options), TypeError);
+  }
+});

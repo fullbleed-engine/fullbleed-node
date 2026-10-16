@@ -1,6 +1,6 @@
 {
   "name": "fullbleed",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Generate PDFs from function components, JSX, or HTML/CSS in Node.js or a browser worker, with bundled fonts and PNG previews.",
   "type": "module",
   "main": "./src/index.cjs",

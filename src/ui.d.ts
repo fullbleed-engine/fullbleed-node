@@ -8,6 +8,13 @@ export type StyleValue = string | number | false | null | undefined | readonly (
 export type StyleMap = Readonly<Record<string, StyleValue>>;
 export type StyleFragment = Style | StyleMap | string | false | null | undefined | readonly StyleFragment[];
 export type SheetFragment = StyleSheet | Readonly<Record<string, StyleFragment>> | string | false | null | undefined | readonly SheetFragment[];
+/** Omitted options preserve separate HTML/CSS export and authored inline styles.
+ * true embeds CSS once; false removes inline styles, style elements and stylesheet links.
+ * Neither mode loads the PDF engine, JavaScript, images or fonts.
+ */
+export type HtmlExportOptions =
+  | { includeStyles: true; styles?: SheetFragment }
+  | { includeStyles?: false; styles?: never };
 export type AttributeValue = string | number | bigint | boolean | null | undefined;
 /** Low-level attributes. Values are escaped; CSS, tag names and URLs remain developer authored. */
 export type Props = Readonly<Record<string, AttributeValue | StyleFragment | Child>>;
@@ -65,12 +72,13 @@ export class Element {
   readonly props: Readonly<Record<string, AttributeValue>>;
   readonly children: readonly Child[];
   constructor(tag: string, props?: Props, children?: Iterable<Child>);
-  toHtml(): string;
+  toHtml(options?: HtmlExportOptions): string;
 }
 export function el(tag: string, props: Props | null, ...children: Child[]): Element;
 /** Identity helper preserving the function's parameters and result. Ordinary functions work too. */
 export function component<F extends (...args: never[]) => Renderable>(fn: F): F;
-export function toHtml(node: Renderable): string;
+/** Styled fragments include component layout defaults and explicit export styles. */
+export function toHtml(node: Renderable, options?: HtmlExportOptions): string;
 export function Fragment(props: { children?: Child; key?: string | number | bigint }): readonly Child[];
 export function Fragment(...children: Child[]): readonly Child[];
 
@@ -130,8 +138,10 @@ export class DocumentArtifact {
   readonly styles: StyleSheet;
   readonly includeComponentStyles: boolean;
   constructor(options?: DocumentOptions, children?: Iterable<Child>);
-  /** HTML only: pass toCss() alongside it when calling the engine yourself. */
-  toHtml(): string;
+  /** Default: separate HTML/CSS. Styled export embeds toCss(styles) in the head.
+   * Unstyled export keeps semantic markup and class names, with no CSS declarations.
+   */
+  toHtml(options?: HtmlExportOptions): string;
   toCss(...overrides: SheetFragment[]): string;
   renderPdf<O extends RenderInput, R>(renderer: Renderer<O, R>, options?: DocumentRenderOptions<O>): R;
 }

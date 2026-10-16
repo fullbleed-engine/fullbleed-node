@@ -12,11 +12,18 @@ import { jsxDEV } from 'fullbleed/ui/jsx-dev-runtime';
 import { Invoice } from './components/document.mjs';
 import { Invoice as TsxInvoice } from './components/invoice-tsx.mjs';
 import { componentCases } from './components/cases.mjs';
+import { htmlExportCases } from './html-export-fixtures.mjs';
 
 const out = resolve(process.argv[2]), hash = bytes => createHash('sha256').update(bytes).digest('hex');
 await mkdir(out, { recursive: true });
 const data = JSON.parse(await readFile(new URL('./components/data.json', import.meta.url), 'utf8'));
 const cases = componentCases(data, Invoice), tsxCases = componentCases(data, TsxInvoice), records = [];
+const exports = htmlExportCases(), exportRecords = [];
+assert.equal(exports.styled, exports.jsx, 'Function/JSX styled export');
+for (const [name, html] of Object.entries(exports)) {
+  await writeFile(join(out, 'export-' + name + '.html'), html);
+  exportRecords.push({ name, sha256: hash(html) });
+}
 const queue = createRenderQueue({ concurrency: 2, maxQueue: 4 });
 try {
   for (const [index, { name, node, pages, text }] of cases.entries()) {
@@ -26,14 +33,21 @@ try {
     assert.equal(result.previews.length, pages, name);
     assert.equal(toHtml(node), toHtml(tsxCases[index].node), name + ': JSX HTML');
     assert.equal(node.toCss(), tsxCases[index].node.toCss(), name + ': JSX CSS');
+    const styled = node.toHtml({ includeStyles: true }), unstyled = node.toHtml({ includeStyles: false });
+    assert.equal(styled, tsxCases[index].node.toHtml({ includeStyles: true }), name + ': JSX styled HTML');
+    assert.equal(unstyled, tsxCases[index].node.toHtml({ includeStyles: false }), name + ': JSX unstyled HTML');
+    assert(!/<style\b|\sstyle\s*=/i.test(unstyled), name + ': no exported CSS');
     assert.deepEqual(result.pdf, repeated.pdf, name + ': function/JSX repeated PDF');
     assert.deepEqual(result.previews, repeated.previews, name + ': function/JSX previews');
     await writeFile(join(out, name + '.html'), node.toHtml());
     await writeFile(join(out, name + '.css'), node.toCss());
+    await writeFile(join(out, name + '-styled.html'), styled);
+    await writeFile(join(out, name + '-unstyled.html'), unstyled);
     await writeFile(join(out, name + '.pdf'), result.pdf);
     for (const [i, png] of result.previews.entries()) await writeFile(join(out, `${name}-${i + 1}.png`), png);
     records.push({ name, pages, missingGlyphs: result.missingGlyphs, pdf: hash(result.pdf),
-      previews: result.previews.map(hash), text, jsxHtmlCssEqual: true, repeatedPdfPreviewsEqual: true });
+      previews: result.previews.map(hash), text, styledHtml: hash(styled), unstyledHtml: hash(unstyled),
+      jsxHtmlCssEqual: true, jsxStyledUnstyledEqual: true, repeatedPdfPreviewsEqual: true });
   }
   const cjs = createRequire(import.meta.url)('fullbleed/ui');
   const baseline = await renderDocument(jsx(Document, { children: jsxDEV(Paragraph, { children: 'Installed JSX' }) }), renderPdf);
@@ -46,7 +60,7 @@ try {
   const recovered = await cases[0].node.renderPdf(queue, { defaultStyles: false });
   assert.equal(hash(recovered.pdf), records[0].pdf);
   const receipt = { ok: true, packageVersion: version, engineVersion, platform: process.platform,
-    records, cjsJsxEqual: true, cancellationTimeoutInvalidOptionsRecovered: true, explicitQueue: true };
+    records, exportRecords, cjsJsxEqual: true, cancellationTimeoutInvalidOptionsRecovered: true, explicitQueue: true };
   await writeFile(join(out, 'verification.json'), JSON.stringify(receipt, null, 2) + '\n');
   console.log(JSON.stringify({ ok: true, package: version, documents: records.length, pages: records.reduce((n, r) => n + r.pages, 0) }));
 } finally { await queue.close(); }

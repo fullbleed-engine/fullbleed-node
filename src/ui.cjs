@@ -59,11 +59,12 @@ function snapshotProps(props) {
   return Object.freeze(result);
 }
 
-function attrs(props) {
+function attrs(props, stripStyles = false) {
   const output = [];
   for (const [key, value] of Object.entries(props)) {
     if (value == null) continue;
     const name = attrName(key);
+    if (stripStyles && name.toLowerCase() === 'style') continue;
     if (name === 'style') {
       if (value) output.push(`${name}="${escape(value)}"`);
     } else if (typeof value === 'boolean' && BOOLEAN.has(name.toLowerCase())) {
@@ -88,13 +89,32 @@ class Element {
     if (VOID.has(tag.toLowerCase()) && this.children.length) throw new TypeError(`Void element ${tag} cannot have children`);
     Object.freeze(this);
   }
-  toHtml() {
-    const start = `<${this.tag}${attrs(this.props)}>`;
-    return VOID.has(this.tag.toLowerCase()) ? start : start + this.children.map(render).join('') + `</${this.tag}>`;
-  }
+  toHtml(options) { return toHtml(this, options); }
 }
 
-function render(node) { return node instanceof Element ? node.toHtml() : escape(node); }
+function render(node, stripStyles = false) {
+  if (!(node instanceof Element)) return escape(node);
+  const tag = node.tag.toLowerCase();
+  if (stripStyles && (tag === 'style' || (tag === 'link' && Object.entries(node.props).some(
+    ([name, value]) => attrName(name).toLowerCase() === 'rel' && typeof value === 'string' &&
+      value.toLowerCase().split(/[\t\n\f\r ]+/).includes('stylesheet'))))) return '';
+  const start = `<${node.tag}${attrs(node.props, stripStyles)}>`;
+  return VOID.has(tag) ? start : start + node.children.map(child => render(child, stripStyles)).join('') + `</${node.tag}>`;
+}
+function htmlOptions(options = {}) {
+  if (!plain(options)) throw new TypeError('HTML export options must be a plain object');
+  const { includeStyles, styles, ...unknown } = options;
+  if (Object.keys(unknown).length) throw new TypeError(`Unknown HTML export option: ${Object.keys(unknown)[0]}`);
+  if (includeStyles !== undefined && typeof includeStyles !== 'boolean') throw new TypeError('includeStyles must be a boolean');
+  if (styles !== undefined && includeStyles !== true) throw new TypeError('Export styles require includeStyles: true');
+  return { includeStyles, styles };
+}
+function styleElement(css) {
+  // CSS is raw text in HTML. Escape only potential closing tags: escaping every
+  // '<' would change syntax such as @media (width < 600px). Escaping the slash
+  // preserves CSS string/URL values, including an already-escaped '<'.
+  return css ? `<style>${css.replace(/<\/style(?=[\t\n\f\r />])/gi, match => '<\\/' + match.slice(2))}</style>` : '';
+}
 function extractChildren(props, positional) {
   const { children, ...rest } = props;
   if (Object.hasOwn(props, 'children') && positional?.length)
@@ -106,9 +126,11 @@ function component(fn) {
   if (typeof fn !== 'function') throw new TypeError('A component must be a function');
   return fn;
 }
-function toHtml(node) {
-  if (node instanceof DocumentArtifact) return node.toHtml();
-  return flatten([node]).map(render).join('');
+function toHtml(node, options) {
+  if (node instanceof DocumentArtifact) return node.toHtml(options);
+  const { includeStyles, styles } = htmlOptions(options);
+  const body = flatten([node]).map(child => render(child, includeStyles === false)).join('');
+  return (includeStyles === true ? styleElement(new StyleSheet(componentStyles(), styles).toCss()) : '') + body;
 }
 
 class DocumentArtifact {
@@ -131,10 +153,12 @@ class DocumentArtifact {
       data_fb_role: 'document-root', data_fb_page: page }, extracted.children);
     Object.freeze(this);
   }
-  toHtml() {
+  toHtml(options) {
+    const { includeStyles, styles } = htmlOptions(options);
+    const sheet = includeStyles === true ? styleElement(this.toCss(styles)) : '';
     return '<!doctype html>' + `<html lang="${escape(this.lang)}"><head><meta charset="utf-8" />` +
       '<meta name="viewport" content="width=device-width, initial-scale=1" />' +
-      `<title>${escape(this.title)}</title></head><body>${this.root.toHtml()}</body></html>`;
+      `<title>${escape(this.title)}</title>${sheet}</head><body>${render(this.root, includeStyles === false)}</body></html>`;
   }
   toCss(...overrides) {
     return new StyleSheet(this.includeComponentStyles && componentStyles(), this.styles, ...overrides).toCss();
