@@ -20,8 +20,8 @@ download a PDF. Each starter also includes a ZIP for local development.
 Using Vue? The [Vue and TypeScript starter](examples/vue) includes editable
 templates, automatic previews, downloads, and a reusable `usePdfPreview` composable.
 
-This is an optional integration around the published **Fullbleed 2.5.24** engine.
-The package has its own version, **0.7.0**. Node applications can use a shared
+This is an optional integration around the published **Fullbleed 2.5.29** engine.
+The package has its own version, **0.7.1**. Node applications can use a shared
 render queue to bound active renders and waiting requests, include queue time in
 deadlines, cancel waiting jobs, and stop rendering cleanly during shutdown.
 The browser entry renders in a Web Worker, and the Node API supports worker and
@@ -31,14 +31,20 @@ process isolation. See the [browser guide](docs/browser.md),
 [font-family checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-families.md), and
 [embedded-font checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-subsets.md) for the retained fixtures.
 
-Version 0.7.0 adds [static HTML export with or without styles](docs/components.md#export-html-with-or-without-styles):
+Version 0.7.1 brings the stable engine's SVG stylesheet and inset-shadow fixes to
+Node.js and browser workers. The [paint checks](docs/engine-2.5.29.md) cover
+stylesheet selectors, inherited SVG colors and opacity, and clipped, blurred,
+translated and negative-spread inset shadows. The component and static HTML APIs
+remain unchanged.
+
+Version 0.7.0 added [static HTML export with or without styles](docs/components.md#export-html-with-or-without-styles):
 `doc.toHtml({ includeStyles: true })` embeds the document stylesheet;
 `doc.toHtml({ includeStyles: false })` removes CSS while preserving class names
 and content. Documents, fragments and JSX use the same export options. Importing
 `fullbleed/ui` does not load the PDF renderer or add JavaScript to the output.
 
 Version 0.6.0 added component authoring, attached stylesheets and explicit document
-rendering. The engine remains pinned to 2.5.24. The [component guide](docs/components.md)
+rendering. The [component guide](docs/components.md)
 includes zero-build JavaScript and TSX versions of a complete designed invoice.
 
 Version 0.5.1 brought the engine's hidden-text and font-decoration fixes to both
@@ -67,7 +73,7 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.7.0`.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.7.1`.
 Package archives and retained PDF/PNG evidence are attached to each
 [GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
 The [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification)

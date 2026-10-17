@@ -19,6 +19,7 @@ DECORATION_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('decoration-thickness.jso
 HIDDEN_TEXT_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('hidden-text-2.5.24.json')
 COMPONENT_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'component-cases.mjs'
 HTML_EXPORT_SOURCE = Path(__file__).resolve().parent / 'html-export-fixtures.mjs'
+ENGINE_PAINT_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('engine-paint-2.5.28.json')
 
 
 def require(condition, message):
@@ -57,6 +58,35 @@ def verify_html_export_evidence(report):
     require(len(installed) == 9 and all(item.get('component_html_exports_equal') is True
                 and item.get('html_export_fixtures') == 8 for item in installed),
             'Installed styled and unstyled HTML evidence is incomplete')
+
+
+def verify_engine_paint_evidence(report):
+    source = ENGINE_PAINT_SOURCE.read_bytes()
+    fixture = json.loads(source)
+    source_sha = hashlib.sha256(source).hexdigest()
+    names = {case['name'] for case in fixture['cases']}
+    families = {case['family'] for case in fixture['cases']}
+    require(report.get('engine_version') == fixture['engineVersion'], 'Paint fixtures target another engine')
+    evidence = report.get('engine_paint', [])
+    require(len(evidence) == 2 and {item.get('platform') for item in evidence} == {'win32', 'linux'},
+            'Paint inspection requires Windows and Linux evidence')
+    require(all(item.get('ok') is True and item.get('package_version') == report['package_version']
+                and item.get('engine_version') == report['engine_version']
+                and item.get('tarball_sha256') == report['package_sha256']
+                and item.get('source_sha256') == source_sha and item.get('negative_control') is False
+                and item.get('cases') == 2*len(names) and set(item.get('families', [])) == families
+                and item.get('case_names') == sorted(names) for item in evidence),
+            'Paint inspection is incomplete or targets another package, tarball, source or negative control')
+    browsers = report.get('browser_matrix', [])
+    require(len(browsers) == 3 and {item.get('browser') for item in browsers} == {'chrome', 'firefox', 'webkit'},
+            'Paint inspection requires all three browser downloads')
+    require(all(item.get('paint_ok') is True and item.get('paint_cases') == len(names)
+                and item.get('paint_source_sha256') == source_sha and item.get('paint_negative_control') is False
+                for item in browsers), 'Browser paint inspection is incomplete or targets another source')
+    native = {item.get('name'): item for item in report.get('native_wasi_fixtures', [])}
+    require(len(native) == len(report.get('native_wasi_fixtures', [])) and names.issubset(native)
+                and all(native[name].get('nativeWasiPdfEqual') is True and native[name].get('nativeWasiPreviewsEqual') is True
+                        for name in names), 'Native/WASI paint comparison is incomplete or duplicated')
 
 
 def verify_binding(version, run_id, run, release, tag_commit, report):
@@ -156,6 +186,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             verify_component_evidence(report)
         if release_version >= (0, 7, 0):
             verify_html_export_evidence(report)
+        if release_version >= (0, 7, 1):
+            verify_engine_paint_evidence(report)
 
 
 def verify_tarball(data, info, report):

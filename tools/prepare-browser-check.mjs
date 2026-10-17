@@ -10,6 +10,7 @@ import { inlineFixtures } from '../test/inline-wrapping.mjs';
 import { standardFontFixtures } from '../test/standard-fonts.mjs';
 import { engineRegressionFixtures } from '../test/engine-regressions.mjs';
 import { hiddenTextFixtures, hiddenTextSource } from '../test/hidden-text.mjs';
+import { enginePaintFixtures } from '../test/engine-paint.mjs';
 
 const root = resolve('.');
 const out = join(root, 'output/browser-verification');
@@ -64,6 +65,7 @@ const inputs = { invoice: await fixture('invoice'), report: await fixture('repor
   ...Object.fromEntries(standardFontFixtures.map(({ name, font, pages, ...input }) => [name, { ...input, previewDpi: 72 }])),
   ...Object.fromEntries(engineRegressionFixtures.map(({ name, pages, ...input }) => [name, input])),
   ...Object.fromEntries(hiddenTextFixtures.map(({ name, pages, ...input }) => [name, input])),
+  ...Object.fromEntries(enginePaintFixtures.map(({ name, pages, ...input }) => [name, input])),
   custom: { html: '<h1>Local asset test</h1><p>Integral: ⨌</p><img src="assets/brand/logo.svg" width="80" height="40">',
     css: "body {font-family:Inter,'Noto Sans Math'}", previewDpi: 72,
     fontFiles: ['NotoSansMath-Regular.ttf'],
@@ -105,6 +107,7 @@ for (const { name, expected } of hiddenTextSource.cases) {
 }
 for (const name of ['index.html', 'harness.js', 'components.css']) await copyFile('test/browser/' + name, join(site, name));
 const record = { package: pkg.version, engine: pkg.fullbleed.engineVersion, installedTarballSha256: pack.tarballSha256,
+  enginePaintSourceSha256: hash(await readFile(join(root, 'test/fixtures/engine-paint-2.5.28.json'))),
   ssrImportSafe: true, copyCommand: JSON.parse(copy.stdout), baselines, components: components.map(({ name, pages, text }) => ({ name, pages, text })) };
 await writeFile(join(out, 'prepared.json'), JSON.stringify(record, null, 2) + '\n');
 console.log(JSON.stringify({ ok: true, fixtures: Object.keys(baselines).length, files: Object.keys(manifest.files).length, package: pkg.version }));

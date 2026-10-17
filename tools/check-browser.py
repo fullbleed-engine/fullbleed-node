@@ -189,6 +189,7 @@ try:
             record = {'ok': True, 'checkedAt': datetime.now(timezone.utc).isoformat(), 'browserEngine': args.browser,
               'browser': browser.version, 'playwright': version('playwright'), 'pypdf': version('pypdf'), 'package': prepared['package'],
               'engine': prepared['engine'], 'installedTarballSha256': prepared['installedTarballSha256'],
+              'enginePaintSourceSha256': prepared['enginePaintSourceSha256'],
               'contentSecurityPolicy': policy, 'mainThreadWebAssemblyDisabled': True, 'checks': checks,
               'documents': documents, 'workerCalls': page.evaluate('harness.stats()'), 'network': network, 'serverRequests': requests,
               'pageErrors': errors, 'componentCases': len(component_cases), 'componentEditorDownload': True,

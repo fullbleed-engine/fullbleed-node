@@ -32,7 +32,7 @@ await writeFile('invoice.pdf', result.pdf);
 await writeFile('invoice.png', result.previews[0]);
 ```
 
-Save this as `invoice.mjs`, install `fullbleed@0.7.0`, and run `node invoice.mjs`
+Save this as `invoice.mjs`, install `fullbleed@0.7.1`, and run `node invoice.mjs`
 with Node 22 or newer. Functions need no special wrapper. The optional
 `component(fn)` identity helper preserves the function and its types.
 
@@ -233,7 +233,11 @@ stylesheets; use raw CSS for nested at-rules.
 `document.toCss(...overrides)` returns layout defaults, document styles and then
 overrides in cascade order. `document.toHtml()` returns HTML only. When calling
 the underlying API yourself, pass both: `renderPdf({ html: doc.toHtml(), css: doc.toCss() })`.
-The pinned PDF engine does not load embedded stylesheets or remote CSS implicitly.
+Starting with 0.7.1, the pinned engine also reads supported static `<style>` sheets
+from complete HTML. `renderPdf({ html: doc.toHtml({ includeStyles: true }), css: '',
+defaultStyles: false })` carries the component CSS with the HTML. The installed
+package checks both paths against the same seven component examples. Remote
+stylesheets are not fetched; supply their CSS explicitly.
 
 The document's `title` and `lang` describe its HTML. `page` and `margin` are
 authoring metadata; set actual PDF page geometry in `@page` CSS. They do not set
@@ -292,9 +296,9 @@ CSS support and pagination, so browser HTML is not a promise of identical PDF
 layout. Values used as text and attributes are escaped, but developer-authored
 CSS, tags and URLs are not sanitized. Unstyled export is not a security sanitizer.
 
-For PDFs, continue using `report.renderPdf(renderer)` or
-`renderDocument(report, renderer)`. These pass HTML and CSS separately to the
-pinned engine; `includeStyles` changes HTML export only.
+For PDFs, `report.renderPdf(renderer)` and `renderDocument(report, renderer)`
+pass HTML and CSS together for you. The engine can also read the static
+stylesheets in complete styled HTML exports, as shown above.
 
 ## Queues and browsers
 

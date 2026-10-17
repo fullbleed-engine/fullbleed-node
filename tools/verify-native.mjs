@@ -11,6 +11,7 @@ import { inlineFixtures } from '../test/inline-wrapping.mjs';
 import { standardFontFixtures } from '../test/standard-fonts.mjs';
 import { loadEngineRegressionFixtures } from '../test/engine-regressions.mjs';
 import { hiddenTextFixtures } from '../test/hidden-text.mjs';
+import { enginePaintFixtures } from '../test/engine-paint.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const engine = join(root, 'engine');
@@ -28,6 +29,7 @@ fixtures.push(...inlineFixtures);
 fixtures.push(...standardFontFixtures);
 fixtures.push(...await loadEngineRegressionFixtures());
 fixtures.push(...hiddenTextFixtures);
+fixtures.push(...enginePaintFixtures);
 for (const [name, pages] of [['invoice', 1], ['report', 3]]) {
   fixtures.push({ name, pages, html: await readFile(join(root, 'examples', name + '.html'), 'utf8'), css: await readFile(join(root, 'examples', name + '.css'), 'utf8') });
 }
