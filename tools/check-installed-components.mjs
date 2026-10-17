@@ -37,6 +37,9 @@ try {
     assert.equal(styled, tsxCases[index].node.toHtml({ includeStyles: true }), name + ': JSX styled HTML');
     assert.equal(unstyled, tsxCases[index].node.toHtml({ includeStyles: false }), name + ': JSX unstyled HTML');
     assert(!/<style\b|\sstyle\s*=/i.test(unstyled), name + ': no exported CSS');
+    const embedded = await renderPdf({ html: styled, css: '', defaultStyles: false, previewDpi: 96 });
+    assert.deepEqual(embedded.pdf, result.pdf, name + ': embedded stylesheet PDF');
+    assert.deepEqual(embedded.previews, result.previews, name + ': embedded stylesheet previews');
     assert.deepEqual(result.pdf, repeated.pdf, name + ': function/JSX repeated PDF');
     assert.deepEqual(result.previews, repeated.previews, name + ': function/JSX previews');
     await writeFile(join(out, name + '.html'), node.toHtml());
@@ -47,7 +50,7 @@ try {
     for (const [i, png] of result.previews.entries()) await writeFile(join(out, `${name}-${i + 1}.png`), png);
     records.push({ name, pages, missingGlyphs: result.missingGlyphs, pdf: hash(result.pdf),
       previews: result.previews.map(hash), text, styledHtml: hash(styled), unstyledHtml: hash(unstyled),
-      jsxHtmlCssEqual: true, jsxStyledUnstyledEqual: true, repeatedPdfPreviewsEqual: true });
+      jsxHtmlCssEqual: true, jsxStyledUnstyledEqual: true, repeatedPdfPreviewsEqual: true, embeddedStyledHtmlPdfEqual: true });
   }
   const cjs = createRequire(import.meta.url)('fullbleed/ui');
   const baseline = await renderDocument(jsx(Document, { children: jsxDEV(Paragraph, { children: 'Installed JSX' }) }), renderPdf);

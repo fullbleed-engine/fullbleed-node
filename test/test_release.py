@@ -322,5 +322,65 @@ class HtmlExportReleaseEvidenceTests(unittest.TestCase):
                     release_check.verify_html_export_evidence(self.report)
 
 
+class PaintReleaseEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        data = release_check.ENGINE_PAINT_SOURCE.read_bytes()
+        fixture = json.loads(data)
+        digest = hashlib.sha256(data).hexdigest()
+        names = sorted(case['name'] for case in fixture['cases'])
+        families = sorted({case['family'] for case in fixture['cases']})
+        self.report = dict(package_version='0.7.1', engine_version=fixture['engineVersion'], package_sha256='a'*64,
+            engine_paint=[dict(platform=platform, ok=True, package_version='0.7.1',
+                engine_version=fixture['engineVersion'], tarball_sha256='a'*64, source_sha256=digest,
+                negative_control=False, cases=2*len(names), families=families, case_names=names)
+                for platform in ['win32', 'linux']],
+            browser_matrix=[dict(browser=browser, paint_ok=True, paint_cases=len(names),
+                paint_source_sha256=digest, paint_negative_control=False) for browser in ['chrome', 'firefox', 'webkit']],
+            native_wasi_fixtures=[dict(name=name, nativeWasiPdfEqual=True, nativeWasiPreviewsEqual=True) for name in names])
+
+    def test_complete_paint_evidence_is_accepted(self):
+        release_check.verify_engine_paint_evidence(self.report)
+
+    def test_missing_or_duplicate_platform_is_rejected(self):
+        self.report['engine_paint'][0]['platform'] = 'linux'
+        with self.assertRaisesRegex(ValueError, 'Windows and Linux'):
+            release_check.verify_engine_paint_evidence(self.report)
+
+    def test_wrong_package_or_incomplete_evidence_is_rejected(self):
+        for key, value in [('ok', False), ('package_version', '0.7.0'), ('engine_version', '2.5.24'),
+                           ('tarball_sha256', 'b'*64), ('source_sha256', 'b'*64), ('negative_control', True),
+                           ('cases', 1), ('families', ['svg-cascade']), ('case_names', [])]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['engine_paint'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'Paint inspection is incomplete'):
+                    release_check.verify_engine_paint_evidence(self.report)
+
+    def test_browser_gaps_and_negative_controls_are_rejected(self):
+        for key, value in [('paint_ok', False), ('paint_cases', 0), ('paint_source_sha256', 'b'*64),
+                           ('paint_negative_control', True)]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['browser_matrix'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'Browser paint inspection'):
+                    release_check.verify_engine_paint_evidence(self.report)
+        self.setUp()
+        self.report['browser_matrix'].pop()
+        with self.assertRaisesRegex(ValueError, 'all three browser'):
+            release_check.verify_engine_paint_evidence(self.report)
+
+    def test_native_gaps_and_differences_are_rejected(self):
+        for change in ['missing', 'duplicate', 'pdf', 'preview']:
+            with self.subTest(change=change):
+                self.setUp()
+                rows = self.report['native_wasi_fixtures']
+                if change == 'missing': rows.pop()
+                elif change == 'duplicate': rows.append(dict(rows[-1]))
+                elif change == 'pdf': rows[-1]['nativeWasiPdfEqual'] = False
+                else: rows[-1]['nativeWasiPreviewsEqual'] = False
+                with self.assertRaisesRegex(ValueError, 'Native/WASI paint comparison'):
+                    release_check.verify_engine_paint_evidence(self.report)
+
+
 if __name__ == '__main__':
     unittest.main()

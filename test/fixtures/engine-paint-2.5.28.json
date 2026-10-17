@@ -1,0 +1,5719 @@
+{
+  "schema": "fullbleed.javascript.paint-fixtures.v1",
+  "engineVersion": "2.5.29",
+  "provenance": [
+    {
+      "path": "tools/smoke_svg_styles.py",
+      "sha256": "bc31bcc411c4087dcfefe6d92c5fef2b4cf41d9bb878641b9c366d1686ba4b53",
+      "source": "https://github.com/fullbleed-engine/fullbleed-official/blob/v2.5.28/tools/smoke_svg_styles.py"
+    },
+    {
+      "path": "tools/smoke_inset_shadows.py",
+      "sha256": "8f9ea0092c5305d0cdfd26075bbbffaff5a1b623bfd0d93bc7cd96db6fbf4415",
+      "source": "https://github.com/fullbleed-engine/fullbleed-official/blob/v2.5.28/tools/smoke_inset_shadows.py"
+    }
+  ],
+  "sourceCoreTag": "v2.5.28",
+  "scope": "Released SVG cascade and inset-shadow inputs with specified colors, Gaussian blur probes and complete clear-region controls. No complete CSS/browser parity claim.",
+  "negativeControl": {
+    "packageVersion": "0.7.0",
+    "engineVersion": "2.5.24",
+    "requiredFailingFamilies": [
+      "svg-cascade",
+      "inset-shadow"
+    ],
+    "passingControls": [
+      "svg-css-explicit-presentation-default",
+      "svg-css-explicit-presentation-filter-fallback",
+      "inset-empty-control-block"
+    ]
+  },
+  "cases": [
+    {
+      "name": "svg-css-explicit-presentation-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-explicit-presentation-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-class-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.mark {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-class-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.mark {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-ancestor-default",
+      "family": "svg-cascade",
+      "html": "<main class=\"brand\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg></main> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.brand .mark {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-ancestor-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<main class=\"brand\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg></main> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.brand .mark {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-child-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}svg > rect {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-child-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}svg > rect {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-attribute-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}rect[id=\"target\"] {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-attribute-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}rect[id=\"target\"] {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-position-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}rect:first-of-type {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-position-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}rect:first-of-type {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-inherited-paint-default",
+      "family": "svg-cascade",
+      "html": "<main class=\"brand\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg></main> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.brand {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-inherited-paint-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<main class=\"brand\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg></main> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.brand {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-presentation-priority-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#0060c0\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.mark {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-presentation-priority-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#0060c0\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.mark {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-inline-priority-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" style=\"fill:#0060c0\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.mark {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              96,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-inline-priority-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" style=\"fill:#0060c0\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.mark {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              96,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-important-priority-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" style=\"fill:#0060c0\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.mark {fill:#d00000!important}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-important-priority-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" style=\"fill:#0060c0\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.mark {fill:#d00000!important}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-inline-important-priority-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" style=\"fill:#0060c0 !important\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.mark {fill:#d00000!important}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              96,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-inline-important-priority-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" style=\"fill:#0060c0 !important\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.mark {fill:#d00000!important}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              96,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-local-style-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><style>.mark {fill:#d00000}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-local-style-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><style>.mark {fill:#d00000}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-screen-style-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><style media=\"screen\">.mark {fill:#d00000}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-screen-style-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><style media=\"screen\">.mark {fill:#d00000}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-plain-text-style-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><style type=\"text/plain\">.mark {fill:#d00000}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-plain-text-style-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><style type=\"text/plain\">.mark {fill:#d00000}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-print-style-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><style media=\"print\">.mark {fill:#d00000}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-print-style-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><style media=\"print\">.mark {fill:#d00000}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-nested-screen-media-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><style>@media screen {.mark {fill:#d00000}}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-nested-screen-media-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><style>@media screen {.mark {fill:#d00000}}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-source-order-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><style>.mark {fill:#0060c0}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.mark {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-source-order-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><style>.mark {fill:#0060c0}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.mark {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-preferred-set-default",
+      "family": "svg-cascade",
+      "html": "<style title=\"preferred\">.outside {color:blue}</style><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><style title=\"alternate\">.mark {fill:#d00000}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-preferred-set-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<style title=\"preferred\">.outside {color:blue}</style><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><style title=\"alternate\">.mark {fill:#d00000}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-currentcolor-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"currentColor\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}svg {color:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-currentcolor-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"currentColor\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}svg {color:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-opacity-replacement-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" fill-opacity=\"0.25\" style=\"fill-opacity:1\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-opacity-replacement-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" fill-opacity=\"0.25\" style=\"fill-opacity:1\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-important-opacity-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><style>.mark {fill-opacity:1 !important}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" style=\"fill-opacity:0.25\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-important-opacity-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><style>.mark {fill-opacity:1 !important}</style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" style=\"fill-opacity:0.25\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-cdata-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><style><![CDATA[.mark {fill:#d00000}]]></style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-cdata-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><style><![CDATA[.mark {fill:#d00000}]]></style><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-group-fill-opacity-replacement-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><g fill-opacity=\"0.25\"><rect width=\"100\" height=\"100\" fill=\"#d00000\" fill-opacity=\"1\"/></g></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-group-fill-opacity-replacement-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><g fill-opacity=\"0.25\"><rect width=\"100\" height=\"100\" fill=\"#d00000\" fill-opacity=\"1\"/></g></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-group-opacity-overlap-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><g opacity=\"0.5\"><rect width=\"100\" height=\"100\" fill=\"#d00000\"/><rect width=\"100\" height=\"100\" fill=\"#d00000\"/></g></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-group-opacity-overlap-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><g opacity=\"0.5\"><rect width=\"100\" height=\"100\" fill=\"#d00000\"/><rect width=\"100\" height=\"100\" fill=\"#d00000\"/></g></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-nested-group-opacity-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><g opacity=\"0.5\"><g opacity=\"0.5\"><rect width=\"100\" height=\"100\" fill=\"#d00000\"/></g></g></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              243,
+              192,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-nested-group-opacity-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><g opacity=\"0.5\"><g opacity=\"0.5\"><rect width=\"100\" height=\"100\" fill=\"#d00000\"/></g></g></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              243,
+              192,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-root-opacity-once-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" style=\"opacity:0.5\"><rect width=\"100\" height=\"100\" fill=\"#d00000\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-root-opacity-once-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" style=\"opacity:0.5\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect width=\"100\" height=\"100\" fill=\"#d00000\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-local-currentcolor-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" style=\"color:#d00000\"><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"currentColor\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-local-currentcolor-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" style=\"color:#d00000\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"currentColor\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-paint-alpha-replacement-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"rgba(0,96,192,0.25)\" style=\"fill:#d00000\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-paint-alpha-replacement-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"rgba(0,96,192,0.25)\" style=\"fill:#d00000\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-invalid-opacity-fallback-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" style=\"fill-opacity:0.5;fill-opacity:invalid\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-invalid-opacity-fallback-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" style=\"fill-opacity:0.5;fill-opacity:invalid\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-stop-important-priority-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><style>stop {stop-color:#d00000 !important}</style><linearGradient id=\"paint\"><stop offset=\"0\" style=\"stop-color:#0060c0\"/><stop offset=\"1\" style=\"stop-color:#0060c0\"/></linearGradient></defs><rect width=\"100\" height=\"100\" fill=\"url(#paint)\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-stop-important-priority-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><defs><style>stop {stop-color:#d00000 !important}</style><linearGradient id=\"paint\"><stop offset=\"0\" style=\"stop-color:#0060c0\"/><stop offset=\"1\" style=\"stop-color:#0060c0\"/></linearGradient></defs><rect width=\"100\" height=\"100\" fill=\"url(#paint)\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-custom-property-default",
+      "family": "svg-cascade",
+      "html": "<main class=\"brand\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg></main> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.brand {--ink:#d00000} .mark {fill:var(--ink)}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-custom-property-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<main class=\"brand\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg></main> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.brand {--ink:#d00000} .mark {fill:var(--ink)}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-invalid-variable-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" fill=\"#d00000\"><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}svg {--bad:invalid} .mark {fill:#0060c0;fill:var(--bad)}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-invalid-variable-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" fill=\"#d00000\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}svg {--bad:invalid} .mark {fill:#0060c0;fill:var(--bad)}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-symbol-opacity-default",
+      "family": "svg-cascade",
+      "html": "<svg width=\"100\" height=\"100\"><defs><symbol id=\"shape\" viewBox=\"0 0 100 100\" opacity=\"0.5\"><rect width=\"100\" height=\"100\" fill=\"#d00000\"/><rect width=\"100\" height=\"100\" fill=\"#d00000\"/></symbol></defs><use href=\"#shape\" width=\"100\" height=\"100\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-symbol-opacity-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg width=\"100\" height=\"100\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><defs><symbol id=\"shape\" viewBox=\"0 0 100 100\" opacity=\"0.5\"><rect width=\"100\" height=\"100\" fill=\"#d00000\"/><rect width=\"100\" height=\"100\" fill=\"#d00000\"/></symbol></defs><use href=\"#shape\" width=\"100\" height=\"100\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-root-inherit-opacity-default",
+      "family": "svg-cascade",
+      "html": "<main style=\"opacity:0.5\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" opacity=\"inherit\"><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\"/></svg></main> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              243,
+              192,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-root-inherit-opacity-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<main style=\"opacity:0.5\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" opacity=\"inherit\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\"/></svg></main> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              243,
+              192,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-layer-normal-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}@layer first,second; @layer first {.mark {fill:#0060c0}} @layer second {.mark {fill:#d00000}}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-layer-normal-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}@layer first,second; @layer first {.mark {fill:#0060c0}} @layer second {.mark {fill:#d00000}}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-layer-important-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}@layer first,second; @layer first {.mark {fill:#d00000 !important}} @layer second {.mark {fill:#0060c0 !important}}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-layer-important-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}@layer first,second; @layer first {.mark {fill:#d00000 !important}} @layer second {.mark {fill:#0060c0 !important}}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-layer-revert-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}@layer first,second; @layer first {.mark {fill:#d00000}} @layer second {.mark {fill:#0060c0;fill:revert-layer}}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-document-layer-revert-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}@layer first,second; @layer first {.mark {fill:#d00000}} @layer second {.mark {fill:#0060c0;fill:revert-layer}}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-currentcolor-child-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" color=\"#d00000\" fill=\"currentColor\"><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" color=\"#0060c0\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              96,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-currentcolor-child-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" color=\"#d00000\" fill=\"currentColor\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" color=\"#0060c0\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              96,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-fill-initial-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" fill=\"#d00000\"><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" style=\"fill:initial\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-fill-initial-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" fill=\"#d00000\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" style=\"fill:initial\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-fill-unset-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" fill=\"#d00000\"><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" style=\"fill:unset\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-fill-unset-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" fill=\"#d00000\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" style=\"fill:unset\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-root-opacity-attribute-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" opacity=\"0.5\"><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-root-opacity-attribute-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" opacity=\"0.5\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-child-inherits-root-opacity-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" style=\"opacity:0.5\"><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" opacity=\"inherit\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              243,
+              192,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-child-inherits-root-opacity-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" style=\"opacity:0.5\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" opacity=\"inherit\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              243,
+              192,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-child-inherits-root-and-html-opacity-default",
+      "family": "svg-cascade",
+      "html": "<main style=\"opacity:0.5\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" opacity=\"inherit\"><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" opacity=\"inherit\"/></svg></main> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              249,
+              223,
+              223
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-child-inherits-root-and-html-opacity-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<main style=\"opacity:0.5\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" opacity=\"inherit\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" opacity=\"inherit\"/></svg></main> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              249,
+              223,
+              223
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-currentcolor-alpha-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" color=\"rgba(208,0,0,0.5)\"><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"currentColor\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-currentcolor-alpha-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" color=\"rgba(208,0,0,0.5)\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"currentColor\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-currentcolor-stroke-alpha-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" color=\"rgba(208,0,0,0.5)\"><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"100\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-currentcolor-stroke-alpha-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" color=\"rgba(208,0,0,0.5)\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"100\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              231,
+              128,
+              128
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-currentcolor-alpha-child-override-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" color=\"rgba(208,0,0,0.5)\" fill=\"currentColor\"><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" color=\"#0060c0\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              96,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-currentcolor-alpha-child-override-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" color=\"rgba(208,0,0,0.5)\" fill=\"currentColor\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" color=\"#0060c0\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              96,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-transparent-mask-color-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><mask id=\"m\"><rect width=\"100\" height=\"100\" fill=\"rgba(255,255,255,0)\"/></mask></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" mask=\"url(#m)\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-transparent-mask-color-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><defs><mask id=\"m\"><rect width=\"100\" height=\"100\" fill=\"rgba(255,255,255,0)\"/></mask></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" mask=\"url(#m)\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-transparent-mask-overlay-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><mask id=\"m\"><rect width=\"100\" height=\"100\" fill=\"white\"/><rect width=\"100\" height=\"100\" fill=\"rgba(255,255,255,0)\"/></mask></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" mask=\"url(#m)\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-transparent-mask-overlay-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><defs><mask id=\"m\"><rect width=\"100\" height=\"100\" fill=\"white\"/><rect width=\"100\" height=\"100\" fill=\"rgba(255,255,255,0)\"/></mask></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" mask=\"url(#m)\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-transparent-mask-group-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><mask id=\"m\"><g opacity=\"0\"><rect width=\"100\" height=\"100\" fill=\"white\"/></g></mask></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" mask=\"url(#m)\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-transparent-mask-group-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><defs><mask id=\"m\"><g opacity=\"0\"><rect width=\"100\" height=\"100\" fill=\"white\"/></g></mask></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"#d00000\" mask=\"url(#m)\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-stroke-opacity-replacement-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"none\" stroke=\"#d00000\" stroke-width=\"100\" stroke-opacity=\"0.25\" style=\"stroke-opacity:1\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-stroke-opacity-replacement-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" fill=\"none\" stroke=\"#d00000\" stroke-width=\"100\" stroke-opacity=\"0.25\" style=\"stroke-opacity:1\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-use-inheritance-default",
+      "family": "svg-cascade",
+      "html": "<svg width=\"100\" height=\"100\"><defs><rect id=\"shape\" width=\"100\" height=\"100\"/></defs><use href=\"#shape\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}use {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-use-inheritance-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg width=\"100\" height=\"100\"><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><defs><rect id=\"shape\" width=\"100\" height=\"100\"/></defs><use href=\"#shape\"/></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}use {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-sibling-selector-default",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><g/><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}svg > g + rect {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-svg-sibling-selector-filter-fallback",
+      "family": "svg-cascade",
+      "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" ><defs><filter id=\"force-raster\"><feGaussianBlur stdDeviation=\"0\"/></filter></defs><g/><rect id=\"target\" class=\"mark\" width=\"100\" height=\"100\" /></svg> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}svg > g + rect {fill:#d00000}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              208,
+              0,
+              0
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-external-svg-isolation-default",
+      "family": "svg-cascade",
+      "html": "<img width=\"100\" height=\"100\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiA+PHN0eWxlPi5tYXJrIHtmaWxsOiMwMDYwYzB9PC9zdHlsZT48cmVjdCBpZD0idGFyZ2V0IiBjbGFzcz0ibWFyayIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIC8+PC9zdmc+\"> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}.mark {fill:#d00000 !important}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              0,
+              96,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "svg-css-external-svg-root-opacity-inheritance-default",
+      "family": "svg-cascade",
+      "html": "<img width=\"100\" height=\"100\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBvcGFjaXR5PSIwLjUiPjxyZWN0IGlkPSJ0YXJnZXQiIGNsYXNzPSJtYXJrIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2QwMDAwMCIgb3BhY2l0eT0iaW5oZXJpdCIvPjwvc3ZnPg==\"> <p>1042</p>",
+      "css": "@page {size:300pt 200pt;margin:0} html,body {margin:0;padding:0} svg {display:block} p {margin:0}body {font-family:Inter}",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          300,
+          200
+        ],
+        "text": "1042",
+        "probes": [
+          {
+            "x": 24,
+            "y": 24,
+            "expected": [
+              243,
+              192,
+              192
+            ],
+            "tolerance": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-negative-hidden-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 8px 0 0 -12px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-negative-hidden-block-clear-reference",
+      "family": "inset-clear-region",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: none; }\n",
+      "pages": 1,
+      "previewDpi": 300,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": []
+      }
+    },
+    {
+      "name": "inset-negative-hidden-block-clear-region",
+      "family": "inset-clear-region",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 8px 0 0 -12px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 300,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [],
+        "clearRegion": {
+          "reference": "inset-negative-hidden-block-clear-reference",
+          "start": 0
+        }
+      }
+    },
+    {
+      "name": "inset-negative-hidden-rounded-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 20px;\n  box-shadow: inset 8px 0 0 -12px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 21,
+            "y": 21,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-negative-hidden-rounded-block-clear-reference",
+      "family": "inset-clear-region",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 20px;\n  box-shadow: none; }\n",
+      "pages": 1,
+      "previewDpi": 300,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": []
+      }
+    },
+    {
+      "name": "inset-negative-hidden-rounded-block-clear-region",
+      "family": "inset-clear-region",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 20px;\n  box-shadow: inset 8px 0 0 -12px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 300,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [],
+        "clearRegion": {
+          "reference": "inset-negative-hidden-rounded-block-clear-reference",
+          "start": 0
+        }
+      }
+    },
+    {
+      "name": "inset-negative-left-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 24px 0 0 -12px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 35,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-negative-right-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset -24px 0 0 -12px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 125,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-positive-offset-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 12px 0 0 8px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 45,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 25,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-diagonal-offset-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 24px 24px 0 0 #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 25,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 60,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 90,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-diagonal-offset-block-clear-reference",
+      "family": "inset-clear-region",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: none; }\n",
+      "pages": 1,
+      "previewDpi": 300,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": []
+      }
+    },
+    {
+      "name": "inset-diagonal-offset-block-clear-region",
+      "family": "inset-clear-region",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 24px 24px 0 0 #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 300,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [],
+        "clearRegion": {
+          "reference": "inset-diagonal-offset-block-clear-reference",
+          "start": 144
+        }
+      }
+    },
+    {
+      "name": "inset-large-left-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 100px 0 0 0 #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 105,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 125,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-large-right-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset -100px 0 0 0 #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 45,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-large-down-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 0 60px 0 0 #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 80,
+            "y": 25,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 65,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 90,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-large-up-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 0 -60px 0 0 #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 80,
+            "y": 25,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 45,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 90,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-rounded-offset-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 20px;\n  box-shadow: inset 20px 8px 0 0 #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 45,
+            "y": 30,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 40,
+            "y": 40,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 65,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 21,
+            "y": 21,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-elliptical-negative-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 6px 14px 12px 20px / 12px 20px 6px 14px;\n  box-shadow: inset 24px 12px 0 -12px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 45,
+            "y": 25,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-collapsed-hole-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 20px;\n  box-shadow: inset 20px 0 0 50px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 21,
+            "y": 21,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-translated-away-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 20px;\n  box-shadow: inset 160px 0 0 0 #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 21,
+            "y": 21,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-blur-translated-away-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 20px;\n  box-shadow: inset 160px 0 12px 0 #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 25,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 21,
+            "y": 21,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-blur-negative-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 24px 0 12px -12px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 80,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 23,
+            "y": 60,
+            "expected": [
+              12,
+              96,
+              162
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 29,
+            "y": 60,
+            "expected": [
+              49,
+              126,
+              187
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 35,
+            "y": 60,
+            "expected": [
+              104,
+              170,
+              223
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 41,
+            "y": 60,
+            "expected": [
+              136,
+              195,
+              244
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 47,
+            "y": 60,
+            "expected": [
+              143,
+              201,
+              249
+            ],
+            "tolerance": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-empty-control-block",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 20px;\n  box-shadow: inset 0 0 0 0 #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 25,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 21,
+            "y": 21,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-negative-hidden-cell",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><table><tbody><tr><td class=\"box\"></td></tr></tbody></table></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 8px 0 0 -12px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-negative-hidden-cell-clear-reference",
+      "family": "inset-clear-region",
+      "html": "<!doctype html><html><body><div class=\"stage\"><table><tbody><tr><td class=\"box\"></td></tr></tbody></table></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: none; }\n",
+      "pages": 1,
+      "previewDpi": 300,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": []
+      }
+    },
+    {
+      "name": "inset-negative-hidden-cell-clear-region",
+      "family": "inset-clear-region",
+      "html": "<!doctype html><html><body><div class=\"stage\"><table><tbody><tr><td class=\"box\"></td></tr></tbody></table></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 8px 0 0 -12px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 300,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [],
+        "clearRegion": {
+          "reference": "inset-negative-hidden-cell-clear-reference",
+          "start": 0
+        }
+      }
+    },
+    {
+      "name": "inset-negative-left-cell",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><table><tbody><tr><td class=\"box\"></td></tr></tbody></table></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 24px 0 0 -12px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 35,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-positive-offset-cell",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><table><tbody><tr><td class=\"box\"></td></tr></tbody></table></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 12px 0 0 8px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 45,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 25,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-large-left-cell",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><table><tbody><tr><td class=\"box\"></td></tr></tbody></table></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 100px 0 0 0 #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 25,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 105,
+            "y": 60,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 125,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-large-down-cell",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><table><tbody><tr><td class=\"box\"></td></tr></tbody></table></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 0 60px 0 0 #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 80,
+            "y": 25,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 65,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 90,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-blur-negative-cell",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><table><tbody><tr><td class=\"box\"></td></tr></tbody></table></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 20px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 24px 0 12px -12px #01579b; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 80,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 135,
+            "y": 60,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 10,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 150,
+            "y": 60,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 10,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 80,
+            "y": 110,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 23,
+            "y": 60,
+            "expected": [
+              12,
+              96,
+              162
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 29,
+            "y": 60,
+            "expected": [
+              49,
+              126,
+              187
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 35,
+            "y": 60,
+            "expected": [
+              104,
+              170,
+              223
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 41,
+            "y": 60,
+            "expected": [
+              136,
+              195,
+              244
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 47,
+            "y": 60,
+            "expected": [
+              143,
+              201,
+              249
+            ],
+            "tolerance": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-blur-translated-away-page-start",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 0px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 20px;\n  box-shadow: inset 160px 0 12px 0 #01579b; }\n.box { position: absolute; left: 0px; top: 0px; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 5,
+            "y": 40,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 60,
+            "y": 40,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 115,
+            "y": 40,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 60,
+            "y": 5,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 1,
+            "y": 1,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 130,
+            "y": 40,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 60,
+            "y": 90,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-blur-negative-page-start",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 0px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 24px 0 12px -12px #01579b; }\n.box { position: absolute; left: 0px; top: 0px; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 60,
+            "y": 40,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 115,
+            "y": 40,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 130,
+            "y": 40,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 60,
+            "y": 90,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 3,
+            "y": 40,
+            "expected": [
+              12,
+              96,
+              162
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 9,
+            "y": 40,
+            "expected": [
+              49,
+              126,
+              187
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 15,
+            "y": 40,
+            "expected": [
+              104,
+              170,
+              223
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 21,
+            "y": 40,
+            "expected": [
+              136,
+              195,
+              244
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 27,
+            "y": 40,
+            "expected": [
+              143,
+              201,
+              249
+            ],
+            "tolerance": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-blur-translated-away-page-end",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 40px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 20px;\n  box-shadow: inset 160px 0 12px 0 #01579b; }\n.box { position: absolute; left: 40px; top: 40px; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 45,
+            "y": 80,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 100,
+            "y": 80,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 155,
+            "y": 80,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 100,
+            "y": 45,
+            "expected": [
+              1,
+              87,
+              155
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 41,
+            "y": 41,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 30,
+            "y": 80,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 100,
+            "y": 30,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "inset-blur-negative-page-end",
+      "family": "inset-shadow",
+      "html": "<!doctype html><html><body><div class=\"stage\"><div class=\"box\"></div></div></body></html>",
+      "css": "@page { size: 160px 120px; margin: 0; }\n* { box-sizing: border-box; margin: 0; padding: 0; }\nhtml, body { background: white; }\n.stage { padding: 40px; width: 160px; height: 120px; }\ntable { border-collapse: separate; border-spacing: 0; }\n.box { width: 120px; height: 80px; background: #90caf9; border-radius: 0;\n  box-shadow: inset 24px 0 12px -12px #01579b; }\n.box { position: absolute; left: 40px; top: 40px; }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "defaultStyles": false,
+      "expected": {
+        "pageSizePt": [
+          120,
+          90
+        ],
+        "text": "",
+        "probes": [
+          {
+            "x": 100,
+            "y": 80,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 155,
+            "y": 80,
+            "expected": [
+              144,
+              202,
+              249
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 30,
+            "y": 80,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 100,
+            "y": 30,
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "tolerance": 3
+          },
+          {
+            "x": 43,
+            "y": 80,
+            "expected": [
+              12,
+              96,
+              162
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 49,
+            "y": 80,
+            "expected": [
+              49,
+              126,
+              187
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 55,
+            "y": 80,
+            "expected": [
+              104,
+              170,
+              223
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 61,
+            "y": 80,
+            "expected": [
+              136,
+              195,
+              244
+            ],
+            "tolerance": 10
+          },
+          {
+            "x": 67,
+            "y": 80,
+            "expected": [
+              143,
+              201,
+              249
+            ],
+            "tolerance": 10
+          }
+        ]
+      }
+    }
+  ]
+}
