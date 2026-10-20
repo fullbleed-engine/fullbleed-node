@@ -1,0 +1,306 @@
+{
+  "ok": true,
+  "checked_at": "2026-10-20T17:03:51.665810+00:00",
+  "problem": "Tracked and uppercased invoice references cannot be searched or copied exactly.",
+  "package": "fullbleed@0.6.0",
+  "engine": "2.5.24",
+  "node": "v22.23.3",
+  "source_hashes": {
+    "examples/react/src/documents/Invoice.tsx": "6737ef4e107935cf0e66291f1ef1576d6aef37e647555e81ce875bf37a5cb589",
+    "examples/react/src/documents/invoiceStyles.ts": "d9d63ef41fccae67d1a36de315b348c56ab5a680a18b0b2c43ffd63c46f18895",
+    "tools/prepare-react-check.mjs": "ad306e576d6d60db5e334de7d43a0c166761d5288e74b35ef1de61895df1bbcb",
+    "tools/react_component_checks.py": "2e5a5e68aa12639ca15cc1b6e3194e43a79e32f4e638f5424b3f609fe0d8f688"
+  },
+  "references": [
+    {
+      "case": "public-before",
+      "path": "verified-desktop.pdf",
+      "reference": "NS-1042",
+      "sha256": "7ab921d0f55604f84fd519514586f8d162e2912e925ea4071a59dfbd93993f56",
+      "exact_pypdf_text": false,
+      "exact_pdfium_text": false,
+      "pdfium_case_sensitive_search": null,
+      "regression_checks": [
+        {
+          "name": "verified-desktop: reference extracts with exact spacing and case",
+          "passed": false
+        },
+        {
+          "name": "verified-desktop: reference is searchable in PDFium",
+          "passed": false
+        }
+      ],
+      "expected_result": false
+    },
+    {
+      "case": "fixed-default",
+      "path": "component-invoice.pdf",
+      "reference": "NS-1042",
+      "sha256": "f2553f220e9d30e26df785a4ed251f07ff1e615afd3972a5c29c19a0c5fd3f6c",
+      "exact_pypdf_text": true,
+      "exact_pdfium_text": true,
+      "pdfium_case_sensitive_search": [
+        77,
+        7
+      ],
+      "regression_checks": [
+        {
+          "name": "component-invoice: reference extracts with exact spacing and case",
+          "passed": true
+        },
+        {
+          "name": "component-invoice: reference is searchable in PDFium",
+          "passed": true
+        }
+      ],
+      "expected_result": true
+    },
+    {
+      "case": "fixed-mixed-case",
+      "path": "component-edited.pdf",
+      "reference": "Ref-aBc-2042",
+      "sha256": "a664f9fd84af1d2354537645aa6b70dd9abe3ab762b8a9631047aab742b1297e",
+      "exact_pypdf_text": true,
+      "exact_pdfium_text": true,
+      "pdfium_case_sensitive_search": [
+        77,
+        12
+      ],
+      "regression_checks": [
+        {
+          "name": "component-edited: reference extracts with exact spacing and case",
+          "passed": true
+        },
+        {
+          "name": "component-edited: reference is searchable in PDFium",
+          "passed": true
+        }
+      ],
+      "expected_result": true
+    }
+  ],
+  "local_browser": {
+    "browser_engine": "chrome",
+    "browser": "155.0.8059.40",
+    "react_mode": "production",
+    "playwright": "1.63.0",
+    "pypdf": "6.19.0"
+  },
+  "browser_checks": [
+    "components are the initial design",
+    "component-invoice: real PDF has expected pages and text",
+    "component-invoice: matches the installed Node component renderer",
+    "component-invoice: every page has a preview",
+    "component-invoice: page 1 preview matches Node",
+    "component-invoice: reference extracts with exact spacing and case",
+    "component-invoice: reference is searchable in PDFium",
+    "component design needs no HTML editor",
+    "component source shows typed JSX, mapping and conditional content",
+    "components at 1440px: no horizontal overflow",
+    "components at 390px: no horizontal overflow",
+    "components at 320px: no horizontal overflow",
+    "component-paid: real PDF has expected pages and text",
+    "component-paid: matches the installed Node component renderer",
+    "component-paid: every page has a preview",
+    "component-paid: page 1 preview matches Node",
+    "invalid component data clears stale output without starting a worker",
+    "invalid cents cannot generate or retain a download",
+    "component-edited: real PDF has expected pages and text",
+    "component-edited: matches the installed Node component renderer",
+    "component-edited: every page has a preview",
+    "component-edited: page 1 preview matches Node",
+    "component-edited: reference extracts with exact spacing and case",
+    "component-edited: reference is searchable in PDFium",
+    "superseded component results cannot replace newer input",
+    "component manual mode waits for an explicit render",
+    "component-empty: real PDF has expected pages and text",
+    "component-empty: matches the installed Node component renderer",
+    "component-empty: every page has a preview",
+    "component-empty: page 1 preview matches Node",
+    "component-credit: real PDF has expected pages and text",
+    "component-credit: matches the installed Node component renderer",
+    "component-credit: every page has a preview",
+    "component-credit: page 1 preview matches Node",
+    "demo line-item bound is visible",
+    "component-long: real PDF has expected pages and text",
+    "component-long: matches the installed Node component renderer",
+    "component-long: every page has a preview",
+    "component-long: page 1 preview matches Node",
+    "component-long: page 2 preview matches Node",
+    "component-long: page 3 preview matches Node",
+    "all twenty component rows appear once",
+    "expanded line-item controls fit 320px",
+    "component cancellation releases worker and URLs",
+    "component cancellation recovers",
+    "component unmount releases workers and output URLs",
+    "invoice: real PDF has expected pages and text",
+    "invoice matches the installed Node package",
+    "initial automatic render starts one worker",
+    "settled render terminates its worker",
+    "runtime resolves beneath a nested deployment path",
+    "bundled interface font loads",
+    "1440px: no horizontal overflow",
+    "390px: no horizontal overflow",
+    "320px: no horizontal overflow",
+    "on-demand mode does not schedule a render after edits",
+    "manual: real PDF has expected pages and text",
+    "automatic rendering can be re-enabled",
+    "edits immediately hide the old preview and release its URLs",
+    "latest-input: real PDF has expected pages and text",
+    "superseded render cannot overwrite the latest input",
+    "a burst of edits is debounced into one new worker",
+    "replacement does not overlap active worker handles",
+    "only current PDF and preview URLs remain",
+    "edited-template: real PDF has expected pages and text",
+    "edited print CSS changes the page size",
+    "document scripts are not executed in the app",
+    "edited template uses unembedded standard Helvetica faces",
+    "edited standard-font preview contains visible text",
+    "engine-counter-sibling-reset: downloaded PDF has the expected page count",
+    "engine-counter-sibling-reset: sibling counter resets produce the required labels",
+    "engine-overflow-nested-clips: downloaded PDF has the expected page count",
+    "engine-overflow-nested-clips: downloaded PDF has the expected dimensions",
+    "engine-overflow-nested-clips: downloaded PDF matches independent color probes",
+    "engine-overflow-nested-clips: displayed preview has the expected dimensions",
+    "engine-overflow-nested-clips: displayed preview matches independent color probes",
+    "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF has the expected page count",
+    "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF has the expected dimensions",
+    "engine-border-center-zero-top-falls-back-bottom-svg: downloaded PDF matches independent color probes",
+    "engine-border-center-zero-top-falls-back-bottom-svg: displayed preview has the expected dimensions",
+    "engine-border-center-zero-top-falls-back-bottom-svg: displayed preview matches independent color probes",
+    "engine-first-letter-decorated-left: downloaded PDF has the expected page count",
+    "engine-first-letter-decorated-left: downloaded text matches the expected visible content",
+    "engine-first-letter-decorated-left: downloaded PDF has the expected dimensions",
+    "engine-first-letter-decorated-left: downloaded PDF matches independent color probes",
+    "engine-first-letter-decorated-left: displayed preview has the expected dimensions",
+    "engine-first-letter-decorated-left: displayed preview matches independent color probes",
+    "visibility-script-blocks: downloaded PDF has the expected page count",
+    "visibility-script-blocks: downloaded text matches the expected visible content",
+    "visibility-script-blocks: PDF matches the released source/control fixture",
+    "visibility-style-blocks: downloaded PDF has the expected page count",
+    "visibility-style-blocks: downloaded text matches the expected visible content",
+    "visibility-style-blocks: PDF matches the released source/control fixture",
+    "visibility-hidden-span-paragraph: downloaded PDF has the expected page count",
+    "visibility-hidden-span-paragraph: downloaded text matches the expected visible content",
+    "visibility-hidden-span-paragraph: PDF matches the released source/control fixture",
+    "visibility-script-revert: downloaded PDF has the expected page count",
+    "visibility-script-revert: downloaded text matches the expected visible content",
+    "visibility-script-revert: PDF matches the released source/control fixture",
+    "visibility-script-inline-paragraph: downloaded PDF has the expected page count",
+    "visibility-script-inline-paragraph: downloaded text matches the expected visible content",
+    "visibility-script-inline-paragraph: PDF matches the released source/control fixture",
+    "decoration-inter-40-underline-font: downloaded PDF has the expected page count",
+    "decoration-inter-40-underline-font: downloaded text matches the expected visible content",
+    "decoration-inter-40-underline-font: decoration stroke count matches",
+    "decoration-inter-40-underline-font: decoration uses the released font or CSS width",
+    "decoration-inter-40-underline-length: downloaded PDF has the expected page count",
+    "decoration-inter-40-underline-length: downloaded text matches the expected visible content",
+    "decoration-inter-40-underline-length: decoration stroke count matches",
+    "decoration-inter-40-underline-length: decoration uses the released font or CSS width",
+    "decoration-inter-40-underline-auto: downloaded PDF has the expected page count",
+    "decoration-inter-40-underline-auto: downloaded text matches the expected visible content",
+    "decoration-inter-40-underline-auto: decoration stroke count matches",
+    "decoration-inter-40-underline-auto: decoration uses the released font or CSS width",
+    "report: real PDF has expected pages and text",
+    "report matches the installed Node package",
+    "all report pages have previews",
+    "each design preserves its template edits",
+    "invalid input cannot leave an old download",
+    "cancel removes the worker and stale download",
+    "recovered: real PDF has expected pages and text",
+    "unmount releases ready PDF and preview URLs",
+    "unmount aborts a pending worker",
+    "remounted: real PDF has expected pages and text",
+    "remount starts from clean state and recovers",
+    "all created URLs and workers are released at final unmount",
+    "no uploads or cross-origin document requests",
+    "no uncaught page errors"
+  ],
+  "component_pdf_png_equal_node": true,
+  "html_invoice_report_pdf_bytes_unchanged": true,
+  "baselines": [
+    {
+      "design": "invoice",
+      "pages": 1,
+      "pdfSha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+      "previews": [
+        "72420749ccc3deaa8025daf7baffcdf79be716b6e8e93ed605effebed01e86c7"
+      ]
+    },
+    {
+      "design": "report",
+      "pages": 3,
+      "pdfSha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802",
+      "previews": [
+        "33ee3398d59f6836368cdab0f3c725c3cf12cbf2f9f3a3ac6a6b168f6c1886f5",
+        "c8fe5102e9219962ea068201be0a6730cb37de797649f4b5f44478433e79b018",
+        "a3e8acbc7ba4147c56d45b606d3974ec4aecbda1b5d7362451e5e8890491dc7d"
+      ]
+    },
+    {
+      "design": "component-invoice",
+      "pages": 1,
+      "pdfSha256": "f2553f220e9d30e26df785a4ed251f07ff1e615afd3972a5c29c19a0c5fd3f6c",
+      "previews": [
+        "54a931df6a4741745ae651800ff74311cb59f1c74b58a0a67936a497e288648c"
+      ],
+      "repeatedPdfPreviewsEqual": true
+    },
+    {
+      "design": "component-paid",
+      "pages": 1,
+      "pdfSha256": "91d8c8360fac37cd413fe669ed8f06650658b9ca01777129879207aac014d4c2",
+      "previews": [
+        "8028cdd4d9b967e61084f54711072a1cc93a208b557749187dc186eec251d531"
+      ],
+      "repeatedPdfPreviewsEqual": true
+    },
+    {
+      "design": "component-edited",
+      "pages": 1,
+      "pdfSha256": "a664f9fd84af1d2354537645aa6b70dd9abe3ab762b8a9631047aab742b1297e",
+      "previews": [
+        "2ebbfde2c38975be8abf5312947a07d6375039f422fef3ad81aaad7d67cfe115"
+      ],
+      "repeatedPdfPreviewsEqual": true
+    },
+    {
+      "design": "component-empty",
+      "pages": 1,
+      "pdfSha256": "cc1982eaea9dfa05b014cffea44644ecc2f4d33e8eb22ae6f6a501ab6d7f1248",
+      "previews": [
+        "2c7539839be57f85421a98fad5a1abc403d914b87d0539f9128c91691c24f783"
+      ],
+      "repeatedPdfPreviewsEqual": true
+    },
+    {
+      "design": "component-credit",
+      "pages": 1,
+      "pdfSha256": "cd57b56ec26e86365ab0223656d7e21b1543c9fbf404e967f0aef2e9b98024e6",
+      "previews": [
+        "8937d9ac9b42cf13c1dd28fcdb150dabd3f404e8bf7816050824c7905d6898e3"
+      ],
+      "repeatedPdfPreviewsEqual": true
+    },
+    {
+      "design": "component-long",
+      "pages": 3,
+      "pdfSha256": "589210d6b5bb0684fdbf5dbf62c5e32742c7166d3a8cfc5ae304c430e08357a3",
+      "previews": [
+        "a22c18101f3303398a17c655b88f005fffde67dddb3f0b28521a78041125f4fe",
+        "61e388cdd7c7d133c647b07886bd818d91382b072323c79281c80c698983b24b",
+        "7648f8591967cf8be2ad40f7743cc95464606687f8bcd14ac48098d9f48560c5"
+      ],
+      "repeatedPdfPreviewsEqual": true
+    }
+  ],
+  "visual_review": {
+    "passed": true,
+    "files": {
+      "component-invoice-1.png": "54a931df6a4741745ae651800ff74311cb59f1c74b58a0a67936a497e288648c",
+      "component-edited-1.png": "2ebbfde2c38975be8abf5312947a07d6375039f422fef3ad81aaad7d67cfe115"
+    },
+    "observations": "Default and mixed-case reference are readable; page content, spacing, totals and footer fit without clipping."
+  },
+  "scope": "Windows Chrome production browser downloads, exact pypdf extraction and PDFium case-sensitive search. CI independently repeats supported browser checks. This is a template fix, not a new package release or a conformance claim."
+}

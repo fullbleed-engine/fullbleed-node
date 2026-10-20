@@ -4,6 +4,25 @@ import json
 
 from playwright.sync_api import expect
 from pypdf import PdfReader
+import pypdfium2 as pdfium
+
+
+def check_reference(path, reference, check):
+    # Identifiers must survive reader extraction and search without removing
+    # whitespace or changing case, even when the surrounding label is tracked.
+    text = PdfReader(path).pages[0].extract_text()
+    check(path.stem + ': reference extracts with exact spacing and case', reference in text)
+    with pdfium.PdfDocument(str(path)) as document:
+        page = document[0]
+        textpage = page.get_textpage()
+        search = textpage.search(reference, match_case=True)
+        try:
+            found = search.get_next() is not None
+        finally:
+            search.close()
+            textpage.close()
+            page.close()
+    check(path.stem + ': reference is searchable in PDFium', found)
 
 
 def check_components(page, out, baseline, check, ready, download, hold_engine, resume_engine, requested):
@@ -25,7 +44,8 @@ def check_components(page, out, baseline, check, ready, download, hold_engine, r
 
     ready()
     check('components are the initial design', page.locator('#kind').input_value() == 'components')
-    compare('component-invoice', ['Maple & Finch', 'NS-1042', '8,100.00'])
+    initial = compare('component-invoice', ['Maple & Finch', 'NS-1042', '8,100.00'])
+    check_reference(initial, 'NS-1042', check)
     check('component design needs no HTML editor', page.locator('#html-source').count() == 0)
     page.locator('#component-source summary').click()
     source = page.locator('#component-source code').last.inner_text()
@@ -57,10 +77,11 @@ def check_components(page, out, baseline, check, ready, download, hold_engine, r
     page.locator('#customer').fill('Obsolete component input')
     assert requested.wait(8), 'Expected a held component renderer.'
     page.locator('#customer').fill('Birch & <Briar>')
-    page.locator('#reference').fill('TSX-2042')
+    page.locator('#reference').fill('Ref-aBc-2042')
     page.locator('#accent').fill('#233b79')
     resume_engine()
-    edited = compare('component-edited', ['Birch & <Briar>', 'TSX-2042'])
+    edited = compare('component-edited', ['Birch & <Briar>', 'Ref-aBc-2042'])
+    check_reference(edited, 'Ref-aBc-2042', check)
     check('superseded component results cannot replace newer input', 'Obsolete component input' not in PdfReader(edited).pages[0].extract_text())
     page.screenshot(path=str(out / 'component-edited.png'), full_page=True)
     page.locator('#auto-preview').uncheck()

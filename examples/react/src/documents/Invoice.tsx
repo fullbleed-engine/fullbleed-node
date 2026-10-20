@@ -49,7 +49,7 @@ export function Invoice({ data, ink = '#17382e' }: { data: InvoiceData; ink?: st
   return <Document title="Northstar Studio / Invoice" lang="en" styles={styles}>
     <Header className="brand"><Paragraph className="wordmark">NORTHSTAR / STUDIO</Paragraph>
       <Paragraph className="brand-note">{'Independent design.\nThoughtful by nature.'}</Paragraph></Header>
-    <Section className="intro"><Paragraph className="eyebrow">{`Invoice ${data.number} · ${data.period}`}</Paragraph>
+    <Section className="intro"><Paragraph className="eyebrow">Invoice <Text className="invoice-reference">{data.number}</Text>{` · ${data.period}`}</Paragraph>
       <Heading level={1}>Good work.<LineBreak />Clear numbers.</Heading>
       <Paragraph className="lede">A shared vision, made tangible. Here’s the work we brought to life together.</Paragraph></Section>
     <LayoutGrid className="meta" aria-label="Invoice details"><Field label="Prepared for" value={data.customer} />
