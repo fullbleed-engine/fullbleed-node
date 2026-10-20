@@ -1,7 +1,7 @@
 {
   "name": "fullbleed",
-  "version": "0.7.1",
-  "description": "Generate PDFs from function components, JSX, or HTML/CSS in Node.js or a browser worker, with bundled fonts and PNG previews.",
+  "version": "0.8.0",
+  "description": "Generate PDFs from HTML/CSS, components or JSX in Node.js, browsers and Cloudflare Workers, with bundled fonts and PNG previews.",
   "type": "module",
   "main": "./src/index.cjs",
   "types": "./src/index.d.ts",
@@ -20,6 +20,10 @@
       "types": "./src/browser.d.ts",
       "default": "./dist/browser/client.js"
     },
+    "./cloudflare": {
+      "types": "./src/cloudflare.d.ts",
+      "default": "./dist/cloudflare.js"
+    },
     "./ui": {
       "browser": {
         "types": "./src/ui.d.ts",
@@ -35,14 +39,32 @@
       }
     },
     "./ui/jsx-runtime": {
-      "browser": { "types": "./src/jsx-runtime.d.ts", "default": "./dist/jsx-runtime.js" },
-      "import": { "types": "./src/jsx-runtime.d.ts", "default": "./src/jsx-runtime.js" },
-      "require": { "types": "./dist/jsx-runtime.d.cts", "default": "./src/jsx-runtime.cjs" }
+      "browser": {
+        "types": "./src/jsx-runtime.d.ts",
+        "default": "./dist/jsx-runtime.js"
+      },
+      "import": {
+        "types": "./src/jsx-runtime.d.ts",
+        "default": "./src/jsx-runtime.js"
+      },
+      "require": {
+        "types": "./dist/jsx-runtime.d.cts",
+        "default": "./src/jsx-runtime.cjs"
+      }
     },
     "./ui/jsx-dev-runtime": {
-      "browser": { "types": "./src/jsx-runtime.d.ts", "default": "./dist/jsx-runtime.js" },
-      "import": { "types": "./src/jsx-runtime.d.ts", "default": "./src/jsx-runtime.js" },
-      "require": { "types": "./dist/jsx-runtime.d.cts", "default": "./src/jsx-runtime.cjs" }
+      "browser": {
+        "types": "./src/jsx-runtime.d.ts",
+        "default": "./dist/jsx-runtime.js"
+      },
+      "import": {
+        "types": "./src/jsx-runtime.d.ts",
+        "default": "./src/jsx-runtime.js"
+      },
+      "require": {
+        "types": "./dist/jsx-runtime.d.cts",
+        "default": "./src/jsx-runtime.cjs"
+      }
     }
   },
   "engines": {
@@ -59,10 +81,12 @@
     "build": "node tools/build.mjs",
     "prepack": "node tools/check-build.mjs",
     "test": "node --test test/*.test.mjs",
-    "check:types": "tsc -p tsconfig.json && tsc -p tsconfig.browser.json && tsc -p tsconfig.jsx.json && tsc -p tsconfig.jsx.json --jsx react-jsxdev && tsc -p tsconfig.jsx.browser.json && tsc -p tsconfig.jsx.browser.json --jsx react-jsxdev && tsc -p tsconfig.jsx.json --jsxImportSource react",
+    "check:types": "tsc -p tsconfig.json && tsc -p tsconfig.browser.json && tsc -p tsconfig.cloudflare.json && tsc -p tsconfig.jsx.json && tsc -p tsconfig.jsx.json --jsx react-jsxdev && tsc -p tsconfig.jsx.browser.json && tsc -p tsconfig.jsx.browser.json --jsx react-jsxdev && tsc -p tsconfig.jsx.json --jsxImportSource react",
     "verify:native": "node tools/verify-native.mjs",
     "example": "node examples/invoice.mjs",
     "verify:pack": "node tools/verify-pack.mjs",
+    "verify:cloudflare": "node tools/check-cloudflare.mjs",
+    "verify:cloudflare:starter": "node tools/check-cloudflare-starter.mjs",
     "verify:text": "python tools/verify-installed-text.py",
     "render:fonts": "node tools/render-font-subsets.mjs",
     "verify:fonts": "python tools/verify-font-subsets.py",
@@ -97,7 +121,8 @@
     "rust",
     "webassembly",
     "jsx",
-    "components"
+    "components",
+    "cloudflare-workers"
   ],
   "publishConfig": {
     "access": "public"
@@ -107,8 +132,9 @@
   },
   "devDependencies": {
     "@types/node": "22.20.5",
+    "esbuild": "0.28.2",
     "typescript": "7.0.2",
-    "esbuild": "0.28.2"
+    "wrangler": "4.151.3"
   },
   "bin": {
     "fullbleed-browser-assets": "src/copy-browser-assets.cjs"

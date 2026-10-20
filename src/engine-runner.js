@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: MIT
 import { WASI, File, OpenFile, Directory, ConsoleStdout, PreopenDirectory } from '@bjorn3/browser_wasi_shim';
 
-export async function runEngine(job) {
+// A compiled module can be instantiated synchronously. Keeping the entire
+// in-process call synchronous avoids overlapping Wasm instances in one Worker
+// isolate; the Node/browser wrappers still run it in their dedicated workers.
+export function runEngineSync(job) {
   try {
     const root = new PreopenDirectory('.', new Map());
     const put = (path, data) => {
@@ -22,7 +25,7 @@ export async function runEngine(job) {
     const wasi = new WASI(['fullbleed', String(job.maxPages), String(job.previewDpi), job.allowMissingGlyphs ? 'allow' : 'reject', ...job.fonts.map(f => f.name)], [], [
       new OpenFile(new File([])), ConsoleStdout.lineBuffered(collect), ConsoleStdout.lineBuffered(collect), root,
     ], { debug: false });
-    const instance = await WebAssembly.instantiate(job.module, { wasi_snapshot_preview1: wasi.wasiImport });
+    const instance = new WebAssembly.Instance(job.module, { wasi_snapshot_preview1: wasi.wasiImport });
     const status = wasi.start(instance);
     if (status !== 0) {
       const code = ['PAGE_LIMIT', 'MISSING_GLYPHS', 'PREVIEW_FAILED'].find(c => log.includes(c + ':')) ?? 'RENDER_FAILED';
@@ -43,4 +46,8 @@ export async function runEngine(job) {
     const code = cause instanceof WebAssembly.RuntimeError || cause instanceof RangeError ? 'ENGINE_LIMIT' : 'RENDER_FAILED';
     return { ok: false, code, message: cause.message || String(cause) };
   }
+}
+
+export async function runEngine(job) {
+  return runEngineSync(job);
 }

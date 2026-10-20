@@ -20,6 +20,8 @@ HIDDEN_TEXT_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('hidden-text-2.5.24.json
 COMPONENT_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'component-cases.mjs'
 HTML_EXPORT_SOURCE = Path(__file__).resolve().parent / 'html-export-fixtures.mjs'
 ENGINE_PAINT_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('engine-paint-2.5.28.json')
+CLOUDFLARE_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'cloudflare/cases.mjs'
+CLOUDFLARE_STARTER_SOURCE = Path(__file__).resolve().parents[1] / 'examples/cloudflare/test/fixtures.mjs'
 
 
 def require(condition, message):
@@ -87,6 +89,32 @@ def verify_engine_paint_evidence(report):
     require(len(native) == len(report.get('native_wasi_fixtures', [])) and names.issubset(native)
                 and all(native[name].get('nativeWasiPdfEqual') is True and native[name].get('nativeWasiPreviewsEqual') is True
                         for name in names), 'Native/WASI paint comparison is incomplete or duplicated')
+
+
+def verify_cloudflare_evidence(report):
+    for key, source, documents in [('cloudflare_workers', CLOUDFLARE_SOURCE, 7),
+                                   ('cloudflare_starter', CLOUDFLARE_STARTER_SOURCE, 6)]:
+        source_sha = hashlib.sha256(source.read_bytes()).hexdigest()
+        evidence = report.get(key, [])
+        require(len(evidence) == 2 and {item.get('platform') for item in evidence} == {'win32', 'linux'},
+                'Workers evidence requires Windows and Linux local runtime checks')
+        require(all(item.get('ok') is True and item.get('package_version') == report['package_version']
+                    and item.get('engine_version') == report['engine_version']
+                    and item.get('tarball_sha256') == report['package_sha256']
+                    and item.get('source_sha256') == source_sha and item.get('documents') == documents
+                    and item.get('error_cases') == 10 and item.get('node_bytes_identical') is True
+                    and item.get('recovery') is True and item.get('server_stopped') is True
+                    and item.get('independent_reader') is True and item.get('local_only') is True
+                    and item.get('hosted_verified') is False and item.get('free_plan_verified') is False
+                    and item.get('wrangler') and item.get('workerd') for item in evidence),
+                'Workers evidence is incomplete or targets another package, tarball, source or scope')
+        if key == 'cloudflare_workers':
+            require(all(item.get('synchronous_instantiation') is True
+                        and item.get('no_runtime_fetching_or_compilation') is True for item in evidence),
+                    'Workers runtime boundary checks are incomplete')
+        else:
+            require(all(item.get('standalone_config') is True and item.get('input_tests') == 5 for item in evidence),
+                    'Workers starter checks are incomplete')
 
 
 def verify_binding(version, run_id, run, release, tag_commit, report):
@@ -188,6 +216,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             verify_html_export_evidence(report)
         if release_version >= (0, 7, 1):
             verify_engine_paint_evidence(report)
+        if release_version >= (0, 8, 0):
+            verify_cloudflare_evidence(report)
 
 
 def verify_tarball(data, info, report):
@@ -223,6 +253,8 @@ def verify_tarball(data, info, report):
         require({'src/ui.js', 'src/ui.cjs', 'src/ui.d.ts', 'dist/ui.js', 'dist/ui.d.cts',
                  'src/jsx-runtime.js', 'src/jsx-runtime.cjs', 'src/jsx-runtime.d.ts',
                  'dist/jsx-runtime.js', 'dist/jsx-runtime.d.cts'}.issubset(names), 'Component/JSX package files are missing')
+    if tuple(map(int, info['version'].split('.'))) >= (0, 8, 0):
+        require({'dist/cloudflare.js', 'src/cloudflare.d.ts'}.issubset(names), 'Workers package files are missing')
     return sha
 
 

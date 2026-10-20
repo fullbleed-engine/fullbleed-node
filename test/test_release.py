@@ -382,5 +382,54 @@ class PaintReleaseEvidenceTests(unittest.TestCase):
                     release_check.verify_engine_paint_evidence(self.report)
 
 
+class CloudflareReleaseEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        self.report = dict(package_version='0.8.0', engine_version='2.5.29', package_sha256='a' * 64)
+        for key, source, documents in [('cloudflare_workers', release_check.CLOUDFLARE_SOURCE, 7),
+                                       ('cloudflare_starter', release_check.CLOUDFLARE_STARTER_SOURCE, 6)]:
+            digest = hashlib.sha256(source.read_bytes()).hexdigest()
+            self.report[key] = [dict(platform=platform, ok=True, package_version='0.8.0', engine_version='2.5.29',
+                tarball_sha256='a' * 64, source_sha256=digest, documents=documents, error_cases=10,
+                node_bytes_identical=True, recovery=True, server_stopped=True, independent_reader=True,
+                local_only=True, hosted_verified=False, free_plan_verified=False, wrangler='4.151.3', workerd='1.20261019.1',
+                synchronous_instantiation=True, no_runtime_fetching_or_compilation=True, standalone_config=True, input_tests=5)
+                for platform in ['win32', 'linux']]
+
+    def test_complete_local_evidence_is_accepted(self):
+        release_check.verify_cloudflare_evidence(self.report)
+
+    def test_missing_or_duplicate_platform_is_rejected(self):
+        for key in ['cloudflare_workers', 'cloudflare_starter']:
+            self.setUp()
+            self.report[key][0]['platform'] = 'linux'
+            with self.assertRaisesRegex(ValueError, 'Windows and Linux'):
+                release_check.verify_cloudflare_evidence(self.report)
+
+    def test_stale_incomplete_or_overstated_evidence_is_rejected(self):
+        changes = [('ok', False), ('package_version', '0.7.1'), ('engine_version', 'old'),
+                   ('tarball_sha256', 'b' * 64), ('source_sha256', 'b' * 64), ('documents', 0), ('error_cases', 9),
+                   ('node_bytes_identical', False), ('recovery', False), ('server_stopped', False),
+                   ('independent_reader', False), ('local_only', False), ('hosted_verified', True),
+                   ('free_plan_verified', True), ('workerd', ''), ('wrangler', '')]
+        for key in ['cloudflare_workers', 'cloudflare_starter']:
+            for field, value in changes:
+                with self.subTest(key=key, field=field):
+                    self.setUp()
+                    self.report[key][0][field] = value
+                    with self.assertRaisesRegex(ValueError, 'Workers evidence is incomplete'):
+                        release_check.verify_cloudflare_evidence(self.report)
+
+    def test_runtime_boundary_and_standalone_checks_are_required(self):
+        for key, field, value in [('cloudflare_workers', 'synchronous_instantiation', False),
+                                  ('cloudflare_workers', 'no_runtime_fetching_or_compilation', False),
+                                  ('cloudflare_starter', 'standalone_config', False),
+                                  ('cloudflare_starter', 'input_tests', 0)]:
+            with self.subTest(field=field):
+                self.setUp()
+                self.report[key][0][field] = value
+                with self.assertRaisesRegex(ValueError, 'checks are incomplete'):
+                    release_check.verify_cloudflare_evidence(self.report)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -28,6 +28,8 @@ for (const name of ['src/ui.js', 'src/ui.cjs', 'src/ui.d.ts', 'dist/ui.js', 'dis
   'src/jsx-runtime.js', 'src/jsx-runtime.cjs', 'src/jsx-runtime.d.ts', 'dist/jsx-runtime.js', 'dist/jsx-runtime.d.cts'])
   assert(names.includes(name), 'Missing component authoring export: ' + name);
 assert(names.includes('src/render-queue.cjs'), 'The Node render queue must ship in the tarball.');
+for (const name of ['dist/cloudflare.js', 'src/cloudflare.d.ts'])
+  assert(names.includes(name), 'The Workers entry must ship in the tarball: ' + name);
 for (const required of ['dist/engine.wasm', 'dist/build.json', 'dist/index.d.cts', 'dist/THIRD_PARTY_NOTICES.txt', 'dist/browser/client.js', 'dist/browser/worker.js', 'dist/browser/asset-manifest.json', 'src/index.js', 'src/index.cjs', 'src/index.d.ts', 'src/browser.d.ts', 'src/engine-runner.js', 'src/render-input.cjs', 'src/copy-browser-assets.cjs', 'src/worker.js', 'src/process-worker.cjs', 'LICENSE', 'README.md', 'package.json']) assert(names.includes(required), required);
 for (const family of ['Liberation', 'NotoSans', 'NotoSansMath', 'NotoSansSymbols', 'NotoSansSymbols2']) {
   const required = `dist/preview-font-notices/LICENSE-${family}.txt`;

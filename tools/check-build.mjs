@@ -26,6 +26,7 @@ assert.equal((await readFile(new URL('src/jsx-runtime.d.ts', root), 'utf8')).rep
   await readFile(new URL('dist/jsx-runtime.d.cts', root), 'utf8'));
 assert(manifest.files['dist/ui.js'], 'Browser component module must be recorded in the build');
 assert(manifest.files['dist/jsx-runtime.js'], 'Browser JSX runtime must be recorded in the build');
+assert(manifest.files['dist/cloudflare.js'], 'Workers adapter must be recorded in the build');
 const browser = JSON.parse(await readFile(new URL('dist/browser/asset-manifest.json', root), 'utf8'));
 assert.equal(browser.packageVersion, pkg.version);
 assert.equal(browser.engineVersion, pkg.fullbleed.engineVersion);
