@@ -87,9 +87,12 @@ const result = await doc.renderPdf(renderPdf, { maxPages: 5 });
 ```
 
 `className` adds an HTML class. The matching rule belongs in `styles` or the
-renderer’s `css` string. `doc.toHtml({ includeStyles: true })` is a standalone
-browser HTML export; this engine still takes CSS explicitly. Use
-`doc.renderPdf(renderPdf)` or pass both `doc.toHtml()` and `doc.toCss()`.
+renderer’s `css` string. Use `doc.renderPdf(renderPdf)` or pass both
+`doc.toHtml()` and `doc.toCss()` for the separate HTML/CSS form.
+`doc.toHtml({ includeStyles: true })` produces a complete HTML document with
+its stylesheet embedded. This also renders with `css: ''` and
+`defaultStyles: false`; the Workers checks compare both forms' PDF and preview
+bytes. Remote stylesheets are not fetched.
 
 ## Options and execution
 

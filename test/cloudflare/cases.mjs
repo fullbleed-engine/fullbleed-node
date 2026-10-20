@@ -26,8 +26,7 @@ export function optionsFor(name, customFont) {
     Table(THead(Tr(Th('Work'), Th('Amount'))), TBody(Tr(Td('Design and delivery'), Td('$1,870.00')))),
     Box({ className: 'amount' }, '$1,870.00'));
     return name === 'components-inline'
-      // The engine takes CSS explicitly; embedded styles are for browser HTML export.
-      ? { ...common, html: doc.toHtml({ includeStyles: true }), css: doc.toCss() }
+      ? { ...common, html: doc.toHtml({ includeStyles: true }), css: '' }
       : { ...common, html: doc.toHtml(), css: doc.toCss() };
   }
   throw new Error('Unknown fixture: ' + name);
