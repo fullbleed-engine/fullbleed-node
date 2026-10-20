@@ -1,0 +1,342 @@
+{
+  "ok": true,
+  "checkedAt": "2026-10-20T21:19:32.149448+00:00",
+  "package": "0.7.1",
+  "engine": "2.5.29",
+  "localBrowser": {
+    "browser": {
+      "browser": "155.0.8059.40",
+      "checks": 79,
+      "documents": [
+        {
+          "name": "invoice",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "color-only",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "a2b69ba41f7ad4c9bcbd38d803a46e70f0b9ccacd90ffbab5b0f7d87ffca5e4b"
+        },
+        {
+          "name": "customized",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "31ff314b44a6f13534cc383e0cf24929f0695c1dd3d84769dedf8828c6486a93"
+        },
+        {
+          "name": "edited",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "fecff59c1bfd6b59de2f0fb56965a5668023b3b88e64b5c6c30f95875592c4b2"
+        },
+        {
+          "name": "report",
+          "filename": "community-report.pdf",
+          "pages": 3,
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802"
+        },
+        {
+          "name": "recovered",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "31ff314b44a6f13534cc383e0cf24929f0695c1dd3d84769dedf8828c6486a93"
+        }
+      ],
+      "pageErrors": [],
+      "packageLockSha256": "1d7f5a85463a76852b014e664352432619e09eb2f32dda9d5309a1aa9c36d8c6"
+    },
+    "react": {
+      "browser": "155.0.8059.40",
+      "checks": 128,
+      "documents": [
+        {
+          "name": "component-invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "f2553f220e9d30e26df785a4ed251f07ff1e615afd3972a5c29c19a0c5fd3f6c",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-paid",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "91d8c8360fac37cd413fe669ed8f06650658b9ca01777129879207aac014d4c2",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-edited",
+          "pages": 1,
+          "filename": "invoice-Ref-aBc-2042.pdf",
+          "sha256": "a664f9fd84af1d2354537645aa6b70dd9abe3ab762b8a9631047aab742b1297e",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-empty",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "cc1982eaea9dfa05b014cffea44644ecc2f4d33e8eb22ae6f6a501ab6d7f1248",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-credit",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "cd57b56ec26e86365ab0223656d7e21b1543c9fbf404e967f0aef2e9b98024e6",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-long",
+          "pages": 3,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "589210d6b5bb0684fdbf5dbf62c5e32742c7166d3a8cfc5ae304c430e08357a3",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "c1fe667a39ac3eaae3292c3a1fab1c466999e798a5ab0a4616b73689acc79880",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+          "whitespace_normalized_text_checks": false
+        }
+      ],
+      "pageErrors": [],
+      "packageLockSha256": "cc4f2b5ed5fe698b1201041c4f36fb976d17119441c072a786beed0f41ad520b",
+      "baselineArtifactsUnchanged": 20
+    },
+    "vue": {
+      "browser": "155.0.8059.40",
+      "checks": 87,
+      "documents": [
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883"
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "071d2bd98b7b90b52aa5b60e74ce0934ef54d3c6032c222d7237786dc12fc953"
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "139df89824e6a73c13ff62f1237bb8eb9f71e790dcbd051b1bb713ed2bc47802"
+        },
+        {
+          "name": "outage-recovery",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        }
+      ],
+      "pageErrors": [],
+      "packageLockSha256": "ea2c616c264d449e601236bf5806f486dc5a403cc68d36faf49a28dec4b56cf1",
+      "baselineArtifactsUnchanged": 6
+    },
+    "nextjs": {
+      "node": "v22.23.3",
+      "platform": "win32",
+      "next": "16.3.8",
+      "isolation": "process",
+      "pages": 1,
+      "pdfSha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+      "burst": [
+        200,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503
+      ],
+      "checks": [
+        {
+          "name": "standalone artifact is isolated from the source application",
+          "passed": true
+        },
+        {
+          "name": "standalone tracing retains the verified engine and all bundled fonts",
+          "passed": true
+        },
+        {
+          "name": "isolated production server starts on loopback",
+          "passed": true
+        },
+        {
+          "name": "app exposes the sample download without a prefetched render",
+          "passed": true
+        },
+        {
+          "name": "standalone server includes the actual PDF preview asset",
+          "passed": true
+        },
+        {
+          "name": "production route returns complete private PDF bytes with a useful filename",
+          "passed": true
+        },
+        {
+          "name": "unknown invoice IDs return a private JSON error",
+          "passed": true
+        },
+        {
+          "name": "unsupported writes are rejected by the route",
+          "passed": true
+        },
+        {
+          "name": "a concurrent burst receives explicit capacity errors instead of an unbounded queue",
+          "passed": true
+        },
+        {
+          "name": "normal PDF downloads recover after a capacity burst",
+          "passed": true
+        },
+        {
+          "name": "a real missing-glyph failure returns a generic non-PDF error",
+          "passed": true
+        },
+        {
+          "name": "a valid document renders after an engine failure",
+          "passed": true
+        },
+        {
+          "name": "the route enforces its page cap against a real multipage document",
+          "passed": true
+        },
+        {
+          "name": "a valid document renders after the page limit rejects a job",
+          "passed": true
+        },
+        {
+          "name": "a failed render child returns an HTTP error while the production server stays alive",
+          "passed": true
+        },
+        {
+          "name": "the production server returns a valid PDF after a render-process failure",
+          "passed": true
+        },
+        {
+          "name": "client JavaScript excludes the server PDF engine and worker",
+          "passed": true
+        }
+      ],
+      "scope": "Real next build standalone server with released Fullbleed npm package and fictional data; HTTP recovery after deliberate child failure. No hosted platform or application-authentication claim.",
+      "previewSha256": "72420749ccc3deaa8025daf7baffcdf79be716b6e8e93ed605effebed01e86c7",
+      "packageLockSha256": "ffc199cb54dfc51e1da70ee9b2685cb7a376ea62e65353c86c3175dee9746245"
+    }
+  },
+  "reactStrictModeChecks": 128,
+  "reactDevelopmentChecks": [
+    "initial: actual PDF includes source and data edits",
+    "development JSX matches installed Node output",
+    "data-edit: actual PDF includes source and data edits",
+    "tsx-edit: actual PDF includes source and data edits",
+    "editing print TSX retains React form state",
+    "style-edit: actual PDF includes source and data edits",
+    "editing the attached stylesheet changes the PDF",
+    "the edited heading size reaches the PDF",
+    "development source edits have no uncaught page errors"
+  ],
+  "sourceFileSha256": {
+    "examples/browser/README.md": "b45dc07f943ae2339c549d84fa2ff9f4b354a9c062cea7e3a36c005c9e8ea0a3",
+    "examples/browser/package-lock.json": "1d7f5a85463a76852b014e664352432619e09eb2f32dda9d5309a1aa9c36d8c6",
+    "examples/browser/package.json": "d2fe05482a01ac835988ace476c6f727e806759188c71ad6fa99a8cfb70fa5f8",
+    "examples/nextjs/README.md": "61bee7f7c17168a2061893762142cc795fe7992e97d92feab9b73f4c95d66bd3",
+    "examples/nextjs/package-lock.json": "ffc199cb54dfc51e1da70ee9b2685cb7a376ea62e65353c86c3175dee9746245",
+    "examples/nextjs/package.json": "2ce3a14c9fa5e182f844597dd89de16f38ad27450c8811d2682dae18249c26fa",
+    "examples/react/README.md": "bed4d14935f0381265742bd7396a314db79fc246059b32ae198befd4f053252f",
+    "examples/react/package-lock.json": "cc4f2b5ed5fe698b1201041c4f36fb976d17119441c072a786beed0f41ad520b",
+    "examples/react/package.json": "a5c84e2b74f39bcc5aa76e60782a8c7427fe550f29a3a86d687a98aaa68647f3",
+    "examples/vue/README.md": "449f147a8d1e88c3087cf41bbd646ff312649028f1cc672e45cea70c37d9d103",
+    "examples/vue/package-lock.json": "ea2c616c264d449e601236bf5806f486dc5a403cc68d36faf49a28dec4b56cf1",
+    "examples/vue/package.json": "deec17c348cbb28c6e635a03bdb4e4dd4afc37322a82285752159eeaa38ad17a"
+  },
+  "visualReview": {
+    "ok": true,
+    "files": [
+      "component-invoice-1.png",
+      "report-1.png",
+      "report-2.png",
+      "report-3.png",
+      "nextjs/invoice.png"
+    ],
+    "findings": "No clipping, missing content or pagination regression in the inspected invoice and three-page report previews."
+  },
+  "scope": "Public npm package, locked dependencies, actual Chrome PDF downloads and source edits, Next.js standalone HTTP checks. CI separately checks Firefox, WebKit and additional Node/OS combinations. No universal browser, CSS or conformance claim."
+}
