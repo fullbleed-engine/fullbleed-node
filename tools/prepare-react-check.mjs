@@ -42,7 +42,7 @@ const { sample } = await import(pathToFileURL(path.join(compiled, 'data.js')));
 const componentCases = [
   ['component-invoice', sample, '#17382e'],
   ['component-paid', { ...sample, paid: true }, '#17382e'],
-  ['component-edited', { ...sample, customer: 'Birch & <Briar>', number: 'TSX-2042' }, '#233b79'],
+  ['component-edited', { ...sample, customer: 'Birch & <Briar>', number: 'Ref-aBc-2042' }, '#233b79'],
   ['component-empty', { ...sample, items: [] }, '#17382e'],
   ['component-credit', { ...sample, items: [{ name: 'Credit & <revision>', detail: '', quantity: 2, rate_cents: -1255, progress: 100 }] }, '#17382e'],
   ['component-long', { ...sample, items: Array.from({ length: 20 }, (_, index) => ({

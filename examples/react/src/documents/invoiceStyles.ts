@@ -11,6 +11,7 @@ export const invoiceStyles = new StyleSheet({
   ".brand-note": {"textAlign": "right", "fontSize": "8pt", "color": "#63756e"},
   ".intro": {"paddingTop": "26pt", "paddingBottom": "24pt"},
   ".eyebrow": {"color": "#a0442e", "fontSize": "8pt", "fontWeight": "700", "letterSpacing": "1.5pt", "textTransform": "uppercase"},
+  ".invoice-reference": {"letterSpacing": "0pt", "textTransform": "none"},
   "h1": {"fontSize": "42pt", "fontWeight": "700", "lineHeight": "1.08", "letterSpacing": "-2pt", "margin": "9pt 0 13pt"},
   ".lede": {"width": "80%", "fontSize": "11pt", "color": "#63756e"},
   ".meta": {"display": "grid", "gridTemplateColumns": "2fr 1fr 1fr", "gap": "14pt", "borderTop": "1pt solid #d3ded8", "paddingTop": "13pt", "marginBottom": "26pt"},
