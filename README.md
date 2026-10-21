@@ -1,14 +1,15 @@
-# Fullbleed for Node.js and browsers
+# Fullbleed for Node.js, browsers, and Cloudflare Workers
 
-Generate PDFs from reusable function components, JSX, or static HTML and CSS in Node.js or a browser worker. The package includes the
+Generate PDFs from static HTML/CSS, reusable function components, or JSX in Node.js, a browser worker, or Cloudflare Workers. The package includes the
 Fullbleed Rust engine compiled to WebAssembly and four font faces, so installing
 it does not require Python, Rust, a browser, or system fonts. MIT licensed.
 
-Import `fullbleed` for Node.js or `fullbleed/browser` for a web application.
+Import `fullbleed` for Node.js, `fullbleed/browser` for a web application, or
+[`fullbleed/cloudflare`](docs/cloudflare.md) inside a Cloudflare Worker.
 
 Use [`fullbleed/ui`](docs/components.md) to compose documents without writing HTML
 strings. Named components, typed props, ordinary conditions and arrays, reusable
-styles, and an optional JSX/TSX runtime work with either renderer. No React
+styles, and an optional JSX/TSX runtime work with each renderer. No React
 runtime or build step is required for ordinary JavaScript functions.
 
 Try a complete project online: [JavaScript + Vite](https://docs.fullbleed.dev/assets/browser-starter/edit-online.html)
@@ -21,7 +22,7 @@ Using Vue? The [Vue and TypeScript starter](examples/vue) includes editable
 templates, automatic previews, downloads, and a reusable `usePdfPreview` composable.
 
 This is an optional integration around the published **Fullbleed 2.5.29** engine.
-The package has its own version, **0.7.1**. Node applications can use a shared
+The package has its own version, **0.8.0**. Node applications can use a shared
 render queue to bound active renders and waiting requests, include queue time in
 deadlines, cancel waiting jobs, and stop rendering cleanly during shutdown.
 The browser entry renders in a Web Worker, and the Node API supports worker and
@@ -31,7 +32,12 @@ process isolation. See the [browser guide](docs/browser.md),
 [font-family checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-families.md), and
 [embedded-font checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-subsets.md) for the retained fixtures.
 
-Version 0.7.1 brings the stable engine's SVG stylesheet and inset-shadow fixes to
+Version 0.8.0 adds the optional Workers entry with bundled engine/font imports,
+shared input validation, and component authoring. It computes inside the Worker
+isolate, with CPU limits owned by Cloudflare. The [Workers guide](docs/cloudflare.md)
+describes its local-runtime verification and deployment requirements.
+
+Version 0.7.1 brought the stable engine's SVG stylesheet and inset-shadow fixes to
 Node.js and browser workers. The [paint checks](docs/engine-2.5.29.md) cover
 stylesheet selectors, inherited SVG colors and opacity, and clipped, blurred,
 translated and negative-spread inset shadows. The component and static HTML APIs
@@ -73,7 +79,7 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.7.1`.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.8.0`.
 Package archives and retained PDF/PNG evidence are attached to each
 [GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
 The [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification)

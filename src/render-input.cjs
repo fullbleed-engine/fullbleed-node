@@ -12,16 +12,20 @@ const invalid = message => { throw new FullbleedError('INVALID_INPUT', message);
 const sourceLimit = 4_000_000;
 const assetLimit = 64 * 1024 * 1024;
 
-function normalize(options, { browser = false } = {}) {
+function normalize(options, { browser = false, interruptible = true,
+  maxSourceBytes = sourceLimit, maxAssetBytes = assetLimit, defaultMaxPages = 1000 } = {}) {
   if (!options || typeof options !== 'object' || Array.isArray(options)) invalid('Pass an options object with an html string.');
-  const supported = new Set(['html', 'css', 'defaultStyles', 'fonts', 'assets', 'previewDpi', 'timeoutMs', 'maxPages', 'allowMissingGlyphs', 'signal']);
+  const supported = new Set(['html', 'css', 'defaultStyles', 'fonts', 'assets', 'previewDpi', 'maxPages', 'allowMissingGlyphs']);
+  if (interruptible) { supported.add('timeoutMs'); supported.add('signal'); }
   if (!browser) supported.add('isolation');
   for (const key of Object.keys(options)) if (!supported.has(key)) invalid(`Unknown option: ${key}`);
-  const { html, css = '', defaultStyles = true, fonts = [], assets = {}, previewDpi = 0, timeoutMs = 30000, maxPages = 1000, allowMissingGlyphs = false, signal, isolation = 'worker' } = options;
+  const { html, css = '', defaultStyles = true, fonts = [], assets = {}, previewDpi = 0, timeoutMs = 30000, maxPages = defaultMaxPages, allowMissingGlyphs = false, signal, isolation = 'worker' } = options;
   if (typeof html !== 'string' || !html.trim()) invalid('html must be a nonempty string.');
   if (typeof css !== 'string') invalid('css must be a string.');
   if (typeof defaultStyles !== 'boolean') invalid('defaultStyles must be a boolean.');
-  if (new TextEncoder().encode(html).byteLength + new TextEncoder().encode(css).byteLength > sourceLimit) invalid('HTML and CSS together must not exceed 4,000,000 UTF-8 bytes.');
+  if (new TextEncoder().encode(html).byteLength + new TextEncoder().encode(css).byteLength > maxSourceBytes) {
+    invalid(`HTML and CSS together must not exceed ${maxSourceBytes.toLocaleString('en-US')} UTF-8 bytes.`);
+  }
   if (!Number.isInteger(previewDpi) || (previewDpi !== 0 && (previewDpi < 36 || previewDpi > 300))) invalid('previewDpi must be 0 (disabled) or an integer from 36 to 300.');
   if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 2147483647) invalid('timeoutMs must be a positive integer no greater than 2147483647.');
   if (!Number.isSafeInteger(maxPages) || maxPages < 1) invalid('maxPages must be a positive integer.');
@@ -34,7 +38,7 @@ function normalize(options, { browser = false } = {}) {
   function bytes(value, label) {
     if (!(value instanceof Uint8Array) || !value.byteLength) invalid(`${label} must be a nonempty Uint8Array or Buffer.`);
     assetBytes += value.byteLength;
-    if (assetBytes > assetLimit) invalid('Custom fonts and assets together must not exceed 64 MiB.');
+    if (assetBytes > maxAssetBytes) invalid(`Custom fonts and assets together must not exceed ${maxAssetBytes / (1024 * 1024)} MiB.`);
     return Uint8Array.from(value); // Snapshot caller-owned buffers before any await.
   }
   const customFonts = fonts.map((font, i) => ({ name: `fonts/custom-${i}.ttf`, data: bytes(font, `fonts[${i}]`) }));

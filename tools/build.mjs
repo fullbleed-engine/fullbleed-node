@@ -6,6 +6,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
 import { buildBrowser } from './build-browser.mjs';
+import { buildCloudflare } from './build-cloudflare.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const engine = join(root, 'engine');
@@ -69,5 +70,6 @@ const manifest = {
   files,
 };
 Object.assign(manifest.files, await buildBrowser(root, manifest));
+Object.assign(manifest.files, await buildCloudflare(root, manifest));
 await writeFile(join(dist, 'build.json'), JSON.stringify(manifest, null, 2) + '\n');
 console.log(JSON.stringify({ ok: true, engine: core.version, wasm: files['dist/engine.wasm'] }));

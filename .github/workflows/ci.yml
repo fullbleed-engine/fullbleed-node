@@ -37,6 +37,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install pypdf==6.19.0 pypdfium2==5.14.0 fonttools==4.65.0 pillow==12.3.0
+      - name: Verify the packed Workers entry in local workerd
+        run: |
+          npm run verify:cloudflare
+          python tools/verify-cloudflare.py
+          npm run verify:cloudflare:starter
+          python tools/verify-cloudflare-starter.py
       - run: python -m unittest discover -s test -p 'test_*.py'
       - run: npm run verify:text
       - run: python tools/verify-components.py
@@ -115,6 +121,8 @@ jobs:
             output/hidden-text/
             output/engine-paint/
             output/component-verification/
+            output/cloudflare-verification/
+            output/cloudflare-starter-verification/
           retention-days: 7
 
   installed:
@@ -169,6 +177,10 @@ jobs:
           node tools/render-engine-paint.mjs
           python tools/verify-engine-paint.py
           python tools/verify-components.py
+          npm run verify:cloudflare
+          python tools/verify-cloudflare.py
+          npm run verify:cloudflare:starter
+          python tools/verify-cloudflare-starter.py
       - uses: actions/upload-artifact@v4
         if: always() && matrix.os == 'windows-latest' && matrix.node == '22'
         with:
@@ -182,6 +194,8 @@ jobs:
             output/hidden-text/
             output/engine-paint/
             output/component-verification/
+            output/cloudflare-verification/
+            output/cloudflare-starter-verification/
           retention-days: 7
       - uses: actions/upload-artifact@v4
         if: always()

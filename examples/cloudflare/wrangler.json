@@ -1,0 +1,9 @@
+{
+  "name": "fullbleed-invoice",
+  "main": "src/index.mjs",
+  "compatibility_date": "2026-10-20",
+  "send_metrics": false,
+  "workers_dev": false,
+  "preview_urls": false,
+  "rules": [{ "type": "Data", "globs": ["**/*.ttf"], "fallthrough": false }]
+}
