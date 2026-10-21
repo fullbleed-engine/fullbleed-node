@@ -35,13 +35,16 @@ process isolation. See the [browser guide](docs/browser.md),
 Version 0.8.0 adds the optional Workers entry with bundled engine/font imports,
 shared input validation, and component authoring. It computes inside the Worker
 isolate, with CPU limits owned by Cloudflare. The [Workers guide](docs/cloudflare.md)
-describes its local-runtime verification and deployment requirements.
+covers local Windows/Linux checks and a hosted Playground smoke test: six invoices
+produce identical PDF bytes in both environments. Production resource limits and
+Free-plan suitability still need qualification in your own deployment.
 
 Version 0.7.1 brought the stable engine's SVG stylesheet and inset-shadow fixes to
 Node.js and browser workers. The [paint checks](docs/engine-2.5.29.md) cover
 stylesheet selectors, inherited SVG colors and opacity, and clipped, blurred,
 translated and negative-spread inset shadows. The component and static HTML APIs
-remain unchanged.
+remain unchanged. The pinned engine also reads supported embedded `<style>` sheets;
+see [component HTML export](docs/components.md#export-html-with-or-without-styles).
 
 Version 0.7.0 added [static HTML export with or without styles](docs/components.md#export-html-with-or-without-styles):
 `doc.toHtml({ includeStyles: true })` embeds the document stylesheet;
@@ -58,8 +61,7 @@ JavaScript entries. Script/style elements and `display:none` descendants stay
 hidden, while explicit author display overrides remain supported. Font-selected
 decoration thickness uses the selected face's metrics. The
 [engine update checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/engine-2.5.24.md)
-cover source/control PDFs, font metrics, and browser downloads. Embedded
-stylesheets are still ignored; supply template CSS through the `css` option.
+cover source/control PDFs, font metrics, and browser downloads.
 
 Version 0.5.0 adds `defaultStyles: false` to both JavaScript entries. Use it to
 preserve a template's original CSS, including font inheritance from `html`,
