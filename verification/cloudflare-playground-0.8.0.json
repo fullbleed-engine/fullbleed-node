@@ -1,0 +1,209 @@
+{
+  "schema": "fullbleed.cloudflare-playground-check.v1",
+  "ok": true,
+  "checkedAt": "2026-10-21T01:10:06.865629+00:00",
+  "packageVersion": "0.8.0",
+  "engineVersion": "2.5.29",
+  "packageSha256": "86af460db1f29c94e65daff3563f9f64f0f52e0af47f02adf3ff39cb2ece1691",
+  "sourceCommit": "e9582e417e8cbe49e41aabd0c695524920a1840d",
+  "starterZipSha256": "1aa32c075f65844fba69bb0909985c60d35e40ef488c2f889bbae2e9303d9ccd",
+  "surface": "Cloudflare Workers Playground",
+  "hostedSandboxVerified": true,
+  "productionQualified": false,
+  "freePlanQualified": false,
+  "cpuMeasured": false,
+  "memoryMeasured": false,
+  "loadTest": false,
+  "accountCreated": false,
+  "spendUsd": 0,
+  "sources": {
+    "playground": "https://developers.cloudflare.com/workers/playground/",
+    "playgroundImplementation": "https://github.com/cloudflare/workers-sdk/blob/f43e2e61093b3218a48691dc76ce7f463a2123ce/packages/playground-preview-worker/src/user.do.ts#L169",
+    "playgroundImplementationSha256": "59db5c810228d2f6ed1140d95d6ebc538e15554dcb66cfd50f04f97eacec71cf",
+    "invoiceSource": "https://github.com/fullbleed-engine/fullbleed-node/tree/v0.8.0/examples/cloudflare",
+    "localVerification": "https://docs.fullbleed.dev/assets/cloudflare-starter/verification.json",
+    "starterManifest": "https://docs.fullbleed.dev/assets/cloudflare-starter/source.json"
+  },
+  "scope": "Bounded synthetic HTTP smoke test of the released, locked invoice starter. The Playground service selects an unbound usage model; its result does not qualify production plan resource limits.",
+  "uploadedFiles": [
+    {
+      "name": "212553bf30da0eceeadf8974f9c62cbab3bc6236-DMSerifDisplay-Regular.ttf",
+      "mime": "application/octet-stream",
+      "bytes": 76580,
+      "sha256": "8cc3643535edf039aa5d95440a8542735e9197e4f4b8d9303e980fefbf5ab616"
+    },
+    {
+      "name": "411cf2e865e3be07f26fb932446920c8f32f7090-engine.wasm",
+      "mime": "application/wasm",
+      "bytes": 5692197,
+      "sha256": "bbcf9b09a60a38d9a884f227fd7f7d31e17e4d611c91027775059f05e2bb46f2"
+    },
+    {
+      "name": "76057d206a498d40aa4779d0d5a382ad7554dd80-BebasNeue-Regular.ttf",
+      "mime": "application/octet-stream",
+      "bytes": 61400,
+      "sha256": "08e4623805102d819f58601e46e345648846075e363b2ceb23313c2d1c83ec73"
+    },
+    {
+      "name": "9748c58d0bad57cc02301374d8b4927c62c0991b-DMSerifDisplay-Italic.ttf",
+      "mime": "application/octet-stream",
+      "bytes": 71208,
+      "sha256": "df74c0ac387baeaeb0fe4f2324e1668e6a3ed8c09cd9796fe162c71753e19e45"
+    },
+    {
+      "name": "97d4f3722d62c6cc5340bf6220ada3d64ca367b1-Inter-Variable.ttf",
+      "mime": "application/octet-stream",
+      "bytes": 876576,
+      "sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031"
+    },
+    {
+      "name": "index.js",
+      "mime": "application/javascript+module",
+      "bytes": 99038,
+      "sha256": "2c4ea4308caa9c19cf46a106697cf5806721352b5261349019fc287a9aa14f93"
+    },
+    {
+      "name": "BebasNeue-OFL.txt",
+      "mime": "text/plain",
+      "bytes": 4337,
+      "sha256": "72082f6cb4d04be2ecf7cc7d9e1e7d73787f0af8a5a278a47cade70c16b78341"
+    },
+    {
+      "name": "DMSerifDisplay-OFL.txt",
+      "mime": "text/plain",
+      "bytes": 4512,
+      "sha256": "aa49c876a28d8c0b0a3027d6c25b9c607eee8c0fb96165011d42a6ace1408fe1"
+    },
+    {
+      "name": "Inter-OFL.txt",
+      "mime": "text/plain",
+      "bytes": 4377,
+      "sha256": "5b9321a4298cfeb6b34354164a1c3afc3db114569984c502b9b35d988fd58c57"
+    },
+    {
+      "name": "LICENSE",
+      "mime": "text/plain",
+      "bytes": 1079,
+      "sha256": "36a2115938f6e68cf0d87eccff7a6a3e57c17017e909cbd640d51aff1fa0c5a9"
+    },
+    {
+      "name": "THIRD_PARTY_NOTICES.txt",
+      "mime": "text/plain",
+      "bytes": 81572,
+      "sha256": "26f22c8bee70f7e4c81211fba97af712b2db2546c6b6d78e6440b92f3fd24302"
+    }
+  ],
+  "records": [
+    {
+      "name": "sample",
+      "pages": 1,
+      "sha256": "17437a93f960b80d16bbbe92f573c7c62a9d9d39eca6899fb9b642ebfb9feca3",
+      "bytes": 103212,
+      "localBytesIdentical": true
+    },
+    {
+      "name": "minimum",
+      "pages": 1,
+      "sha256": "825a084cd377f4ed6b3cfe7e378be636e2cca2675b8f1bab467966e4418ec4c8",
+      "bytes": 105334,
+      "localBytesIdentical": true
+    },
+    {
+      "name": "maximum-total",
+      "pages": 1,
+      "sha256": "63c2bdd3d78a0656cff4b6919c302a4ce0385621ea28acc6fbb96426324b36ff",
+      "bytes": 102597,
+      "localBytesIdentical": true
+    },
+    {
+      "name": "long",
+      "pages": 5,
+      "sha256": "2a36293e76043cb65cb2a208c28f43c526299ed17e0972ba0e0ccbff1ff071a5",
+      "bytes": 114406,
+      "localBytesIdentical": true
+    },
+    {
+      "name": "escaped",
+      "pages": 1,
+      "sha256": "6f1191f16e4f4023cc35d9426cd26ebb7ee1e37a2da6209df3105bcfd19b2fbf",
+      "bytes": 103773,
+      "localBytesIdentical": true
+    },
+    {
+      "name": "after-errors",
+      "pages": 1,
+      "sha256": "17437a93f960b80d16bbbe92f573c7c62a9d9d39eca6899fb9b642ebfb9feca3",
+      "bytes": 103212,
+      "localBytesIdentical": true
+    }
+  ],
+  "errors": [
+    {
+      "name": "json",
+      "status": 400,
+      "code": "INVALID_JSON"
+    },
+    {
+      "name": "content-type",
+      "status": 415,
+      "code": "JSON_REQUIRED"
+    },
+    {
+      "name": "body-limit",
+      "status": 413,
+      "code": "BODY_TOO_LARGE"
+    },
+    {
+      "name": "number",
+      "status": 400,
+      "code": "INVALID_INVOICE"
+    },
+    {
+      "name": "date",
+      "status": 400,
+      "code": "INVALID_INVOICE"
+    },
+    {
+      "name": "money",
+      "status": 400,
+      "code": "INVALID_INVOICE"
+    },
+    {
+      "name": "total",
+      "status": 400,
+      "code": "INVALID_INVOICE"
+    },
+    {
+      "name": "row-limit",
+      "status": 400,
+      "code": "INVALID_INVOICE"
+    },
+    {
+      "name": "unknown",
+      "status": 400,
+      "code": "INVALID_INVOICE"
+    },
+    {
+      "name": "glyph",
+      "status": 422,
+      "code": "MISSING_GLYPHS"
+    }
+  ],
+  "independentPdfTextAndPageChecks": true,
+  "recovery": true,
+  "methodCheck": {
+    "method": "GET",
+    "path": "/invoice",
+    "status": 405,
+    "allow": "POST"
+  },
+  "missingRouteCheck": {
+    "path": "/missing",
+    "status": 404
+  },
+  "cleanup": {
+    "previewReplacedWith410": true,
+    "verified": true
+  },
+  "requestCountIncludingCleanup": 20
+}
