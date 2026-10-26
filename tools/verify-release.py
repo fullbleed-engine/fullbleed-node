@@ -23,6 +23,7 @@ ENGINE_PAINT_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('engine-paint-2.5.28.js
 CLOUDFLARE_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'cloudflare/cases.mjs'
 CLOUDFLARE_STARTER_SOURCE = Path(__file__).resolve().parents[1] / 'examples/cloudflare/test/fixtures.mjs'
 PAGINATION_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'pagination-fixtures.mjs'
+TABLE_WRAPPING_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('table-wrapping-2.5.37.json')
 
 
 def require(condition, message):
@@ -147,6 +148,41 @@ def verify_pagination_evidence(report):
             'Pagination public failure control is missing or was not calibrated')
 
 
+def verify_table_wrapping_evidence(report):
+    source_sha = hashlib.sha256(TABLE_WRAPPING_SOURCE.read_bytes()).hexdigest()
+    fixture = json.loads(TABLE_WRAPPING_SOURCE.read_bytes())
+    names = sorted(case['name'] for case in fixture['cases'])
+    failing_names = sorted(case['name'] for case in fixture['cases'] if case['public081Fails'])
+    evidence = report.get('table_wrapping', [])
+    require(len(evidence) == 2 and {item.get('platform') for item in evidence} == {'win32', 'linux'},
+            'Table wrapping requires Windows and Linux evidence')
+    require(all(item.get('ok') is True and item.get('package_version') == report['package_version']
+                and item.get('engine_version') == report['engine_version']
+                and item.get('tarball_sha256') == report['package_sha256']
+                and item.get('source_sha256') == source_sha and item.get('negative_control') is False
+                and item.get('cases') == 70 and item.get('passed') == 70 and item.get('failed') == 0
+                and item.get('case_names') == names for item in evidence),
+            'Table wrapping evidence is incomplete or targets another package, source or tarball')
+    require(next(item for item in evidence if item['platform'] == 'linux').get('unchanged_controls') == 34,
+            'Table wrapping healthy controls must preserve their output')
+    browsers = report.get('browser_matrix', [])
+    require(len(browsers) == 3 and {item.get('browser') for item in browsers} == {'chrome', 'firefox', 'webkit'},
+            'Table wrapping requires all three browser downloads')
+    require(all(item.get('table_wrapping_ok') is True and item.get('table_wrapping_cases') == 35
+                and item.get('table_wrapping_source_sha256') == source_sha
+                and item.get('table_wrapping_passed') == 35 and item.get('table_wrapping_failed') == 0
+                and item.get('table_wrapping_negative_control') is False for item in browsers),
+            'Browser table wrapping evidence is incomplete or targets another source')
+    controls = report.get('table_wrapping_negative_controls', [])
+    require(len(controls) == 1 and controls[0].get('platform') == 'linux'
+                and controls[0].get('ok') is True and controls[0].get('negative_control') is True
+                and controls[0].get('package_version') == '0.8.1' and controls[0].get('engine_version') == '2.5.35'
+                and controls[0].get('source_sha256') == source_sha and controls[0].get('cases') == 70
+                and controls[0].get('passed') == 34 and controls[0].get('failed') == 36
+                and controls[0].get('failed_case_names') == failing_names,
+            'Table wrapping public failure control is missing or was not calibrated')
+
+
 def verify_binding(version, run_id, run, release, tag_commit, report):
     require(re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version), 'Use a stable numeric version')
     require(re.fullmatch(r'[0-9]+', run_id), 'Use a numeric CI run ID')
@@ -250,6 +286,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             verify_cloudflare_evidence(report)
         if release_version >= (0, 8, 1):
             verify_pagination_evidence(report)
+        if release_version >= (0, 8, 2):
+            verify_table_wrapping_evidence(report)
 
 
 def verify_tarball(data, info, report):

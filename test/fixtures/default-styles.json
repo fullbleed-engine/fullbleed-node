@@ -1,5 +1,5 @@
 {
-  "engineVersion": "2.5.35",
+  "engineVersion": "2.5.37",
   "legacyPackage": "0.4.1",
   "baseline": "Playground WASI renderer with unchanged HTML/CSS; legacy hashes from the published fullbleed@0.4.1 package.",
   "wasmSha256": "2fc9dc5548df93a1d8bac7a7f898781ae7a46c4112911294a07756123d895c40",
@@ -90,5 +90,5 @@
     }
   ],
   "baselineEngineVersion": "2.5.24",
-  "compatibilityScope": "The existing source, control and output hashes are unchanged. Engine 2.5.35 must reproduce them before release."
+  "compatibilityScope": "The existing source, control and output hashes are unchanged. Engine 2.5.37 must reproduce them before release."
 }
