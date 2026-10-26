@@ -15,8 +15,8 @@ jobs:
   browser:
     name: React starter (${{ matrix.browser }})
     runs-on: ubuntu-latest
-    # WebKit's Ubuntu dependency downloads can exceed 15 minutes on a slow mirror.
-    timeout-minutes: ${{ matrix.browser == 'webkit' && 30 || 15 }}
+    # Firefox/WebKit Ubuntu dependencies can exceed 15 minutes on a slow mirror.
+    timeout-minutes: ${{ matrix.browser != 'chrome' && 30 || 15 }}
     strategy:
       fail-fast: false
       matrix:
