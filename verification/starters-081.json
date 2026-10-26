@@ -1,0 +1,324 @@
+{
+  "ok": true,
+  "checkedAt": "2026-10-26T01:34:33.608376+00:00",
+  "package": "0.8.1",
+  "engine": "2.5.35",
+  "packageIntegrity": "sha512-RaOu2XPHkliyOGDlZgsLDQSxxWkATglTEMYWWRl+TAKHHcBYysyZkUvNUGj+8tujn3HQJnbbjugvzHeYSv8/Kg==",
+  "sourceFiles": {
+    "examples/browser/README.md": "7d4cc6eaa9808295abab49a9f868e4ac30fe30be3e3e2f4a782f986988e394a8",
+    "examples/browser/package.json": "1a04e79144f93d1a215aadac08b1ad32d70502e09562296eb936cb77c1385c12",
+    "examples/browser/package-lock.json": "ee615def755b547f7bdba7fe03e9dab0f55cfe8944422e618fe2685244fcd6cc",
+    "examples/react/README.md": "a8aefa1ce16d5c6e7c74eac2ce56c13c37bc1d6ac947784f1a5d0a342fec6acc",
+    "examples/react/package.json": "166da6b80e67b322c127ffc1c0e67004d6139cc1e6fe9617b875d2dcc63c30ba",
+    "examples/react/package-lock.json": "16027a723e71e01cc73d84c6f221557fdafe59bf9190f3c4b9af863b6c0aaeb3",
+    "examples/vue/README.md": "a58efbd509675ee3f9690d8216e68e50b507078fc723a21e6b0496a8fb435548",
+    "examples/vue/package.json": "fb57edbd6e1e19aa950044af3e0c3d51849041a00aeb910d66d5fa5d76cbfa48",
+    "examples/vue/package-lock.json": "ddf35479822f93139e5677c2232d88968a6521ed6a3704ca614e9f9450a5fa0d",
+    "examples/nextjs/README.md": "5098fd4c5383747ddf7296f9773b0f5c99bbad0f674bb0933ad6306dfeebcc62",
+    "examples/nextjs/package.json": "37bbd102931b920ae853fc196e63f494f55ae3846bf8c52172954dddfb6192a0",
+    "examples/nextjs/package-lock.json": "ec085ee10d6b951713f4a9b330864f6a857c6078e78f2747483d3a52d1b476aa"
+  },
+  "localVerification": {
+    "browser": {
+      "browser": "156.0.8078.47",
+      "playwright": "1.63.0",
+      "checks": 79,
+      "documents": [
+        {
+          "name": "invoice",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "color-only",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "a2b69ba41f7ad4c9bcbd38d803a46e70f0b9ccacd90ffbab5b0f7d87ffca5e4b"
+        },
+        {
+          "name": "customized",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "31ff314b44a6f13534cc383e0cf24929f0695c1dd3d84769dedf8828c6486a93"
+        },
+        {
+          "name": "edited",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "fecff59c1bfd6b59de2f0fb56965a5668023b3b88e64b5c6c30f95875592c4b2"
+        },
+        {
+          "name": "report",
+          "filename": "community-report.pdf",
+          "pages": 3,
+          "sha256": "80fc4306db1898688d846cfea4fb1b4ef5bf07713fe9301662143619441205b5"
+        },
+        {
+          "name": "recovered",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "31ff314b44a6f13534cc383e0cf24929f0695c1dd3d84769dedf8828c6486a93"
+        }
+      ],
+      "reportSha256": "408f8d36b3683674a052bca111bce0680446db01d4479a142528b725e6bb8340"
+    },
+    "react": {
+      "browser": "156.0.8078.47",
+      "playwright": "1.63.0",
+      "checks": 128,
+      "documents": [
+        {
+          "name": "component-invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "f2553f220e9d30e26df785a4ed251f07ff1e615afd3972a5c29c19a0c5fd3f6c",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-paid",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "91d8c8360fac37cd413fe669ed8f06650658b9ca01777129879207aac014d4c2",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-edited",
+          "pages": 1,
+          "filename": "invoice-Ref-aBc-2042.pdf",
+          "sha256": "a664f9fd84af1d2354537645aa6b70dd9abe3ab762b8a9631047aab742b1297e",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-empty",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "cc1982eaea9dfa05b014cffea44644ecc2f4d33e8eb22ae6f6a501ab6d7f1248",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-credit",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "cd57b56ec26e86365ab0223656d7e21b1543c9fbf404e967f0aef2e9b98024e6",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-long",
+          "pages": 3,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "589210d6b5bb0684fdbf5dbf62c5e32742c7166d3a8cfc5ae304c430e08357a3",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "c1fe667a39ac3eaae3292c3a1fab1c466999e798a5ab0a4616b73689acc79880",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "80fc4306db1898688d846cfea4fb1b4ef5bf07713fe9301662143619441205b5",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+          "whitespace_normalized_text_checks": false
+        }
+      ],
+      "reportSha256": "ae8e710520419dff285c3e2f44f8a815e600756b2e6e9e954f439dfd0a8d4ea5"
+    },
+    "vue": {
+      "browser": "156.0.8078.47",
+      "playwright": "1.63.0",
+      "checks": 87,
+      "documents": [
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883"
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "071d2bd98b7b90b52aa5b60e74ce0934ef54d3c6032c222d7237786dc12fc953"
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "80fc4306db1898688d846cfea4fb1b4ef5bf07713fe9301662143619441205b5"
+        },
+        {
+          "name": "outage-recovery",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        }
+      ],
+      "reportSha256": "f0402ded31e968980f7778e9fe2108378df1936ce9293620f30d78eb5ef31d36"
+    },
+    "react-strict": {
+      "checks": 128,
+      "reportSha256": "d9ea8055a3f84cf48101833cafb7cca7346684609de492f086e6f9f596d33d2a"
+    },
+    "react-development": {
+      "checks": 9,
+      "reportSha256": "2d1ba5a866c399b3c3fa4876daae4b93eb282b655592f4396e2f2726b3130edc"
+    },
+    "nextjs": {
+      "checks": [
+        {
+          "name": "standalone artifact is isolated from the source application",
+          "passed": true
+        },
+        {
+          "name": "standalone tracing retains the verified engine and all bundled fonts",
+          "passed": true
+        },
+        {
+          "name": "isolated production server starts on loopback",
+          "passed": true
+        },
+        {
+          "name": "app exposes the sample download without a prefetched render",
+          "passed": true
+        },
+        {
+          "name": "standalone server includes the actual PDF preview asset",
+          "passed": true
+        },
+        {
+          "name": "production route returns complete private PDF bytes with a useful filename",
+          "passed": true
+        },
+        {
+          "name": "unknown invoice IDs return a private JSON error",
+          "passed": true
+        },
+        {
+          "name": "unsupported writes are rejected by the route",
+          "passed": true
+        },
+        {
+          "name": "a concurrent burst receives explicit capacity errors instead of an unbounded queue",
+          "passed": true
+        },
+        {
+          "name": "normal PDF downloads recover after a capacity burst",
+          "passed": true
+        },
+        {
+          "name": "a real missing-glyph failure returns a generic non-PDF error",
+          "passed": true
+        },
+        {
+          "name": "a valid document renders after an engine failure",
+          "passed": true
+        },
+        {
+          "name": "the route enforces its page cap against a real multipage document",
+          "passed": true
+        },
+        {
+          "name": "a valid document renders after the page limit rejects a job",
+          "passed": true
+        },
+        {
+          "name": "a failed render child returns an HTTP error while the production server stays alive",
+          "passed": true
+        },
+        {
+          "name": "the production server returns a valid PDF after a render-process failure",
+          "passed": true
+        },
+        {
+          "name": "client JavaScript excludes the server PDF engine and worker",
+          "passed": true
+        }
+      ],
+      "nodePackage": "0.8.1",
+      "engineVersion": "2.5.35",
+      "reportSha256": "90299b2fccf34036583849036b22518082084130dd9d57c121ce4b1315723f91"
+    }
+  },
+  "visualReview": [
+    {
+      "file": "width-1440.png",
+      "sha256": "38d8ab90b57ddc9172b77e6c11e7dcb16f8c900fc40ca5641f9c60a9186fa352"
+    },
+    {
+      "file": "width-390.png",
+      "sha256": "8f1f57f0af8d3bec9238ae90b760a8884c074197c40d766e658a7b9dd93f136c"
+    },
+    {
+      "file": "component-invoice-1.png",
+      "sha256": "54a931df6a4741745ae651800ff74311cb59f1c74b58a0a67936a497e288648c"
+    },
+    {
+      "file": "report-2.png",
+      "sha256": "9e883a04ab32392aa87ef5931761285b8dc15f8fd642b4f9bbea582c044bcdbe"
+    }
+  ],
+  "scope": "Locked public npm installation; three built browser editors, actual PDF downloads, independent PDF inspection, React StrictMode and Vite source edits, Next.js isolated production HTTP checks. Historical release controls are unchanged."
+}
