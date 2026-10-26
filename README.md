@@ -21,8 +21,8 @@ download a PDF. Each starter also includes a ZIP for local development.
 Using Vue? The [Vue and TypeScript starter](examples/vue) includes editable
 templates, automatic previews, downloads, and a reusable `usePdfPreview` composable.
 
-This is an optional integration around the published **Fullbleed 2.5.29** engine.
-The package has its own version, **0.8.0**. Node applications can use a shared
+This is an optional integration around the published **Fullbleed 2.5.35** engine.
+The package has its own version, **0.8.1**. Node applications can use a shared
 render queue to bound active renders and waiting requests, include queue time in
 deadlines, cancel waiting jobs, and stop rendering cleanly during shutdown.
 The browser entry renders in a Web Worker, and the Node API supports worker and
@@ -31,6 +31,10 @@ process isolation. See the [browser guide](docs/browser.md),
 [process isolation guide](docs/process-isolation.md),
 [font-family checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-families.md), and
 [embedded-font checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-subsets.md) for the retained fixtures.
+
+Version 0.8.1 brings the stable engine's [pagination correction](docs/pagination.md):
+auto-height tables and containers with clipping can continue across PDF pages.
+Explicitly sized clipping viewports keep their existing behavior.
 
 Version 0.8.0 adds the optional Workers entry with bundled engine/font imports,
 shared input validation, and component authoring. It computes inside the Worker
@@ -81,7 +85,7 @@ Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package
 npm install fullbleed
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.8.0`.
+For a version-pinned installation, use `npm install --save-exact fullbleed@0.8.1`.
 Package archives and retained PDF/PNG evidence are attached to each
 [GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
 The [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification)
