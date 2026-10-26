@@ -486,5 +486,68 @@ class PaginationReleaseEvidenceTests(unittest.TestCase):
             release_check.verify_pagination_evidence(self.report)
 
 
+class TableWrappingReleaseEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        source = release_check.TABLE_WRAPPING_SOURCE.read_bytes()
+        digest = hashlib.sha256(source).hexdigest()
+        fixtures = json.loads(source)['cases']
+        names = sorted(case['name'] for case in fixtures)
+        failures = sorted(case['name'] for case in fixtures if case['public081Fails'])
+        self.report = dict(package_version='0.8.2', engine_version='2.5.37', package_sha256='a' * 64,
+            table_wrapping=[dict(platform=platform, ok=True, package_version='0.8.2', engine_version='2.5.37',
+                tarball_sha256='a' * 64, source_sha256=digest, negative_control=False, cases=70, passed=70,
+                failed=0, case_names=names, unchanged_controls=34 if platform == 'linux' else 0)
+                for platform in ['win32', 'linux']],
+            browser_matrix=[dict(browser=browser, table_wrapping_ok=True, table_wrapping_cases=35,
+                table_wrapping_source_sha256=digest, table_wrapping_passed=35, table_wrapping_failed=0,
+                table_wrapping_negative_control=False) for browser in ['chrome', 'firefox', 'webkit']],
+            table_wrapping_negative_controls=[dict(platform='linux', ok=True, negative_control=True,
+                package_version='0.8.1', engine_version='2.5.35', source_sha256=digest, cases=70,
+                passed=34, failed=36, failed_case_names=failures)])
+
+    def test_complete_calibrated_evidence_is_accepted(self):
+        release_check.verify_table_wrapping_evidence(self.report)
+
+    def test_absent_platform_or_substituted_candidate_is_rejected(self):
+        for key, value in [('platform', 'linux'), ('ok', False), ('package_version', '0.8.1'),
+                           ('engine_version', '2.5.35'), ('tarball_sha256', 'b' * 64),
+                           ('source_sha256', 'b' * 64), ('negative_control', True),
+                           ('cases', 68), ('passed', 68), ('failed', 2), ('case_names', [])]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['table_wrapping'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'Table wrapping'):
+                    release_check.verify_table_wrapping_evidence(self.report)
+
+    def test_changed_healthy_controls_are_rejected(self):
+        self.report['table_wrapping'][1]['unchanged_controls'] = 32
+        with self.assertRaisesRegex(ValueError, 'healthy controls'):
+            release_check.verify_table_wrapping_evidence(self.report)
+
+    def test_missing_browser_or_wrong_browser_source_is_rejected(self):
+        for key, value in [('browser', 'firefox'), ('table_wrapping_ok', False), ('table_wrapping_cases', 34),
+                           ('table_wrapping_source_sha256', 'b' * 64), ('table_wrapping_passed', 34),
+                           ('table_wrapping_failed', 1), ('table_wrapping_negative_control', True)]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['browser_matrix'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'browser|Browser'):
+                    release_check.verify_table_wrapping_evidence(self.report)
+
+    def test_unreproduced_or_substituted_failure_control_is_rejected(self):
+        for key, value in [('ok', False), ('negative_control', False), ('platform', 'win32'),
+                           ('package_version', '0.8.2'), ('engine_version', '2.5.37'),
+                           ('source_sha256', 'b' * 64), ('cases', 68), ('passed', 32),
+                           ('failed', 38), ('failed_case_names', [])]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['table_wrapping_negative_controls'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'failure control'):
+                    release_check.verify_table_wrapping_evidence(self.report)
+        self.report['table_wrapping_negative_controls'] = []
+        with self.assertRaisesRegex(ValueError, 'failure control'):
+            release_check.verify_table_wrapping_evidence(self.report)
+
+
 if __name__ == '__main__':
     unittest.main()

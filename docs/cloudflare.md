@@ -21,7 +21,7 @@ local tests for normal, long, escaped and invalid invoices.
 Use Node.js 22 or newer for your development tools:
 
 ```sh
-npm install --save-exact fullbleed@0.8.1
+npm install --save-exact fullbleed@0.8.2
 npm install --save-dev --save-exact wrangler@4.151.3
 ```
 
