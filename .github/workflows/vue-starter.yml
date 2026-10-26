@@ -15,7 +15,8 @@ jobs:
   browser:
     name: Vue starter (${{ matrix.browser }})
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Firefox/WebKit Ubuntu dependencies can exceed 15 minutes on a slow mirror.
+    timeout-minutes: ${{ matrix.browser != 'chrome' && 30 || 15 }}
     strategy:
       fail-fast: false
       matrix:
