@@ -1,16 +1,47 @@
 # Fullbleed for Node.js, browsers, and Cloudflare Workers
 
-Generate PDFs from static HTML/CSS, reusable function components, or JSX in Node.js, a browser worker, or Cloudflare Workers. The package includes the
-Fullbleed Rust engine compiled to WebAssembly and four font faces, so installing
-it does not require Python, Rust, a browser, or system fonts. MIT licensed.
+Generate PDFs from static HTML/CSS or reusable components. The package bundles
+Fullbleed's Rust engine as WebAssembly and four font faces; installation needs
+no Python, Rust compiler, browser, or system fonts. MIT licensed.
 
-Import `fullbleed` for Node.js, `fullbleed/browser` for a web application, or
+Use `fullbleed` in Node.js, `fullbleed/browser` in a web application, or
 [`fullbleed/cloudflare`](docs/cloudflare.md) inside a Cloudflare Worker.
+Package **0.8.1** wraps the published **Fullbleed 2.5.35** engine.
 
-Use [`fullbleed/ui`](docs/components.md) to compose documents without writing HTML
-strings. Named components, typed props, ordinary conditions and arrays, reusable
-styles, and an optional JSX/TSX runtime work with each renderer. No React
-runtime or build step is required for ordinary JavaScript functions.
+[Try the browser playground](https://docs.fullbleed.dev/playground/) ·
+[Documentation](https://docs.fullbleed.dev/getting-started/node/) ·
+[CSS coverage](https://docs.fullbleed.dev/css-coverage/)
+
+## Install and render
+
+Use Node.js 22 or newer:
+
+```bash
+npm install fullbleed
+```
+
+Save this as `invoice.mjs`, then run `node invoice.mjs`:
+
+```javascript
+import { writeFile } from 'node:fs/promises';
+import { renderPdf } from 'fullbleed';
+
+const result = await renderPdf({
+  html: '<h1>Invoice NS-1042</h1><p>Consulting: USD 1,200.00</p>',
+  css: '@page { size: A4; margin: 20mm } h1 { color: #175c52 }',
+  previewDpi: 96,
+});
+await writeFile('invoice.pdf', result.pdf);
+await writeFile('invoice.png', result.previews[0]);
+```
+
+Open `invoice.pdf` or its PNG preview. Inter is the default font. CommonJS also
+works: `const { renderPdf } = require('fullbleed')`. TypeScript declarations are
+included. For a pinned installation, use
+`npm install --save-exact fullbleed@0.8.1`.
+
+Prefer components? [Compose documents with functions or JSX](#compose-documents-with-components)
+and export HTML with or without styles using `fullbleed/ui`.
 
 Try a complete project online: [JavaScript + Vite](https://docs.fullbleed.dev/assets/browser-starter/edit-online.html)
 or [React + TypeScript](https://docs.fullbleed.dev/assets/react-starter/edit-online.html).
@@ -21,78 +52,28 @@ download a PDF. Each starter also includes a ZIP for local development.
 Using Vue? The [Vue and TypeScript starter](examples/vue) includes editable
 templates, automatic previews, downloads, and a reusable `usePdfPreview` composable.
 
-This is an optional integration around the published **Fullbleed 2.5.35** engine.
-The package has its own version, **0.8.1**. Node applications can use a shared
-render queue to bound active renders and waiting requests, include queue time in
-deadlines, cancel waiting jobs, and stop rendering cleanly during shutdown.
-The browser entry renders in a Web Worker, and the Node API supports worker and
-process isolation. See the [browser guide](docs/browser.md),
-[inline wrapping checks](docs/inline-wrapping.md),
-[process isolation guide](docs/process-isolation.md),
-[font-family checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-families.md), and
-[embedded-font checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/font-subsets.md) for the retained fixtures.
+## A designed invoice
 
-Version 0.8.1 brings the stable engine's [pagination correction](docs/pagination.md):
-auto-height tables and containers with clipping can continue across PDF pages.
-Explicitly sized clipping viewports keep their existing behavior.
+![Northstar invoice with cream paper, serif typography, green tables, and an orange accent.](https://docs.fullbleed.dev/assets/showcase/invoice-1.png)
 
-Version 0.8.0 adds the optional Workers entry with bundled engine/font imports,
-shared input validation, and component authoring. It computes inside the Worker
-isolate, with CPU limits owned by Cloudflare. The [Workers guide](docs/cloudflare.md)
-covers local Windows/Linux checks and a hosted Playground smoke test: six invoices
-produce identical PDF bytes in both environments. Production resource limits and
-Free-plan suitability still need qualification in your own deployment.
+The [runnable example](examples/invoice.mjs) uses these same invoice sources and
+the bundled Inter, DM Serif Display, and Bebas Neue families. It escapes the
+customer name before inserting it into HTML. The data is fictional.
 
-Version 0.7.1 brought the stable engine's SVG stylesheet and inset-shadow fixes to
-Node.js and browser workers. The [paint checks](docs/engine-2.5.29.md) cover
-stylesheet selectors, inherited SVG colors and opacity, and clipped, blurred,
-translated and negative-spread inset shadows. The component and static HTML APIs
-remain unchanged. The pinned engine also reads supported embedded `<style>` sheets;
-see [component HTML export](docs/components.md#export-html-with-or-without-styles).
-
-Version 0.7.0 added [static HTML export with or without styles](docs/components.md#export-html-with-or-without-styles):
-`doc.toHtml({ includeStyles: true })` embeds the document stylesheet;
-`doc.toHtml({ includeStyles: false })` removes CSS while preserving class names
-and content. Documents, fragments and JSX use the same export options. Importing
-`fullbleed/ui` does not load the PDF renderer or add JavaScript to the output.
-
-Version 0.6.0 added component authoring, attached stylesheets and explicit document
-rendering. The [component guide](docs/components.md)
-includes zero-build JavaScript and TSX versions of a complete designed invoice.
-
-Version 0.5.1 brought the engine's hidden-text and font-decoration fixes to both
-JavaScript entries. Script/style elements and `display:none` descendants stay
-hidden, while explicit author display overrides remain supported. Font-selected
-decoration thickness uses the selected face's metrics. The
-[engine update checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/engine-2.5.24.md)
-cover source/control PDFs, font metrics, and browser downloads.
-
-Version 0.5.0 adds `defaultStyles: false` to both JavaScript entries. Use it to
-preserve a template's original CSS, including font inheritance from `html`,
-low-specificity selectors, and cascade layers. Existing calls keep the Inter
-body rule. [Retained styling checks](docs/default-styles.md) cover both choices.
-
-Version 0.4.1 brought the engine's recent layout fixes to both JavaScript entries.
-The [engine update checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/engine-2.5.22.md)
-cover nested counters, clipped effects, border-image tiling, and floated initials
-with independent text, color, and Chrome print expectations.
-
-## Install and render
-
-Use Node.js 22 or newer. Install the [npm package](https://www.npmjs.com/package/fullbleed):
+From a source checkout, after the build steps below:
 
 ```bash
-npm install fullbleed
+npm run example
 ```
 
-For a version-pinned installation, use `npm install --save-exact fullbleed@0.8.1`.
-Package archives and retained PDF/PNG evidence are attached to each
-[GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
-The [installation verification records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification)
-retain published-package checks by version, including output hashes and failure
-recovery. Use the record for the version you are evaluating.
+Open `output/invoice/invoice.pdf` and `page-1.png`. The [three-page report
+sources](examples/report.html) demonstrate pagination, tables, and vector artwork.
 
-Save this as `invoice.mjs` and run `node invoice.mjs`:
+## Compose documents with components
+
+Use named components, typed props, ordinary conditions and arrays, and reusable
+styles instead of HTML strings. Plain JavaScript functions need no React runtime
+or build step:
 
 ```javascript
 import { writeFile } from 'node:fs/promises';
@@ -114,31 +95,10 @@ await writeFile('invoice.png', result.previews[0]);
 console.log(`${result.pages} page; engine ${result.engineVersion}`);
 ```
 
-Inter is the default font. CommonJS also works:
-`const { renderPdf } = require('fullbleed')`. TypeScript declarations are included.
-Existing templates can still call `renderPdf({ html, css })` directly.
-
-[Try the browser playground](https://docs.fullbleed.dev/playground/) ·
-[Fullbleed documentation](https://docs.fullbleed.dev/) ·
-[CSS coverage](https://docs.fullbleed.dev/css-coverage/) ·
-[Python and Rust engine](https://github.com/fullbleed-engine/fullbleed-official)
-
-## A designed invoice
-
-![Northstar invoice with cream paper, serif typography, green tables, and an orange accent.](https://docs.fullbleed.dev/assets/showcase/invoice-1.png)
-
-The [runnable example](examples/invoice.mjs) uses these same invoice sources and
-the bundled Inter, DM Serif Display, and Bebas Neue families. It escapes the
-customer name before inserting it into HTML. The data is fictional.
-
-From a source checkout, after the build steps below:
-
-```bash
-npm run example
-```
-
-Open `output/invoice/invoice.pdf` and `page-1.png`. The [three-page report
-sources](examples/report.html) demonstrate pagination, tables, and vector artwork.
+The [component guide](docs/components.md) includes JavaScript and TSX versions of
+a designed invoice, `className` styling, and HTML export with or without styles.
+The optional JSX/TSX runtime works with each renderer. Importing `fullbleed/ui`
+does not load the PDF renderer or add JavaScript to exported HTML.
 
 ## Use it in Next.js
 
@@ -329,6 +289,64 @@ PDF/A, PDF/UA, PDF/X, template overlays, or compiled VDP. Use the
 verification requirements. Unknown options are rejected. Fullbleed uses static
 HTML/CSS for print layout; it does not execute document JavaScript or reproduce
 arbitrary browser pages.
+
+## Release notes and verification
+
+Version 0.8.1 brings the stable engine's [pagination correction](docs/pagination.md):
+auto-height tables and containers with clipping can continue across PDF pages.
+Explicitly sized clipping viewports keep their existing behavior.
+
+Package archives and retained PDF/PNG checks are attached to each
+[GitHub release](https://github.com/fullbleed-engine/fullbleed-node/releases).
+[Installation records](https://github.com/fullbleed-engine/fullbleed-node/tree/main/verification)
+describe published-package checks, including output hashes and failure recovery.
+Use the record for the version you are evaluating.
+
+<details>
+<summary>Earlier releases</summary>
+
+Version 0.8.0 adds the optional Workers entry with bundled engine/font imports,
+shared input validation, and component authoring. It computes inside the Worker
+isolate, with CPU limits owned by Cloudflare. The [Workers guide](docs/cloudflare.md)
+covers local Windows/Linux checks and a hosted Playground smoke test: six invoices
+produce identical PDF bytes in both environments. Production resource limits and
+Free-plan suitability still need qualification in your own deployment.
+
+Version 0.7.1 brought the stable engine's SVG stylesheet and inset-shadow fixes to
+Node.js and browser workers. The [paint checks](docs/engine-2.5.29.md) cover
+stylesheet selectors, inherited SVG colors and opacity, and clipped, blurred,
+translated and negative-spread inset shadows. The component and static HTML APIs
+remain unchanged. The pinned engine also reads supported embedded `<style>` sheets;
+see [component HTML export](docs/components.md#export-html-with-or-without-styles).
+
+Version 0.7.0 added [static HTML export with or without styles](docs/components.md#export-html-with-or-without-styles):
+`doc.toHtml({ includeStyles: true })` embeds the document stylesheet;
+`doc.toHtml({ includeStyles: false })` removes CSS while preserving class names
+and content. Documents, fragments and JSX use the same export options. Importing
+`fullbleed/ui` does not load the PDF renderer or add JavaScript to the output.
+
+Version 0.6.0 added component authoring, attached stylesheets and explicit document
+rendering. The [component guide](docs/components.md)
+includes zero-build JavaScript and TSX versions of a complete designed invoice.
+
+Version 0.5.1 brought the engine's hidden-text and font-decoration fixes to both
+JavaScript entries. Script/style elements and `display:none` descendants stay
+hidden, while explicit author display overrides remain supported. Font-selected
+decoration thickness uses the selected face's metrics. The
+[engine update checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/engine-2.5.24.md)
+cover source/control PDFs, font metrics, and browser downloads.
+
+Version 0.5.0 adds `defaultStyles: false` to both JavaScript entries. Use it to
+preserve a template's original CSS, including font inheritance from `html`,
+low-specificity selectors, and cascade layers. Existing calls keep the Inter
+body rule. [Retained styling checks](docs/default-styles.md) cover both choices.
+
+Version 0.4.1 brought the engine's recent layout fixes to both JavaScript entries.
+The [engine update checks](https://github.com/fullbleed-engine/fullbleed-node/blob/main/docs/engine-2.5.22.md)
+cover nested counters, clipped effects, border-image tiling, and floated initials
+with independent text, color, and Chrome print expectations.
+
+</details>
 
 ## Build and verify from source
 
