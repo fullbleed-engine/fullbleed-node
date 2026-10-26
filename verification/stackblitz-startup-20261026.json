@@ -1,0 +1,326 @@
+{
+  "ok": true,
+  "checkedAt": "2026-10-26T19:02:20.133876+00:00",
+  "package": "0.8.2",
+  "engine": "2.5.37",
+  "baseCommit": "ab4c6946961ef34fbf35b097fb7d33d9659f068a",
+  "change": {
+    "vite": "8.3.2",
+    "rolldown": "1.2.12",
+    "explicitWasmBinding": "1.2.12",
+    "scopedWasmRuntimeOverride": "1.2.5"
+  },
+  "reproduction": "The prior public React project failed before Vite started. Rolldown attempted an unlocked fallback install in /tmp; its runtime resolved to 1.2.6 with incompatible emnapi peers. The controlled explicit binding / compatible runtime candidate starts successfully.",
+  "sourceFiles": {
+    "examples/react/README.md": "46a5fd400609dc9ed464a6ef20555b57faf745368ede5241230085c81e4cb2b7",
+    "examples/react/package.json": "bb04cfe9f93ed2d0401f4ce2d16a48772ac94e15b8731a167f53168188c0a7d6",
+    "examples/react/package-lock.json": "5eebac9ee3a6edbf0c2358f671c5f7e3f2c40384c5eced4269f5c95f25c6be33",
+    "examples/vue/README.md": "0f83b0c5b356b35b2903af192d29f01b86752f5dd98dc7f7943986bcea9b32ad",
+    "examples/vue/package.json": "ff935ed08d7e57fe4c5e63f0aa269a88d6db797c376c4ddc58039fe1c3748904",
+    "examples/vue/package-lock.json": "8cba48abebe8a55316572f849f612d2624f3c56209942ac6783915cc4b83978b"
+  },
+  "locks": [
+    {
+      "project": "react",
+      "added": [
+        "node_modules/@emnapi/core",
+        "node_modules/@emnapi/runtime",
+        "node_modules/@emnapi/wasi-threads",
+        "node_modules/@napi-rs/wasm-runtime",
+        "node_modules/@rolldown/binding-wasm32-wasi",
+        "node_modules/@tybys/wasm-util",
+        "node_modules/tslib"
+      ],
+      "unchangedPreviousTransitiveEntries": true,
+      "lockSha256": "5eebac9ee3a6edbf0c2358f671c5f7e3f2c40384c5eced4269f5c95f25c6be33"
+    },
+    {
+      "project": "vue",
+      "added": [
+        "node_modules/@emnapi/core",
+        "node_modules/@emnapi/runtime",
+        "node_modules/@emnapi/wasi-threads",
+        "node_modules/@napi-rs/wasm-runtime",
+        "node_modules/@rolldown/binding-wasm32-wasi",
+        "node_modules/@tybys/wasm-util",
+        "node_modules/tslib"
+      ],
+      "unchangedPreviousTransitiveEntries": true,
+      "lockSha256": "8cba48abebe8a55316572f849f612d2624f3c56209942ac6783915cc4b83978b"
+    }
+  ],
+  "localVerification": {
+    "react": {
+      "checks": 128,
+      "documents": [
+        {
+          "name": "component-invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "f2553f220e9d30e26df785a4ed251f07ff1e615afd3972a5c29c19a0c5fd3f6c",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-paid",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "91d8c8360fac37cd413fe669ed8f06650658b9ca01777129879207aac014d4c2",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-edited",
+          "pages": 1,
+          "filename": "invoice-Ref-aBc-2042.pdf",
+          "sha256": "a664f9fd84af1d2354537645aa6b70dd9abe3ab762b8a9631047aab742b1297e",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-empty",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "cc1982eaea9dfa05b014cffea44644ecc2f4d33e8eb22ae6f6a501ab6d7f1248",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-credit",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "cd57b56ec26e86365ab0223656d7e21b1543c9fbf404e967f0aef2e9b98024e6",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-long",
+          "pages": 3,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "589210d6b5bb0684fdbf5dbf62c5e32742c7166d3a8cfc5ae304c430e08357a3",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "c1fe667a39ac3eaae3292c3a1fab1c466999e798a5ab0a4616b73689acc79880",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "80fc4306db1898688d846cfea4fb1b4ef5bf07713fe9301662143619441205b5",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+          "whitespace_normalized_text_checks": false
+        }
+      ],
+      "reportSha256": "611d7531bf56cc83d5d142a2ff0832a64fbf46d55ba1b896cdbc68958d83a5cf",
+      "browser": "156.0.8078.47",
+      "existingPdfDownloadsUnchanged": true
+    },
+    "vue": {
+      "checks": 87,
+      "documents": [
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883"
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "071d2bd98b7b90b52aa5b60e74ce0934ef54d3c6032c222d7237786dc12fc953"
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "80fc4306db1898688d846cfea4fb1b4ef5bf07713fe9301662143619441205b5"
+        },
+        {
+          "name": "outage-recovery",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        }
+      ],
+      "reportSha256": "fc5b1c6989240a22312174615a93704a04a0c2d285bab2203992573cce104bae",
+      "browser": "156.0.8078.47",
+      "existingPdfDownloadsUnchanged": true
+    },
+    "react-development": {
+      "checks": 9,
+      "documents": [
+        {
+          "name": "initial",
+          "pages": 1,
+          "sha256": "f2553f220e9d30e26df785a4ed251f07ff1e615afd3972a5c29c19a0c5fd3f6c"
+        },
+        {
+          "name": "data-edit",
+          "pages": 1,
+          "sha256": "f83876a7bedacd454e7183549f2aa9167a7b4c56b82992836d2a33d1a8fc1ec0"
+        },
+        {
+          "name": "tsx-edit",
+          "pages": 1,
+          "sha256": "78b6ac9ca9697277e8fd57de155ffa1b1672c73129f21de01cfd671d6c402bc5"
+        },
+        {
+          "name": "style-edit",
+          "pages": 1,
+          "sha256": "da75668d76d2055118585ed46ee0974402e0f28051227e7de267b700f54bdb28"
+        }
+      ],
+      "reportSha256": "2d1ba5a866c399b3c3fa4876daae4b93eb282b655592f4396e2f2726b3130edc",
+      "browser": "156.0.8078.47",
+      "existingPdfDownloadsUnchanged": true
+    }
+  },
+  "onlineVerification": {
+    "react": {
+      "browser": "156.0.8078.47",
+      "anonymous": true,
+      "checks": [
+        "Actual served runtime identifies package 0.8.2 and the qualified 2.5.37 engine artifact",
+        "Anonymous project reached a ready PDF preview",
+        "Form edits produce a real PDF with the exact reference",
+        "Editing Invoice.tsx rebuilds the PDF and preserves form values",
+        "Editing invoiceStyles.ts changes the PDF heading from 42pt to 36pt"
+      ],
+      "downloads": [
+        {
+          "file": "data-edited.pdf",
+          "sha256": "3912417be88f038258b79909367483ae18b3c6085fa24e223265999969b12c75",
+          "heading": "Good work.",
+          "heading_font_size": 42,
+          "form_values_preserved": true
+        },
+        {
+          "file": "component-edited.pdf",
+          "sha256": "0028517ed160490ab7857c22ccce7d0550f613cccf7d9ab6707fdc4fc842285e",
+          "heading": "Clear plans.",
+          "heading_font_size": 42,
+          "form_values_preserved": true
+        },
+        {
+          "file": "stylesheet-edited.pdf",
+          "sha256": "b3f400956971807b7937685e746feb7e31ce9a118b07a9682325edaf317616db",
+          "heading": "Clear plans.",
+          "heading_font_size": 36,
+          "form_values_preserved": true
+        }
+      ],
+      "reportSha256": "250b4e4b4085be82c7813d124980d1ce5f2dc82c88c1993ff98a1c8763fbe3e2",
+      "scope": "Temporary StackBlitz project with the same explicit Rolldown binding and runtime override; actual form/source/style edits and PDF downloads."
+    },
+    "vue": {
+      "browser": "156.0.8078.47",
+      "anonymous": true,
+      "checks": [
+        "Anonymous Vue project starts with the qualified 0.8.2 / 2.5.37 runtime",
+        "Form edits appear in the actual downloaded PDF",
+        "HTML template editing changes the PDF heading",
+        "CSS editing changes the PDF heading size and preserves form data"
+      ],
+      "downloads": [
+        {
+          "file": "data-edited.pdf",
+          "sha256": "7aa725a7dce8e7a59216fc78314f6c098cc8506784d01fb19274c0bec2963a93",
+          "heading": "INVOICE",
+          "headingSize": 91
+        },
+        {
+          "file": "template-edited.pdf",
+          "sha256": "28f0f15f2405404b8f209e1f5401777398be055ff9a885c38e1991b3418b3384",
+          "heading": "DRAFT",
+          "headingSize": 91
+        },
+        {
+          "file": "stylesheet-edited.pdf",
+          "sha256": "6a701c3829e6349b461d91a8543d9270a6ebea6fec44324f3b760513dc420a02",
+          "heading": "DRAFT",
+          "headingSize": 80
+        }
+      ],
+      "reportSha256": "2b31bd66ccd39c8bb0aef0f335e89d60214919a7180bb9829fc23c4e52bce1f3",
+      "scope": "Temporary StackBlitz project with the same explicit Rolldown binding and runtime override; actual form/source/style edits and PDF downloads."
+    }
+  },
+  "visualReview": [
+    {
+      "file": "candidate-online-verified/stylesheet-edited.png",
+      "sha256": "ee43426b74e91fc3ff9f89b7a18084e9e5b8970cc699b6bab328b65208bb6bd5"
+    },
+    {
+      "file": "candidate-online-verified/editor.png",
+      "sha256": "835a6ab1134d742851da2be2459b33cdfbfa34f0b551c3059fe7af568761d8d7"
+    },
+    {
+      "file": "vue-online/stylesheet-edited.png",
+      "sha256": "79a61bd979bc6f73920e287f281b267e707471610fba6588b008cbeb4b2db1a2"
+    },
+    {
+      "file": "vue-online/editor.png",
+      "sha256": "c379760b664f04bdcf9071eae1d4e0ca4a74a72026f3bf2964304e5450fa56cc"
+    }
+  ],
+  "scope": "Development dependency resolution only. Core Fullbleed, application sources and print templates are unchanged. Local browser checks use Chrome on Windows; online checks cover anonymous StackBlitz startup and six real PDF downloads. This does not guarantee third-party editor availability."
+}

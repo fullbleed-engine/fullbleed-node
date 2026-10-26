@@ -8,12 +8,17 @@ attached styles. All sample data is fictional. MIT licensed.
 
 ## Run
 
-Use Node.js 22.12 or newer for development and builds:
+Use Node.js 22.13+ on the 22.x line, or Node.js 23.5+ (including 24.x), for development and builds:
 
 ```sh
 npm ci
 npm run dev
 ```
+
+The lockfile includes Vite's WebAssembly bundler and a compatible runtime so
+the same project also starts in StackBlitz. Keep `package-lock.json` and the
+scoped runtime override when copying this starter. These are development
+dependencies; the PDF engine and document inputs still run locally.
 
 Open the localhost URL printed by Vite. The browser loads the engine and fonts
 from that server and renders in a Web Worker. This app does not upload document
