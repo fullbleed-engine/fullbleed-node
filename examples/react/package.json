@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22.12.0"
+    "node": "^22.13.0 || >=23.5.0"
   },
   "scripts": {
     "assets": "fullbleed-browser-assets public/fullbleed",
@@ -19,10 +19,16 @@
     "react-dom": "19.3.0"
   },
   "devDependencies": {
+    "@rolldown/binding-wasm32-wasi": "1.2.12",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.2",
     "typescript": "7.0.2",
     "vite": "8.3.2"
+  },
+  "overrides": {
+    "@rolldown/binding-wasm32-wasi": {
+      "@napi-rs/wasm-runtime": "1.2.5"
+    }
   }
 }
