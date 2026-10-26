@@ -63,8 +63,8 @@ explains CSP, custom assets, structured errors, and browser worker lifecycle lim
 
 ## Versions and verification
 
-The lockfile pins Fullbleed npm 0.7.1 / engine 2.5.29 and Vite 8.3.2.
-The browser SDK is covered by the [versioned release evidence](https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.7.1).
+The lockfile pins Fullbleed npm 0.8.1 / engine 2.5.35 and Vite 8.3.2.
+The browser SDK is covered by the [versioned release evidence](https://github.com/fullbleed-engine/fullbleed-node/releases/tag/v0.8.1).
 The repository's starter check builds this app, serves it below `/nested/demo/`,
 downloads actual PDFs, checks their text and page size, exercises editing and
 cancellation, and captures desktop/mobile screenshots. Playwright WebKit is not
