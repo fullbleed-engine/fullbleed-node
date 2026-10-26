@@ -431,5 +431,60 @@ class CloudflareReleaseEvidenceTests(unittest.TestCase):
                     release_check.verify_cloudflare_evidence(self.report)
 
 
+class PaginationReleaseEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        digest = hashlib.sha256(release_check.PAGINATION_SOURCE.read_bytes()).hexdigest()
+        self.report = dict(package_version='0.8.1', engine_version='2.5.35', package_sha256='a' * 64,
+            pagination=[dict(platform=platform, ok=True, package_version='0.8.1', engine_version='2.5.35',
+                tarball_sha256='a' * 64, source_sha256=digest, negative_control=False, cases=18, passed=18, failed=0)
+                for platform in ['win32', 'linux']],
+            browser_matrix=[dict(browser=browser, pagination_ok=True, pagination_cases=9,
+                pagination_source_sha256=digest, pagination_passed=9, pagination_failed=0,
+                pagination_negative_control=False) for browser in ['chrome', 'firefox', 'webkit']],
+            pagination_negative_controls=[dict(platform='linux', ok=True, negative_control=True,
+                package_version='0.8.0', engine_version='2.5.29', source_sha256=digest, cases=18, passed=2, failed=16)])
+
+    def test_complete_calibrated_evidence_is_accepted(self):
+        release_check.verify_pagination_evidence(self.report)
+
+    def test_missing_or_duplicate_platform_is_rejected(self):
+        self.report['pagination'][0]['platform'] = 'linux'
+        with self.assertRaisesRegex(ValueError, 'Windows and Linux'):
+            release_check.verify_pagination_evidence(self.report)
+
+    def test_stale_failed_or_wrong_package_evidence_is_rejected(self):
+        for key, value in [('ok', False), ('package_version', '0.8.0'), ('engine_version', '2.5.29'),
+                           ('tarball_sha256', 'b' * 64), ('source_sha256', 'b' * 64),
+                           ('negative_control', True), ('cases', 17), ('passed', 17), ('failed', 1)]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['pagination'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'Pagination evidence'):
+                    release_check.verify_pagination_evidence(self.report)
+
+    def test_missing_browser_and_failed_downloads_are_rejected(self):
+        for key, value in [('browser', 'firefox'), ('pagination_ok', False), ('pagination_cases', 8),
+                           ('pagination_source_sha256', 'b' * 64), ('pagination_passed', 8),
+                           ('pagination_failed', 1), ('pagination_negative_control', True)]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['browser_matrix'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'browser|Browser'):
+                    release_check.verify_pagination_evidence(self.report)
+
+    def test_unreproduced_or_substituted_failure_control_is_rejected(self):
+        for key, value in [('ok', False), ('negative_control', False), ('platform', 'win32'),
+                           ('package_version', '0.8.1'), ('engine_version', '2.5.35'),
+                           ('source_sha256', 'b' * 64), ('cases', 16), ('passed', 0), ('failed', 18)]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['pagination_negative_controls'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'failure control'):
+                    release_check.verify_pagination_evidence(self.report)
+        self.report['pagination_negative_controls'] = []
+        with self.assertRaisesRegex(ValueError, 'failure control'):
+            release_check.verify_pagination_evidence(self.report)
+
+
 if __name__ == '__main__':
     unittest.main()

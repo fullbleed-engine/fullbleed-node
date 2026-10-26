@@ -22,6 +22,7 @@ HTML_EXPORT_SOURCE = Path(__file__).resolve().parent / 'html-export-fixtures.mjs
 ENGINE_PAINT_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('engine-paint-2.5.28.json')
 CLOUDFLARE_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'cloudflare/cases.mjs'
 CLOUDFLARE_STARTER_SOURCE = Path(__file__).resolve().parents[1] / 'examples/cloudflare/test/fixtures.mjs'
+PAGINATION_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'pagination-fixtures.mjs'
 
 
 def require(condition, message):
@@ -115,6 +116,35 @@ def verify_cloudflare_evidence(report):
         else:
             require(all(item.get('standalone_config') is True and item.get('input_tests') == 5 for item in evidence),
                     'Workers starter checks are incomplete')
+
+
+def verify_pagination_evidence(report):
+    source_sha = hashlib.sha256(PAGINATION_SOURCE.read_bytes()).hexdigest()
+    evidence = report.get('pagination', [])
+    require(len(evidence) == 2 and {item.get('platform') for item in evidence} == {'win32', 'linux'},
+            'Pagination inspection requires Windows and Linux evidence')
+    require(all(item.get('ok') is True and item.get('package_version') == report['package_version']
+                and item.get('engine_version') == report['engine_version']
+                and item.get('tarball_sha256') == report['package_sha256']
+                and item.get('source_sha256') == source_sha and item.get('negative_control') is False
+                and item.get('cases') == 18 and item.get('passed') == 18 and item.get('failed') == 0
+                for item in evidence),
+            'Pagination evidence is incomplete or targets another package, tarball, source or negative control')
+    browsers = report.get('browser_matrix', [])
+    require(len(browsers) == 3 and {item.get('browser') for item in browsers} == {'chrome', 'firefox', 'webkit'},
+            'Pagination inspection requires all three browser downloads')
+    require(all(item.get('pagination_ok') is True and item.get('pagination_cases') == 9
+                and item.get('pagination_source_sha256') == source_sha
+                and item.get('pagination_passed') == 9 and item.get('pagination_failed') == 0
+                and item.get('pagination_negative_control') is False for item in browsers),
+            'Browser pagination evidence is incomplete or targets another source')
+    controls = report.get('pagination_negative_controls', [])
+    require(len(controls) == 1 and controls[0].get('platform') == 'linux'
+                and controls[0].get('ok') is True and controls[0].get('negative_control') is True
+                and controls[0].get('package_version') == '0.8.0' and controls[0].get('engine_version') == '2.5.29'
+                and controls[0].get('source_sha256') == source_sha and controls[0].get('cases') == 18
+                and controls[0].get('passed') == 2 and controls[0].get('failed') == 16,
+            'Pagination public failure control is missing or was not calibrated')
 
 
 def verify_binding(version, run_id, run, release, tag_commit, report):
@@ -218,6 +248,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             verify_engine_paint_evidence(report)
         if release_version >= (0, 8, 0):
             verify_cloudflare_evidence(report)
+        if release_version >= (0, 8, 1):
+            verify_pagination_evidence(report)
 
 
 def verify_tarball(data, info, report):
