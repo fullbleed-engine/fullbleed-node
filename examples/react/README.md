@@ -54,7 +54,7 @@ See [supported print CSS](https://docs.fullbleed.dev/css-coverage/) for layout f
 ## Reuse the hook
 
 Copy `src/usePdfPreview.ts` and the `src/documents/` directory into your client application, install
-`fullbleed@0.8.2`, and copy the runtime with
+`fullbleed@0.8.3`, and copy the runtime with
 `npx fullbleed-browser-assets public/fullbleed`. Keep the document input stable
 with `useMemo` so ordinary component updates do not schedule another render:
 
@@ -117,7 +117,7 @@ WebAssembly, and Web Crypto are required.
 
 ## Versions and verification
 
-The lockfile pins Fullbleed 0.8.2 / engine 2.5.37, React 19.3.0, TypeScript 7.0.2,
+The lockfile pins Fullbleed 0.8.3 / engine 2.5.38, React 19.3.0, TypeScript 7.0.2,
 and Vite 8.3.2. No Fullbleed engine or package release is needed for this example.
 
 The repository's `React starter` workflow builds the locked project and checks

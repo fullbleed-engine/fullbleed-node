@@ -19,6 +19,7 @@ import pypdfium2 as pdfium
 
 FIXTURES = Path(__file__).with_name('starter-engine-2.5.22.json')
 CURRENT_FIXTURES = Path(__file__).with_name('starter-engine-2.5.24.json')
+QUOTATION_FIXTURES = Path(__file__).with_name('starter-engine-2.5.38.json')
 
 
 def decoration_widths(page, reader):
@@ -64,6 +65,37 @@ def inspect_outputs(case, pdf_path, preview_path, out, check):
     if 'pdfSha256' in expected:
         check(name + ': PDF matches the released source/control fixture',
               hashlib.sha256(pdf_path.read_bytes()).hexdigest() == expected['pdfSha256'])
+    if case['family'] == 'quotation':
+        check(name + ': print CSS preserves the expected page geometry',
+              [float(reader.pages[0].mediabox.width), float(reader.pages[0].mediabox.height)] == expected['pageSizePt'])
+        document = pdfium.PdfDocument(pdf_path)
+        try:
+            pdf_page = document[0]
+            try:
+                text_page = pdf_page.get_textpage()
+                try:
+                    independent_text = re.sub(r'\s+', '', text_page.get_text_range())
+                finally:
+                    text_page.close()
+                bitmap = pdf_page.render(scale=case['previewDpi'] / 72)
+                try:
+                    raster = bitmap.to_pil().convert('RGB')
+                    raster.save(out / (name + '-pdfium.png'))
+                finally:
+                    bitmap.close()
+            finally:
+                pdf_page.close()
+        finally:
+            document.close()
+        check(name + ': a second PDF reader finds the exact quotation text', independent_text == expected['text'])
+        with Image.open(preview_path) as displayed:
+            preview = displayed.convert('RGB')
+        ink = {source: sum(image.convert('L').histogram()[:200])
+               for source, image in [('pdfium', raster), ('preview', preview)]}
+        check(name + ': independent PDF render and displayed preview contain visible ink',
+              all(count >= expected['minimumInkPixels'] for count in ink.values()))
+        record.update(pdfiumText=independent_text, inkPixels=ink,
+                      independentRasterSha256=hashlib.sha256((out / (name + '-pdfium.png')).read_bytes()).hexdigest())
     if case['family'] == 'decoration':
         widths = decoration_widths(reader.pages[0], reader)
         check(name + ': decoration stroke count matches', len(widths) == expected['strokes'])
@@ -108,6 +140,7 @@ def verify_engine_fixes(page, out, check, ready, *, manual=False,
     """Paste focused cases, inspect actual downloads, then restore the editor."""
     fixtures = json.loads(FIXTURES.read_text(encoding='utf-8'))
     current = json.loads(CURRENT_FIXTURES.read_text(encoding='utf-8'))
+    quotations = json.loads(QUOTATION_FIXTURES.read_text(encoding='utf-8'))
     evidence = out / 'engine-fixes'
     evidence.mkdir(exist_ok=False)
     original_html = page.locator(html_selector).input_value()
@@ -119,7 +152,7 @@ def verify_engine_fixes(page, out, check, ready, *, manual=False,
             page.locator(html_selector).fill(html)
             page.locator(css_selector).fill(css)
     records = []
-    for case in [*fixtures['cases'], *current['cases']]:
+    for case in [*fixtures['cases'], *current['cases'], *quotations['cases']]:
         name = case['name']
         (evidence / (name + '.html')).write_text(case['html'], encoding='utf-8', newline='\n')
         (evidence / (name + '.css')).write_text(case['css'], encoding='utf-8', newline='\n')
@@ -151,7 +184,8 @@ def verify_engine_fixes(page, out, check, ready, *, manual=False,
     ready()
     result = {'ok': True, 'fixturesSha256': hashlib.sha256(FIXTURES.read_bytes()).hexdigest(),
               'additionalFixturesSha256': hashlib.sha256(CURRENT_FIXTURES.read_bytes()).hexdigest(),
+              'quotationFixturesSha256': hashlib.sha256(QUOTATION_FIXTURES.read_bytes()).hexdigest(),
               'readers': {package: version(package) for package in ['pypdf', 'pypdfium2', 'pillow']},
-              'scope': fixtures['scope'] + ' ' + current['scope'], 'cases': records}
+              'scope': fixtures['scope'] + ' ' + current['scope'] + ' ' + quotations['scope'], 'cases': records}
     (evidence / 'verification.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8', newline='\n')
     return result
