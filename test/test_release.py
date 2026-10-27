@@ -549,5 +549,67 @@ class TableWrappingReleaseEvidenceTests(unittest.TestCase):
             release_check.verify_table_wrapping_evidence(self.report)
 
 
+class GeneratedQuotesReleaseEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        source = release_check.GENERATED_QUOTES_SOURCE.read_bytes()
+        digest = hashlib.sha256(source).hexdigest()
+        fixtures = json.loads(source)['cases']
+        names = sorted(case['name'] for case in fixtures)
+        failures = sorted(case['name'] for case in fixtures if case['previousEngineFails'])
+        self.report = dict(package_version='0.8.3', engine_version='2.5.38', package_sha256='a' * 64,
+            generated_quotes=[dict(platform=platform, ok=True, package_version='0.8.3', engine_version='2.5.38',
+                tarball_sha256='a' * 64, source_sha256=digest, negative_control=False,
+                cases=82, passed=82, failed=0, case_names=names, unchanged_controls=32 if platform == 'linux' else 0)
+                for platform in ['win32', 'linux']],
+            browser_matrix=[dict(browser=browser, generated_quotes_ok=True, generated_quotes_cases=41,
+                generated_quotes_passed=41, generated_quotes_failed=0, generated_quotes_source_sha256=digest,
+                generated_quotes_case_names=names, generated_quotes_negative_control=False)
+                for browser in ['chrome', 'firefox', 'webkit']],
+            generated_quotes_negative_controls=[dict(platform='linux', ok=True, negative_control=True,
+                package_version='0.8.2', engine_version='2.5.37', source_sha256=digest,
+                cases=82, passed=32, failed=50, failed_case_names=failures)])
+
+    def test_complete_evidence_is_accepted(self):
+        release_check.verify_generated_quotes_evidence(self.report)
+
+    def test_missing_platform_or_substituted_candidate_is_rejected(self):
+        for key, value in [('platform', 'linux'), ('ok', False), ('package_version', '0.8.2'),
+                           ('engine_version', '2.5.37'), ('tarball_sha256', 'b' * 64),
+                           ('source_sha256', 'b' * 64), ('negative_control', True),
+                           ('cases', 80), ('passed', 80), ('failed', 2), ('case_names', [])]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['generated_quotes'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'Generated quotations'):
+                    release_check.verify_generated_quotes_evidence(self.report)
+
+    def test_changed_healthy_controls_are_rejected(self):
+        self.report['generated_quotes'][1]['unchanged_controls'] = 30
+        with self.assertRaisesRegex(ValueError, 'healthy controls'):
+            release_check.verify_generated_quotes_evidence(self.report)
+
+    def test_missing_browser_cases_or_substituted_input_are_rejected(self):
+        for key, value in [('browser', 'firefox'), ('generated_quotes_ok', False),
+                           ('generated_quotes_cases', 40), ('generated_quotes_passed', 40),
+                           ('generated_quotes_failed', 1), ('generated_quotes_source_sha256', 'b' * 64),
+                           ('generated_quotes_case_names', []), ('generated_quotes_negative_control', True)]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['browser_matrix'][0][key] = value
+                with self.assertRaisesRegex(ValueError, '[Gg]enerated quotations'):
+                    release_check.verify_generated_quotes_evidence(self.report)
+
+    def test_uncalibrated_public_failure_control_is_rejected(self):
+        for key, value in [('ok', False), ('negative_control', False), ('platform', 'win32'),
+                           ('package_version', '0.8.3'), ('engine_version', '2.5.38'),
+                           ('source_sha256', 'b' * 64), ('cases', 80), ('passed', 30),
+                           ('failed', 52), ('failed_case_names', [])]:
+            with self.subTest(key=key):
+                self.setUp()
+                self.report['generated_quotes_negative_controls'][0][key] = value
+                with self.assertRaisesRegex(ValueError, 'failure control'):
+                    release_check.verify_generated_quotes_evidence(self.report)
+
+
 if __name__ == '__main__':
     unittest.main()
