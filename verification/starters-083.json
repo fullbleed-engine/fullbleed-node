@@ -1,0 +1,443 @@
+{
+  "ok": true,
+  "checkedAt": "2026-10-27T12:23:27.346667+00:00",
+  "package": "0.8.3",
+  "engine": "2.5.38",
+  "packageIntegrity": "sha512-Df9VSjsLEyygxvQTiFwgwndEyspzy6AIvLkbDm0IgIYSfXXuGy+C2MJWTxpy21hp6NwWVg6MHKx7mYTJUA7I6g==",
+  "publicTarballSha256": "9bdfd44de150e609819f9e46bf1bcd9c4bda4cdedc09aa477b593003f1e24b55",
+  "sourceFiles": {
+    "examples/browser/README.md": "4c3b962ac8e5ae81ac2d2234103755e9fb60b4b138f36ee3f00a5957a7b93a2e",
+    "examples/browser/package.json": "68c2577262ad8a92c81f3ec3ee68bebc3c9ca44fb0885ff339d9c663f19e6958",
+    "examples/browser/package-lock.json": "6f18c206a1f6fe030a94b59f987f162e217d2f5cdeaeff6680bbebfc26fe4341",
+    ".github/workflows/browser-starter.yml": "7c171044253314af2cc1681fdf37911b7bba36aa2f6aeccadf442043f7264d17",
+    "examples/react/README.md": "3143a9bab919265d69177d71f92bfc5e79cda1f3e3007add9a87084bf60a7193",
+    "examples/react/package.json": "7558b849e48ecbc214f636f2f97b1baff491dae3916fd2e4472ec71ea7df3651",
+    "examples/react/package-lock.json": "13611c811da54fbb4b0d4269b1362525607f4dd94fd6b102eef6d66ed056b964",
+    ".github/workflows/react-starter.yml": "38ecfb431c7180dbb84e6290ac0d370c646d4972d78e7f13443bc560c3d1cc9a",
+    "examples/vue/README.md": "829eb5e93811627816b8a3fcf7eaa4df1c47cb1eac3a890143c2df6973fe24dc",
+    "examples/vue/package.json": "92f6a541523f034864d87044d700977a6d302163e57fa77f5a5177179309d7b0",
+    "examples/vue/package-lock.json": "94621bff307a11a2ce43a7881f076a665ccfd7c40bcca6c6075c92a77d6db7ca",
+    ".github/workflows/vue-starter.yml": "d3d2438e9a527dd9b42923d371c89f82c9ff526fc0a72634abf7ce6f4bf63111",
+    "tools/starter_engine_fixes.py": "972cdd86569513817424758a8a5ac6a9998ed2c4988500219763b126485b2932",
+    "tools/starter-engine-2.5.38.json": "a3c43265bf4a1d749210bb3842a4a8ebd94ea0bf9608ac247f3268ea9867117d"
+  },
+  "installedPackageFiles": {
+    "browser": {
+      "files": 47,
+      "matchesPublicTarball": true
+    },
+    "react": {
+      "files": 47,
+      "matchesPublicTarball": true
+    },
+    "vue": {
+      "files": 47,
+      "matchesPublicTarball": true
+    }
+  },
+  "localVerification": {
+    "browser": {
+      "browser": "156.0.8078.47",
+      "checks": 94,
+      "documents": [
+        {
+          "name": "invoice",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "color-only",
+          "filename": "invoice-NS-1042.pdf",
+          "pages": 1,
+          "sha256": "a2b69ba41f7ad4c9bcbd38d803a46e70f0b9ccacd90ffbab5b0f7d87ffca5e4b"
+        },
+        {
+          "name": "customized",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "31ff314b44a6f13534cc383e0cf24929f0695c1dd3d84769dedf8828c6486a93"
+        },
+        {
+          "name": "edited",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "fecff59c1bfd6b59de2f0fb56965a5668023b3b88e64b5c6c30f95875592c4b2"
+        },
+        {
+          "name": "report",
+          "filename": "community-report.pdf",
+          "pages": 3,
+          "sha256": "80fc4306db1898688d846cfea4fb1b4ef5bf07713fe9301662143619441205b5"
+        },
+        {
+          "name": "recovered",
+          "filename": "invoice-TEST-2042.pdf",
+          "pages": 1,
+          "sha256": "31ff314b44a6f13534cc383e0cf24929f0695c1dd3d84769dedf8828c6486a93"
+        }
+      ],
+      "quotationCases": [
+        {
+          "name": "quote-inline-nested",
+          "pages": 1,
+          "text": "Record Ada\n[outer{inner}end]",
+          "probes": [],
+          "pdfiumText": "RecordAda[outer{inner}end]",
+          "inkPixels": {
+            "pdfium": 1695,
+            "preview": 1627
+          },
+          "independentRasterSha256": "63eebe27b3c8518dfc43e9e79ebb503200f4c49d44bde60f4119fd0004791311",
+          "pdfSha256": "0dd4e8e1cad03da49a74a2451d97180f5212c42262addff402e087c0796e32f9",
+          "previewSha256": "817be578ca49e67329b503bdee74f8d4d202319c8988e966419c4f8087d50cd1",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        },
+        {
+          "name": "quote-contents-nested",
+          "pages": 1,
+          "text": "Record Ada\n[\nouter\n{inner}\nend\n]",
+          "probes": [],
+          "pdfiumText": "RecordAda[outer{inner}end]",
+          "inkPixels": {
+            "pdfium": 1677,
+            "preview": 1613
+          },
+          "independentRasterSha256": "8a155f599e8ad72c1f83768d9935732c5af56bcb7d9676864c1b6495304a328b",
+          "pdfSha256": "658681c73d9f6cb8e942ac331a64d9e4cb7c70190b5a7d7a7258bd7028163585",
+          "previewSha256": "bb3a35f08897bcecceec9afb57439388e448681fca8513023d2bba908bd516f8",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        },
+        {
+          "name": "quote-block-nested",
+          "pages": 1,
+          "text": "Record Ada\n[outer{inner}end]",
+          "probes": [],
+          "pdfiumText": "RecordAda[outer{inner}end]",
+          "inkPixels": {
+            "pdfium": 1695,
+            "preview": 1635
+          },
+          "independentRasterSha256": "63eebe27b3c8518dfc43e9e79ebb503200f4c49d44bde60f4119fd0004791311",
+          "pdfSha256": "b032ca751718d12ec90f10d4934044f1ac1024b9731ba2c72c1529fe9f44e6e7",
+          "previewSha256": "28cfba86ea6182baccff1322dcb100279bf10eef965e33266b3baaabd41ccccf",
+          "suggestedFilename": "invoice-TEST-2042.pdf"
+        }
+      ],
+      "reportSha256": "2238f332be48b5155e5ede7eb7e020d10bbb1f8216e0a301d93e977e0fcf8eec",
+      "engineFixesReportSha256": "2c87ed1f2a284ffcefdd754957241c217fe9b249a74d9f6343693cab3c66d800"
+    },
+    "react": {
+      "browser": "156.0.8078.47",
+      "checks": 143,
+      "documents": [
+        {
+          "name": "component-invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "f2553f220e9d30e26df785a4ed251f07ff1e615afd3972a5c29c19a0c5fd3f6c",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-paid",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "91d8c8360fac37cd413fe669ed8f06650658b9ca01777129879207aac014d4c2",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-edited",
+          "pages": 1,
+          "filename": "invoice-Ref-aBc-2042.pdf",
+          "sha256": "a664f9fd84af1d2354537645aa6b70dd9abe3ab762b8a9631047aab742b1297e",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-empty",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "cc1982eaea9dfa05b014cffea44644ecc2f4d33e8eb22ae6f6a501ab6d7f1248",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-credit",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "cd57b56ec26e86365ab0223656d7e21b1543c9fbf404e967f0aef2e9b98024e6",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "component-long",
+          "pages": 3,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "589210d6b5bb0684fdbf5dbf62c5e32742c7166d3a8cfc5ae304c430e08357a3",
+          "whitespace_normalized_text_checks": true
+        },
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "c1fe667a39ac3eaae3292c3a1fab1c466999e798a5ab0a4616b73689acc79880",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "80fc4306db1898688d846cfea4fb1b4ef5bf07713fe9301662143619441205b5",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-REACT-2042.pdf",
+          "sha256": "fccdad8d56abef7206e5efefc716af2c44c717c0e1c3619827c6d27931ed76be",
+          "whitespace_normalized_text_checks": false
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408",
+          "whitespace_normalized_text_checks": false
+        }
+      ],
+      "quotationCases": [
+        {
+          "name": "quote-inline-nested",
+          "pages": 1,
+          "text": "Record Ada\n[outer{inner}end]",
+          "probes": [],
+          "pdfiumText": "RecordAda[outer{inner}end]",
+          "inkPixels": {
+            "pdfium": 1695,
+            "preview": 1627
+          },
+          "independentRasterSha256": "63eebe27b3c8518dfc43e9e79ebb503200f4c49d44bde60f4119fd0004791311",
+          "pdfSha256": "0dd4e8e1cad03da49a74a2451d97180f5212c42262addff402e087c0796e32f9",
+          "previewSha256": "817be578ca49e67329b503bdee74f8d4d202319c8988e966419c4f8087d50cd1",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        },
+        {
+          "name": "quote-contents-nested",
+          "pages": 1,
+          "text": "Record Ada\n[\nouter\n{inner}\nend\n]",
+          "probes": [],
+          "pdfiumText": "RecordAda[outer{inner}end]",
+          "inkPixels": {
+            "pdfium": 1677,
+            "preview": 1613
+          },
+          "independentRasterSha256": "8a155f599e8ad72c1f83768d9935732c5af56bcb7d9676864c1b6495304a328b",
+          "pdfSha256": "658681c73d9f6cb8e942ac331a64d9e4cb7c70190b5a7d7a7258bd7028163585",
+          "previewSha256": "bb3a35f08897bcecceec9afb57439388e448681fca8513023d2bba908bd516f8",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        },
+        {
+          "name": "quote-block-nested",
+          "pages": 1,
+          "text": "Record Ada\n[outer{inner}end]",
+          "probes": [],
+          "pdfiumText": "RecordAda[outer{inner}end]",
+          "inkPixels": {
+            "pdfium": 1695,
+            "preview": 1635
+          },
+          "independentRasterSha256": "63eebe27b3c8518dfc43e9e79ebb503200f4c49d44bde60f4119fd0004791311",
+          "pdfSha256": "b032ca751718d12ec90f10d4934044f1ac1024b9731ba2c72c1529fe9f44e6e7",
+          "previewSha256": "28cfba86ea6182baccff1322dcb100279bf10eef965e33266b3baaabd41ccccf",
+          "suggestedFilename": "invoice-REACT-2042.pdf"
+        }
+      ],
+      "reportSha256": "3ee01492fef2b3e7a1b50985880907c4b3793edd52d2e1f43d2bab52a4a447b5",
+      "engineFixesReportSha256": "752f852579f14efc27ac8044fb1cf4bffc504121779c8ef267ae6b55cd312e82"
+    },
+    "vue": {
+      "browser": "156.0.8078.47",
+      "checks": 102,
+      "documents": [
+        {
+          "name": "invoice",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        },
+        {
+          "name": "manual",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "1df9b1852ad96e07d00520d190140044f528b14047df6e30432e91a512be8883"
+        },
+        {
+          "name": "latest-input",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "edited-template",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "071d2bd98b7b90b52aa5b60e74ce0934ef54d3c6032c222d7237786dc12fc953"
+        },
+        {
+          "name": "report",
+          "pages": 3,
+          "filename": "community-report.pdf",
+          "sha256": "80fc4306db1898688d846cfea4fb1b4ef5bf07713fe9301662143619441205b5"
+        },
+        {
+          "name": "outage-recovery",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "recovered",
+          "pages": 1,
+          "filename": "invoice-VUE-2042.pdf",
+          "sha256": "f63a42a366b08f4f054cca5594dbcd22510455ddfe2e9129623facfb8371e8ee"
+        },
+        {
+          "name": "remounted",
+          "pages": 1,
+          "filename": "invoice-NS-1042.pdf",
+          "sha256": "3078d155f30536f5ad721f7be3c241cd78661ae41249131fc0fd65f37f23e408"
+        }
+      ],
+      "quotationCases": [
+        {
+          "name": "quote-inline-nested",
+          "pages": 1,
+          "text": "Record Ada\n[outer{inner}end]",
+          "probes": [],
+          "pdfiumText": "RecordAda[outer{inner}end]",
+          "inkPixels": {
+            "pdfium": 1695,
+            "preview": 1627
+          },
+          "independentRasterSha256": "63eebe27b3c8518dfc43e9e79ebb503200f4c49d44bde60f4119fd0004791311",
+          "pdfSha256": "0dd4e8e1cad03da49a74a2451d97180f5212c42262addff402e087c0796e32f9",
+          "previewSha256": "817be578ca49e67329b503bdee74f8d4d202319c8988e966419c4f8087d50cd1",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        },
+        {
+          "name": "quote-contents-nested",
+          "pages": 1,
+          "text": "Record Ada\n[\nouter\n{inner}\nend\n]",
+          "probes": [],
+          "pdfiumText": "RecordAda[outer{inner}end]",
+          "inkPixels": {
+            "pdfium": 1677,
+            "preview": 1613
+          },
+          "independentRasterSha256": "8a155f599e8ad72c1f83768d9935732c5af56bcb7d9676864c1b6495304a328b",
+          "pdfSha256": "658681c73d9f6cb8e942ac331a64d9e4cb7c70190b5a7d7a7258bd7028163585",
+          "previewSha256": "bb3a35f08897bcecceec9afb57439388e448681fca8513023d2bba908bd516f8",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        },
+        {
+          "name": "quote-block-nested",
+          "pages": 1,
+          "text": "Record Ada\n[outer{inner}end]",
+          "probes": [],
+          "pdfiumText": "RecordAda[outer{inner}end]",
+          "inkPixels": {
+            "pdfium": 1695,
+            "preview": 1635
+          },
+          "independentRasterSha256": "63eebe27b3c8518dfc43e9e79ebb503200f4c49d44bde60f4119fd0004791311",
+          "pdfSha256": "b032ca751718d12ec90f10d4934044f1ac1024b9731ba2c72c1529fe9f44e6e7",
+          "previewSha256": "28cfba86ea6182baccff1322dcb100279bf10eef965e33266b3baaabd41ccccf",
+          "suggestedFilename": "invoice-VUE-2042.pdf"
+        }
+      ],
+      "reportSha256": "62f972db0e525132dde58c5b4dfef9b1028cfe54ae119b0794e589370882e991",
+      "engineFixesReportSha256": "23892b7f580cc677c9934f1090f0ffa8fdfe3de918ba7e4402156f8a1d79b05b"
+    }
+  },
+  "unchangedPdfDownloadsFrom082": {
+    "browser": 6,
+    "react": 13,
+    "vue": 8
+  },
+  "retainedPublicControls": {
+    "browser": [
+      {
+        "case": "inline-nested",
+        "beforeText": "RecordAda[outer{inner}end]",
+        "afterText": "RecordAda[outer{inner}end]",
+        "beforePdfSha256": "0dd4e8e1cad03da49a74a2451d97180f5212c42262addff402e087c0796e32f9",
+        "afterPdfSha256": "0dd4e8e1cad03da49a74a2451d97180f5212c42262addff402e087c0796e32f9",
+        "unchangedHealthyControl": true
+      },
+      {
+        "case": "block-nested",
+        "beforeText": "RecordAda[outer[inner]end",
+        "afterText": "RecordAda[outer{inner}end]",
+        "beforePdfSha256": "8bea79d1eaf3493291ba303acc16dbdf59cf989836408ebe7e240eccd878dfec",
+        "afterPdfSha256": "b032ca751718d12ec90f10d4934044f1ac1024b9731ba2c72c1529fe9f44e6e7",
+        "unchangedHealthyControl": false
+      }
+    ],
+    "react": [
+      {
+        "case": "inline-nested",
+        "beforeText": "RecordAda[outer{inner}end]",
+        "afterText": "RecordAda[outer{inner}end]",
+        "beforePdfSha256": "0dd4e8e1cad03da49a74a2451d97180f5212c42262addff402e087c0796e32f9",
+        "afterPdfSha256": "0dd4e8e1cad03da49a74a2451d97180f5212c42262addff402e087c0796e32f9",
+        "unchangedHealthyControl": true
+      },
+      {
+        "case": "block-nested",
+        "beforeText": "RecordAda[outer[inner]end",
+        "afterText": "RecordAda[outer{inner}end]",
+        "beforePdfSha256": "8bea79d1eaf3493291ba303acc16dbdf59cf989836408ebe7e240eccd878dfec",
+        "afterPdfSha256": "b032ca751718d12ec90f10d4934044f1ac1024b9731ba2c72c1529fe9f44e6e7",
+        "unchangedHealthyControl": false
+      }
+    ],
+    "vue": [
+      {
+        "case": "inline-nested",
+        "beforeText": "RecordAda[outer{inner}end]",
+        "afterText": "RecordAda[outer{inner}end]",
+        "beforePdfSha256": "0dd4e8e1cad03da49a74a2451d97180f5212c42262addff402e087c0796e32f9",
+        "afterPdfSha256": "0dd4e8e1cad03da49a74a2451d97180f5212c42262addff402e087c0796e32f9",
+        "unchangedHealthyControl": true
+      },
+      {
+        "case": "block-nested",
+        "beforeText": "RecordAda[outer[inner]end",
+        "afterText": "RecordAda[outer{inner}end]",
+        "beforePdfSha256": "8bea79d1eaf3493291ba303acc16dbdf59cf989836408ebe7e240eccd878dfec",
+        "afterPdfSha256": "b032ca751718d12ec90f10d4934044f1ac1024b9731ba2c72c1529fe9f44e6e7",
+        "unchangedHealthyControl": false
+      }
+    ]
+  },
+  "publicBeforeObservationSha256": "21b125227fe1652220f8a850749e645bcbaac35caf345c80d1de1833b6ede781",
+  "scope": "Locked public npm installation and actual browser, React and Vue production editors in Chrome on Windows. Nine quotation downloads pass, including three unchanged healthy controls, and 27 previous document downloads remain byte-identical. The repository CI covers the other browser engines and React development checks separately."
+}

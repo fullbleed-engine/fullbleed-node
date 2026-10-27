@@ -1,0 +1,63 @@
+{
+  "schema": "fullbleed.starter.engine-fixes.v1",
+  "upstreamRelease": "2.5.38",
+  "source": {
+    "path": "test/fixtures/generated-quotes-2.5.38.json",
+    "sha256": "892cf0862fe14d639cdb1f639ce755ce9a6fe5f88622217690da3da762ff4015",
+    "url": "https://github.com/fullbleed-engine/fullbleed-node/blob/v0.8.3/test/fixtures/generated-quotes-2.5.38.json"
+  },
+  "cases": [
+    {
+      "name": "quote-inline-nested",
+      "family": "quotation",
+      "html": "<html><body><p>Record Ada</p><span class=\"q\" style=\"display:inline\">outer<span class=\"q\">inner</span>end</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "previousEngineFails": false,
+      "expected": {
+        "text": "RecordAda[outer{inner}end]",
+        "pageSizePt": [
+          450,
+          300
+        ],
+        "minimumInkPixels": 100
+      }
+    },
+    {
+      "name": "quote-contents-nested",
+      "family": "quotation",
+      "html": "<html><body><p>Record Ada</p><span class=\"q\" style=\"display:contents\">outer<span class=\"q\">inner</span>end</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "previousEngineFails": true,
+      "expected": {
+        "text": "RecordAda[outer{inner}end]",
+        "pageSizePt": [
+          450,
+          300
+        ],
+        "minimumInkPixels": 100
+      }
+    },
+    {
+      "name": "quote-block-nested",
+      "family": "quotation",
+      "html": "<html><body><p>Record Ada</p><span class=\"q\" style=\"display:block\">outer<span class=\"q\">inner</span>end</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "pages": 1,
+      "previewDpi": 96,
+      "previousEngineFails": true,
+      "expected": {
+        "text": "RecordAda[outer{inner}end]",
+        "pageSizePt": [
+          450,
+          300
+        ],
+        "minimumInkPixels": 100
+      }
+    }
+  ],
+  "scope": "Three reviewed quotation inputs through the actual starter editors and downloads. One healthy control and two earlier engine failures; no full CSS or arbitrary-template parity claim."
+}
