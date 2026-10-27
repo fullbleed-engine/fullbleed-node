@@ -112,6 +112,13 @@ not sanitized for untrusted template execution.
 for a decorative image. `Link` requires `href`. Table headers accept `scope`.
 These helpers do not port Python's semantic validator or establish PDF/UA conformance.
 
+`Link` creates an HTML anchor, and both HTML export modes retain its `href`.
+In package **0.8.2 / engine 2.5.37**, PDF rendering preserves the visible link
+text and styling but does not create clickable PDF link annotations or internal
+destinations. A PDF reader may auto-detect a printed URL; that is reader behavior.
+For the separately verified Python prerelease feature, see
+[native PDF links in 2.6.0a14](https://docs.fullbleed.dev/guides/pdf-links/).
+
 Layout containers accept a constrained semantic `as` tag, such as
 `Stack({ as: 'section' }, ...)`. `List({ as: 'ol' }, ...)` creates an ordered list.
 `el(tag, props, ...children)` remains the lower-level escape hatch.
