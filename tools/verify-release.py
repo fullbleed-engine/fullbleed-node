@@ -24,6 +24,7 @@ CLOUDFLARE_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'cloudflare/cases.mjs'
 CLOUDFLARE_STARTER_SOURCE = Path(__file__).resolve().parents[1] / 'examples/cloudflare/test/fixtures.mjs'
 PAGINATION_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'pagination-fixtures.mjs'
 TABLE_WRAPPING_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('table-wrapping-2.5.37.json')
+GENERATED_QUOTES_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('generated-quotes-2.5.38.json')
 
 
 def require(condition, message):
@@ -183,6 +184,42 @@ def verify_table_wrapping_evidence(report):
             'Table wrapping public failure control is missing or was not calibrated')
 
 
+def verify_generated_quotes_evidence(report):
+    source_sha = hashlib.sha256(GENERATED_QUOTES_SOURCE.read_bytes()).hexdigest()
+    fixtures = json.loads(GENERATED_QUOTES_SOURCE.read_bytes())['cases']
+    names = sorted(case['name'] for case in fixtures)
+    failures = sorted(case['name'] for case in fixtures if case['previousEngineFails'])
+    evidence = report.get('generated_quotes', [])
+    require(len(evidence) == 2 and {row.get('platform') for row in evidence} == {'linux', 'win32'},
+            'Generated quotations require Windows and Linux evidence')
+    require(all(row.get('ok') is True and row.get('package_version') == report['package_version']
+                and row.get('engine_version') == report['engine_version']
+                and row.get('tarball_sha256') == report['package_sha256']
+                and row.get('source_sha256') == source_sha and row.get('negative_control') is False
+                and row.get('cases') == 82 and row.get('passed') == 82 and row.get('failed') == 0
+                and row.get('case_names') == names for row in evidence),
+            'Generated quotations evidence targets incomplete cases or another package, source or tarball')
+    require(next(row for row in evidence if row['platform'] == 'linux').get('unchanged_controls') == 32,
+            'Generated quotations healthy controls must preserve their output')
+    browsers = report.get('browser_matrix', [])
+    require(len(browsers) == 3 and {row.get('browser') for row in browsers} == {'chrome', 'firefox', 'webkit'},
+            'Generated quotations require all three browser downloads')
+    require(all(row.get('generated_quotes_ok') is True and row.get('generated_quotes_cases') == 41
+                and row.get('generated_quotes_passed') == 41 and row.get('generated_quotes_failed') == 0
+                and row.get('generated_quotes_source_sha256') == source_sha
+                and row.get('generated_quotes_case_names') == names
+                and row.get('generated_quotes_negative_control') is False for row in browsers),
+            'Browser generated quotations evidence is incomplete or targets another source')
+    controls = report.get('generated_quotes_negative_controls', [])
+    require(len(controls) == 1 and controls[0].get('platform') == 'linux'
+                and controls[0].get('ok') is True and controls[0].get('negative_control') is True
+                and controls[0].get('package_version') == '0.8.2' and controls[0].get('engine_version') == '2.5.37'
+                and controls[0].get('source_sha256') == source_sha and controls[0].get('cases') == 82
+                and controls[0].get('passed') == 32 and controls[0].get('failed') == 50
+                and controls[0].get('failed_case_names') == failures,
+            'Generated quotations public failure control is missing or was not calibrated')
+
+
 def verify_binding(version, run_id, run, release, tag_commit, report):
     require(re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version), 'Use a stable numeric version')
     require(re.fullmatch(r'[0-9]+', run_id), 'Use a numeric CI run ID')
@@ -288,6 +325,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             verify_pagination_evidence(report)
         if release_version >= (0, 8, 2):
             verify_table_wrapping_evidence(report)
+        if release_version >= (0, 8, 3):
+            verify_generated_quotes_evidence(report)
 
 
 def verify_tarball(data, info, report):

@@ -64,6 +64,13 @@ jobs:
           python tools/verify-table-wrapping.py output/table-wrapping-baseline --negative-control
           npm run render:tables
           npm run verify:tables -- --baseline output/table-wrapping-baseline
+      - name: Verify generated quotations and the published failure control
+        run: |
+          npm install --prefix output/generated-quotes-baseline-consumer --ignore-scripts --no-audit --no-fund --save-exact fullbleed@0.8.2
+          node tools/render-generated-quotes.mjs --package-root output/generated-quotes-baseline-consumer/node_modules/fullbleed --out output/generated-quotes-baseline
+          python tools/verify-generated-quotes.py output/generated-quotes-baseline --negative-control
+          npm run render:quotes
+          npm run verify:quotes -- --baseline output/generated-quotes-baseline
       - name: Verify hidden text and author display overrides in installed output
         run: |
           node tools/render-hidden-text.mjs
@@ -89,7 +96,7 @@ jobs:
           npm run render:fonts -- --package-root output/font-baseline-consumer/node_modules/fullbleed --out output/font-baseline
           npm run verify:fonts -- --evidence-root output/font-baseline --allow-legacy-metadata
           npm run render:fonts
-          npm run verify:fonts -- --baseline output/font-baseline --reviewed-layout test/fixtures/inline-layout-2.5.37.json
+          npm run verify:fonts -- --baseline output/font-baseline --reviewed-layout test/fixtures/inline-layout-2.5.38.json
       - name: Verify installed custom font families against explicit faces
         run: |
           npm run render:families
@@ -140,6 +147,9 @@ jobs:
             output/table-wrapping/
             output/table-wrapping-baseline/
             output/table-wrapping-baseline-consumer/package-lock.json
+            output/generated-quotes/
+            output/generated-quotes-baseline/
+            output/generated-quotes-baseline-consumer/package-lock.json
             output/component-verification/
             output/cloudflare-verification/
             output/cloudflare-starter-verification/
@@ -183,7 +193,7 @@ jobs:
         run: |
           python -m pip install pypdf==6.19.0 pypdfium2==5.14.0 fonttools==4.65.0 pillow==12.3.0
           npm run render:fonts
-          npm run verify:fonts -- --reviewed-layout test/fixtures/inline-layout-2.5.37.json
+          npm run verify:fonts -- --reviewed-layout test/fixtures/inline-layout-2.5.38.json
           npm run render:families
           npm run verify:families
           npm run render:inline
@@ -200,6 +210,8 @@ jobs:
           npm run verify:pagination
           npm run render:tables
           npm run verify:tables
+          npm run render:quotes
+          npm run verify:quotes
           python tools/verify-components.py
           npm run verify:cloudflare
           python tools/verify-cloudflare.py
@@ -223,6 +235,9 @@ jobs:
             output/table-wrapping/
             output/table-wrapping-baseline/
             output/table-wrapping-baseline-consumer/package-lock.json
+            output/generated-quotes/
+            output/generated-quotes-baseline/
+            output/generated-quotes-baseline-consumer/package-lock.json
             output/component-verification/
             output/cloudflare-verification/
             output/cloudflare-starter-verification/
@@ -292,6 +307,7 @@ jobs:
       - run: python tools/verify-engine-paint.py output/browser-${{ matrix.browser }}-ci --browser
       - run: python tools/verify-pagination.py output/browser-${{ matrix.browser }}-ci --browser
       - run: python tools/verify-table-wrapping.py output/browser-${{ matrix.browser }}-ci --browser
+      - run: python tools/verify-generated-quotes.py output/browser-${{ matrix.browser }}-ci --browser
       - uses: actions/upload-artifact@v4
         if: always()
         with:

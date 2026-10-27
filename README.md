@@ -6,7 +6,7 @@ no Python, Rust compiler, browser, or system fonts. MIT licensed.
 
 Use `fullbleed` in Node.js, `fullbleed/browser` in a web application, or
 [`fullbleed/cloudflare`](docs/cloudflare.md) inside a Cloudflare Worker.
-Package **0.8.2** wraps the published **Fullbleed 2.5.37** engine.
+Package **0.8.3** wraps the published **Fullbleed 2.5.38** engine.
 
 [Try the browser playground](https://docs.fullbleed.dev/playground/) ·
 [Documentation](https://docs.fullbleed.dev/getting-started/node/) ·
@@ -38,7 +38,7 @@ await writeFile('invoice.png', result.previews[0]);
 Open `invoice.pdf` or its PNG preview. Inter is the default font. CommonJS also
 works: `const { renderPdf } = require('fullbleed')`. TypeScript declarations are
 included. For a pinned installation, use
-`npm install --save-exact fullbleed@0.8.2`.
+`npm install --save-exact fullbleed@0.8.3`.
 
 Prefer components? [Compose documents with functions or JSX](#compose-documents-with-components)
 and export HTML with or without styles using `fullbleed/ui`.
@@ -291,6 +291,11 @@ HTML/CSS for print layout; it does not execute document JavaScript or reproduce
 arbitrary browser pages.
 
 ## Release notes and verification
+
+Version 0.8.3 fixes [CSS-generated quotation marks](docs/generated-quotes.md)
+in nested inline, block, inline-block and `display: contents` elements.
+Silent quotation tokens and layout measurement now preserve document-order
+quotation depth.
 
 Version 0.8.2 fixes [wrapping inside narrow tables](docs/table-wrapping.md):
 Japanese text and Latin text using `word-break: break-all`, `overflow-wrap: anywhere`

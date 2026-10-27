@@ -1,0 +1,294 @@
+{
+  "source": "https://github.com/fullbleed-engine/fullbleed-official/blob/e153ad7b47478fe296df565ea4b648cfe0431757/tests/test_fullbleed_generated_quotes.py",
+  "sourceSha256": "8dec98f33dac49846980d908b47118a9cbffc636773212fa99f40d20312582b5",
+  "scope": "Exact quotation text and one-page geometry for 41 reviewed ordinary-document fixtures. No compiled API, broad CSS parity or conformance claim.",
+  "cases": [
+    {
+      "name": "inline-nested",
+      "html": "<html><body><p>Record Ada</p><span class=\"q\" style=\"display:inline\">outer<span class=\"q\">inner</span>end</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[outer{inner}end]",
+      "previousEngineFails": false
+    },
+    {
+      "name": "inline-silent-before",
+      "html": "<html><body><p>Record Ada</p><span class=\"open\" style=\"display:inline\"><span class=\"q\">one</span></span><span class=\"q\">two</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda{one}{two}",
+      "previousEngineFails": false
+    },
+    {
+      "name": "inline-silent-after",
+      "html": "<html><body><p>Record Ada</p><span class=\"after\" style=\"display:inline\"><span class=\"q\">one</span></span><span class=\"q\">two</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]{two}",
+      "previousEngineFails": false
+    },
+    {
+      "name": "inline-close-after-zero-probe",
+      "html": "<html><body><p>Record Ada</p><span class=\"closeafter\" style=\"display:inline\"><span class=\"open\"></span></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "inline-visible-close-zero-probe",
+      "html": "<html><body><p>Record Ada</p><span class=\"visibleclose\" style=\"display:inline\"><span class=\"open\"></span></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda][one]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "inline-balanced-after",
+      "html": "<html><body><p>Record Ada</p><span class=\"balanced\" style=\"display:inline\"><span class=\"open\"></span></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda{}{one}",
+      "previousEngineFails": true
+    },
+    {
+      "name": "contents-nested",
+      "html": "<html><body><p>Record Ada</p><span class=\"q\" style=\"display:contents\">outer<span class=\"q\">inner</span>end</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[outer{inner}end]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "contents-silent-before",
+      "html": "<html><body><p>Record Ada</p><span class=\"open\" style=\"display:contents\"><span class=\"q\">one</span></span><span class=\"q\">two</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda{one}{two}",
+      "previousEngineFails": true
+    },
+    {
+      "name": "contents-silent-after",
+      "html": "<html><body><p>Record Ada</p><span class=\"after\" style=\"display:contents\"><span class=\"q\">one</span></span><span class=\"q\">two</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]{two}",
+      "previousEngineFails": true
+    },
+    {
+      "name": "contents-close-after-zero-probe",
+      "html": "<html><body><p>Record Ada</p><span class=\"closeafter\" style=\"display:contents\"><span class=\"open\"></span></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "contents-visible-close-zero-probe",
+      "html": "<html><body><p>Record Ada</p><span class=\"visibleclose\" style=\"display:contents\"><span class=\"open\"></span></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda][one]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "contents-balanced-after",
+      "html": "<html><body><p>Record Ada</p><span class=\"balanced\" style=\"display:contents\"><span class=\"open\"></span></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda{}{one}",
+      "previousEngineFails": true
+    },
+    {
+      "name": "block-nested",
+      "html": "<html><body><p>Record Ada</p><span class=\"q\" style=\"display:block\">outer<span class=\"q\">inner</span>end</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[outer{inner}end]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "block-silent-before",
+      "html": "<html><body><p>Record Ada</p><span class=\"open\" style=\"display:block\"><span class=\"q\">one</span></span><span class=\"q\">two</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda{one}{two}",
+      "previousEngineFails": true
+    },
+    {
+      "name": "block-silent-after",
+      "html": "<html><body><p>Record Ada</p><span class=\"after\" style=\"display:block\"><span class=\"q\">one</span></span><span class=\"q\">two</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]{two}",
+      "previousEngineFails": true
+    },
+    {
+      "name": "block-close-after-zero-probe",
+      "html": "<html><body><p>Record Ada</p><span class=\"closeafter\" style=\"display:block\"><span class=\"open\"></span></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "block-visible-close-zero-probe",
+      "html": "<html><body><p>Record Ada</p><span class=\"visibleclose\" style=\"display:block\"><span class=\"open\"></span></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda][one]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "block-balanced-after",
+      "html": "<html><body><p>Record Ada</p><span class=\"balanced\" style=\"display:block\"><span class=\"open\"></span></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda{}{one}",
+      "previousEngineFails": true
+    },
+    {
+      "name": "inline-block-nested",
+      "html": "<html><body><p>Record Ada</p><span class=\"q\" style=\"display:inline-block\">outer<span class=\"q\">inner</span>end</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[outer{inner}end]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "inline-block-silent-before",
+      "html": "<html><body><p>Record Ada</p><span class=\"open\" style=\"display:inline-block\"><span class=\"q\">one</span></span><span class=\"q\">two</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda{one}{two}",
+      "previousEngineFails": true
+    },
+    {
+      "name": "inline-block-silent-after",
+      "html": "<html><body><p>Record Ada</p><span class=\"after\" style=\"display:inline-block\"><span class=\"q\">one</span></span><span class=\"q\">two</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]{two}",
+      "previousEngineFails": true
+    },
+    {
+      "name": "inline-block-close-after-zero-probe",
+      "html": "<html><body><p>Record Ada</p><span class=\"closeafter\" style=\"display:inline-block\"><span class=\"open\"></span></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "inline-block-visible-close-zero-probe",
+      "html": "<html><body><p>Record Ada</p><span class=\"visibleclose\" style=\"display:inline-block\"><span class=\"open\"></span></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda][one]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "inline-block-balanced-after",
+      "html": "<html><body><p>Record Ada</p><span class=\"balanced\" style=\"display:inline-block\"><span class=\"open\"></span></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda{}{one}",
+      "previousEngineFails": true
+    },
+    {
+      "name": "display-none",
+      "html": "<html><body><p>Record Ada</p><span class=\"open\" style=\"display:none\"></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": false
+    },
+    {
+      "name": "visibility-hidden",
+      "html": "<html><body><p>Record Ada</p><span class=\"open\" style=\"visibility:hidden\"></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda{one}",
+      "previousEngineFails": false
+    },
+    {
+      "name": "no-negative-depth",
+      "html": "<html><body><p>Record Ada</p><span class=\"close\"></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": false
+    },
+    {
+      "name": "repeated-last-pair",
+      "html": "<html><body><p>Record Ada</p><span class=\"q\">outer<span class=\"q\">inner<span class=\"q\">deep</span></span></span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[outer{inner{deep}}]",
+      "previousEngineFails": false
+    },
+    {
+      "name": "table-cells",
+      "html": "<html><body><p>Record Ada</p><table><tr><td class=\"q\">one</td><td class=\"q\">two</td></tr></table></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one][two]",
+      "previousEngineFails": false
+    },
+    {
+      "name": "literal-control",
+      "html": "<html><body><p>Record Ada</p><span>[one]</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": false
+    },
+    {
+      "name": "image-before",
+      "html": "<html><body><p>Record Ada</p><img class=\"open\" width=\"1\" height=\"1\" alt=\"\"><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": false
+    },
+    {
+      "name": "image-after",
+      "html": "<html><body><p>Record Ada</p><img class=\"after\" width=\"1\" height=\"1\" alt=\"\"><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": false
+    },
+    {
+      "name": "image-contents",
+      "html": "<html><body><p>Record Ada</p><img class=\"open\" style=\"display:contents\" alt=\"\"><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": false
+    },
+    {
+      "name": "line-break-before",
+      "html": "<html><body><p>Record Ada</p><br class=\"open\"><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": false
+    },
+    {
+      "name": "svg-before",
+      "html": "<html><body><p>Record Ada</p><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"open\" width=\"1\" height=\"1\"></svg><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": false
+    },
+    {
+      "name": "rule-before",
+      "html": "<html><body><p>Record Ada</p><hr class=\"open\"><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda{one}",
+      "previousEngineFails": true
+    },
+    {
+      "name": "input-before",
+      "html": "<html><body><p>Record Ada</p><input class=\"open\" type=\"text\" value=\"\"><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "textarea-before",
+      "html": "<html><body><p>Record Ada</p><textarea class=\"open\"></textarea><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "select-before",
+      "html": "<html><body><p>Record Ada</p><select class=\"open\"></select><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": true
+    },
+    {
+      "name": "hidden-subtree",
+      "html": "<html><body><p>Record Ada</p><div style=\"display:none\"><span class=\"open\"></span></div><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": false
+    },
+    {
+      "name": "before-display-none",
+      "html": "<html><body><p>Record Ada</p><span class=\"open suppressed\"></span><span class=\"q\">one</span></body></html>",
+      "css": "@page { size: 600px 400px; margin: 12px }\nbody { margin: 0; font-family: Inter; font-size: 20px; quotes: \"[\" \"]\" \"{\" \"}\" }\n.q::before { content: open-quote } .q::after { content: close-quote }\n.open::before { content: no-open-quote } .after::after { content: no-open-quote }\n.close::before { content: no-close-quote } .closeafter::after { content: no-close-quote }\n.visibleclose::after { content: close-quote } .balanced::after { content: open-quote close-quote }\n.suppressed::before { display: none }\n",
+      "expectedText": "RecordAda[one]",
+      "previousEngineFails": false
+    }
+  ]
+}

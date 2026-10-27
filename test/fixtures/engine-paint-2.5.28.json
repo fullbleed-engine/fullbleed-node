@@ -1,6 +1,6 @@
 {
   "schema": "fullbleed.javascript.paint-fixtures.v1",
-  "engineVersion": "2.5.37",
+  "engineVersion": "2.5.38",
   "provenance": [
     {
       "path": "tools/smoke_svg_styles.py",

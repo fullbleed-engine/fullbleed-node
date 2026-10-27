@@ -13,6 +13,7 @@ import { hiddenTextFixtures, hiddenTextSource } from '../test/hidden-text.mjs';
 import { enginePaintFixtures } from '../test/engine-paint.mjs';
 import { fixtures as paginationFixtures } from '../test/pagination-fixtures.mjs';
 import { tableWrappingFixtures, tableWrappingSource } from '../test/table-wrapping.mjs';
+import { generatedQuotesFixtures } from '../test/generated-quotes.mjs';
 
 const root = resolve('.');
 const out = join(root, 'output/browser-verification');
@@ -70,6 +71,7 @@ const inputs = { invoice: await fixture('invoice'), report: await fixture('repor
   ...Object.fromEntries(enginePaintFixtures.map(({ name, pages, ...input }) => [name, input])),
   ...Object.fromEntries(paginationFixtures.map(({ name, html, css }) => ['pagination-' + name, { html, css, defaultStyles: false, previewDpi: 72 }])),
   ...Object.fromEntries(tableWrappingFixtures.map(({ name, html, css, fontFiles }) => ['table-wrapping-' + name, { html, css, fontFiles, defaultStyles: false, previewDpi: 72 }])),
+  ...Object.fromEntries(generatedQuotesFixtures.map(({ name, html, css }) => ['generated-quotes-' + name, { html, css, defaultStyles: false, previewDpi: 72 }])),
   custom: { html: '<h1>Local asset test</h1><p>Integral: ⨌</p><img src="assets/brand/logo.svg" width="80" height="40">',
     css: "body {font-family:Inter,'Noto Sans Math'}", previewDpi: 72,
     fontFiles: ['NotoSansMath-Regular.ttf'],
@@ -114,6 +116,7 @@ for (const name of ['index.html', 'harness.js', 'components.css']) await copyFil
 const record = { package: pkg.version, engine: pkg.fullbleed.engineVersion, installedTarballSha256: pack.tarballSha256,
   enginePaintSourceSha256: hash(await readFile(join(root, 'test/fixtures/engine-paint-2.5.28.json'))),
   tableWrappingSourceSha256: hash(await readFile(join(root, 'test/fixtures/table-wrapping-2.5.37.json'))),
+  generatedQuotesSourceSha256: hash(await readFile(join(root, 'test/fixtures/generated-quotes-2.5.38.json'))),
   paginationSourceSha256: hash(await readFile(join(root, 'test/pagination-fixtures.mjs'))),
   pagination: paginationFixtures.map(({ name, kind, pages }) => ({ name, kind, expectedPages: pages ?? null })),
   ssrImportSafe: true, copyCommand: JSON.parse(copy.stdout), baselines, components: components.map(({ name, pages, text }) => ({ name, pages, text })) };
