@@ -1,0 +1,138 @@
+{
+  "schema": "fullbleed.binding_decoration_inputs.v1",
+  "sourceProbeSha256": "bf51bf16ac91370ed69795ee4ed1efff54705ad8d1de16a9820f5314731f524e",
+  "fontSha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
+  "adaptation": "Use the actual Inter family name supported by the binding; the core probe uses a font alias named Probe. Direct record AAA only.",
+  "cases": [
+    {
+      "name": "underline",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p>HH <span class=\"dec\">HH HH</span> HH</p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n.dec {text-decoration-line:underline}",
+      "bands": 1,
+      "intervals": 1,
+      "referenceDirectory": "underline-direct"
+    },
+    {
+      "name": "overline",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p>HH <span class=\"dec\">HH HH</span> HH</p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n.dec {text-decoration-line:overline}",
+      "bands": 1,
+      "intervals": 1,
+      "referenceDirectory": "overline-direct"
+    },
+    {
+      "name": "line-through",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p>HH <span class=\"dec\">HH HH</span> HH</p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n.dec {text-decoration-line:line-through}",
+      "bands": 1,
+      "intervals": 1,
+      "referenceDirectory": "line-through-direct"
+    },
+    {
+      "name": "underline-overline-line-through",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p>HH <span class=\"dec\">HH HH</span> HH</p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n.dec {text-decoration-line:underline overline line-through}",
+      "bands": 3,
+      "intervals": 1,
+      "referenceDirectory": "underline-overline-line-through-direct"
+    },
+    {
+      "name": "word-letter-spacing",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p>HH <span class=\"dec\">HH HH</span> HH</p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n.dec {word-spacing:12px;letter-spacing:3px}",
+      "bands": 1,
+      "intervals": 1,
+      "referenceDirectory": "word-letter-spacing-direct"
+    },
+    {
+      "name": "nested-strong",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p><span class=\"dec\">HH <strong>HH HH</strong> HH</span></p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n",
+      "bands": 1,
+      "intervals": 1,
+      "referenceDirectory": "nested-strong-direct"
+    },
+    {
+      "name": "propagated-raised",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p><span class=\"dec\">HH <span style=\"vertical-align:8px\">HH HH</span> HH</span></p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n",
+      "bands": 1,
+      "intervals": 1,
+      "referenceDirectory": "propagated-raised-direct"
+    },
+    {
+      "name": "descendant-none",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p><span class=\"dec\">HH <span style=\"text-decoration:none\">HH HH</span> HH</span></p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n",
+      "bands": 1,
+      "intervals": 1,
+      "referenceDirectory": "descendant-none-direct"
+    },
+    {
+      "name": "wrapped",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p><span class=\"dec\"> HH HH HH HH </span></p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\np:not(.label) {width:100px}",
+      "bands": 2,
+      "intervals": 1,
+      "referenceDirectory": "wrapped-direct"
+    },
+    {
+      "name": "nowrap-control",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p>HH <span class=\"dec\">HH HH</span> HH</p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n.dec {white-space:nowrap}",
+      "bands": 1,
+      "intervals": 1,
+      "referenceDirectory": "nowrap-control-direct"
+    },
+    {
+      "name": "atomic-isolation",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p><span class=\"dec\">HH <span class=\"atom\">KK KK</span> HH</span></p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n.atom {display:inline-block;color:#0000b0}",
+      "bands": 1,
+      "intervals": 2,
+      "referenceDirectory": "atomic-isolation-direct"
+    },
+    {
+      "name": "authored-boundaries",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p><span class=\"dec\">HH</span> <span class=\"dec\">HH</span></p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n",
+      "bands": 1,
+      "intervals": 2,
+      "referenceDirectory": "authored-boundaries-direct"
+    },
+    {
+      "name": "collapsed-edges",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p><span class=\"dec\">   HH HH   </span></p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n",
+      "bands": 1,
+      "intervals": 1,
+      "control": "<p><span class=\"dec\">HH HH</span></p>",
+      "referenceDirectory": "collapsed-edges-direct"
+    },
+    {
+      "name": "collapsed-multiple",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p><span class=\"dec\">HH \n\t HH</span></p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n",
+      "bands": 1,
+      "intervals": 1,
+      "control": "<p><span class=\"dec\">HH HH</span></p>",
+      "referenceDirectory": "collapsed-multiple-direct"
+    },
+    {
+      "name": "only-collapsed",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p><span class=\"dec\">  </span>HH</p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n",
+      "bands": 0,
+      "intervals": 0,
+      "referenceDirectory": "only-collapsed-direct"
+    },
+    {
+      "name": "decoration-shadow",
+      "html": "<!doctype html><html lang=\"en\"><head><title>Decoration spaces</title></head><body><p>HH <span class=\"dec\">HH HH</span> HH</p><p class=\"label\">Record AAA</p></body></html>",
+      "css": "@page {size:480px 260px;margin:20px}\nhtml,body {margin:0;padding:0;color:black;background:white}\nbody {font-family:Inter;font-size:24px;line-height:40px}\np {margin:0} .label {margin-top:40px;font-size:12px;color:#333}\n.dec {text-decoration-line:underline;text-decoration-color:#d00000;\ntext-decoration-thickness:2px;text-underline-offset:3px;text-decoration-skip-ink:none}\n.dec {text-shadow:0 8px 0 #0000b0}",
+      "bands": 1,
+      "intervals": 1,
+      "referenceDirectory": "decoration-shadow-direct"
+    }
+  ]
+}
