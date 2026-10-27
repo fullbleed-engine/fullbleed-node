@@ -44,7 +44,11 @@ if args.browser:
             pdfSha256=reference['pdf'], previewSha256=reference['previews'][0]))
 else:
     renders = json.loads((args.root / 'renders.json').read_text(encoding='utf-8'))
-    assert renders['sourceSha256'] == source_sha and sha256((args.root / 'inputs.json').read_bytes()).hexdigest() == source_sha
+    artifact_source = (args.root / 'inputs.json').read_bytes()
+    assert renders['sourceSha256'] == sha256(artifact_source).hexdigest()
+    # The retained Windows control predates the repository's LF normalization.
+    # Bind its original bytes first, then permit only that line-ending change.
+    assert artifact_source.replace(b'\r\n', b'\n') == source_bytes
     assert renders['fontSha256'] == source['fontSha256']
 if args.negative_control:
     assert renders['packageVersion'] == '0.8.3' and renders['engineVersion'] == '2.5.38'

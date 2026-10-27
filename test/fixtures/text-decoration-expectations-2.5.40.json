@@ -4,7 +4,7 @@
   "sourceCommit": "7eb9030b03c1e30ba5f45b96e2c147ee4c3e47c9",
   "sourceTag": "v2.5.40",
   "sourceProbeSha256": "bf51bf16ac91370ed69795ee4ed1efff54705ad8d1de16a9820f5314731f524e",
-  "inputSha256": "6a4d77c718490a05174f0ad0c9601976f8999d87f17824d07a32d373db29e78e",
+  "inputSha256": "38b740387219bffa49f4bdd41258fb2c515b56e94cba1bc981a19d07a2f6d51b",
   "fontSha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
   "publicWheelSha256": "15b97862e9513a6f9521debd87974aef221ec1c83e34ea76908ae12cc3508458",
   "source": "https://github.com/fullbleed-engine/fullbleed-official/releases/tag/v2.5.40",
@@ -3642,5 +3642,6 @@
       },
       "corePdfSha256": "cbf9a614a1993dc8e526a49553fe2a5ad0eb3d77080529fd0e3c9abed2c9cf7a"
     }
-  ]
+  ],
+  "originalInputSha256": "6a4d77c718490a05174f0ad0c9601976f8999d87f17824d07a32d373db29e78e"
 }
