@@ -25,6 +25,8 @@ CLOUDFLARE_STARTER_SOURCE = Path(__file__).resolve().parents[1] / 'examples/clou
 PAGINATION_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'pagination-fixtures.mjs'
 TABLE_WRAPPING_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('table-wrapping-2.5.37.json')
 GENERATED_QUOTES_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('generated-quotes-2.5.38.json')
+TEXT_DECORATIONS_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('text-decorations-2.5.40.json')
+TEXT_DECORATIONS_EXPECTATIONS = ENGINE_REGRESSION_SOURCE.with_name('text-decoration-expectations-2.5.40.json')
 
 
 def require(condition, message):
@@ -220,6 +222,55 @@ def verify_generated_quotes_evidence(report):
             'Generated quotations public failure control is missing or was not calibrated')
 
 
+def verify_text_decorations_evidence(report):
+    source_sha = hashlib.sha256(TEXT_DECORATIONS_SOURCE.read_bytes()).hexdigest()
+    expectations_sha = hashlib.sha256(TEXT_DECORATIONS_EXPECTATIONS.read_bytes()).hexdigest()
+    oracle = json.loads(TEXT_DECORATIONS_EXPECTATIONS.read_bytes())
+    require(oracle['inputSha256'] == source_sha and report.get('engine_version') == oracle['engineVersion'],
+            'Text decorations target another core or fixture')
+    names = sorted(row['name'] for row in oracle['cases'])
+    failing_names = sorted(row['name'] for row in oracle['cases'] if row['previousEngineFails'])
+    require(len(names) == len(set(names)) == 16 and len(failing_names) == 13,
+            'Text decorations require the complete calibrated fixture set')
+    evidence = report.get('text_decorations', [])
+    require(len(evidence) == 2 and {row.get('platform') for row in evidence} == {'linux', 'win32'},
+            'Text decorations require Windows and Linux evidence')
+    require(all(row.get('ok') is True and row.get('package_version') == report['package_version']
+                and row.get('engine_version') == report['engine_version']
+                and row.get('tarball_sha256') == report['package_sha256']
+                and row.get('source_sha256') == source_sha and row.get('expectations_sha256') == expectations_sha
+                and row.get('negative_control') is False and row.get('cases') == 32
+                and row.get('passed') == 32 and row.get('failed') == 0
+                and row.get('glyph_geometry_cases') == 32 and row.get('case_names') == names for row in evidence),
+            'Text decorations evidence is incomplete or targets another package, source, oracle or tarball')
+    require(next(row for row in evidence if row['platform'] == 'linux').get('unchanged_controls') == 6,
+            'Text decorations healthy controls must preserve their output')
+    browsers = report.get('browser_matrix', [])
+    require(len(browsers) == 3 and {row.get('browser') for row in browsers} == {'chrome', 'firefox', 'webkit'},
+            'Text decorations require all three browser downloads')
+    require(all(row.get('text_decorations_ok') is True and row.get('text_decorations_cases') == 16
+                and row.get('text_decorations_passed') == 16 and row.get('text_decorations_failed') == 0
+                and row.get('text_decorations_glyph_geometry_cases') == 16
+                and row.get('text_decorations_source_sha256') == source_sha
+                and row.get('text_decorations_expectations_sha256') == expectations_sha
+                and row.get('text_decorations_case_names') == names
+                and row.get('text_decorations_negative_control') is False for row in browsers),
+            'Browser text decorations evidence is incomplete or targets another source or oracle')
+    controls = report.get('text_decorations_negative_controls', [])
+    require(len(controls) == 1 and controls[0].get('platform') == 'linux'
+                and controls[0].get('ok') is True and controls[0].get('negative_control') is True
+                and controls[0].get('package_version') == '0.8.3' and controls[0].get('engine_version') == '2.5.38'
+                and controls[0].get('source_sha256') == source_sha and controls[0].get('expectations_sha256') == expectations_sha
+                and controls[0].get('cases') == 32 and controls[0].get('passed') == 6 and controls[0].get('failed') == 26
+                and controls[0].get('glyph_geometry_cases') == 32 and controls[0].get('failed_case_names') == failing_names,
+            'Text decorations public failure control is missing or was not calibrated')
+    native = {row.get('name'): row for row in report.get('native_wasi_fixtures', [])}
+    required = {'text-decorations-' + name for name in names}
+    require(len(native) == len(report.get('native_wasi_fixtures', [])) and required.issubset(native)
+                and all(native[name].get('nativeWasiPdfEqual') is True and native[name].get('nativeWasiPreviewsEqual') is True
+                        for name in required), 'Text decorations native/WASI comparison is incomplete or duplicated')
+
+
 def verify_binding(version, run_id, run, release, tag_commit, report):
     require(re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version), 'Use a stable numeric version')
     require(re.fullmatch(r'[0-9]+', run_id), 'Use a numeric CI run ID')
@@ -327,6 +378,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             verify_table_wrapping_evidence(report)
         if release_version >= (0, 8, 3):
             verify_generated_quotes_evidence(report)
+        if release_version >= (0, 8, 4):
+            verify_text_decorations_evidence(report)
 
 
 def verify_tarball(data, info, report):
