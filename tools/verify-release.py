@@ -27,6 +27,8 @@ TABLE_WRAPPING_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('table-wrapping-2.5.3
 GENERATED_QUOTES_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('generated-quotes-2.5.38.json')
 TEXT_DECORATIONS_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('text-decorations-2.5.40.json')
 TEXT_DECORATIONS_EXPECTATIONS = ENGINE_REGRESSION_SOURCE.with_name('text-decoration-expectations-2.5.40.json')
+NAMED_FONT_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'named-fonts.test.mjs'
+NAMED_FONT_FILE = ENGINE_REGRESSION_SOURCE.parents[1] / 'fonts/family/LibreCaslonText[wght].ttf'
 
 
 def require(condition, message):
@@ -97,7 +99,8 @@ def verify_engine_paint_evidence(report):
 
 
 def verify_cloudflare_evidence(report):
-    for key, source, documents in [('cloudflare_workers', CLOUDFLARE_SOURCE, 7),
+    worker_documents = 8 if tuple(map(int, report['package_version'].split('.'))) >= (0, 8, 5) else 7
+    for key, source, documents in [('cloudflare_workers', CLOUDFLARE_SOURCE, worker_documents),
                                    ('cloudflare_starter', CLOUDFLARE_STARTER_SOURCE, 6)]:
         source_sha = hashlib.sha256(source.read_bytes()).hexdigest()
         evidence = report.get(key, [])
@@ -120,6 +123,30 @@ def verify_cloudflare_evidence(report):
         else:
             require(all(item.get('standalone_config') is True and item.get('input_tests') == 5 for item in evidence),
                     'Workers starter checks are incomplete')
+
+
+def verify_named_font_evidence(report):
+    require(report.get('named_font_source_sha256') == hashlib.sha256(NAMED_FONT_SOURCE.read_bytes()).hexdigest(),
+            'Named font evidence targets another source')
+    expected_font = hashlib.sha256(NAMED_FONT_FILE.read_bytes()).hexdigest()
+    expected_cases = {(entry, isolation) for entry in ['esm', 'cjs'] for isolation in ['worker', 'process']}
+    installed = report.get('installed_matrix', [])
+    require(len(installed) == 9, 'Named fonts require the full installed matrix')
+    outputs = set()
+    for item in installed:
+        evidence = item.get('named_fonts', {})
+        cases = evidence.get('records', [])
+        require(evidence.get('ok') is True and evidence.get('fontSha256') == expected_font
+                and len(cases) == 4 and {(r.get('entry'), r.get('isolation')) for r in cases} == expected_cases,
+                'Named font entrypoint/isolation or input evidence is incomplete')
+        for case in cases:
+            require(all(re.fullmatch(r'[0-9a-f]{64}', case.get(key, '')) for key in ['pdf', 'png']),
+                    'Named font output hashes are missing')
+            outputs.add((case['pdf'], case['png']))
+    require(len(outputs) == 1, 'Named font outputs differ across the installed matrix')
+    browsers = report.get('browser_matrix', [])
+    require(len(browsers) == 3 and {b.get('browser') for b in browsers} == {'chrome', 'firefox', 'webkit'}
+            and all(b.get('named_font_ok') is True for b in browsers), 'Named font browser checks are incomplete')
 
 
 def verify_pagination_evidence(report):
@@ -380,6 +407,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             verify_generated_quotes_evidence(report)
         if release_version >= (0, 8, 4):
             verify_text_decorations_evidence(report)
+        if release_version >= (0, 8, 5):
+            verify_named_font_evidence(report)
 
 
 def verify_tarball(data, info, report):

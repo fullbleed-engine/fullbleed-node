@@ -1,6 +1,9 @@
 import { createRenderer, FullbleedError, version, engineVersion } from 'fullbleed/browser';
 
 const renderer = createRenderer({ assetBaseUrl: new URL('/fullbleed/', location.href) });
+renderer.renderPdf({ html: 'Named font', fonts: [{ name: 'brand.ttf', data: new Uint8Array([1]) }] });
+// @ts-expect-error Named font data must be bytes.
+renderer.renderPdf({ html: 'Named font', fonts: [{ name: 'brand.ttf', data: 'file contents' }] });
 const result = await renderer.renderPdf({ html: '<h1>Browser PDF</h1>', defaultStyles: false, previewDpi: 96, signal: new AbortController().signal });
 const pdf: Uint8Array = result.pdf;
 const png: Uint8Array = result.previews[0];

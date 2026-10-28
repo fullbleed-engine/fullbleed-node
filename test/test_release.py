@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 import importlib.util
+import copy
 import hashlib
 import json
 from pathlib import Path
@@ -8,6 +9,37 @@ import unittest
 spec = importlib.util.spec_from_file_location('verify_release', Path(__file__).resolve().parents[1] / 'tools/verify-release.py')
 release_check = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(release_check)
+
+
+class NamedFontEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        evidence = dict(ok=True, fontSha256=hashlib.sha256(release_check.NAMED_FONT_FILE.read_bytes()).hexdigest(),
+                        records=[dict(entry=entry, isolation=isolation, pdf='a'*64, png='b'*64)
+                                 for entry in ['esm', 'cjs'] for isolation in ['worker', 'process']])
+        self.report = dict(named_font_source_sha256=hashlib.sha256(release_check.NAMED_FONT_SOURCE.read_bytes()).hexdigest(),
+                           installed_matrix=[dict(named_fonts=copy.deepcopy(evidence)) for _ in range(9)],
+                           browser_matrix=[dict(browser=name, named_font_ok=True) for name in ['chrome', 'firefox', 'webkit']])
+
+    def test_complete_named_font_evidence_is_accepted(self):
+        release_check.verify_named_font_evidence(self.report)
+
+    def test_missing_process_case_or_wrong_font_is_rejected(self):
+        for change in ['case', 'font', 'output']:
+            report = copy.deepcopy(self.report)
+            evidence = report['installed_matrix'][0]['named_fonts']
+            if change == 'case': evidence['records'].pop()
+            elif change == 'font': evidence['fontSha256'] = 'c'*64
+            else: evidence['records'][0]['pdf'] = 'c'*64
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                release_check.verify_named_font_evidence(report)
+
+    def test_other_source_or_missing_browser_is_rejected(self):
+        for change in ['source', 'browser']:
+            report = copy.deepcopy(self.report)
+            if change == 'source': report['named_font_source_sha256'] = 'c'*64
+            else: report['browser_matrix'][0]['named_font_ok'] = False
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                release_check.verify_named_font_evidence(report)
 
 
 class ReleaseBindingTests(unittest.TestCase):
