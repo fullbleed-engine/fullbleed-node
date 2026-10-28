@@ -1,6 +1,9 @@
 import { renderPdf, createRenderQueue, FullbleedError, type RenderOptions, type RenderResult, type RenderQueue } from 'fullbleed';
 import type { Buffer } from 'node:buffer';
 const options: RenderOptions = { html: '<h1>Typed PDF</h1>', defaultStyles: false, fonts: [new Uint8Array([1])], previewDpi: 96, isolation: 'process' };
+renderPdf({ html: 'Named font', fonts: [{ name: 'brand.ttf', data: new Uint8Array([1]) }] });
+// @ts-expect-error Named font data must be bytes.
+renderPdf({ html: 'Named font', fonts: [{ name: 'brand.ttf', data: 'file contents' }] });
 const result: RenderResult = await renderPdf(options);
 const bytes: Buffer = result.pdf;
 const code: string = new FullbleedError('EXAMPLE', 'Example').code;

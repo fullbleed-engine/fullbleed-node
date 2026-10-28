@@ -134,7 +134,8 @@ function renderProcess(job, remaining) {
         return;
       }
       child.send({ type: 'render', options: {
-        html: job.html, css: job.css, fonts: job.customFonts.map(font => font.data),
+        html: job.html, css: job.css,
+        fonts: job.customFonts.map(font => ({ name: font.name.split('/').at(-1), data: font.data })),
         assets: Object.fromEntries(job.assetFiles.map(file => [file.name.slice('assets/'.length), file.data])),
         previewDpi: job.previewDpi, maxPages: job.maxPages, allowMissingGlyphs: job.allowMissingGlyphs, defaultStyles: job.defaultStyles,
         timeoutMs: remaining,

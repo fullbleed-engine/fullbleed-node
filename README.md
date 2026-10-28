@@ -6,7 +6,7 @@ no Python, Rust compiler, browser, or system fonts. MIT licensed.
 
 Use `fullbleed` in Node.js, `fullbleed/browser` in a web application, or
 [`fullbleed/cloudflare`](docs/cloudflare.md) inside a Cloudflare Worker.
-Package **0.8.4** wraps the published **Fullbleed 2.5.40** engine.
+Package **0.8.5** wraps the published **Fullbleed 2.5.40** engine.
 
 [Try the browser playground](https://docs.fullbleed.dev/playground/) ·
 [Documentation](https://docs.fullbleed.dev/getting-started/node/) ·
@@ -38,7 +38,7 @@ await writeFile('invoice.png', result.previews[0]);
 Open `invoice.pdf` or its PNG preview. Inter is the default font. CommonJS also
 works: `const { renderPdf } = require('fullbleed')`. TypeScript declarations are
 included. For a pinned installation, use
-`npm install --save-exact fullbleed@0.8.4`.
+`npm install --save-exact fullbleed@0.8.5`.
 
 Prefer components? [Compose documents with functions or JSX](#compose-documents-with-components)
 and export HTML with or without styles using `fullbleed/ui`.
@@ -160,6 +160,22 @@ const result = await renderPdf({
 });
 ```
 
+To preserve a filename used by a CSS `@font-face` alias, pass a named font:
+
+```javascript
+const result = await renderPdf({
+  html: '<h1>Your brand</h1>',
+  css: '@font-face { font-family: Brand; src: url("fonts/brand.ttf") } body { font-family: Brand }',
+  fonts: [{ name: 'brand.ttf', data: await readFile('brand.ttf') }],
+});
+```
+
+Named fonts work in Node.js, browsers, and Workers from 0.8.5. Names are unique
+TTF/OTF filenames without folders, up to 120 characters; spaces and Unicode are
+supported. Plain byte arrays continue to use the font's intrinsic family names.
+Both forms are copied when the job is accepted and count toward the same asset
+limit. A font file does not also need to be included in `assets`.
+
 The WebAssembly engine sees an in-memory filesystem containing the supplied
 inputs and bundled fonts. It does not fetch remote URLs or read application files.
 Use the asset map or data URIs for document images. Render and review previews
@@ -224,7 +240,7 @@ native engine.
 | `html` | Required nonempty HTML string. |
 | `css` | CSS string; defaults to empty. |
 | `defaultStyles` | Default `true`: prepend `body { font-family: Inter; }`. Set `false` to pass CSS unchanged; bundled fonts remain available. |
-| `fonts` | Additional TrueType font bytes as `Uint8Array[]` or `Buffer[]`. |
+| `fonts` | Array of font bytes (`Uint8Array`/`Buffer`) or `{ name, data }` objects that preserve TTF/OTF filenames for CSS aliases. |
 | `assets` | Map relative asset names to nonempty byte arrays. |
 | `previewDpi` | `0` disables previews; otherwise an integer from 36 to 300. |
 | `maxPages` | Reject larger documents. Default: 1000. |

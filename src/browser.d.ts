@@ -8,8 +8,8 @@ export interface BrowserRenderOptions {
   css?: string;
   /** Default true: prepend the package's Inter body rule. False passes CSS unchanged. */
   defaultStyles?: boolean;
-  /** Additional TrueType font bytes; use the font family names in CSS. */
-  fonts?: readonly Uint8Array[];
+  /** Font bytes use intrinsic family names. Named TTF/OTF files also support CSS @font-face URL aliases. */
+  fonts?: readonly (Uint8Array | { readonly name: string; readonly data: Uint8Array })[];
   /** Relative names referenced as assets/name.svg in document HTML/CSS. */
   assets?: Readonly<Record<string, Uint8Array>>;
   /** 0 disables previews (default); otherwise 36–300 DPI. */

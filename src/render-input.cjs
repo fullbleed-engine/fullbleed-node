@@ -41,7 +41,30 @@ function normalize(options, { browser = false, interruptible = true,
     if (assetBytes > maxAssetBytes) invalid(`Custom fonts and assets together must not exceed ${maxAssetBytes / (1024 * 1024)} MiB.`);
     return Uint8Array.from(value); // Snapshot caller-owned buffers before any await.
   }
-  const customFonts = fonts.map((font, i) => ({ name: `fonts/custom-${i}.ttf`, data: bytes(font, `fonts[${i}]`) }));
+  const fontNames = new Set();
+  const customFonts = fonts.map((font, i) => {
+    const named = !(font instanceof Uint8Array);
+    let name = `custom-${i}.ttf`, data = font;
+    if (named) {
+      if (!font || typeof font !== 'object' || Array.isArray(font)
+          || Object.keys(font).some(key => key !== 'name' && key !== 'data')) {
+        invalid(`fonts[${i}] must be bytes or an object with name and data.`);
+      }
+      name = font.name;
+      data = font.data;
+      if (typeof name !== 'string' || !name || name.length > 120 || /^[. ]|[. ]$/.test(name)
+          || /[<>:"/\\|?*\x00-\x1f\x7f]/.test(name)
+          || /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(name)
+          || !/\.(ttf|otf)$/i.test(name)) {
+        invalid(`fonts[${i}].name must be a portable TTF or OTF filename without folders (up to 120 characters).`);
+      }
+    }
+    const key = name.normalize('NFC').toLowerCase();
+    if (fontNames.has(key)) invalid(`Duplicate font filename: ${name}`);
+    fontNames.add(key);
+    // Keep user filenames out of the directory containing the bundled fonts.
+    return { name: (named ? 'fonts/named/' : 'fonts/') + name, data: bytes(data, `fonts[${i}]`) };
+  });
   const names = Object.keys(assets);
   const fileNames = new Set(names);
   const assetFiles = names.map(name => {

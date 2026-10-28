@@ -32,9 +32,12 @@ const results = new Map();
 const renderer = api.createRenderer({ assetBaseUrl: new URL('./fullbleed/', location.href) });
 const hash = async bytes => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), value => value.toString(16).padStart(2, '0')).join('');
 async function input(name) {
-  const { fontFiles = [], assetTexts = {}, ...options } = inputs[name];
+  const { fontFiles = [], fontNames = [], assetTexts = {}, ...options } = inputs[name];
   return { ...options,
-    fonts: await Promise.all(fontFiles.map(async file => new Uint8Array(await (await fetch('./fixtures/' + file)).arrayBuffer()))),
+    fonts: await Promise.all(fontFiles.map(async (file, i) => {
+      const data = new Uint8Array(await (await fetch('./fixtures/' + file)).arrayBuffer());
+      return fontNames[i] ? { name: fontNames[i], data } : data;
+    })),
     assets: Object.fromEntries(Object.entries(assetTexts).map(([name, text]) => [name, new TextEncoder().encode(text)])),
   };
 }
@@ -51,7 +54,7 @@ globalThis.harness = {
     const pending = components.has(name) ? renderDocument(components.get(name), renderer, { defaultStyles: false, previewDpi: 96 })
       : renderer.renderPdf(options);
     if (snapshot) {
-      options.fonts.forEach(bytes => bytes.fill(0));
+      options.fonts.forEach(font => (font instanceof Uint8Array ? font : font.data).fill(0));
       Object.values(options.assets).forEach(bytes => bytes.fill(0));
     }
     const result = await pending;

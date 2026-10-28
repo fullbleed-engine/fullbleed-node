@@ -156,6 +156,18 @@ const queuePassed = Number(queueRun.stdout.match(/^# pass (\d+)$/m)?.[1]);
 assert(queueTests >= 14 && queueTests === queuePassed, 'All queue lifecycle checks must pass.');
 const queueSmoke = { ...JSON.parse(await readFile(join(queueOutput, 'burst.json'), 'utf8')),
   tests: queueTests, passed: queuePassed };
+await mkdir(join(install, 'fonts/family'), { recursive: true });
+await copyFile(join(root, 'test/named-fonts.test.mjs'), join(install, 'named-fonts.test.mjs'));
+for (const name of ['LibreCaslonText[wght].ttf', 'OFL.txt'])
+  await copyFile(join(root, 'test/fonts/family', name), join(install, 'fonts/family', name));
+const namedFontOutput = join(output, 'named-fonts');
+const namedFontRun = spawnSync(process.execPath, ['--test', 'named-fonts.test.mjs'], {
+  cwd: install, env: { ...env, FULLBLEED_NAMED_FONT_EVIDENCE: namedFontOutput }, encoding: 'utf8', timeout: 60000,
+});
+await writeFile(join(output, 'named-fonts-tests.log'), namedFontRun.stdout + namedFontRun.stderr);
+assert.equal(namedFontRun.status, 0, namedFontRun.stderr || namedFontRun.stdout);
+const namedFonts = JSON.parse(await readFile(join(namedFontOutput, 'verification.json'), 'utf8'));
+assert(namedFonts.ok && namedFonts.records.length === 4);
 await mkdir(join(install, 'fixtures'), { recursive: true });
 await copyFile(join(root, 'test/default-styles.test.mjs'), join(install, 'default-styles.test.mjs'));
 await copyFile(join(root, 'test/fixtures/default-styles.json'), join(install, 'fixtures/default-styles.json'));
@@ -188,6 +200,6 @@ assert.equal(inline.stdout.trim().replaceAll('\r', ''), '1\n1');
 const report = { ok: true, node: process.version, platform: process.platform, package: packed.filename,
   tarballSha256: createHash('sha256').update(await readFile(tarball)).digest('hex'), files: names,
   freshCacheInstall: true, offlineInstallFromGeneratedLock: true, runtimePath: 'Node executable directory only', installDirectory: install.slice(output.length + 1),
-  inlineModule: true, smoke, processSmoke, queueSmoke, styleSmoke, componentSmoke };
+  inlineModule: true, smoke, processSmoke, queueSmoke, styleSmoke, componentSmoke, namedFonts };
 await writeFile(join(output, 'verification.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report));

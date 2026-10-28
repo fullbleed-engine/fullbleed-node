@@ -5,8 +5,8 @@ export interface CloudflareRenderOptions {
   css?: string;
   /** Default true: prepend the package's Inter body rule. False preserves CSS. */
   defaultStyles?: boolean;
-  /** Additional font bytes. Fonts and assets together are limited to 8 MiB. */
-  fonts?: readonly Uint8Array[];
+  /** Font bytes or named TTF/OTF files for CSS aliases. Fonts and assets together are limited to 8 MiB. */
+  fonts?: readonly (Uint8Array | { readonly name: string; readonly data: Uint8Array })[];
   /** Relative names referenced as assets/name.svg in document HTML/CSS. */
   assets?: Readonly<Record<string, Uint8Array>>;
   /** 0 disables previews (default); otherwise 36–300 DPI. Account for Worker memory. */

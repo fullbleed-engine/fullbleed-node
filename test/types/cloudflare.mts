@@ -2,6 +2,9 @@ import { renderPdf, FullbleedError, version, engineVersion, type CloudflareRende
 import { document, Heading, Paragraph } from 'fullbleed/ui';
 const authored = document(Heading('Worker report'), Paragraph('Component-authored PDF.'));
 const options: CloudflareRenderOptions = { html: authored.toHtml(), css: authored.toCss(), maxPages: 5 };
+renderPdf({ html: 'Named font', fonts: [{ name: 'brand.ttf', data: new Uint8Array([1]) }] });
+// @ts-expect-error Named font data must be bytes.
+renderPdf({ html: 'Named font', fonts: [{ name: 'brand.ttf', data: 'file contents' }] });
 const result = await renderPdf(options);
 const pdf: Uint8Array<ArrayBuffer> = result.pdf;
 new Response(pdf, { headers: { 'Content-Type': 'application/pdf' } });

@@ -125,6 +125,8 @@ try:
             check('all seven named component/TSX cases were compared and downloaded', len(component_cases) == 7)
             copied = page.evaluate("() => harness.render('custom', true)")
             check('caller-owned font and asset buffers are copied before awaiting', copied['pdf'] == prepared['baselines']['custom']['pdf'])
+            named = page.evaluate("() => harness.render('named-font', true)")
+            check('named font bytes are copied before awaiting', named['pdf'] == prepared['baselines']['named-font']['pdf'])
 
             invalid = page.evaluate("""async () => {
               const before = harness.stats().created;

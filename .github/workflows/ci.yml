@@ -134,6 +134,8 @@ jobs:
             output/pack-verification/text-extraction.json
             output/pack-verification/queue-tests.log
             output/pack-verification/default-styles-tests.log
+            output/pack-verification/named-fonts-tests.log
+            output/pack-verification/named-fonts/
             output/default-styles/
             output/queue-verification/
             output/queued-invoices/

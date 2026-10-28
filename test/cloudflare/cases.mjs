@@ -1,11 +1,12 @@
 import { Document, Heading, Paragraph, Box, Table, THead, TBody, Tr, Th, Td } from 'fullbleed/ui';
 import raw from './raw.json' with { type: 'json' };
 
-export const caseNames = ['invoice', 'report', 'custom-assets', 'components', 'components-inline'];
+export const caseNames = ['invoice', 'report', 'custom-assets', 'named-font', 'components', 'components-inline'];
 export const expected = {
   invoice: { pages: 1, text: ['Northstar', 'NS-1042', 'Cedar & Co.', '$1,870.00'] },
   report: { pages: 3, text: ['COMMON', 'GROUND', '1,240', '4,860', '$420,000.00'] },
   'custom-assets': { pages: 1, text: ['Custom font and image', 'Type Alpha with care.'], face: 'LibreCaslonText-Regular' },
+  'named-font': { pages: 1, text: ['Named font alias', 'Type Alpha with care.'], face: 'LibreCaslonText-Regular' },
   components: { pages: 1, text: ['Worker statement', 'Cedar & Co. <em>safe</em>', '$1,870.00'] },
   'components-inline': { pages: 1, text: ['Worker statement', 'Cedar & Co. <em>safe</em>', '$1,870.00'] },
 };
@@ -13,6 +14,9 @@ export const expected = {
 export function optionsFor(name, customFont) {
   const common = { defaultStyles: false, maxPages: 20, previewDpi: 96 };
   if (name === 'invoice' || name === 'report') return { ...common, ...raw[name] };
+  if (name === 'named-font') return { ...common, fonts: [{ name: 'Café Brand.ttf', data: customFont }],
+    html: '<h1>Named font alias</h1><p>Type Alpha with care.</p>',
+    css: '@font-face{font-family:Brand;src:url("fonts/Café Brand.ttf")} @page{size:A4;margin:20mm} body{font-family:Brand;font-size:18pt} h1{font-size:24pt;font-weight:400}' };
   if (name === 'custom-assets') return { ...common, fonts: [customFont],
     html: '<h1>Custom font and image</h1><p>Type Alpha with care.</p><img src="assets/charts/marker.svg" width="180" height="90" alt="Green panel with an orange circle">',
     css: '@page{size:A4;margin:20mm} body{font-family:"Libre Caslon Text";font-size:18pt;color:#173b35} h1{font-size:24pt}',
