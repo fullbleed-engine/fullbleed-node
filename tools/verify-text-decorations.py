@@ -53,7 +53,8 @@ else:
 if args.negative_control:
     assert renders['packageVersion'] == '0.8.3' and renders['engineVersion'] == '2.5.38'
 else:
-    assert renders['engineVersion'] == oracle['engineVersion'] == '2.5.40'
+    # Preserve the independently captured 2.5.40 reference outputs for this engine upgrade.
+    assert renders['engineVersion'] == '2.5.41' and oracle['engineVersion'] == '2.5.40'
     assert re.fullmatch(r'[a-f0-9]{64}', renders['tarballSha256'])
 modes = {'browser'} if args.browser else {'worker', 'process'}
 assert len(renders['cases']) == len(fixtures) * len(modes)

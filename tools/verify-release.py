@@ -27,6 +27,7 @@ TABLE_WRAPPING_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('table-wrapping-2.5.3
 GENERATED_QUOTES_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('generated-quotes-2.5.38.json')
 TEXT_DECORATIONS_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('text-decorations-2.5.40.json')
 TEXT_DECORATIONS_EXPECTATIONS = ENGINE_REGRESSION_SOURCE.with_name('text-decoration-expectations-2.5.40.json')
+PREFORMATTED_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('preformatted-whitespace-2.5.41.json')
 NAMED_FONT_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'named-fonts.test.mjs'
 NAMED_FONT_FILE = ENGINE_REGRESSION_SOURCE.parents[1] / 'fonts/family/LibreCaslonText[wght].ttf'
 
@@ -253,7 +254,8 @@ def verify_text_decorations_evidence(report):
     source_sha = hashlib.sha256(TEXT_DECORATIONS_SOURCE.read_bytes()).hexdigest()
     expectations_sha = hashlib.sha256(TEXT_DECORATIONS_EXPECTATIONS.read_bytes()).hexdigest()
     oracle = json.loads(TEXT_DECORATIONS_EXPECTATIONS.read_bytes())
-    require(oracle['inputSha256'] == source_sha and report.get('engine_version') == oracle['engineVersion'],
+    require(oracle['inputSha256'] == source_sha and oracle['engineVersion'] == '2.5.40'
+                and report.get('engine_version') in {'2.5.40', '2.5.41'},
             'Text decorations target another core or fixture')
     names = sorted(row['name'] for row in oracle['cases'])
     failing_names = sorted(row['name'] for row in oracle['cases'] if row['previousEngineFails'])
@@ -296,6 +298,37 @@ def verify_text_decorations_evidence(report):
     require(len(native) == len(report.get('native_wasi_fixtures', [])) and required.issubset(native)
                 and all(native[name].get('nativeWasiPdfEqual') is True and native[name].get('nativeWasiPreviewsEqual') is True
                         for name in required), 'Text decorations native/WASI comparison is incomplete or duplicated')
+
+
+def verify_preformatted_evidence(report):
+    source = PREFORMATTED_SOURCE.read_bytes()
+    source_sha = hashlib.sha256(source).hexdigest()
+    fixtures = json.loads(source)['cases']
+    names = sorted(row['name'] for row in fixtures)
+    failures = sorted(row['name'] for row in fixtures if row['kind'] == 'wrap'
+                      or (row['kind'] == 'whitespace' and not row['preserveIndent']))
+    require(len(names) == len(set(names)) == 17 and len(failures) == 10,
+            'Preformatted inspection requires the complete calibrated fixture set')
+    evidence = report.get('preformatted_whitespace', [])
+    require(len(evidence) == 2 and {row.get('platform') for row in evidence} == {'linux', 'win32'},
+            'Preformatted inspection requires Windows and Linux package evidence')
+    require(all(row.get('ok') is True and row.get('package_version') == report['package_version']
+                and row.get('engine_version') == report['engine_version']
+                and row.get('tarball_sha256') == report['package_sha256']
+                and row.get('source_sha256') == source_sha and row.get('negative_control') is False
+                and row.get('cases') == 34 and row.get('passed') == 34 and row.get('failed') == 0
+                and row.get('case_names') == names and row.get('failed_case_names') == [] for row in evidence),
+            'Preformatted evidence is incomplete or targets another package, engine, tarball or input')
+    require(next(row for row in evidence if row['platform'] == 'linux').get('unchanged_controls') == 14,
+            'Preformatted preservation controls must retain their output')
+    controls = report.get('preformatted_negative_controls', [])
+    require(len(controls) == 1 and controls[0].get('platform') == 'linux'
+                and controls[0].get('ok') is True and controls[0].get('negative_control') is True
+                and controls[0].get('package_version') == '0.8.5' and controls[0].get('engine_version') == '2.5.40'
+                and controls[0].get('source_sha256') == source_sha and controls[0].get('cases') == 34
+                and controls[0].get('passed') == 14 and controls[0].get('failed') == 20
+                and controls[0].get('case_names') == names and controls[0].get('failed_case_names') == failures,
+            'Preformatted public-package negative control is missing or uncalibrated')
 
 
 def verify_binding(version, run_id, run, release, tag_commit, report):
@@ -409,6 +442,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             verify_text_decorations_evidence(report)
         if release_version >= (0, 8, 5):
             verify_named_font_evidence(report)
+        if release_version >= (0, 8, 6):
+            verify_preformatted_evidence(report)
 
 
 def verify_tarball(data, info, report):

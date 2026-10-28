@@ -9,12 +9,12 @@ lockfiles synchronized when changing their respective versions.
    [installed font checks](docs/font-subsets.md), including the previous-release
    comparison, and retain the source fonts with their licenses.
 2. Commit the candidate and run the full Node integration workflow. Require all
-   ten jobs to pass. All nine platform/Node combinations must install the same
+   thirteen jobs to pass. All nine platform/Node combinations must install the same
    `node-package` artifact; do not rebuild the tarball for publication.
 3. Retain workflow logs, the native comparison report, and every installed-package
    report. Compare their fixture PDF/PNG hashes and package integrity values.
 4. Download `node-package` and check its npm SHA-512 integrity against
-   `package-info.json`. Review the 18-file package allowlist and included notices.
+   `package-info.json`. Review the package allowlist and included notices.
 5. Tag the exact tested commit as `v<package-version>`. Create a draft GitHub
    release with the unchanged tarball, verification summary, evidence archive,
    and SHA-256 sums. Verify uploaded sizes and hashes before publishing.
@@ -22,7 +22,7 @@ lockfiles synchronized when changing their respective versions.
    again. Confirm that its PDF and PNG hashes match the retained fixture.
 7. Run `publish-npm.yml` from `main` with the version, its successful Node
    integration run ID, and `publish=false`. It requires the public release,
-   annotated tag/source commit, all ten CI jobs, package metadata, and tarball
+   annotated tag/source commit, all thirteen CI jobs, package metadata, and tarball
    hashes to agree. Then dispatch the same inputs with `publish=true` to publish
    the unchanged tarball through npm's GitHub trusted publisher. Do not repack it.
 8. Verify registry metadata, tarball integrity, and a fresh registry install.

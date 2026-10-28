@@ -38,7 +38,7 @@ else:
     assert sha256((args.root/'inputs.json').read_bytes()).hexdigest() == source_sha
 if not args.negative_control:
     assert re.fullmatch(r'[a-f0-9]{64}', renders['tarballSha256'])
-    assert renders['engineVersion'] == '2.5.40'
+    assert renders['engineVersion'] == '2.5.41'
 modes = {'browser'} if args.browser else {'worker','process'}
 assert len(renders['cases']) == len(fixtures)*len(modes)
 assert {(c['name'],c['isolation']) for c in renders['cases']} == {(name,mode) for name in fixtures for mode in modes}

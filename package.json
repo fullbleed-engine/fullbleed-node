@@ -1,6 +1,6 @@
 {
   "name": "fullbleed",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "Generate PDFs from HTML/CSS, components or JSX in Node.js, browsers and Cloudflare Workers, with bundled fonts and PNG previews.",
   "type": "module",
   "main": "./src/index.cjs",
@@ -105,7 +105,9 @@
     "render:quotes": "node tools/render-generated-quotes.mjs",
     "verify:quotes": "python tools/verify-generated-quotes.py",
     "render:decorations": "node tools/render-text-decorations.mjs",
-    "verify:decorations": "python tools/verify-text-decorations.py"
+    "verify:decorations": "python tools/verify-text-decorations.py",
+    "render:preformatted": "node tools/render-preformatted.mjs",
+    "verify:preformatted": "python tools/verify-preformatted.py"
   },
   "dependencies": {
     "@bjorn3/browser_wasi_shim": "0.4.2"
@@ -136,7 +138,7 @@
     "access": "public"
   },
   "fullbleed": {
-    "engineVersion": "2.5.40"
+    "engineVersion": "2.5.41"
   },
   "devDependencies": {
     "@types/node": "22.20.5",
