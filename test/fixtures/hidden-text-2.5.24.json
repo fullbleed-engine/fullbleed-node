@@ -1,6 +1,6 @@
 {
   "schema": "fullbleed.javascript.hidden-text-fixtures.v1",
-  "engineVersion": "2.5.40",
+  "engineVersion": "2.5.41",
   "sourceCommit": "6251674614fff698ce685733e81bf481e6e81313",
   "sourceReview": "https://github.com/fullbleed-engine/fullbleed-official/pull/79",
   "sourceVerificationSha256": "7d5a431ca20aa50d94022494a0d6acdbfd73632aca7159f6aa60a0cfc541a7cd",
@@ -1606,5 +1606,5 @@
     }
   ],
   "baselineEngineVersion": "2.5.24",
-  "compatibilityScope": "The existing source, control and output hashes are unchanged. Engine 2.5.40 must reproduce them before release."
+  "compatibilityScope": "The existing source, control and output hashes are unchanged. Engine 2.5.41 must reproduce them before release."
 }
