@@ -6,7 +6,7 @@ no Python, Rust compiler, browser, or system fonts. MIT licensed.
 
 Use `fullbleed` in Node.js, `fullbleed/browser` in a web application, or
 [`fullbleed/cloudflare`](docs/cloudflare.md) inside a Cloudflare Worker.
-Package **0.8.6** wraps the published **Fullbleed 2.5.41** engine.
+Package **0.8.7** wraps the published **Fullbleed 2.5.43** engine.
 
 [Try the browser playground](https://docs.fullbleed.dev/playground/) ·
 [Documentation](https://docs.fullbleed.dev/getting-started/node/) ·
@@ -38,7 +38,7 @@ await writeFile('invoice.png', result.previews[0]);
 Open `invoice.pdf` or its PNG preview. Inter is the default font. CommonJS also
 works: `const { renderPdf } = require('fullbleed')`. TypeScript declarations are
 included. For a pinned installation, use
-`npm install --save-exact fullbleed@0.8.6`.
+`npm install --save-exact fullbleed@0.8.7`.
 
 Prefer components? [Compose documents with functions or JSX](#compose-documents-with-components)
 and export HTML with or without styles using `fullbleed/ui`.
@@ -307,6 +307,10 @@ HTML/CSS for print layout; it does not execute document JavaScript or reproduce
 arbitrary browser pages.
 
 ## Release notes and verification
+
+Version 0.8.7 corrects [radial-gradient endpoint colors and opacity](docs/radial-gradients.md)
+and invalid zero-width gradient stitching intervals. The public JavaScript API
+and isolation options are unchanged.
 
 Version 0.8.6 fixes [authored whitespace and wrapping in code blocks](docs/preformatted-whitespace.md).
 A `pre` block with `white-space: pre-wrap` can wrap within the page; long tokens
