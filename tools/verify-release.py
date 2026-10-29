@@ -28,6 +28,7 @@ GENERATED_QUOTES_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('generated-quotes-2
 TEXT_DECORATIONS_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('text-decorations-2.5.40.json')
 TEXT_DECORATIONS_EXPECTATIONS = ENGINE_REGRESSION_SOURCE.with_name('text-decoration-expectations-2.5.40.json')
 PREFORMATTED_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('preformatted-whitespace-2.5.41.json')
+RADIAL_GRADIENT_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('radial-gradient-endpoints-2.5.43.json')
 NAMED_FONT_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'named-fonts.test.mjs'
 NAMED_FONT_FILE = ENGINE_REGRESSION_SOURCE.parents[1] / 'fonts/family/LibreCaslonText[wght].ttf'
 
@@ -255,7 +256,7 @@ def verify_text_decorations_evidence(report):
     expectations_sha = hashlib.sha256(TEXT_DECORATIONS_EXPECTATIONS.read_bytes()).hexdigest()
     oracle = json.loads(TEXT_DECORATIONS_EXPECTATIONS.read_bytes())
     require(oracle['inputSha256'] == source_sha and oracle['engineVersion'] == '2.5.40'
-                and report.get('engine_version') in {'2.5.40', '2.5.41'},
+                and report.get('engine_version') in {'2.5.40', '2.5.41', '2.5.43'},
             'Text decorations target another core or fixture')
     names = sorted(row['name'] for row in oracle['cases'])
     failing_names = sorted(row['name'] for row in oracle['cases'] if row['previousEngineFails'])
@@ -329,6 +330,45 @@ def verify_preformatted_evidence(report):
                 and controls[0].get('passed') == 14 and controls[0].get('failed') == 20
                 and controls[0].get('case_names') == names and controls[0].get('failed_case_names') == failures,
             'Preformatted public-package negative control is missing or uncalibrated')
+
+
+def verify_radial_gradient_evidence(report):
+    source = RADIAL_GRADIENT_SOURCE.read_bytes()
+    fixtures = json.loads(source)['cases']
+    source_sha = hashlib.sha256(source).hexdigest()
+    names = sorted(row['name'] for row in fixtures)
+    failures = sorted(row['name'] for row in fixtures if row['affected'])
+    keys = sorted(mode + ':' + name for mode in ('worker', 'process') for name in names)
+    require(len(names) == len(set(names)) == 12 and len(failures) == 9,
+            'Radial-gradient fixture set changed without calibration')
+    evidence = report.get('radial_gradients', [])
+    require(len(evidence) == 2 and {row.get('platform') for row in evidence} == {'linux', 'win32'},
+            'Radial gradients require separate Linux and Windows installed-package evidence')
+    require(report.get('engine_version') == '2.5.43', 'Radial evidence targets another engine')
+    for row in evidence:
+        require(row.get('ok') is True and row.get('negative_control') is False
+                and row.get('package_version') == report.get('package_version')
+                and row.get('engine_version') == report.get('engine_version')
+                and row.get('tarball_sha256') == report.get('package_sha256')
+                and row.get('wasm_sha256') == report.get('wasm_sha256')
+                and row.get('source_sha256') == source_sha,
+                'Radial evidence targets another source, package, engine, or WASM artifact')
+        require(row.get('cases') == row.get('passing_color_cases') == row.get('core_matching_cases') == 24
+                and row.get('failing_color_cases') == row.get('invalid_stitching_cases') == 0
+                and row.get('case_names') == names and row.get('case_keys') == keys
+                and row.get('failed_case_names') == [],
+                'Radial output is incomplete, duplicated, has wrong colors, invalid stitching, or differs from the qualified core')
+    linux = next(row for row in evidence if row['platform'] == 'linux')
+    require(linux.get('unchanged_controls') == 4, 'Radial preservation controls are missing')
+    baseline = report.get('radial_gradients_negative_control', {})
+    require(baseline.get('ok') is True and baseline.get('negative_control') is True
+            and baseline.get('package_version') == '0.8.6' and baseline.get('engine_version') == '2.5.41'
+            and baseline.get('source_sha256') == source_sha and baseline.get('cases') == 24
+            and baseline.get('passing_color_cases') == 6 and baseline.get('failing_color_cases') == 18
+            and baseline.get('invalid_stitching_cases') == 20 and baseline.get('core_matching_cases') == 4
+            and baseline.get('case_names') == names and baseline.get('case_keys') == keys
+            and baseline.get('failed_case_names') == failures,
+            'Actual public 0.8.6 radial-gradient failure control is absent or uncalibrated')
 
 
 def verify_binding(version, run_id, run, release, tag_commit, report):
@@ -444,6 +484,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             verify_named_font_evidence(report)
         if release_version >= (0, 8, 6):
             verify_preformatted_evidence(report)
+        if release_version >= (0, 8, 7):
+            verify_radial_gradient_evidence(report)
 
 
 def verify_tarball(data, info, report):
@@ -470,6 +512,11 @@ def verify_tarball(data, info, report):
         require(package['name'] == 'fullbleed' and package['version'] == info['version'], 'Archived package differs')
         require(package['repository']['url'] == f'https://github.com/{REPO}.git', 'Repository differs')
         require(package['fullbleed']['engineVersion'] == report['engine_version'], 'Engine differs')
+        if tuple(map(int, info['version'].split('.'))) >= (0, 8, 7):
+            wasm_sha = hashlib.sha256(archive.extractfile('package/dist/engine.wasm').read()).hexdigest()
+            build = json.load(archive.extractfile('package/dist/build.json'))
+            require(wasm_sha == build['files']['dist/engine.wasm']['sha256'] == report.get('wasm_sha256'),
+                    'Radial evidence does not identify the actual packaged WASM bytes')
     require(all(item['tarball_sha256'] == sha for item in report['installed_matrix']), 'Matrix tested another tarball')
     if tuple(map(int, info['version'].split('.'))) >= (0, 3, 0):
         require({'dist/browser/client.js', 'dist/browser/worker.js', 'dist/browser/asset-manifest.json', 'src/browser.d.ts', 'src/copy-browser-assets.cjs'}.issubset(names),

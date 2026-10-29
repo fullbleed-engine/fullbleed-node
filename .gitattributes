@@ -3,5 +3,6 @@
 *.png -text
 *.pdf -text
 *.wasm -text
+test/fixtures/radial-gradient-endpoints-2.5.43.json -text
 assets/fonts/*-OFL.txt -whitespace
 test/fonts/*-OFL.txt -whitespace

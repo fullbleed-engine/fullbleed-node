@@ -11,6 +11,6 @@
     "test": "node --test test/request.test.mjs",
     "test:worker": "node test/worker.mjs"
   },
-  "dependencies": { "fullbleed": "0.8.6" },
+  "dependencies": { "fullbleed": "0.8.7" },
   "devDependencies": { "wrangler": "4.151.3" }
 }
