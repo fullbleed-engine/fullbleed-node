@@ -97,7 +97,9 @@ def main():
     if args.negative_control:
         assert (package, engine) == (source['negativeControl']['packageVersion'], source['negativeControl']['engineVersion'])
     else:
-        assert engine == source['engineVersion']
+        package_metadata = json.loads((ROOT / 'package.json').read_text(encoding='utf-8'))
+        assert package == package_metadata['version'] and engine == package_metadata['fullbleed']['engineVersion']
+        assert source['engineVersion'] == '2.5.43', 'Preserve the historical paint baseline'
     report = dict(schema='fullbleed.javascript.engine-paint.verification.v1', ok=False,
         checkedAt=datetime.now(timezone.utc).isoformat(), packageVersion=package, engineVersion=engine,
         sourceSha256=source_hash, installedTarballSha256=origin.get('installedTarballSha256'),

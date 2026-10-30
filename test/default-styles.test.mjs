@@ -7,11 +7,13 @@ import { join } from 'node:path';
 import { renderPdf, createRenderQueue, FullbleedError, version, engineVersion } from 'fullbleed';
 
 const fixture = JSON.parse(await readFile(new URL('./fixtures/default-styles.json', import.meta.url), 'utf8'));
+// Retain the original reference version and hashes across the engine upgrade.
+assert.equal(fixture.engineVersion, '2.5.43');
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const records = [];
 const out = process.env.FULLBLEED_STYLE_EVIDENCE;
 async function verify(name, result, expected) {
-  assert.equal(result.engineVersion, fixture.engineVersion);
+  assert.equal(result.engineVersion, engineVersion);
   assert.equal(result.pages, 1);
   assert.equal(result.missingGlyphs, 0);
   assert.equal(result.previews.length, 1);
@@ -65,6 +67,7 @@ after(async () => {
   if (!out) return;
   const record = { ok: records.length === fixture.cases.length * 8, packageVersion: version, engineVersion,
     node: process.version, platform: process.platform, fixtures: fixture.cases.length,
-    baseline: fixture.baseline, sourceSha256: hash(await readFile(new URL('./fixtures/default-styles.json', import.meta.url))), records };
+    baseline: fixture.baseline, baselineEngineVersion: fixture.engineVersion,
+    sourceSha256: hash(await readFile(new URL('./fixtures/default-styles.json', import.meta.url))), records };
   await writeFile(join(out, 'verification.json'), JSON.stringify(record, null, 2) + '\n');
 });

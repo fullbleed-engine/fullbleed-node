@@ -17,7 +17,7 @@ if args.negative_control:
     assert renders['packageVersion'] == '0.8.6' and renders['engineVersion'] == '2.5.41'
 else:
     package = json.loads((ROOT / 'package.json').read_text(encoding='utf-8'))
-    assert renders['packageVersion'] == package['version'] and renders['engineVersion'] == package['fullbleed']['engineVersion'] == '2.5.43'
+    assert renders['packageVersion'] == package['version'] and renders['engineVersion'] == package['fullbleed']['engineVersion']
     assert renders['tarballSha256'], 'Candidate must be rendered from the installed tarball.'
 report = verify(args.directory, baseline=args.negative_control)
 invalid = sum(bool(row['stitchingBounds']['invalid']) for row in report['cases'])

@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: MIT
+import type { BatchOptions, BatchRecordReport } from './batch.js';
+export type { BatchOptions, BatchRecordReport, MissingGlyph } from './batch.js';
 export interface CloudflareRenderOptions {
   /** HTML and CSS together are limited to 1,000,000 UTF-8 bytes. */
   html: string;
@@ -28,5 +30,11 @@ export class FullbleedError extends Error {
 }
 /** Runs synchronously in the isolate and returns a settled Promise. No SDK cancellation or timeout. */
 export function renderPdf(options: CloudflareRenderOptions): Promise<CloudflareRenderResult>;
+export interface CloudflareBatchRenderOptions extends CloudflareRenderOptions, BatchOptions {}
+export interface CloudflareBatchRenderResult extends CloudflareRenderResult {
+  records: BatchRecordReport[];
+}
+/** Compile once per request. Template and records share the 1,000,000 UTF-8 byte limit; platform CPU limits apply. */
+export function renderPdfBatch(options: CloudflareBatchRenderOptions): Promise<CloudflareBatchRenderResult>;
 export const version: string;
 export const engineVersion: string;

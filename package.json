@@ -1,6 +1,6 @@
 {
   "name": "fullbleed",
-  "version": "0.8.7",
+  "version": "0.9.0",
   "description": "Generate PDFs from HTML/CSS, components or JSX in Node.js, browsers and Cloudflare Workers, with bundled fonts and PNG previews.",
   "type": "module",
   "main": "./src/index.cjs",
@@ -140,7 +140,7 @@
     "access": "public"
   },
   "fullbleed": {
-    "engineVersion": "2.5.43"
+    "engineVersion": "2.5.46"
   },
   "devDependencies": {
     "@types/node": "22.20.5",

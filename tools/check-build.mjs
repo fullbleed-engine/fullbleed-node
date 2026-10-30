@@ -20,7 +20,9 @@ for (const [name, expected] of Object.entries(manifest.files)) {
   assert.equal(bytes.length, expected.bytes, name);
   assert.equal(createHash('sha256').update(bytes).digest('hex'), expected.sha256, name);
 }
-assert.deepEqual(await readFile(new URL('src/index.d.ts', root)), await readFile(new URL('dist/index.d.cts', root)));
+assert.equal((await readFile(new URL('src/index.d.ts', root), 'utf8')).replaceAll('./batch.js', './batch.cjs'),
+  await readFile(new URL('dist/index.d.cts', root), 'utf8'));
+assert.deepEqual(await readFile(new URL('src/batch.d.ts', root)), await readFile(new URL('dist/batch.d.cts', root)));
 assert.deepEqual(await readFile(new URL('src/ui.d.ts', root)), await readFile(new URL('dist/ui.d.cts', root)));
 assert.equal((await readFile(new URL('src/jsx-runtime.d.ts', root), 'utf8')).replaceAll('./ui.js', './ui.cjs'),
   await readFile(new URL('dist/jsx-runtime.d.cts', root), 'utf8'));

@@ -34,6 +34,7 @@ const hash = async bytes => Array.from(new Uint8Array(await crypto.subtle.digest
 async function input(name) {
   const { fontFiles = [], fontNames = [], assetTexts = {}, ...options } = inputs[name];
   return { ...options,
+    ...(options.records ? { records: structuredClone(options.records) } : {}),
     fonts: await Promise.all(fontFiles.map(async (file, i) => {
       const data = new Uint8Array(await (await fetch('./fixtures/' + file)).arrayBuffer());
       return fontNames[i] ? { name: fontNames[i], data } : data;
@@ -52,14 +53,19 @@ globalThis.harness = {
   async render(name, snapshot = false) {
     const options = await input(name);
     const pending = components.has(name) ? renderDocument(components.get(name), renderer, { defaultStyles: false, previewDpi: 96 })
-      : renderer.renderPdf(options);
+      : options.records ? renderer.renderPdfBatch(options) : renderer.renderPdf(options);
     if (snapshot) {
       options.fonts.forEach(font => (font instanceof Uint8Array ? font : font.data).fill(0));
       Object.values(options.assets).forEach(bytes => bytes.fill(0));
+      if (options.records) {
+        for (const row of options.records) for (const name of Object.keys(row)) row[name] = 'CHANGED AFTER ADMISSION';
+        options.records.push({ unexpected: 'New row' });
+      }
     }
     const result = await pending;
     results.set(name, result);
     return { pages: result.pages, missingGlyphs: result.missingGlyphs, engineVersion: result.engineVersion,
+      ...(result.records ? { records: result.records } : {}),
       pdf: await hash(result.pdf), previews: await Promise.all(result.previews.map(hash)),
       browserBytes: result.pdf instanceof Uint8Array && result.pdf.buffer instanceof ArrayBuffer, stats: stats() };
   },

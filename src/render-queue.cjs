@@ -76,12 +76,12 @@ function createQueue(run, options = {}) {
     }
   }
 
-  function renderPdf(options) {
+  function submit(options, batch) {
     let error = admissionError();
     if (error) return Promise.reject(error);
     const start = Date.now();
     let job;
-    try { job = normalize(options); } catch (error) { return Promise.reject(error); }
+    try { job = normalize(options, { batch }); } catch (error) { return Promise.reject(error); }
     // Getters on the input can invoke application code during normalization.
     // Recheck admission before retaining the copied document buffers.
     error = admissionError();
@@ -114,7 +114,8 @@ function createQueue(run, options = {}) {
   }
 
   return Object.freeze({
-    renderPdf, close, concurrency, maxQueue,
+    renderPdf: options => submit(options, false), renderPdfBatch: options => submit(options, true),
+    close, concurrency, maxQueue,
     get activeCount() { return active.size; },
     get pendingCount() { return pending.length; },
     get closed() { return closed; },

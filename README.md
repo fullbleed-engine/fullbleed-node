@@ -6,7 +6,7 @@ no Python, Rust compiler, browser, or system fonts. MIT licensed.
 
 Use `fullbleed` in Node.js, `fullbleed/browser` in a web application, or
 [`fullbleed/cloudflare`](docs/cloudflare.md) inside a Cloudflare Worker.
-Package **0.8.7** wraps the published **Fullbleed 2.5.43** engine.
+Package **0.9.0** wraps the published **Fullbleed 2.5.46** engine.
 
 [Try the browser playground](https://docs.fullbleed.dev/playground/) ·
 [Documentation](https://docs.fullbleed.dev/getting-started/node/) ·
@@ -38,7 +38,7 @@ await writeFile('invoice.png', result.previews[0]);
 Open `invoice.pdf` or its PNG preview. Inter is the default font. CommonJS also
 works: `const { renderPdf } = require('fullbleed')`. TypeScript declarations are
 included. For a pinned installation, use
-`npm install --save-exact fullbleed@0.8.7`.
+`npm install --save-exact fullbleed@0.9.0`.
 
 Prefer components? [Compose documents with functions or JSX](#compose-documents-with-components)
 and export HTML with or without styles using `fullbleed/ui`.
@@ -192,6 +192,67 @@ cover the twelve Latin faces, an embedded-font control, and the blank-preview
 failure in public 0.3.1. Font provenance and complete license notices ship with
 both the npm package and copied browser runtime.
 
+## Generate a batch from one template
+
+Use `renderPdfBatch()` for notices, letters, invoices, or statements that share a
+design. The engine compiles the template once per request and returns one PDF in
+record order, with page ranges and selected-font character reports:
+
+```javascript
+import { writeFile } from 'node:fs/promises';
+import { renderPdfBatch } from 'fullbleed';
+
+const result = await renderPdfBatch({
+  html: '<h1>Account {{account}}</h1><p>{{message}}</p>',
+  css: '@page { size: A5; margin: 18mm } h1 { color: #175c52 }',
+  records: [
+    { account: '1042', message: 'Your account is up to date.' },
+    { account: '1043', message: 'Your next review is scheduled for November.' },
+  ],
+});
+await writeFile('notices.pdf', result.pdf);
+for (const row of result.records) {
+  console.log(`Record ${row.recordIndex}: pages ${row.pageOffset + 1}–${row.pageOffset + row.pageCount}`);
+}
+```
+
+`layout: 'reflow'` is the default: longer text can wrap and add pages. Choose
+`layout: 'fixed'` for values that fit the compiled geometry; it retains the
+template's layout and selected fonts. Records contain plain strings, including
+literal `<` and `>` characters. Format numbers and dates in your application.
+Every record must have the same own enumerable fields, exactly matching the
+template's text bindings. Use ordinary renders for changes to document structure,
+image sources, attributes, or CSS.
+
+Component-authored templates use the same batch function:
+
+```javascript
+import { renderPdfBatch } from 'fullbleed';
+import { Document, Heading, Paragraph } from 'fullbleed/ui';
+
+const notice = Document(Heading('Account {{account}}'), Paragraph('{{message}}'));
+const result = await notice.renderPdf(renderPdfBatch, {
+  records: [{ account: '1042', message: 'Your account is up to date.' }],
+});
+```
+
+Each `result.records` entry has zero-based `recordIndex` and `pageOffset`, a
+`pageCount`, and a `missingGlyphs` array. Missing characters reject the batch by
+default. With `allowMissingGlyphs: true`, inspect each entry's `codepoint`, `char`,
+`count`, and `fontsTried` before accepting the PDF. `fontsTried` identifies the
+first selected registered font where the character was absent. The top-level
+`missingGlyphs` number counts distinct missing code points across all records.
+These checks exclude Base-14 fonts and text in images; they do not establish
+correct shaping, layout, accessibility, or PDF conformance.
+
+Batches accept the other rendering options, including previews and the combined
+`maxPages` limit. Up to 10,000 records are accepted. HTML, CSS, and all record
+keys/values share the 4,000,000 UTF-8 byte budget (1,000,000 in Cloudflare).
+The PDF, reports, and optional previews remain in memory; split large workloads
+according to your host's memory and CPU budget. Compilation is per request.
+The browser renderer exposes `renderer.renderPdfBatch()` and Cloudflare exports
+`renderPdfBatch` from `fullbleed/cloudflare`.
+
 ## Limit concurrent renders
 
 Create one queue per application process and reuse it across requests:
@@ -291,7 +352,8 @@ Error codes include `INVALID_INPUT`, `MISSING_GLYPHS`, `PAGE_LIMIT`, `TIMEOUT`,
 include `exitCode` and `signal`. Failed or cancelled calls do not return a partial
 PDF. Caller-owned asset buffers are copied when a call starts.
 
-`createRenderQueue({ concurrency?, maxQueue? })` exposes `renderPdf()` with the
+`createRenderQueue({ concurrency?, maxQueue? })` exposes `renderPdf()` and
+`renderPdfBatch()` with the
 same options and result. Defaults are one active render and sixteen waiting
 jobs. `maxQueue: 0` rejects buffering. Accepted calls snapshot their strings and
 asset/font bytes immediately. The queue adds `QUEUE_FULL` and `QUEUE_CLOSED`,

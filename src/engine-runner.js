@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 import { WASI, File, OpenFile, Directory, ConsoleStdout, PreopenDirectory } from '@bjorn3/browser_wasi_shim';
+import reports from './batch-report.cjs';
 
 // A compiled module can be instantiated synchronously. Keeping the entire
 // in-process call synchronous avoids overlapping Wasm instances in one Worker
@@ -19,16 +20,18 @@ export function runEngineSync(job) {
     const encoder = new TextEncoder();
     put('input.html', encoder.encode(job.html));
     put('style.css', encoder.encode(job.css));
+    if (job.batch) put('records.json', encoder.encode(JSON.stringify(job.batch.records)));
     for (const file of [...job.fonts, ...job.assets]) put(file.name, file.data);
     let log = '';
     const collect = line => { if (log.length < 4000) log += String(line).slice(0, 4000 - log.length) + '\n'; };
-    const wasi = new WASI(['fullbleed', String(job.maxPages), String(job.previewDpi), job.allowMissingGlyphs ? 'allow' : 'reject', ...job.fonts.map(f => f.name)], [], [
+    const wasi = new WASI(['fullbleed', String(job.maxPages), String(job.previewDpi), job.allowMissingGlyphs ? 'allow' : 'reject',
+      ...job.fonts.map(f => f.name), ...(job.batch ? ['--batch-' + job.batch.layout] : [])], [], [
       new OpenFile(new File([])), ConsoleStdout.lineBuffered(collect), ConsoleStdout.lineBuffered(collect), root,
     ], { debug: false });
     const instance = new WebAssembly.Instance(job.module, { wasi_snapshot_preview1: wasi.wasiImport });
     const status = wasi.start(instance);
     if (status !== 0) {
-      const code = ['PAGE_LIMIT', 'MISSING_GLYPHS', 'PREVIEW_FAILED'].find(c => log.includes(c + ':')) ?? 'RENDER_FAILED';
+      const code = ['PAGE_LIMIT', 'MISSING_GLYPHS', 'PREVIEW_FAILED', 'INVALID_BINDINGS'].find(c => log.includes(c + ':')) ?? 'RENDER_FAILED';
       return { ok: false, code, message: log.trim() || `The engine exited with code ${status}.` };
     } else {
       const read = name => {
@@ -37,10 +40,14 @@ export function runEngineSync(job) {
         return Uint8Array.from(file.data);
       };
       const report = JSON.parse(new TextDecoder().decode(read('result.json')));
+      if (!Number.isSafeInteger(report.pages) || report.pages < 1 || report.pages > job.maxPages
+          || !reports.validBatchReport(report, job)) throw new Error('Engine output has an invalid page or batch report.');
       const pdf = read('document.pdf');
       if (new TextDecoder().decode(pdf.slice(0, 5)) !== '%PDF-') throw new Error('Engine output is not a PDF.');
       const previews = job.previewDpi ? Array.from({ length: report.pages }, (_, i) => read(`preview-${i + 1}.png`)) : [];
-      return { ok: true, pdf, previews, ...report };
+      const result = { ok: true, pdf, previews, ...report };
+      if (!reports.validRenderResult(result, job)) throw new Error('Engine output has an invalid result.');
+      return result;
     }
   } catch (cause) {
     const code = cause instanceof WebAssembly.RuntimeError || cause instanceof RangeError ? 'ENGINE_LIMIT' : 'RENDER_FAILED';

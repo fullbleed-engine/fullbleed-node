@@ -28,6 +28,9 @@ catch (error) { if (!error.cause && error.name !== 'TimeoutError' && !String(err
 for (const name of ['worker.mjs', 'cases.mjs', 'baseline.mjs']) {
   await copyFile(join(root, 'test/cloudflare', name), join(consumer, name));
 }
+await copyFile(join(root, 'test/batch-fixtures.mjs'), join(consumer, '../batch-fixtures.mjs'));
+await copyFile(join(root, 'test/fonts/NotoSansMath-Regular.ttf'), join(consumer, 'math-font.ttf'));
+await copyFile(join(root, 'test/fonts/NotoSansMath-OFL.txt'), join(consumer, 'math-font-OFL.txt'));
 await copyFile(join(root, 'test/fonts/family/LibreCaslonText[wght].ttf'), join(consumer, 'custom-font.ttf'));
 await copyFile(join(root, 'test/fonts/family/OFL.txt'), join(consumer, 'custom-font-OFL.txt'));
 const raw = {};
@@ -76,7 +79,8 @@ async function post(payload) {
 async function checkResult(data, expected, suffix) {
   assert.equal(data.engineVersion, pkg.fullbleed.engineVersion);
   assert.equal(data.pages, expected.pages);
-  assert.equal(data.missingGlyphs, 0);
+  assert.equal(data.missingGlyphs, expected.missingGlyphs);
+  if (expected.records) assert.deepEqual(data.records, expected.records, expected.name + ' record reports');
   const pdf = Buffer.from(data.pdf, 'base64');
   assert.equal(hash(pdf), expected.pdf, expected.name + ' PDF bytes');
   assert.equal(data.previews.length, expected.previews.length);
@@ -110,7 +114,9 @@ try {
     baseline.records.find(item => item.name === 'components-inline').pdf, 'Styled and separate HTML/CSS component exports must agree.');
   const errors = { timeout: 'INVALID_INPUT', signal: 'INVALID_INPUT', isolation: 'INVALID_INPUT',
     'source-limit': 'INVALID_INPUT', 'asset-limit': 'INVALID_INPUT', 'asset-path': 'INVALID_INPUT',
-    'asset-collision': 'INVALID_INPUT', pages: 'PAGE_LIMIT', 'default-pages': 'PAGE_LIMIT', glyph: 'MISSING_GLYPHS' };
+    'asset-collision': 'INVALID_INPUT', pages: 'PAGE_LIMIT', 'default-pages': 'PAGE_LIMIT', glyph: 'MISSING_GLYPHS',
+    'batch-source-limit': 'INVALID_INPUT', 'batch-fields': 'INVALID_INPUT', 'batch-bindings': 'INVALID_BINDINGS',
+    'batch-pages': 'PAGE_LIMIT', 'batch-glyph': 'MISSING_GLYPHS' };
   for (const [name, code] of Object.entries(errors)) {
     const { status, data } = await post({ name, error: true });
     assert.equal(status, 422, JSON.stringify(data));
@@ -127,7 +133,7 @@ try {
   assert.equal(burstResponse.status, 200);
   const burst = await burstResponse.json();
   assert.equal(burst.outsideSynchronousCall, 0);
-  for (const [i, name] of ['invoice', 'report'].entries()) {
+  for (const [i, name] of ['invoice', 'report', 'batch-reflow'].entries()) {
     await checkResult(burst.results[i], baseline.records.find(item => item.name === name), 'after-errors');
   }
   record.synchronousInstantiation = true;

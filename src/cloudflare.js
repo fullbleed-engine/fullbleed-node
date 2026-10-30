@@ -5,6 +5,7 @@ import serif from '../assets/fonts/DMSerifDisplay-Regular.ttf';
 import serifItalic from '../assets/fonts/DMSerifDisplay-Italic.ttf';
 import display from '../assets/fonts/BebasNeue-Regular.ttf';
 import input from './render-input.cjs';
+import reports from './batch-report.cjs';
 import { runEngineSync } from './engine-runner.js';
 
 export const version = __FULLBLEED_PACKAGE_VERSION__;
@@ -23,21 +24,31 @@ if (!(module instanceof WebAssembly.Module) || !WebAssembly.Module.imports(modul
 
 /** Render inside the current Worker isolate. CPU deadlines are platform-owned. */
 export async function renderPdf(options) {
-  const job = input.normalize(options, { browser: true, interruptible: false,
+  return render(options, false);
+}
+
+export async function renderPdfBatch(options) {
+  return render(options, true);
+}
+
+function render(options, batch) {
+  const job = input.normalize(options, { browser: true, interruptible: false, batch,
     maxSourceBytes: 1_000_000, maxAssetBytes: 8 * 1024 * 1024, defaultMaxPages: 20 });
   // Deliberately no await before or during the render: another request must not
   // acquire a second live engine instance while this call is executing.
   const result = runEngineSync({ module, html: job.html, css: input.stylesheet(job),
     fonts: [...bundledFonts, ...job.customFonts], assets: job.assetFiles,
-    previewDpi: job.previewDpi, maxPages: job.maxPages, allowMissingGlyphs: job.allowMissingGlyphs });
+    previewDpi: job.previewDpi, maxPages: job.maxPages, allowMissingGlyphs: job.allowMissingGlyphs,
+    ...(job.batch ? { batch: job.batch } : {}) });
   if (!result.ok) throw new FullbleedError(result.code, result.message);
   if (!(result.pdf instanceof Uint8Array) || !Number.isSafeInteger(result.pages) || result.pages < 1
     || result.pages > job.maxPages || !Number.isSafeInteger(result.missingGlyphs) || result.missingGlyphs < 0
     || !Array.isArray(result.previews) || result.previews.length !== (job.previewDpi ? result.pages : 0)
     || !result.previews.every(bytes => bytes instanceof Uint8Array &&
-      [137, 80, 78, 71, 13, 10, 26, 10].every((value, i) => bytes[i] === value))) {
+      [137, 80, 78, 71, 13, 10, 26, 10].every((value, i) => bytes[i] === value))
+    || !reports.validRenderResult(result, job)) {
     throw new FullbleedError('RENDER_FAILED', 'The rendering engine returned an invalid result.');
   }
   return { pdf: result.pdf, previews: result.previews, pages: result.pages,
-    missingGlyphs: result.missingGlyphs, engineVersion };
+    missingGlyphs: result.missingGlyphs, engineVersion, ...reports.batchResult(result, job) };
 }

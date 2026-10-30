@@ -7,6 +7,11 @@ async function example() {
   const error: Error = new api.FullbleedError('EXAMPLE', 'Example');
   const queue: api.RenderQueue = api.createRenderQueue({ concurrency: 1, maxQueue: 2 });
   await queue.renderPdf({ html: 'Queued CommonJS' });
+  const batch: api.BatchRenderResult = await api.renderPdfBatch({ html: '<p>{{account}}</p>', records: [{ account: '1042' }], isolation: 'process' });
+  const record: api.BatchRecordReport = batch.records[0];
+  const batchPdf: Buffer = batch.pdf;
+  await queue.renderPdfBatch({ html: '<p>{{account}}</p>', records: [{ account: '1043' }] });
+  void [record, batchPdf];
   await queue.close();
   return { pdf, error };
 }

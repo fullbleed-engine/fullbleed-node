@@ -1,4 +1,4 @@
-import { renderPdf, FullbleedError, version, engineVersion, type CloudflareRenderOptions } from 'fullbleed/cloudflare';
+import { renderPdf, renderPdfBatch, FullbleedError, version, engineVersion, type CloudflareRenderOptions } from 'fullbleed/cloudflare';
 import { document, Heading, Paragraph } from 'fullbleed/ui';
 const authored = document(Heading('Worker report'), Paragraph('Component-authored PDF.'));
 const options: CloudflareRenderOptions = { html: authored.toHtml(), css: authored.toCss(), maxPages: 5 };
@@ -17,3 +17,11 @@ await renderPdf({ html: 'x', timeoutMs: 1000 });
 await renderPdf({ html: 'x', isolation: 'worker' });
 // @ts-expect-error In-isolate rendering cannot process cancellation during computation.
 await renderPdf({ html: 'x', signal: new AbortController().signal });
+const batch = await renderPdfBatch({ html: '<p>{{account}}</p>', records: [{ account: '1042' }], layout: 'fixed' });
+new Response(batch.pdf);
+const pages: number = batch.records[0].pageCount;
+void pages;
+// @ts-expect-error Batch CPU deadlines remain platform-owned.
+renderPdfBatch({ html: '<p>{{account}}</p>', records: [{ account: '1042' }], timeoutMs: 5000 });
+// @ts-expect-error A batch requires record data.
+renderPdfBatch({ html: '<p>{{account}}</p>' });

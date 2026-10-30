@@ -37,6 +37,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install pypdf==6.19.0 pypdfium2==5.14.0 fonttools==4.65.0 pillow==12.3.0
+      - name: Read installed batch outputs and actual README examples independently
+        run: python tools/verify-batches.py
       - name: Verify the packed Workers entry in local workerd
         run: |
           npm run verify:cloudflare
@@ -117,7 +119,7 @@ jobs:
           npm run render:fonts -- --package-root output/font-baseline-consumer/node_modules/fullbleed --out output/font-baseline
           npm run verify:fonts -- --evidence-root output/font-baseline --allow-legacy-metadata
           npm run render:fonts
-          npm run verify:fonts -- --baseline output/font-baseline --reviewed-layout test/fixtures/inline-layout-2.5.43.json
+          npm run verify:fonts -- --baseline output/font-baseline --reviewed-layout test/fixtures/inline-layout-2.5.46.json
       - name: Verify installed custom font families against explicit faces
         run: |
           npm run render:families
@@ -144,6 +146,11 @@ jobs:
             output/native-verification/**/*.png
             output/native-verification/**/input.html
             output/native-verification/**/style.css
+            output/native-verification/**/records.json
+            output/native-verification/**/result.json
+            output/batch-verification/
+            output/pack-verification/batch-tests.log
+            output/pack-verification/installed-batches.log
             output/pack-verification/verification.json
             output/pack-verification/text-extraction.json
             output/pack-verification/queue-tests.log
@@ -225,7 +232,7 @@ jobs:
         run: |
           python -m pip install pypdf==6.19.0 pypdfium2==5.14.0 fonttools==4.65.0 pillow==12.3.0
           npm run render:fonts
-          npm run verify:fonts -- --reviewed-layout test/fixtures/inline-layout-2.5.43.json
+          npm run verify:fonts -- --reviewed-layout test/fixtures/inline-layout-2.5.46.json
           npm run render:families
           npm run verify:families
           npm run render:inline
@@ -251,6 +258,7 @@ jobs:
           npm run render:radial
           npm run verify:radial
           python tools/verify-components.py
+          python tools/verify-batches.py
           npm run verify:cloudflare
           python tools/verify-cloudflare.py
           npm run verify:cloudflare:starter
@@ -298,6 +306,9 @@ jobs:
             output/pack-verification/queue-tests.log
             output/pack-verification/default-styles-tests.log
             output/pack-verification/component-tests.log
+            output/pack-verification/batch-tests.log
+            output/pack-verification/installed-batches.log
+            output/batch-verification/
             output/component-verification/
             output/default-styles/
             output/queue-verification/

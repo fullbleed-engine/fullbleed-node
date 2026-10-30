@@ -15,6 +15,7 @@ import { fixtures as paginationFixtures } from '../test/pagination-fixtures.mjs'
 import { tableWrappingFixtures, tableWrappingSource } from '../test/table-wrapping.mjs';
 import { generatedQuotesFixtures } from '../test/generated-quotes.mjs';
 import { textDecorationsFixtures } from '../test/text-decorations.mjs';
+import { batchFixtures } from '../test/batch-fixtures.mjs';
 
 const root = resolve('.');
 const out = join(root, 'output/browser-verification');
@@ -63,6 +64,7 @@ const styleFixtures = JSON.parse(await readFile('test/fixtures/default-styles.js
 const styleInputs = Object.fromEntries(styleFixtures.cases.flatMap(({ name, html, css, previewDpi }) =>
   [false, true].map(defaultStyles => [`styles-${name}-${defaultStyles}`, { html, css, previewDpi, defaultStyles }])));
 const inputs = { invoice: await fixture('invoice'), report: await fixture('report'),
+  ...Object.fromEntries(batchFixtures.map(({ name, options, fontFiles }) => [name, { ...options, fontFiles }])),
   ...Object.fromEntries(components.map(({ name, node }) => [name, { html: node.toHtml(), css: node.toCss(), previewDpi: 96, defaultStyles: false }])),
   ...styleInputs,
   ...Object.fromEntries(inlineFixtures.map(({ name, pages, ...input }) => [name, { ...input, previewDpi: 96 }])),
@@ -96,14 +98,15 @@ for (const [name, fixture] of Object.entries(inputs)) {
     return fontNames[i] ? { name: fontNames[i], data } : data;
   }));
   options.assets = Object.fromEntries(Object.entries(assetTexts).map(([key, value]) => [key, Buffer.from(value)]));
-  const result = await node.renderPdf(options);
+  const result = await (options.records ? node.renderPdfBatch : node.renderPdf)(options);
   await writeFile(join(out, name + '.pdf'), result.pdf);
   const previews = [];
   for (const [i, png] of result.previews.entries()) {
     await writeFile(join(out, `${name}-${i + 1}.png`), png);
     previews.push(hash(png));
   }
-  baselines[name] = { pages: result.pages, missingGlyphs: result.missingGlyphs, pdf: hash(result.pdf), previews };
+  baselines[name] = { pages: result.pages, missingGlyphs: result.missingGlyphs, pdf: hash(result.pdf), previews,
+    ...(result.records ? { records: result.records } : {}) };
 }
 for (const { name, engine, legacy } of styleFixtures.cases) {
   for (const [choice, expected] of [[false, engine], [true, legacy]]) {
@@ -112,7 +115,8 @@ for (const { name, engine, legacy } of styleFixtures.cases) {
     assert.deepEqual(actual.previews, [expected.png], name + ': independent preview baseline');
   }
 }
-assert.equal(pkg.fullbleed.engineVersion, hiddenTextSource.engineVersion);
+assert.equal(node.engineVersion, pkg.fullbleed.engineVersion);
+assert.equal(hiddenTextSource.engineVersion, '2.5.43', 'Preserve the historical hidden-text baseline.');
 for (const { name, expected } of hiddenTextSource.cases) {
   for (const variant of ['source', 'control']) {
     const actual = baselines[`visibility-${name}-${variant}`];
@@ -122,6 +126,8 @@ for (const { name, expected } of hiddenTextSource.cases) {
 }
 for (const name of ['index.html', 'harness.js', 'components.css']) await copyFile('test/browser/' + name, join(site, name));
 const record = { package: pkg.version, engine: pkg.fullbleed.engineVersion, installedTarballSha256: pack.tarballSha256,
+  batchSourceSha256: hash(await readFile(join(root, 'test/batch-fixtures.mjs'))),
+  hiddenTextBaselineEngine: hiddenTextSource.engineVersion,
   enginePaintSourceSha256: hash(await readFile(join(root, 'test/fixtures/engine-paint-2.5.28.json'))),
   tableWrappingSourceSha256: hash(await readFile(join(root, 'test/fixtures/table-wrapping-2.5.37.json'))),
   generatedQuotesSourceSha256: hash(await readFile(join(root, 'test/fixtures/generated-quotes-2.5.38.json'))),

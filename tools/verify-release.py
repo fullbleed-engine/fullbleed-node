@@ -31,6 +31,7 @@ PREFORMATTED_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('preformatted-whitespac
 RADIAL_GRADIENT_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('radial-gradient-endpoints-2.5.43.json')
 NAMED_FONT_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'named-fonts.test.mjs'
 NAMED_FONT_FILE = ENGINE_REGRESSION_SOURCE.parents[1] / 'fonts/family/LibreCaslonText[wght].ttf'
+BATCH_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'batch-fixtures.mjs'
 
 
 def require(condition, message):
@@ -77,7 +78,7 @@ def verify_engine_paint_evidence(report):
     source_sha = hashlib.sha256(source).hexdigest()
     names = {case['name'] for case in fixture['cases']}
     families = {case['family'] for case in fixture['cases']}
-    require(report.get('engine_version') == fixture['engineVersion'], 'Paint fixtures target another engine')
+    require(report.get('engine_version') in {fixture['engineVersion'], '2.5.46'}, 'Paint fixtures target another engine')
     evidence = report.get('engine_paint', [])
     require(len(evidence) == 2 and {item.get('platform') for item in evidence} == {'win32', 'linux'},
             'Paint inspection requires Windows and Linux evidence')
@@ -101,18 +102,20 @@ def verify_engine_paint_evidence(report):
 
 
 def verify_cloudflare_evidence(report):
-    worker_documents = 8 if tuple(map(int, report['package_version'].split('.'))) >= (0, 8, 5) else 7
+    release_version = tuple(map(int, report['package_version'].split('.')))
+    worker_documents = 16 if release_version >= (0, 9, 0) else 8 if release_version >= (0, 8, 5) else 7
     for key, source, documents in [('cloudflare_workers', CLOUDFLARE_SOURCE, worker_documents),
                                    ('cloudflare_starter', CLOUDFLARE_STARTER_SOURCE, 6)]:
         source_sha = hashlib.sha256(source.read_bytes()).hexdigest()
         evidence = report.get(key, [])
+        errors = 15 if key == 'cloudflare_workers' and release_version >= (0, 9, 0) else 10
         require(len(evidence) == 2 and {item.get('platform') for item in evidence} == {'win32', 'linux'},
                 'Workers evidence requires Windows and Linux local runtime checks')
         require(all(item.get('ok') is True and item.get('package_version') == report['package_version']
                     and item.get('engine_version') == report['engine_version']
                     and item.get('tarball_sha256') == report['package_sha256']
                     and item.get('source_sha256') == source_sha and item.get('documents') == documents
-                    and item.get('error_cases') == 10 and item.get('node_bytes_identical') is True
+                    and item.get('error_cases') == errors and item.get('node_bytes_identical') is True
                     and item.get('recovery') is True and item.get('server_stopped') is True
                     and item.get('independent_reader') is True and item.get('local_only') is True
                     and item.get('hosted_verified') is False and item.get('free_plan_verified') is False
@@ -256,7 +259,7 @@ def verify_text_decorations_evidence(report):
     expectations_sha = hashlib.sha256(TEXT_DECORATIONS_EXPECTATIONS.read_bytes()).hexdigest()
     oracle = json.loads(TEXT_DECORATIONS_EXPECTATIONS.read_bytes())
     require(oracle['inputSha256'] == source_sha and oracle['engineVersion'] == '2.5.40'
-                and report.get('engine_version') in {'2.5.40', '2.5.41', '2.5.43'},
+                and report.get('engine_version') in {'2.5.40', '2.5.41', '2.5.43', '2.5.46'},
             'Text decorations target another core or fixture')
     names = sorted(row['name'] for row in oracle['cases'])
     failing_names = sorted(row['name'] for row in oracle['cases'] if row['previousEngineFails'])
@@ -344,7 +347,7 @@ def verify_radial_gradient_evidence(report):
     evidence = report.get('radial_gradients', [])
     require(len(evidence) == 2 and {row.get('platform') for row in evidence} == {'linux', 'win32'},
             'Radial gradients require separate Linux and Windows installed-package evidence')
-    require(report.get('engine_version') == '2.5.43', 'Radial evidence targets another engine')
+    require(report.get('engine_version') in {'2.5.43', '2.5.46'}, 'Radial evidence targets another engine')
     for row in evidence:
         require(row.get('ok') is True and row.get('negative_control') is False
                 and row.get('package_version') == report.get('package_version')
@@ -369,6 +372,53 @@ def verify_radial_gradient_evidence(report):
             and baseline.get('case_names') == names and baseline.get('case_keys') == keys
             and baseline.get('failed_case_names') == failures,
             'Actual public 0.8.6 radial-gradient failure control is absent or uncalibrated')
+
+
+def verify_batch_evidence(report):
+    expected_pages = {'batch-fixed': 2, 'batch-reflow': 5, 'batch-missing': 2, 'batch-components': 2,
+                      'batch-literal': 1, 'batch-fallback-fixed': 2, 'batch-fallback-reflow': 2}
+    require(report.get('batch_source_sha256') == hashlib.sha256(BATCH_SOURCE.read_bytes()).hexdigest(),
+            'Batch evidence targets another fixture source')
+    installed = report.get('installed_matrix', [])
+    require(len(installed) == 9, 'Batch rendering requires all nine installed-package jobs')
+    for item in installed:
+        batch = item.get('batch_smoke', {})
+        require(batch.get('ok') is True and batch.get('queueClosed') is True and batch.get('tests', 0) >= 28
+                and batch.get('packageVersion') == report['package_version']
+                and batch.get('engineVersion') == report['engine_version']
+                and item.get('tarball_sha256') == report['package_sha256'],
+                'Installed batch lifecycle evidence is incomplete or targets another package')
+        fixtures = batch.get('fixtures', [])
+        require(len(fixtures) == 7 and {row.get('name') for row in fixtures} == set(expected_pages),
+                'Installed batch cases are missing or duplicated')
+        require(all(row.get('pages') == expected_pages[row['name']] and row.get('cjsProcessAndQueueEqual') is True
+                    and re.fullmatch(r'[a-f0-9]{64}', row.get('pdf', '')) for row in fixtures),
+                'Batch output or CommonJS/process/queue comparison is incomplete')
+        examples = batch.get('readmeExamples', [])
+        require(len(examples) == 2 and {row.get('name'): row.get('pages') for row in examples}
+                    == {'readme-batch-1': 2, 'readme-batch-2': 1}
+                and all(re.fullmatch(r'[a-f0-9]{64}', row.get('unmodifiedExampleSha256', '')) for row in examples),
+                'Both actual installed README batch examples must run')
+    readers = report.get('batch_readers', [])
+    require(len(readers) == 2 and {row.get('platform') for row in readers} == {'linux', 'win32'},
+            'Batch PDFs require separate Linux and Windows independent-reader evidence')
+    require(all(row.get('ok') is True and row.get('package_version') == report['package_version']
+                and row.get('engine_version') == report['engine_version'] and row.get('tarball_sha256') == report['package_sha256']
+                and row.get('source_sha256') == report['batch_source_sha256'] and row.get('documents') == 9 and row.get('pages') == 19
+                and row.get('record_ranges_verified') is True and row.get('glyph_reports_verified') is True for row in readers),
+            'Independent batch text, range or character evidence is incomplete')
+    browsers = report.get('browser_matrix', [])
+    require(len(browsers) == 3 and {row.get('browser') for row in browsers} == {'chrome', 'firefox', 'webkit'},
+            'Batch rendering requires all three browser download checks')
+    require(all(row.get('batch_cases') == 7 and row.get('batch_source_sha256') == report['batch_source_sha256']
+                and row.get('batch_reports_equal') is True and row.get('batch_records_snapshot') is True
+                and row.get('batch_failure_recovery') is True for row in browsers),
+            'Browser batch reports, snapshots or failure recovery are incomplete')
+    native_rows = [row for row in report.get('native_wasi_fixtures', []) if row.get('batch')]
+    require(len(native_rows) == 7 and {row.get('name') for row in native_rows} == set(expected_pages)
+            and all(row.get('pages') == expected_pages[row['name']] and row.get('nativeWasiReportsEqual') is True
+                    and row.get('nativeWasiPdfEqual') is True and row.get('nativeWasiPreviewsEqual') is True for row in native_rows),
+            'Native/WASI batch PDF, preview or record-report evidence is incomplete')
 
 
 def verify_binding(version, run_id, run, release, tag_commit, report):
@@ -441,7 +491,7 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
                 hidden_sha = hashlib.sha256(hidden_source).hexdigest()
                 hidden_fixture = json.loads(hidden_source)
                 hidden_cases = hidden_fixture['cases']
-                require(report.get('engine_version') == hidden_fixture['engineVersion'],
+                require(report.get('engine_version') in {hidden_fixture['engineVersion'], '2.5.46'},
                         'Hidden-text fixtures target another engine')
                 hidden = report.get('hidden_text', [])
                 require(len(hidden) == 2 and {item.get('platform') for item in hidden} == {'win32', 'linux'},
@@ -486,6 +536,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             verify_preformatted_evidence(report)
         if release_version >= (0, 8, 7):
             verify_radial_gradient_evidence(report)
+        if release_version >= (0, 9, 0):
+            verify_batch_evidence(report)
 
 
 def verify_tarball(data, info, report):
@@ -528,6 +580,8 @@ def verify_tarball(data, info, report):
                  'dist/jsx-runtime.js', 'dist/jsx-runtime.d.cts'}.issubset(names), 'Component/JSX package files are missing')
     if tuple(map(int, info['version'].split('.'))) >= (0, 8, 0):
         require({'dist/cloudflare.js', 'src/cloudflare.d.ts'}.issubset(names), 'Workers package files are missing')
+    if tuple(map(int, info['version'].split('.'))) >= (0, 9, 0):
+        require({'src/batch-report.cjs', 'src/batch.d.ts', 'dist/batch.d.cts'}.issubset(names), 'Batch runtime or type files are missing')
     return sha
 
 

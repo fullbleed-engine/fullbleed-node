@@ -56,10 +56,14 @@ def main():
     negative=origin.get('negativeControl',False)
     assert not (negative and args.browser)
     if negative:assert (origin['packageVersion'],origin['engineVersion'])==('0.5.0','2.5.22')
-    else:assert origin['engine' if args.browser else 'engineVersion']==source['engineVersion']
+    else:
+        package=json.loads((ROOT/'package.json').read_text(encoding='utf-8'))
+        assert origin['engine' if args.browser else 'engineVersion']==package['fullbleed']['engineVersion']
+        assert source['engineVersion']=='2.5.43', 'Preserve the historical hidden-text baseline'
     report={'ok':False,'checked_at':datetime.now(timezone.utc).isoformat(),'negativeControl':negative,
         'packageVersion':origin['package' if args.browser else 'packageVersion'],
         'engineVersion':origin['engine' if args.browser else 'engineVersion'],
+        'baselineEngineVersion':source['engineVersion'],
         'installedTarballSha256':origin.get('installedTarballSha256'),
         'browser':args.browser,'fixture_sha256':sha256(fixture.read_bytes()).hexdigest(),
         'versions':{name:version(name) for name in ('pypdf','pypdfium2','pillow')},'cases':[],'failures':[],

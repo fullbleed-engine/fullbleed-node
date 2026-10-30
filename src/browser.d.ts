@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: MIT
+import type { BatchOptions, BatchRecordReport } from './batch.js';
+export type { BatchOptions, BatchRecordReport, MissingGlyph } from './batch.js';
 export interface BrowserRendererOptions {
   /** Same-origin directory URL ending in /, containing the copied browser assets. */
   assetBaseUrl: string | URL;
@@ -29,6 +31,12 @@ export interface BrowserRenderResult {
 }
 export interface BrowserRenderer {
   renderPdf(options: BrowserRenderOptions): Promise<BrowserRenderResult>;
+  /** Compile once per request; template and records share the 4,000,000 UTF-8 byte limit. */
+  renderPdfBatch(options: BrowserBatchRenderOptions): Promise<BrowserBatchRenderResult>;
+}
+export interface BrowserBatchRenderOptions extends BrowserRenderOptions, BatchOptions {}
+export interface BrowserBatchRenderResult extends BrowserRenderResult {
+  records: BatchRecordReport[];
 }
 export class FullbleedError extends Error {
   readonly code: string;
