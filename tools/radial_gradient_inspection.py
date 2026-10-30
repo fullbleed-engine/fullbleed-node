@@ -47,7 +47,8 @@ def verify(directory, *, baseline=False):
     assert (directory / 'inputs.json').read_bytes() == source_bytes
     assert renders['inputSha256'] == sha256(source_bytes).hexdigest()
     assert baseline == (renders['packageVersion'] == '0.8.6')
-    assert renders['engineVersion'] == ('2.5.41' if baseline else '2.5.43')
+    package = json.loads((ROOT / 'package.json').read_text(encoding='utf-8'))
+    assert renders['engineVersion'] == ('2.5.41' if baseline else package['fullbleed']['engineVersion'])
     fixtures = {row['name']: row for row in source['cases']}
     expected = {(mode, name) for name in fixtures for mode in MODES}
     actual = {(row['mode'], row['name']) for row in renders['cases']}

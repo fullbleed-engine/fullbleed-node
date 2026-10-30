@@ -10,6 +10,7 @@ const pkg = require('../package.json');
 
 const { FullbleedError, normalize, stylesheet } = require('./render-input.cjs');
 const { createQueue } = require('./render-queue.cjs');
+const { validRenderResult, batchResult } = require('./batch-report.cjs');
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const root = join(__dirname, '..');
 let runtimePromise;
@@ -86,6 +87,7 @@ function renderProcess(job, remaining) {
               && Buffer.from(bytes.subarray(0, 8)).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])))
             || !Number.isSafeInteger(result.missingGlyphs) || result.missingGlyphs < 0
             || result.engineVersion !== pkg.fullbleed.engineVersion
+            || !validRenderResult(result, job)
           : typeof message.code !== 'string' || typeof message.message !== 'string') {
           stop(new FullbleedError('PROCESS_FAILED', 'The rendering process returned an invalid result.'));
           return;
@@ -113,7 +115,7 @@ function renderProcess(job, remaining) {
         } else {
           const result = reply.result;
           resolve({ pdf: Buffer.from(result.pdf), previews: result.previews.map(bytes => Buffer.from(bytes)),
-            pages: result.pages, missingGlyphs: result.missingGlyphs, engineVersion: result.engineVersion });
+            pages: result.pages, missingGlyphs: result.missingGlyphs, engineVersion: result.engineVersion, ...batchResult(result, job) });
         }
       };
       // All stdio is ignored except IPC. Waiting for both exit and disconnect
@@ -133,12 +135,13 @@ function renderProcess(job, remaining) {
         if (!failure) abort();
         return;
       }
-      child.send({ type: 'render', options: {
+      child.send({ type: job.batch ? 'render-batch' : 'render', options: {
         html: job.html, css: job.css,
         fonts: job.customFonts.map(font => ({ name: font.name.split('/').at(-1), data: font.data })),
         assets: Object.fromEntries(job.assetFiles.map(file => [file.name.slice('assets/'.length), file.data])),
         previewDpi: job.previewDpi, maxPages: job.maxPages, allowMissingGlyphs: job.allowMissingGlyphs, defaultStyles: job.defaultStyles,
         timeoutMs: remaining,
+        ...(job.batch ? { records: job.batch.records, layout: job.batch.layout } : {}),
       } }, error => {
         if (error) stop(new FullbleedError('PROCESS_FAILED', 'Could not send the rendering request.', { cause: error }));
       });
@@ -158,6 +161,13 @@ async function renderPdf(options) {
   if (Number(process.versions.node.split('.')[0]) < 22) throw new FullbleedError('UNSUPPORTED_NODE', 'Fullbleed requires Node.js 22 or newer.');
   const start = Date.now();
   const job = normalize(options);
+  return renderJob(job, start);
+}
+
+async function renderPdfBatch(options) {
+  if (Number(process.versions.node.split('.')[0]) < 22) throw new FullbleedError('UNSUPPORTED_NODE', 'Fullbleed requires Node.js 22 or newer.');
+  const start = Date.now();
+  const job = normalize(options, { batch: true });
   return renderJob(job, start);
 }
 
@@ -201,6 +211,7 @@ async function renderJob(job, start) {
           module: loaded.module, fonts: [...loaded.fonts, ...job.customFonts], assets: job.assetFiles,
           html: job.html, css: stylesheet(job), previewDpi: job.previewDpi, maxPages: job.maxPages,
           allowMissingGlyphs: job.allowMissingGlyphs,
+          ...(job.batch ? { batch: job.batch } : {}),
         },
       });
       worker.once('error', cause => finish(new FullbleedError('WORKER_FAILED', cause.message, { cause })));
@@ -208,9 +219,13 @@ async function renderJob(job, start) {
         if (!settled) finish(new FullbleedError('WORKER_FAILED', `Rendering worker exited before producing a result (code ${code}).`));
       });
       worker.once('message', result => {
-        if (!result.ok) return finish(new FullbleedError(result.code, result.message));
+        if (typeof result?.ok !== 'boolean') return finish(new FullbleedError('WORKER_FAILED', 'The rendering worker returned an invalid response.'));
+        if (!result.ok) return finish(typeof result.code === 'string' && typeof result.message === 'string'
+          ? new FullbleedError(result.code, result.message)
+          : new FullbleedError('WORKER_FAILED', 'The rendering worker returned an invalid error.'));
+        if (!validRenderResult(result, job)) return finish(new FullbleedError('WORKER_FAILED', 'The rendering worker returned an invalid result.'));
         finish(null, { pdf: Buffer.from(result.pdf), previews: result.previews.map(bytes => Buffer.from(bytes)),
-          pages: result.pages, missingGlyphs: result.missingGlyphs, engineVersion: pkg.fullbleed.engineVersion });
+          pages: result.pages, missingGlyphs: result.missingGlyphs, engineVersion: pkg.fullbleed.engineVersion, ...batchResult(result, job) });
       });
       if (job.signal?.aborted) abort();
     }).catch(cause => finish(cause instanceof FullbleedError ? cause : new FullbleedError('WORKER_FAILED', cause.message, { cause })));
@@ -218,6 +233,7 @@ async function renderJob(job, start) {
 }
 
 exports.renderPdf = renderPdf;
+exports.renderPdfBatch = renderPdfBatch;
 exports.createRenderQueue = options => createQueue(renderJob, options);
 exports.FullbleedError = FullbleedError;
 exports.engineVersion = pkg.fullbleed.engineVersion;

@@ -29,7 +29,9 @@ if (values['negative-control']) {
   assert.equal(version, '0.5.0');
   assert.equal(engineVersion, '2.5.22');
 } else {
-  assert.equal(engineVersion, hiddenTextSource.engineVersion);
+  const pkg = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
+  assert.equal(engineVersion, pkg.fullbleed.engineVersion);
+  assert.equal(hiddenTextSource.engineVersion, '2.5.43', 'Preserve the historical hidden-text baseline.');
 }
 const out = resolve(values.out ?? join(root, 'output/hidden-text'));
 await mkdir(join(out, '..'), { recursive: true });
@@ -37,6 +39,7 @@ await mkdir(out);
 const report = { schema: 'fullbleed.javascript.hidden-text.renders.v1', ok: false,
   packageVersion: version, engineVersion, node: process.version, platform: process.platform,
   negativeControl: values['negative-control'], sourceCommit: hiddenTextSource.sourceCommit,
+  baselineEngineVersion: hiddenTextSource.engineVersion,
   fixtureSha256: hash(await readFile(join(root, 'test/fixtures/hidden-text-2.5.24.json'))),
   wasmSha256: build.files['dist/engine.wasm'].sha256,
   installedTarballSha256: packed?.tarballSha256 ?? null, cases: [], failures: [] };

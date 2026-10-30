@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { ChildProcess } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { renderPdf, FullbleedError } from 'fullbleed';
+import { renderPdf, renderPdfBatch, FullbleedError } from 'fullbleed';
+import { batchShort } from './batch-fixtures.mjs';
 
 const input = { html: '<h1>Isolated invoice</h1><p>Invoice NS-1042</p>', previewDpi: 96, isolation: 'process' };
 const expectCode = code => error => error instanceof FullbleedError && error.code === code;
@@ -91,6 +92,23 @@ test('invalid responses and missing responses reject without leaking children', 
     await assert.rejects(renderPdf(input), expectCode('PROCESS_FAILED'));
   }
   processes.stopped(3);
+});
+
+test('batch results do not hide a child crash or an invalid record report', async t => {
+  let mode = 'fail-after-result';
+  let received = 0;
+  const processes = observe(t, child => child.once('message', message => {
+    assert.equal(message.result.pdf.subarray(0, 5).toString(), '%PDF-');
+    assert.equal(message.result.records.length, 2);
+    received++;
+  }), options => fixture(mode)(options));
+  await assert.rejects(renderPdfBatch({ ...batchShort, isolation: 'process' }),
+    error => expectCode('PROCESS_FAILED')(error) && error.exitCode === 23);
+  processes.stopped(1);
+  mode = 'invalid-batch-report';
+  await assert.rejects(renderPdfBatch({ ...batchShort, isolation: 'process' }), expectCode('PROCESS_FAILED'));
+  processes.stopped(2);
+  assert.equal(received, 2, 'Both controlled children must send real batch PDFs.');
 });
 
 test('an unavailable executable produces a structured spawn failure', async t => {

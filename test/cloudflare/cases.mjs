@@ -1,8 +1,12 @@
 import { Document, Heading, Paragraph, Box, Table, THead, TBody, Tr, Th, Td } from 'fullbleed/ui';
 import raw from './raw.json' with { type: 'json' };
+import { batchFixtures } from '../batch-fixtures.mjs';
 
-export const caseNames = ['invoice', 'report', 'custom-assets', 'named-font', 'components', 'components-inline'];
+export const caseNames = ['invoice', 'report', 'custom-assets', 'named-font', 'components', 'components-inline', ...batchFixtures.map(fixture => fixture.name)];
 export const expected = {
+  ...Object.fromEntries(batchFixtures.map(fixture => [fixture.name, { pages: fixture.pages, missingGlyphs: fixture.missingGlyphs,
+    recordPages: fixture.recordPages, missingRows: fixture.missingRows,
+    text: fixture.name === 'batch-literal' ? ['Café & <b>literal</b>', 'quoted', 'path'] : ['Account 1042', 'Account 1043'] }])),
   invoice: { pages: 1, text: ['Northstar', 'NS-1042', 'Cedar & Co.', '$1,870.00'] },
   report: { pages: 3, text: ['COMMON', 'GROUND', '1,240', '4,860', '$420,000.00'] },
   'custom-assets': { pages: 1, text: ['Custom font and image', 'Type Alpha with care.'], face: 'LibreCaslonText-Regular' },
@@ -11,7 +15,9 @@ export const expected = {
   'components-inline': { pages: 1, text: ['Worker statement', 'Cedar & Co. <em>safe</em>', '$1,870.00'] },
 };
 
-export function optionsFor(name, customFont) {
+export function optionsFor(name, customFont, mathFont) {
+  const batch = batchFixtures.find(fixture => fixture.name === name);
+  if (batch) return { ...batch.options, ...(batch.fontFiles ? { fonts: [mathFont] } : {}) };
   const common = { defaultStyles: false, maxPages: 20, previewDpi: 96 };
   if (name === 'invoice' || name === 'report') return { ...common, ...raw[name] };
   if (name === 'named-font') return { ...common, fonts: [{ name: 'Café Brand.ttf', data: customFont }],
@@ -49,6 +55,11 @@ export function errorOptions(name, customFont) {
     case 'pages': return { ...optionsFor('report', customFont), maxPages: 1, previewDpi: 0 };
     case 'default-pages': return { html: '<section>Page</section>'.repeat(21), css: 'section{break-after:page}' };
     case 'glyph': return { html: '<p>漢字</p>', css: 'body{font-family:Inter}' };
+    case 'batch-source-limit': return { html: '<p>{{value}}</p>', records: [{ value: 'é'.repeat(500_000) }] };
+    case 'batch-fields': return { html: '<p>{{value}}</p>', records: [{ value: 'ok' }, { other: 'wrong' }] };
+    case 'batch-bindings': return { html: '<p>{{value}}</p>', records: [{ other: 'wrong' }] };
+    case 'batch-pages': return { ...optionsFor('batch-reflow'), maxPages: 1 };
+    case 'batch-glyph': return { ...optionsFor('batch-missing'), allowMissingGlyphs: false };
     default: throw new Error('Unknown error fixture');
   }
 }

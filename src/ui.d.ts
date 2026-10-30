@@ -129,6 +129,8 @@ export interface DocumentOptions {
 export type RenderInput = { html: string; css?: string };
 export type Renderer<O extends RenderInput, R> = ((options: O) => R) | { renderPdf(options: O): R };
 export type DocumentRenderOptions<O extends RenderInput> = Omit<O, 'html' | 'css'> & { styles?: SheetFragment; html?: never; css?: never };
+export type DocumentRenderArguments<O extends RenderInput> = {} extends DocumentRenderOptions<O>
+  ? [options?: DocumentRenderOptions<O>] : [options: DocumentRenderOptions<O>];
 export class DocumentArtifact {
   readonly title: string;
   readonly lang: string;
@@ -143,13 +145,13 @@ export class DocumentArtifact {
    */
   toHtml(options?: HtmlExportOptions): string;
   toCss(...overrides: SheetFragment[]): string;
-  renderPdf<O extends RenderInput, R>(renderer: Renderer<O, R>, options?: DocumentRenderOptions<O>): R;
+  renderPdf<O extends RenderInput, R>(renderer: Renderer<O, R>, ...options: DocumentRenderArguments<O>): R;
 }
 export function Document(options: DocumentOptions, ...children: Child[]): DocumentArtifact;
 export function Document(...children: Child[]): DocumentArtifact;
 export const document: typeof Document;
 /** Render JSX or function-composed documents through an explicit engine function, queue or browser renderer. */
-export function renderDocument<O extends RenderInput, R>(node: Renderable, renderer: Renderer<O, R>, options?: DocumentRenderOptions<O>): R;
+export function renderDocument<O extends RenderInput, R>(node: Renderable, renderer: Renderer<O, R>, ...options: DocumentRenderArguments<O>): R;
 export class Style {
   constructor(...fragments: StyleFragment[]);
   merge(...fragments: StyleFragment[]): this;

@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
 import type { Buffer } from 'node:buffer';
+import type { BatchOptions, BatchRecordReport } from './batch.js';
+export type { BatchOptions, BatchRecordReport, MissingGlyph } from './batch.js';
 
 export interface RenderOptions {
   html: string;
@@ -39,6 +41,13 @@ export class FullbleedError extends Error {
   constructor(code: string, message: string, options?: ErrorOptions);
 }
 export function renderPdf(options: RenderOptions): Promise<RenderResult>;
+export interface BatchRenderOptions extends RenderOptions, BatchOptions {}
+export interface BatchRenderResult extends RenderResult {
+  /** Input order, with page ranges in the combined PDF. missingGlyphs totals distinct code points across records. */
+  records: BatchRecordReport[];
+}
+/** Compile once per request; HTML, CSS and record keys/values share the 4,000,000 UTF-8 byte limit. */
+export function renderPdfBatch(options: BatchRenderOptions): Promise<BatchRenderResult>;
 export interface RenderQueueOptions {
   /** Maximum simultaneous renders in this queue. Default: 1. */
   concurrency?: number;
@@ -48,6 +57,8 @@ export interface RenderQueueOptions {
 export interface RenderQueue {
   /** Render in FIFO start order, or reject with QUEUE_FULL/QUEUE_CLOSED. Inputs are copied at admission. */
   renderPdf(options: RenderOptions): Promise<RenderResult>;
+  /** Shares FIFO admission, concurrency, deadlines and cleanup with ordinary renders. */
+  renderPdfBatch(options: BatchRenderOptions): Promise<BatchRenderResult>;
   /** Stop admission, cancel accepted jobs and await worker/process cleanup. Idempotent. */
   close(): Promise<void>;
   readonly concurrency: number;

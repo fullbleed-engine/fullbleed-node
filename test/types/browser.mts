@@ -17,3 +17,11 @@ createRenderer({});
 // @ts-expect-error Style injection is a boolean choice.
 renderer.renderPdf({ html: 'Hello', defaultStyles: 'false' });
 void [pdf, png, versions];
+const batch = await renderer.renderPdfBatch({ html: '<p>{{account}}</p>', records: [{ account: '1042' }] as const });
+new Blob([batch.pdf], { type: 'application/pdf' });
+const firstPage: number = batch.records[0].pageOffset;
+void firstPage;
+// @ts-expect-error Browser batches cannot start child processes.
+renderer.renderPdfBatch({ html: '<p>{{account}}</p>', records: [{ account: '1042' }], isolation: 'process' });
+// @ts-expect-error Records contain strings, not HTML/component objects.
+renderer.renderPdfBatch({ html: '<p>{{account}}</p>', records: [{ account: { html: '1042' } }] });

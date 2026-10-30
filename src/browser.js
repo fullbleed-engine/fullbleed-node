@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 import input from './render-input.cjs';
+import reports from './batch-report.cjs';
 
 export const version = __FULLBLEED_PACKAGE_VERSION__;
 export const engineVersion = __FULLBLEED_ENGINE_VERSION__;
@@ -23,9 +24,9 @@ export function createRenderer(options) {
   const entry = new URL('worker.js', base);
   entry.searchParams.set('v', version);
 
-  async function renderPdf(options) {
+  async function render(options, batch) {
     const start = Date.now();
-    const job = input.normalize(options, { browser: true });
+    const job = input.normalize(options, { browser: true, batch });
     const aborted = () => new FullbleedError('ABORTED', 'PDF rendering was aborted.');
     if (job.signal?.aborted) throw aborted();
     const remaining = job.timeoutMs - (Date.now() - start);
@@ -69,6 +70,7 @@ export function createRenderer(options) {
                 html: job.html, css: input.stylesheet(job),
                 fonts: job.customFonts, assets: job.assetFiles, previewDpi: job.previewDpi,
                 maxPages: job.maxPages, allowMissingGlyphs: job.allowMissingGlyphs,
+                ...(job.batch ? { batch: job.batch } : {}),
               } });
             } catch (cause) { finish(new FullbleedError('WORKER_FAILED', 'Could not send the document to the rendering worker.', { cause })); }
             return;
@@ -87,11 +89,13 @@ export function createRenderer(options) {
             || !Number.isSafeInteger(data.pages) || data.pages < 1 || data.pages > job.maxPages
             || !Array.isArray(data.previews) || data.previews.length !== (job.previewDpi ? data.pages : 0)
             || !data.previews.every(bytes => bytes instanceof Uint8Array && [137, 80, 78, 71, 13, 10, 26, 10].every((value, i) => bytes[i] === value))
-            || !Number.isSafeInteger(data.missingGlyphs) || data.missingGlyphs < 0 || data.engineVersion !== engineVersion) {
+            || !Number.isSafeInteger(data.missingGlyphs) || data.missingGlyphs < 0 || data.engineVersion !== engineVersion
+            || !reports.validRenderResult(data, job)) {
             finish(new FullbleedError('WORKER_FAILED', 'The rendering worker returned an invalid result.'));
             return;
           }
-          finish(null, { pdf: data.pdf, previews: data.previews, pages: data.pages, missingGlyphs: data.missingGlyphs, engineVersion });
+          finish(null, { pdf: data.pdf, previews: data.previews, pages: data.pages, missingGlyphs: data.missingGlyphs, engineVersion,
+            ...reports.batchResult(data, job) });
         });
         if (job.signal?.aborted) abort();
       } catch (cause) {
@@ -99,5 +103,5 @@ export function createRenderer(options) {
       }
     });
   }
-  return Object.freeze({ renderPdf });
+  return Object.freeze({ renderPdf: options => render(options, false), renderPdfBatch: options => render(options, true) });
 }

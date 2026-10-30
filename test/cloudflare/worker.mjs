@@ -1,5 +1,6 @@
-import { renderPdf, FullbleedError, version, engineVersion } from 'fullbleed/cloudflare';
+import { renderPdf, renderPdfBatch, FullbleedError, version, engineVersion } from 'fullbleed/cloudflare';
 import customFont from './custom-font.ttf';
+import mathFont from './math-font.ttf';
 import { optionsFor, errorOptions } from './cases.mjs';
 
 // The installed adapter must use static assets and a synchronous instance path.
@@ -16,7 +17,7 @@ WebAssembly.Instance = function(...args) {
 };
 const render = options => {
   synchronous = true;
-  try { return renderPdf(options); }
+  try { return (options.records ? renderPdfBatch : renderPdf)(options); }
   finally { synchronous = false; }
 };
 const base64 = bytes => {
@@ -33,10 +34,11 @@ export default {
       const { name, error, burst, allowMissingGlyphs } = await request.json();
       const font = new Uint8Array(customFont);
       if (burst) {
-        const results = await Promise.all([render(optionsFor('invoice', font)), render(optionsFor('report', font))]);
+        const results = await Promise.all([render(optionsFor('invoice', font)), render(optionsFor('report', font)),
+          render(optionsFor('batch-reflow', font, new Uint8Array(mathFont)))]);
         return Response.json({ results: results.map(encode), outsideSynchronousCall, instances });
       }
-      const options = error ? errorOptions(name, font) : optionsFor(name, font);
+      const options = error ? errorOptions(name, font) : optionsFor(name, font, new Uint8Array(mathFont));
       if (allowMissingGlyphs) options.allowMissingGlyphs = true;
       const result = await render(options);
       return Response.json({ ...encode(result), outsideSynchronousCall, instances });

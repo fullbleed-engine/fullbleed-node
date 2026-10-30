@@ -28,6 +28,8 @@ for (const name of ['src/ui.js', 'src/ui.cjs', 'src/ui.d.ts', 'dist/ui.js', 'dis
   'src/jsx-runtime.js', 'src/jsx-runtime.cjs', 'src/jsx-runtime.d.ts', 'dist/jsx-runtime.js', 'dist/jsx-runtime.d.cts'])
   assert(names.includes(name), 'Missing component authoring export: ' + name);
 assert(names.includes('src/render-queue.cjs'), 'The Node render queue must ship in the tarball.');
+for (const name of ['src/batch-report.cjs', 'src/batch.d.ts', 'dist/batch.d.cts'])
+  assert(names.includes(name), 'The batch API must ship in the tarball: ' + name);
 for (const name of ['dist/cloudflare.js', 'src/cloudflare.d.ts'])
   assert(names.includes(name), 'The Workers entry must ship in the tarball: ' + name);
 for (const required of ['dist/engine.wasm', 'dist/build.json', 'dist/index.d.cts', 'dist/THIRD_PARTY_NOTICES.txt', 'dist/browser/client.js', 'dist/browser/worker.js', 'dist/browser/asset-manifest.json', 'src/index.js', 'src/index.cjs', 'src/index.d.ts', 'src/browser.d.ts', 'src/engine-runner.js', 'src/render-input.cjs', 'src/copy-browser-assets.cjs', 'src/worker.js', 'src/process-worker.cjs', 'LICENSE', 'README.md', 'package.json']) assert(names.includes(required), required);
@@ -160,6 +162,25 @@ await mkdir(join(install, 'fonts/family'), { recursive: true });
 await copyFile(join(root, 'test/named-fonts.test.mjs'), join(install, 'named-fonts.test.mjs'));
 for (const name of ['LibreCaslonText[wght].ttf', 'OFL.txt'])
   await copyFile(join(root, 'test/fonts/family', name), join(install, 'fonts/family', name));
+await copyFile(join(root, 'test/fonts/NotoSansMath-Regular.ttf'), join(install, 'fonts/NotoSansMath-Regular.ttf'));
+await mkdir(join(install, 'fixtures'), { recursive: true });
+await copyFile(join(root, 'test/fixtures/process-driver.cjs'), join(install, 'fixtures/process-driver.cjs'));
+for (const name of ['batch-fixtures.mjs', 'batch-input.test.mjs', 'render-batch.test.mjs', 'process-isolation.test.mjs'])
+  await copyFile(join(root, 'test', name), join(install, name));
+const batchOutput = join(root, 'output/batch-verification');
+const batchRun = spawnSync(process.execPath, ['--test', '--test-reporter=tap', 'batch-input.test.mjs', 'render-batch.test.mjs', 'process-isolation.test.mjs'], {
+  cwd: install, env: { ...env, FULLBLEED_BATCH_EVIDENCE: join(batchOutput, 'runtime') }, encoding: 'utf8', timeout: 120000,
+});
+await writeFile(join(output, 'batch-tests.log'), batchRun.stdout + batchRun.stderr);
+assert.equal(batchRun.status, 0, batchRun.stderr || batchRun.stdout);
+const batchTests = Number(batchRun.stdout.match(/^# tests (\d+)$/m)?.[1]);
+assert(batchTests >= 28 && batchTests === Number(batchRun.stdout.match(/^# pass (\d+)$/m)?.[1]));
+await copyFile(join(root, 'tools/check-installed-batches.mjs'), join(install, 'check-batches.mjs'));
+const installedBatches = spawnSync(process.execPath, ['check-batches.mjs', batchOutput], { cwd: install, env, encoding: 'utf8', timeout: 120000 });
+await writeFile(join(output, 'installed-batches.log'), installedBatches.stdout + installedBatches.stderr);
+assert.equal(installedBatches.status, 0, installedBatches.stderr || installedBatches.stdout);
+const batchSmoke = { ...JSON.parse(await readFile(join(batchOutput, 'verification.json'), 'utf8')), tests: batchTests };
+assert(batchSmoke.ok && batchSmoke.fixtures.length === 7 && batchSmoke.readmeExamples.length === 2);
 const namedFontOutput = join(output, 'named-fonts');
 const namedFontRun = spawnSync(process.execPath, ['--test', 'named-fonts.test.mjs'], {
   cwd: install, env: { ...env, FULLBLEED_NAMED_FONT_EVIDENCE: namedFontOutput }, encoding: 'utf8', timeout: 60000,
@@ -200,6 +221,6 @@ assert.equal(inline.stdout.trim().replaceAll('\r', ''), '1\n1');
 const report = { ok: true, node: process.version, platform: process.platform, package: packed.filename,
   tarballSha256: createHash('sha256').update(await readFile(tarball)).digest('hex'), files: names,
   freshCacheInstall: true, offlineInstallFromGeneratedLock: true, runtimePath: 'Node executable directory only', installDirectory: install.slice(output.length + 1),
-  inlineModule: true, smoke, processSmoke, queueSmoke, styleSmoke, componentSmoke, namedFonts };
+  inlineModule: true, smoke, processSmoke, queueSmoke, styleSmoke, componentSmoke, namedFonts, batchSmoke };
 await writeFile(join(output, 'verification.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report));

@@ -5,7 +5,8 @@ import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderPdf } from 'fullbleed';
+import { renderPdf, renderPdfBatch } from 'fullbleed';
+import { batchFixtures } from '../test/batch-fixtures.mjs';
 import { gradientFixtures } from '../test/gradients.mjs';
 import { inlineFixtures } from '../test/inline-wrapping.mjs';
 import { standardFontFixtures } from '../test/standard-fonts.mjs';
@@ -39,6 +40,9 @@ for (const [name, pages] of [['invoice', 1], ['report', 3]]) {
 }
 fixtures.push({ name: 'custom-font', pages: 1, html: '<h1>Integral: ⨌</h1>', css: "body {font-family:Inter,'Noto Sans Math'}", fonts: [await readFile(join(root, 'test/fonts/NotoSansMath-Regular.ttf'))] });
 fixtures.push({ name: 'asset', pages: 1, html: '<h1>Brand asset</h1><img src="assets/brand/logo.svg">', css: '', assets: { 'brand/logo.svg': Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><rect width="80" height="40" fill="#175c52"/></svg>') } });
+for (const fixture of batchFixtures) fixtures.push({ name: fixture.name, pages: fixture.pages, ...fixture.options,
+  recordPages: fixture.recordPages, expectedMissingGlyphs: fixture.missingGlyphs, missingRows: fixture.missingRows,
+  fonts: await Promise.all((fixture.fontFiles ?? []).map(name => readFile(join(root, 'test/fonts', name)))) });
 for (const fixture of fixtures) {
   const directory = await mkdtemp(join(output, fixture.name + '-'));
   await mkdir(join(directory, 'fonts'));
@@ -56,14 +60,26 @@ for (const fixture of fixtures) {
   }
   await writeFile(join(directory, 'input.html'), fixture.html);
   await writeFile(join(directory, 'style.css'), (fixture.defaultStyles === false ? '' : 'body { font-family: Inter; }\n') + fixture.css);
+  const batch = fixture.records !== undefined;
+  if (batch) await writeFile(join(directory, 'records.json'), JSON.stringify(fixture.records));
   const dpi = fixture.previewDpi ?? 96;
-  const native = spawnSync(executable, ['1000', String(dpi), 'reject', ...names], { cwd: directory, encoding: 'utf8', timeout: 60000 });
+  const native = spawnSync(executable, ['1000', String(dpi), fixture.allowMissingGlyphs ? 'allow' : 'reject', ...names,
+    ...(batch ? ['--batch-' + (fixture.layout ?? 'reflow')] : [])], { cwd: directory, encoding: 'utf8', timeout: 60000 });
   assert.equal(native.status, 0, native.stderr);
   const options = { html: fixture.html, css: fixture.css, previewDpi: dpi, fonts: fixture.fonts, assets: fixture.assets,
+    ...(batch ? { records: fixture.records, layout: fixture.layout, allowMissingGlyphs: fixture.allowMissingGlyphs ?? false } : {}),
     ...(fixture.defaultStyles === undefined ? {} : { defaultStyles: fixture.defaultStyles }) };
-  const wasi = await renderPdf(options);
+  const wasi = await (batch ? renderPdfBatch : renderPdf)(options);
   assert.equal(wasi.pages, fixture.pages);
-  assert.equal(wasi.missingGlyphs, 0);
+  assert.equal(wasi.missingGlyphs, fixture.expectedMissingGlyphs ?? 0);
+  const nativeReport = JSON.parse(await readFile(join(directory, 'result.json'), 'utf8'));
+  assert.equal(nativeReport.pages, wasi.pages);
+  assert.equal(nativeReport.missingGlyphs, wasi.missingGlyphs);
+  if (batch) {
+    assert.deepEqual(nativeReport.records, wasi.records);
+    assert.deepEqual(wasi.records.map(row => row.pageCount), fixture.recordPages);
+    assert.deepEqual(wasi.records.map(row => row.missingGlyphs.map(({ codepoint, count }) => ({ codepoint, count }))), fixture.missingRows);
+  }
   const pdf = await readFile(join(directory, 'document.pdf'));
   assert.equal(hash(wasi.pdf), hash(pdf), fixture.name + ' PDF');
   await writeFile(join(directory, 'wasi.pdf'), wasi.pdf);
@@ -79,6 +95,7 @@ for (const fixture of fixtures) {
   }
   const previewsEqual = JSON.stringify(previews) === JSON.stringify(wasiPreviews);
   records.push({ name: fixture.name, pages: wasi.pages, pdfSha256: hash(pdf), previewsSha256: previews,
+    ...(batch ? { batch: true, missingGlyphs: wasi.missingGlyphs, recordReports: wasi.records, nativeWasiReportsEqual: true } : {}),
     wasiPreviewsSha256: wasiPreviews, directory: directory.slice(output.length + 1), nativeWasiPdfEqual: true,
     nativeWasiPreviewsEqual: previewsEqual, nativeWasiEqual: previewsEqual, previewComparisonRequired,
     previewScope: 'Exact finalized preview bytes, including bundled Standard 14 substitutes' });

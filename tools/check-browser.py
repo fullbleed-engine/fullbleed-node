@@ -24,7 +24,7 @@ site = root / 'output/browser-verification/site'
 out = root / f'output/browser-{args.browser}-{args.label}'
 out.mkdir(exist_ok=False)
 requests, errors, checks, documents = [], [], [], []
-gates = {name: {'started': Event(), 'release': Event()} for name in ['slow-abort', 'slow-timeout']}
+gates = {name: {'started': Event(), 'release': Event()} for name in ['slow-abort', 'slow-timeout', 'batch-abort', 'batch-timeout']}
 policy = "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; connect-src 'self'; img-src 'self' blob:; style-src 'self'; object-src 'none'; base-uri 'none'"
 
 class Handler(BaseHTTPRequestHandler):
@@ -37,7 +37,7 @@ class Handler(BaseHTTPRequestHandler):
         requests.append(request)
         relative = path.lstrip('/') or 'index.html'
         prefix = relative.split('/')[0]
-        if prefix in ['wrong', 'corrupt', 'missing', *gates]:
+        if prefix in ['wrong', 'corrupt', 'missing', 'bad-batch', *gates]:
             relative = 'fullbleed/' + relative.split('/', 1)[1]
         file = (site / relative).resolve()
         if not file.is_relative_to(site.resolve()) or not file.is_file():
@@ -54,6 +54,9 @@ class Handler(BaseHTTPRequestHandler):
             data = b'self.postMessage({type:"ready",protocol:1,version:"0.0.0",engineVersion:"0.0.0"});'
         if prefix == 'corrupt' and relative.endswith('/engine.wasm'):
             data = data[:-1] + bytes([data[-1] ^ 1])
+        if prefix == 'bad-batch' and relative.endswith('/worker.js'):
+            # Keep the real renderer and deliberately corrupt only its record report.
+            data = b'const originalPost = self.postMessage.bind(self); self.postMessage = (data, ...rest) => { if(data.type === "result" && data.ok) data.records[0].pageOffset = 1; return originalPost(data, ...rest); };\n' + data
         mime = 'application/javascript' if file.suffix in ('.js', '.mjs') else 'application/wasm' if file.suffix == '.wasm' else mimetypes.guess_type(file.name)[0] or 'application/octet-stream'
         try:
             self.send_response(200)
@@ -92,6 +95,8 @@ try:
             for name, baseline in prepared['baselines'].items():
                 result = page.evaluate('name => harness.render(name)', name)
                 check(name + ': browser PDF and all previews match the installed Node package', result['pdf'] == baseline['pdf'] and result['previews'] == baseline['previews'] and result['pages'] == baseline['pages'] and result['missingGlyphs'] == baseline['missingGlyphs'])
+                if 'records' in baseline:
+                    check(name + ': every record report matches the installed Node package', result.get('records') == baseline['records'])
                 check(name + ': result uses browser byte arrays and requests worker termination', result['browserBytes'] and result['stats']['allTerminatedOnce'])
                 for preview in range(-1, len(result['previews'])):
                     with page.expect_download() as event:
@@ -132,6 +137,29 @@ try:
             check('caller-owned font and asset buffers are copied before awaiting', copied['pdf'] == prepared['baselines']['custom']['pdf'])
             named = page.evaluate("() => harness.render('named-font', true)")
             check('named font bytes are copied before awaiting', named['pdf'] == prepared['baselines']['named-font']['pdf'])
+            batch_snapshot = page.evaluate("() => harness.render('batch-fixed', true)")
+            check('batch records are copied before awaiting', batch_snapshot['pdf'] == prepared['baselines']['batch-fixed']['pdf']
+                  and batch_snapshot['records'] == prepared['baselines']['batch-fixed']['records'])
+            batch_invalid = page.evaluate("""async () => {
+              const before = harness.stats().created;
+              const basic = {html:'<p>{{value}}</p>',records:[{value:'ok'}]};
+              const inputs = [{...basic,records:[]}, {...basic,records:[{value:1}]},
+                {...basic,records:[{value:'x'},{other:'y'}]}, {...basic,records:[{value:'é'.repeat(2000001)}]}];
+              const results = await Promise.all(inputs.map(input => harness.capture(harness.renderer.renderPdfBatch(input))));
+              return {results,created:harness.stats().created-before};
+            }""")
+            check('invalid batch records and combined UTF-8 budget start no browser worker', batch_invalid['created'] == 0
+                  and all(row.get('code') == 'INVALID_INPUT' and row.get('fullbleedError') for row in batch_invalid['results']))
+            for name, overrides, code in [('batch-missing', {'allowMissingGlyphs': False}, 'MISSING_GLYPHS'),
+                                          ('batch-fixed', {'maxPages': 1}, 'PAGE_LIMIT'),
+                                          ('batch-fixed', {'records': [{'wrong': 'value'}]}, 'INVALID_BINDINGS')]:
+                failure = page.evaluate("""async ({name,overrides}) => harness.capture(harness.renderer.renderPdfBatch({
+                  ...await harness.input(name), ...overrides}))""", {'name': name, 'overrides': overrides})
+                check(name + ': batch ' + code, failure.get('code') == code and failure.get('fullbleedError'))
+            corrupt_report = page.evaluate("""async () => harness.capture(harness.api.createRenderer({
+              assetBaseUrl:new URL('bad-batch/',location.href)}).renderPdfBatch(await harness.input('batch-fixed')))""")
+            check('malformed browser batch reports reject and terminate the worker', corrupt_report.get('code') == 'WORKER_FAILED'
+                  and page.evaluate('harness.stats().allTerminatedOnce'))
 
             invalid = page.evaluate("""async () => {
               const before = harness.stats().created;
@@ -166,15 +194,17 @@ try:
             }""")
             check('aborting during construction still terminates the returned worker', race.get('code') == 'ABORTED' and page.evaluate('harness.stats().allTerminatedOnce'))
 
-            for prefix, code in [('slow-abort', 'ABORTED'), ('slow-timeout', 'TIMEOUT')]:
+            for prefix, code in [('slow-abort', 'ABORTED'), ('slow-timeout', 'TIMEOUT'), ('batch-abort', 'ABORTED'), ('batch-timeout', 'TIMEOUT')]:
                 page.evaluate("""prefix => {
                   globalThis.controller = new AbortController();
                   const renderer = harness.api.createRenderer({assetBaseUrl:new URL(prefix+'/',location.href)});
-                  globalThis.pending = harness.capture(renderer.renderPdf({html:'Delayed runtime load',
-                    signal:controller.signal,timeoutMs:prefix==='slow-timeout'?1500:10000}));
+                   const options = {html:'Delayed runtime load {{value}}',
+                     signal:controller.signal,timeoutMs:prefix.endsWith('timeout')?1500:10000};
+                   globalThis.pending = harness.capture(prefix.startsWith('batch-')
+                     ? renderer.renderPdfBatch({...options,records:[{value:'batch'}]}) : renderer.renderPdf(options));
                 }""", prefix)
                 assert gates[prefix]['started'].wait(5), 'Observe actual engine fetching before interrupting it.'
-                if prefix == 'slow-abort':
+                if prefix.endswith('abort'):
                     page.evaluate('controller.abort()')
                 failure = page.evaluate('pending')
                 gates[prefix]['release'].set()
@@ -188,6 +218,9 @@ try:
                     check('mismatched workers receive no document payload', page.evaluate('harness.stats().postedMessages') == before['postedMessages'])
             recovered = page.evaluate("() => harness.render('invoice')")
             check('a normal render recovers after errors, timeout and cancellation', recovered['pdf'] == prepared['baselines']['invoice']['pdf'] and recovered['stats']['allTerminatedOnce'])
+            batch_recovered = page.evaluate("() => harness.render('batch-reflow')")
+            check('a batch recovers after errors, timeout and cancellation', batch_recovered['pdf'] == prepared['baselines']['batch-reflow']['pdf']
+                  and batch_recovered['records'] == prepared['baselines']['batch-reflow']['records'] and batch_recovered['stats']['allTerminatedOnce'])
             check('all requests are same-origin GETs or local image blobs without document upload',
                   all(row['method'] == 'GET' and not row['body'] and 'PRIVATE_BROWSER_MARKER' not in row['url']
                       and (row['url'].startswith(base) or (row['resourceType'] == 'image' and row['url'].startswith('blob:' + base)))
