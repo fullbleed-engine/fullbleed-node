@@ -1,7 +1,7 @@
 # Generate PDFs in a browser
 
-The `fullbleed/browser` entry in Fullbleed 0.8.7 renders static HTML/CSS in a
-dedicated Web Worker. It uses the same pinned 2.5.43 engine and bundled fonts as
+The `fullbleed/browser` entry in Fullbleed 0.9.0 renders static HTML/CSS in a
+dedicated Web Worker. It uses the same pinned 2.5.46 engine and bundled fonts as
 the Node entry. The result is a `Uint8Array`, suitable for a PDF `Blob`, plus
 optional PNG previews. No PDF server or account is required.
 
@@ -21,7 +21,7 @@ Install the package in your web project, then copy its browser files into the
 directory your application serves as static files:
 
 ```sh
-npm install --save-exact fullbleed@0.8.7
+npm install --save-exact fullbleed@0.9.0
 npx fullbleed-browser-assets public/fullbleed
 ```
 
@@ -76,6 +76,14 @@ document off the page's JavaScript thread. Normal browser HTTP caching can reuse
 the static files according to your server's headers. There is no persistent
 renderer pool or offline-service-worker installation.
 
+For documents sharing one template, use `renderer.renderPdfBatch()` with
+string-valued `records`. It returns one combined PDF and a `records` array of
+page ranges and selected-font character reports. Reflow is the default; choose
+`layout: 'fixed'` to retain the compiled geometry and fonts. Up to 10,000 records
+are accepted, and their keys and values share the 4,000,000-byte source budget.
+See the [batch authoring guide](../README.md#generate-a-batch-from-one-template)
+for HTML and component examples. Download `result.pdf` with the same Blob flow.
+
 ## Inputs, limits and errors
 
 `renderer.renderPdf(options)` returns `{ pdf, previews, pages, missingGlyphs,
@@ -83,7 +91,7 @@ engineVersion }`. `pdf` and each preview are byte arrays backed by ordinary
 `ArrayBuffer` objects. A preview can be displayed with an `image/png` Blob URL;
 release those URLs when replacing a preview or unmounting the component.
 
-Options are `html`, `css`, `fonts`, `assets`, `previewDpi`, `timeoutMs`, `maxPages`,
+Options are `html`, `css`, `defaultStyles`, `fonts`, `assets`, `previewDpi`, `timeoutMs`, `maxPages`,
 `allowMissingGlyphs` and `signal`. They follow the [Node input rules](../README.md#api):
 4,000,000 UTF-8 bytes of HTML/CSS, 64 MiB of supplied fonts/assets, previews at
 36–300 DPI or disabled, a default 30-second deadline and 1,000-page limit.
@@ -117,7 +125,7 @@ WebAssembly instance has a 512 MiB ceiling, and previews need additional memory.
 
 `FullbleedError.code` includes `INVALID_INPUT`, `UNSUPPORTED_BROWSER`,
 `VERSION_MISMATCH`, `WORKER_FAILED`, `ENGINE_LOAD_FAILED`, `MISSING_GLYPHS`,
-`PAGE_LIMIT`, `TIMEOUT`, `ABORTED`, `ENGINE_LIMIT`, `RENDER_FAILED` and
+`INVALID_BINDINGS`, `PAGE_LIMIT`, `TIMEOUT`, `ABORTED`, `ENGINE_LIMIT`, `RENDER_FAILED` and
 `PREVIEW_FAILED`. Version mismatch means the installed client and hosted worker
 must be deployed together. Engine-load errors can indicate missing or changed
 files, blocked requests or a content security policy that prevents WebAssembly.

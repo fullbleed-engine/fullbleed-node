@@ -5,9 +5,9 @@ the package's pinned WebAssembly engine and four font faces with your applicatio
 The renderer uses an in-memory filesystem and produces PDF bytes plus optional
 PNG previews. HTML/CSS and document data stay in the Worker handling the request.
 
-This entry is checked in local `workerd` on Windows and Linux. A hosted
-[Workers Playground smoke test](#hosted-playground-smoke-test) also reproduces the
-invoice starter's PDFs. Production CPU, memory, startup behavior, and Free-plan
+This entry is checked in local `workerd` on Windows and Linux. The historical
+[Workers Playground smoke test](#hosted-playground-smoke-test) covers version
+0.8.0. Production CPU, memory, startup behavior, and Free-plan
 suitability still require testing in your deployment. See
 [Cloudflare's current limits](https://developers.cloudflare.com/workers/platform/limits/).
 
@@ -21,7 +21,7 @@ local tests for normal, long, escaped and invalid invoices.
 Use Node.js 22 or newer for your development tools:
 
 ```sh
-npm install --save-exact fullbleed@0.8.7
+npm install --save-exact fullbleed@0.9.0
 npm install --save-dev --save-exact wrangler@4.151.3
 ```
 
@@ -96,6 +96,14 @@ its stylesheet embedded. This also renders with `css: ''` and
 `defaultStyles: false`; the Workers checks compare both forms' PDF and preview
 bytes. Remote stylesheets are not fetched.
 
+Import `renderPdfBatch` from the same entry for documents sharing one template.
+It accepts string-valued `records`, defaults to reflow, and returns one combined
+PDF with page ranges and selected-font character reports for each record.
+Record keys and values share the 1,000,000-byte source budget; the 20-page default
+applies to the whole PDF. Up to 10,000 records are accepted. See the
+[batch authoring guide](../README.md#generate-a-batch-from-one-template) for the
+fixed-layout option, component templates, and missing-character policy.
+
 ## Options and execution
 
 `renderPdf(options)` returns a Promise for `{ pdf, previews, pages,
@@ -148,7 +156,8 @@ python tools/verify-cloudflare.py
 
 The Workers check uses the isolated tarball installation. It compares PDF and
 PNG bytes with Node for Northstar, Common Ground, a custom font/SVG fixture, and
-component-authored documents. It exercises input budgets, unsupported controls,
+component-authored documents, and seven fixed/reflow batch cases. It compares
+per-record reports and exercises input budgets, unsupported controls,
 asset paths, page limits, missing glyphs, repeated calls, and failure recovery.
 Runtime fetching and asynchronous Wasm compilation are disabled during the check.
 An independent PDF reader checks pages, expected text, and the custom font face;
