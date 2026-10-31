@@ -40,6 +40,19 @@ Use [supported Fullbleed print CSS](https://docs.fullbleed.dev/css-coverage/).
 Document scripts do not run. Supply custom image/font bytes through the SDK's
 `assets` and `fonts` options; document URLs do not trigger browser fetches.
 
+## Let an HTML invoice grow
+
+Add or remove rows inside `src/invoice.html`'s `<tbody>` and update both sample
+totals. The HTML sample does not calculate amounts. Its stylesheet lets the table
+continue onto new pages, repeats column headings, and prints `Page N of M` in the
+page margin. The `.closing` group keeps totals and payment details together; it
+can move to the next page when there is not enough room.
+
+Keep the flowing `@page` margins and automatic `.page` height when adapting this
+layout. The invoice check covers the short sample, 24 rows, wrapped descriptions,
+empty rows and page-boundary cases, including final PDF text bounds and every
+displayed preview.
+
 ## Build and deploy
 
 ```sh
