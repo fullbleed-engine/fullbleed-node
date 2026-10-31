@@ -119,11 +119,18 @@ jobs:
           npm run render:fonts -- --package-root output/font-baseline-consumer/node_modules/fullbleed --out output/font-baseline
           npm run verify:fonts -- --evidence-root output/font-baseline --allow-legacy-metadata
           npm run render:fonts
-          npm run verify:fonts -- --baseline output/font-baseline --reviewed-layout test/fixtures/inline-layout-2.5.46.json
+          npm run verify:fonts -- --baseline output/font-baseline --reviewed-layout test/fixtures/inline-layout-2.5.48.json
       - name: Verify installed custom font families against explicit faces
         run: |
           npm run render:families
           npm run verify:families
+      - name: Verify page-margin aliases and the published fallback failure
+        run: |
+          npm install --prefix output/page-margin-baseline-consumer --ignore-scripts --no-audit --no-fund --save-exact fullbleed@0.9.0
+          node tools/render-page-margin-fonts.mjs --package-root output/page-margin-baseline-consumer/node_modules/fullbleed --out output/page-margin-baseline
+          python tools/verify-page-margin-fonts.py output/page-margin-baseline --negative-control
+          node tools/render-page-margin-fonts.mjs
+          python tools/verify-page-margin-fonts.py output/page-margin-fonts
       - uses: actions/upload-artifact@v4
         with:
           name: node-engine
@@ -164,6 +171,9 @@ jobs:
             output/font-baseline/
             output/font-subsets/
             output/font-families/
+            output/page-margin-fonts/
+            output/page-margin-baseline/
+            output/page-margin-baseline-consumer/package-lock.json
             output/inline-wrapping/
             output/standard-baseline-consumer/package-lock.json
             output/standard-baseline/
@@ -232,9 +242,11 @@ jobs:
         run: |
           python -m pip install pypdf==6.19.0 pypdfium2==5.14.0 fonttools==4.65.0 pillow==12.3.0
           npm run render:fonts
-          npm run verify:fonts -- --reviewed-layout test/fixtures/inline-layout-2.5.46.json
+          npm run verify:fonts -- --reviewed-layout test/fixtures/inline-layout-2.5.48.json
           npm run render:families
           npm run verify:families
+          node tools/render-page-margin-fonts.mjs
+          python tools/verify-page-margin-fonts.py output/page-margin-fonts
           npm run render:inline
           npm run verify:inline
           npm run render:standard
@@ -270,6 +282,7 @@ jobs:
           path: |
             output/font-subsets/
             output/font-families/
+            output/page-margin-fonts/
             output/inline-wrapping/
             output/standard-fonts/
             output/engine-regressions/
