@@ -6,7 +6,7 @@ no Python, Rust compiler, browser, or system fonts. MIT licensed.
 
 Use `fullbleed` in Node.js, `fullbleed/browser` in a web application, or
 [`fullbleed/cloudflare`](docs/cloudflare.md) inside a Cloudflare Worker.
-Package **0.9.0** wraps the published **Fullbleed 2.5.46** engine.
+Package **0.9.1** wraps the published **Fullbleed 2.5.48** engine.
 
 [Try the browser playground](https://docs.fullbleed.dev/playground/) ·
 [Documentation](https://docs.fullbleed.dev/getting-started/node/) ·
@@ -175,6 +175,12 @@ TTF/OTF filenames without folders, up to 120 characters; spaces and Unicode are
 supported. Plain byte arrays continue to use the font's intrinsic family names.
 Both forms are copied when the job is accepted and count toward the same asset
 limit. A font file does not also need to be included in `assets`.
+
+From 0.9.1, page headers and footers can use these same CSS aliases, including
+fallback lists and inherited weights. Their typography inherits from `html`,
+then `@page`, then the margin box. A font applied only to `body` does not
+set the page-header font. Use `defaultStyles: false` when your document
+should inherit its body font from `html`.
 
 The WebAssembly engine sees an in-memory filesystem containing the supplied
 inputs and bundled fonts. It does not fetch remote URLs or read application files.

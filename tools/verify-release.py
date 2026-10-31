@@ -32,6 +32,8 @@ RADIAL_GRADIENT_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('radial-gradient-end
 NAMED_FONT_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'named-fonts.test.mjs'
 NAMED_FONT_FILE = ENGINE_REGRESSION_SOURCE.parents[1] / 'fonts/family/LibreCaslonText[wght].ttf'
 BATCH_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'batch-fixtures.mjs'
+PAGE_MARGIN_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('page-margin-fonts-2.5.48.json')
+PAGE_MARGIN_NATIVE = ENGINE_REGRESSION_SOURCE.with_name('page-margin-native-2.5.48.json')
 
 
 def require(condition, message):
@@ -78,7 +80,7 @@ def verify_engine_paint_evidence(report):
     source_sha = hashlib.sha256(source).hexdigest()
     names = {case['name'] for case in fixture['cases']}
     families = {case['family'] for case in fixture['cases']}
-    require(report.get('engine_version') in {fixture['engineVersion'], '2.5.46'}, 'Paint fixtures target another engine')
+    require(report.get('engine_version') in {fixture['engineVersion'], '2.5.46', '2.5.48'}, 'Paint fixtures target another engine')
     evidence = report.get('engine_paint', [])
     require(len(evidence) == 2 and {item.get('platform') for item in evidence} == {'win32', 'linux'},
             'Paint inspection requires Windows and Linux evidence')
@@ -259,7 +261,7 @@ def verify_text_decorations_evidence(report):
     expectations_sha = hashlib.sha256(TEXT_DECORATIONS_EXPECTATIONS.read_bytes()).hexdigest()
     oracle = json.loads(TEXT_DECORATIONS_EXPECTATIONS.read_bytes())
     require(oracle['inputSha256'] == source_sha and oracle['engineVersion'] == '2.5.40'
-                and report.get('engine_version') in {'2.5.40', '2.5.41', '2.5.43', '2.5.46'},
+                and report.get('engine_version') in {'2.5.40', '2.5.41', '2.5.43', '2.5.46', '2.5.48'},
             'Text decorations target another core or fixture')
     names = sorted(row['name'] for row in oracle['cases'])
     failing_names = sorted(row['name'] for row in oracle['cases'] if row['previousEngineFails'])
@@ -347,7 +349,7 @@ def verify_radial_gradient_evidence(report):
     evidence = report.get('radial_gradients', [])
     require(len(evidence) == 2 and {row.get('platform') for row in evidence} == {'linux', 'win32'},
             'Radial gradients require separate Linux and Windows installed-package evidence')
-    require(report.get('engine_version') in {'2.5.43', '2.5.46'}, 'Radial evidence targets another engine')
+    require(report.get('engine_version') in {'2.5.43', '2.5.46', '2.5.48'}, 'Radial evidence targets another engine')
     for row in evidence:
         require(row.get('ok') is True and row.get('negative_control') is False
                 and row.get('package_version') == report.get('package_version')
@@ -421,6 +423,53 @@ def verify_batch_evidence(report):
             'Native/WASI batch PDF, preview or record-report evidence is incomplete')
 
 
+def verify_page_margin_evidence(report):
+    source = PAGE_MARGIN_SOURCE.read_bytes()
+    source_sha = hashlib.sha256(source).hexdigest()
+    native_bytes = PAGE_MARGIN_NATIVE.read_bytes()
+    native_sha = hashlib.sha256(native_bytes).hexdigest()
+    native = json.loads(native_bytes)
+    names = {case['name'] for case in json.loads(source)['cases']}
+    require(native['fixtureSha256'] == source_sha and report.get('engine_version') == native['engineVersion'],
+            'Page-margin fixtures target another source or engine')
+    evidence = report.get('page_margin_fonts', [])
+    require(len(evidence) == 2 and {row.get('platform') for row in evidence} == {'linux', 'win32'},
+            'Page-margin PDFs require Windows and Linux evidence')
+    expected = {case['name']: case for case in native['cases']}
+    for row in evidence:
+        require(row.get('ok') is True and row.get('negativeControl') is False and row.get('isolation') == 'process'
+                and row.get('defaultStyles') is False
+                and row.get('packageVersion') == report['package_version']
+                and row.get('engineVersion') == report['engine_version']
+                and row.get('tarballSha256') == report['package_sha256']
+                and row.get('wasmSha256') == report['wasm_sha256']
+                and row.get('fixtureSha256') == source_sha and row.get('nativeReferenceSha256') == native_sha
+                and row.get('pairs') == 8 and row.get('pages') == 18 and row.get('nativeMatchingDocuments') == 16,
+                'Page-margin evidence is incomplete or targets another package')
+        cases = row.get('cases', [])
+        require(len(cases) == 8 and {case.get('name') for case in cases} == names,
+                'Page-margin cases are missing or duplicated')
+        for case in cases:
+            require(case.get('mismatches') == [], 'An alias differs from its explicit-face control')
+            for kind in ['alias', 'control']:
+                actual = case.get(kind, {})
+                require(actual.get('problems') == [] and all(actual.get(key) == expected[case['name']][kind][key]
+                        for key in ['pdfSha256', 'pages', 'nativePreviewSha256', 'pdfiumPixelsSha256']),
+                        'Page-margin PDF, font, text or preview differs from the qualified native control')
+    negative = report.get('page_margin_negative_control', {})
+    require(negative.get('ok') is True and negative.get('negativeControl') is True
+            and negative.get('defaultStyles') is False
+            and negative.get('publicFailureReproduced') is True and negative.get('packageVersion') == '0.9.0'
+            and negative.get('engineVersion') == '2.5.46' and negative.get('fixtureSha256') == source_sha,
+            'The actual public page-margin failure control is missing')
+    failed = {case['name']: case for case in negative.get('cases', [])}
+    for name in ['local-alias', 'url-alias']:
+        case = failed.get(name, {})
+        require(case.get('control', {}).get('problems') == [] and bool(case.get('mismatches'))
+                and any(problem.get('field') == 'footerFont' for problem in case.get('alias', {}).get('problems', [])),
+                'Page-margin failure control is uncalibrated')
+
+
 def verify_binding(version, run_id, run, release, tag_commit, report):
     require(re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version), 'Use a stable numeric version')
     require(re.fullmatch(r'[0-9]+', run_id), 'Use a numeric CI run ID')
@@ -491,7 +540,7 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
                 hidden_sha = hashlib.sha256(hidden_source).hexdigest()
                 hidden_fixture = json.loads(hidden_source)
                 hidden_cases = hidden_fixture['cases']
-                require(report.get('engine_version') in {hidden_fixture['engineVersion'], '2.5.46'},
+                require(report.get('engine_version') in {hidden_fixture['engineVersion'], '2.5.46', '2.5.48'},
                         'Hidden-text fixtures target another engine')
                 hidden = report.get('hidden_text', [])
                 require(len(hidden) == 2 and {item.get('platform') for item in hidden} == {'win32', 'linux'},
@@ -538,6 +587,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             verify_radial_gradient_evidence(report)
         if release_version >= (0, 9, 0):
             verify_batch_evidence(report)
+        if release_version >= (0, 9, 1):
+            verify_page_margin_evidence(report)
 
 
 def verify_tarball(data, info, report):

@@ -1,0 +1,431 @@
+{
+  "schema": "fullbleed.page_margin_native_reference.v1",
+  "sourceHead": "0997487693615434e8f3d45422ab5a89e67f4d71",
+  "engineVersion": "2.5.48",
+  "sourceRun": "https://github.com/fullbleed-engine/fullbleed-official/actions/runs/41199950122",
+  "artifactId": 13041599934,
+  "reportSha256": "b5d913880890eb162aaddd401bb08e722a9c30543d0d0ab8233e13293a587c12",
+  "fixtureSha256": "d74cbcc6e0ae61efb746af59747323bb61a1c6e8f2e5fd72a71219c78c3eb273",
+  "cases": [
+    {
+      "name": "local-alias",
+      "control": {
+        "pdfSha256": "89f2421db55c9c68fbb476743ba147803a2240ff9ee2b2eeeeb851ebb75f9c28",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "12fab057a3d6fce496fed9de11510eb8fddac2a133d2e5eb278a33fda9d66550"
+        ],
+        "pdfiumPixelsSha256": [
+          "672d2a6757eb3791e92dfa7ff284eb7933dfd85dd4a258a2bc4262d37ffef274"
+        ]
+      },
+      "alias": {
+        "pdfSha256": "89f2421db55c9c68fbb476743ba147803a2240ff9ee2b2eeeeb851ebb75f9c28",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "12fab057a3d6fce496fed9de11510eb8fddac2a133d2e5eb278a33fda9d66550"
+        ],
+        "pdfiumPixelsSha256": [
+          "672d2a6757eb3791e92dfa7ff284eb7933dfd85dd4a258a2bc4262d37ffef274"
+        ]
+      }
+    },
+    {
+      "name": "url-alias",
+      "control": {
+        "pdfSha256": "89f2421db55c9c68fbb476743ba147803a2240ff9ee2b2eeeeb851ebb75f9c28",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "12fab057a3d6fce496fed9de11510eb8fddac2a133d2e5eb278a33fda9d66550"
+        ],
+        "pdfiumPixelsSha256": [
+          "672d2a6757eb3791e92dfa7ff284eb7933dfd85dd4a258a2bc4262d37ffef274"
+        ]
+      },
+      "alias": {
+        "pdfSha256": "89f2421db55c9c68fbb476743ba147803a2240ff9ee2b2eeeeb851ebb75f9c28",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "12fab057a3d6fce496fed9de11510eb8fddac2a133d2e5eb278a33fda9d66550"
+        ],
+        "pdfiumPixelsSha256": [
+          "672d2a6757eb3791e92dfa7ff284eb7933dfd85dd4a258a2bc4262d37ffef274"
+        ]
+      }
+    },
+    {
+      "name": "inherited-weight",
+      "control": {
+        "pdfSha256": "89f2421db55c9c68fbb476743ba147803a2240ff9ee2b2eeeeb851ebb75f9c28",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "12fab057a3d6fce496fed9de11510eb8fddac2a133d2e5eb278a33fda9d66550"
+        ],
+        "pdfiumPixelsSha256": [
+          "672d2a6757eb3791e92dfa7ff284eb7933dfd85dd4a258a2bc4262d37ffef274"
+        ]
+      },
+      "alias": {
+        "pdfSha256": "89f2421db55c9c68fbb476743ba147803a2240ff9ee2b2eeeeb851ebb75f9c28",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "12fab057a3d6fce496fed9de11510eb8fddac2a133d2e5eb278a33fda9d66550"
+        ],
+        "pdfiumPixelsSha256": [
+          "672d2a6757eb3791e92dfa7ff284eb7933dfd85dd4a258a2bc4262d37ffef274"
+        ]
+      }
+    },
+    {
+      "name": "fallback-alias",
+      "control": {
+        "pdfSha256": "89f2421db55c9c68fbb476743ba147803a2240ff9ee2b2eeeeb851ebb75f9c28",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "12fab057a3d6fce496fed9de11510eb8fddac2a133d2e5eb278a33fda9d66550"
+        ],
+        "pdfiumPixelsSha256": [
+          "672d2a6757eb3791e92dfa7ff284eb7933dfd85dd4a258a2bc4262d37ffef274"
+        ]
+      },
+      "alias": {
+        "pdfSha256": "89f2421db55c9c68fbb476743ba147803a2240ff9ee2b2eeeeb851ebb75f9c28",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "12fab057a3d6fce496fed9de11510eb8fddac2a133d2e5eb278a33fda9d66550"
+        ],
+        "pdfiumPixelsSha256": [
+          "672d2a6757eb3791e92dfa7ff284eb7933dfd85dd4a258a2bc4262d37ffef274"
+        ]
+      }
+    },
+    {
+      "name": "page-inherit",
+      "control": {
+        "pdfSha256": "89f2421db55c9c68fbb476743ba147803a2240ff9ee2b2eeeeb851ebb75f9c28",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "12fab057a3d6fce496fed9de11510eb8fddac2a133d2e5eb278a33fda9d66550"
+        ],
+        "pdfiumPixelsSha256": [
+          "672d2a6757eb3791e92dfa7ff284eb7933dfd85dd4a258a2bc4262d37ffef274"
+        ]
+      },
+      "alias": {
+        "pdfSha256": "89f2421db55c9c68fbb476743ba147803a2240ff9ee2b2eeeeb851ebb75f9c28",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "12fab057a3d6fce496fed9de11510eb8fddac2a133d2e5eb278a33fda9d66550"
+        ],
+        "pdfiumPixelsSha256": [
+          "672d2a6757eb3791e92dfa7ff284eb7933dfd85dd4a258a2bc4262d37ffef274"
+        ]
+      }
+    },
+    {
+      "name": "quoted-generic-alias",
+      "control": {
+        "pdfSha256": "89f2421db55c9c68fbb476743ba147803a2240ff9ee2b2eeeeb851ebb75f9c28",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "12fab057a3d6fce496fed9de11510eb8fddac2a133d2e5eb278a33fda9d66550"
+        ],
+        "pdfiumPixelsSha256": [
+          "672d2a6757eb3791e92dfa7ff284eb7933dfd85dd4a258a2bc4262d37ffef274"
+        ]
+      },
+      "alias": {
+        "pdfSha256": "89f2421db55c9c68fbb476743ba147803a2240ff9ee2b2eeeeb851ebb75f9c28",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "12fab057a3d6fce496fed9de11510eb8fddac2a133d2e5eb278a33fda9d66550"
+        ],
+        "pdfiumPixelsSha256": [
+          "672d2a6757eb3791e92dfa7ff284eb7933dfd85dd4a258a2bc4262d37ffef274"
+        ]
+      }
+    },
+    {
+      "name": "size-adjust",
+      "control": {
+        "pdfSha256": "95a4ce20c19888e270cd8733c9a3334112cda65ecad538376ccd17c002e549c6",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 15.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "d9b53bd4b43a76f132a9aa55c708da337347c44e41bdb456c14ba9b898c0e810"
+        ],
+        "pdfiumPixelsSha256": [
+          "2b1848e1771111fae4039628b1fad1795b23214b08970162a9fc3bf224660de2"
+        ]
+      },
+      "alias": {
+        "pdfSha256": "95a4ce20c19888e270cd8733c9a3334112cda65ecad538376ccd17c002e549c6",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 body text. FOOTER 1 of 1",
+            "footer": {
+              "text": "FOOTER 1 of 1",
+              "font": "DMSerifDisplay-Regular",
+              "size": 15.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "d9b53bd4b43a76f132a9aa55c708da337347c44e41bdb456c14ba9b898c0e810"
+        ],
+        "pdfiumPixelsSha256": [
+          "2b1848e1771111fae4039628b1fad1795b23214b08970162a9fc3bf224660de2"
+        ]
+      }
+    },
+    {
+      "name": "named-pages",
+      "control": {
+        "pdfSha256": "06e929f29d6e5d98b9e55df44af824eb9cd94d269c395adcf66115d4a34c23b1",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 first body. FOOTER 1 of 2",
+            "footer": {
+              "text": "FOOTER 1 of 2",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          },
+          {
+            "text": "Record Alpha \u2014 second body. FOOTER 2 of 2",
+            "footer": {
+              "text": "FOOTER 2 of 2",
+              "font": "NotoSans-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "b911ece97b670d8ee29605cb8a1adb0df744407ed5bce5130d0bcb0fcc177f0b",
+          "d0d12bc6fabc3c36db2a6607fa0da0fefdd903139ed058f106850dd2fe05ec88"
+        ],
+        "pdfiumPixelsSha256": [
+          "b8dd4174a0fcf6c5cf44dd53499a5ad258263840312f647c2eb0e9430284b0fc",
+          "aa07e09729f9ee547b5aab1fcfcd63d23e49dd5c7b268697f7c142f80984dc90"
+        ]
+      },
+      "alias": {
+        "pdfSha256": "06e929f29d6e5d98b9e55df44af824eb9cd94d269c395adcf66115d4a34c23b1",
+        "pages": [
+          {
+            "text": "Record Alpha \u2014 first body. FOOTER 1 of 2",
+            "footer": {
+              "text": "FOOTER 1 of 2",
+              "font": "DMSerifDisplay-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          },
+          {
+            "text": "Record Alpha \u2014 second body. FOOTER 2 of 2",
+            "footer": {
+              "text": "FOOTER 2 of 2",
+              "font": "NotoSans-Regular",
+              "size": 12.0
+            },
+            "fonts": [
+              "DMSerifDisplay-Regular",
+              "NotoSans-Regular"
+            ]
+          }
+        ],
+        "nativePreviewSha256": [
+          "b911ece97b670d8ee29605cb8a1adb0df744407ed5bce5130d0bcb0fcc177f0b",
+          "d0d12bc6fabc3c36db2a6607fa0da0fefdd903139ed058f106850dd2fe05ec88"
+        ],
+        "pdfiumPixelsSha256": [
+          "b8dd4174a0fcf6c5cf44dd53499a5ad258263840312f647c2eb0e9430284b0fc",
+          "aa07e09729f9ee547b5aab1fcfcd63d23e49dd5c7b268697f7c142f80984dc90"
+        ]
+      }
+    }
+  ]
+}
