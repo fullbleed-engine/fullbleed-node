@@ -86,7 +86,7 @@ def verify(root, negative_control=False):
     assert {case['name'] for case in source['cases']} == expected.keys()
     if negative_control:
         assert source['packageVersion'] == '0.9.0' and source['engineVersion'] == '2.5.46'
-    native_path = Path(__file__).resolve().parents[1] / 'test/fixtures/page-margin-native-2.5.49.json'
+    native_path = Path(__file__).resolve().parents[1] / 'test/fixtures/page-margin-native-2.5.50.json'
     native_bytes = native_path.read_bytes()
     native = json.loads(native_bytes)
     assert native['fixtureSha256'] == source['fixtureSha256']
