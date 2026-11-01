@@ -10,6 +10,7 @@ import { parseArgs } from 'node:util';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const { values } = parseArgs({ options: {
   'package-root': { type: 'string' }, out: { type: 'string' }, 'direct-only': { type: 'boolean', default: false },
+  'new-cases-only': { type: 'boolean', default: false },
 } });
 let packageRoot = values['package-root'];
 if (!packageRoot) {
@@ -24,9 +25,12 @@ const build = JSON.parse(await readFile(join(packageRoot, 'dist/build.json'), 'u
 assert.equal(build.packageVersion, version);
 assert.equal(build.engineVersion, engineVersion);
 assert.equal(hash(await readFile(join(packageRoot, 'dist/engine.wasm'))), build.files['dist/engine.wasm'].sha256);
-const fixtureBytes = await readFile(join(root, 'test/fixtures/generated-counters-2.5.49.json'));
+const fixtureBytes = await readFile(join(root, 'test/fixtures/generated-counters-2.5.50.json'));
 const fixture = JSON.parse(fixtureBytes);
-assert.equal(fixture.cases.length, 59);
+assert.equal(fixture.cases.length, 70);
+assert.equal(fixture.newCases.length, 11);
+const selected = values['new-cases-only'] ? fixture.cases.filter(row => fixture.newCases.includes(row.name)) : fixture.cases;
+assert.equal(selected.length, values['new-cases-only'] ? 11 : 70);
 const font = await readFile(join(packageRoot, 'assets/fonts/Inter-Variable.ttf'));
 assert.equal(hash(font), fixture.font.sha256);
 const output = resolve(values.out ?? join(root, 'output/generated-counters'));
@@ -38,13 +42,13 @@ const report = { status: 'rendering', packageVersion: version, engineVersion, no
   platform: process.platform, fixtureSha256: hash(fixtureBytes), wasmSha256: build.files['dist/engine.wasm'].sha256,
   isolation: 'process', defaultStyles: false, modes, cases: [] };
 try {
-  for (const specimen of fixture.cases) {
+  for (const specimen of selected) {
     for (const mode of modes) {
       const names = mode === 'direct' ? ['Ada'] : ['Ada', 'Bea'];
       const html = mode === 'direct' ? specimen.html.replaceAll('{{name}}', 'Ada') : specimen.html;
       const options = { html, css: specimen.css, fonts: [{ name: fixture.font.name, data: font }],
         defaultStyles: false, isolation: 'process' };
-      if (specimen.name === 'block-after-increment') options.previewDpi = 96;
+      if (['block-after-increment', 'contents-counter-order'].includes(specimen.name) && !values['new-cases-only']) options.previewDpi = 96;
       const result = mode === 'direct' ? await renderPdf(options)
         : await renderPdfBatch({ ...options, records: names.map(name => ({ name })), layout: mode });
       assert.equal(result.engineVersion, engineVersion);
