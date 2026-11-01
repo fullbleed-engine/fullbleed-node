@@ -47,8 +47,11 @@ def verify(directory, *, negative_control=False, baseline=None):
         assert sha256(path.read_bytes()).hexdigest() == row['pdfSha256']
         reader = PdfReader(path, strict=True)
         assert len(reader.pages) == row['pages'] == expected[name]['pagesPerRecord'] * len(names)
-        actual = normalize(''.join(page.extract_text() or '' for page in reader.pages))
+        page_texts = [normalize(page.extract_text() or '') for page in reader.pages]
+        raw_text = ''.join(page_texts)
         text = ''.join('Record'+value+expected[name]['expectedCounterText'] for value in names)
+        record_pages = expected[name]['pagesPerRecord']
+        label_geometry = []
         with pdfium.PdfDocument(path) as document:
             assert len(document) == len(reader.pages)
             independent = []
@@ -57,7 +60,21 @@ def verify(directory, *, negative_control=False, baseline=None):
                 try:
                     text_page = page.get_textpage()
                     try:
-                        independent.append(text_page.get_text_range())
+                        independent.append(normalize(text_page.get_text_range()))
+                        if number % record_pages == 0:
+                            label = 'Record ' + names[number // record_pages]
+                            search = text_page.search(label)
+                            try:
+                                match = search.get_next()
+                                assert match is not None and search.get_next() is None, (name, mode, label)
+                                start, count = match
+                                label_boxes = [text_page.get_charbox(i) for i in range(start, start+count)]
+                                body_boxes = [text_page.get_charbox(i) for i in range(text_page.count_chars())
+                                    if not start <= i < start+count and not text_page.get_text_range(i, 1).isspace()]
+                                assert body_boxes and min(box[1] for box in label_boxes) > max(box[3] for box in body_boxes), (name, mode, 'record heading must be above the counter body')
+                                label_geometry.append(True)
+                            finally:
+                                search.close()
                     finally:
                         text_page.close()
                     if name == 'block-after-increment':
@@ -68,7 +85,21 @@ def verify(directory, *, negative_control=False, baseline=None):
                             bitmap.close()
                 finally:
                     page.close()
-            assert normalize(''.join(independent)) == actual, (name,mode,'PDF readers disagree')
+            assert independent == page_texts, (name,mode,'PDF readers disagree')
+        # Fixed batches paint bound runs after the static page form. Their PDF
+        # stream order differs from visual order. Keep the raw reader text, then
+        # check every record range, binding and counter sequence independently.
+        record_results = []
+        for index, value in enumerate(names):
+            pages = page_texts[index*record_pages:(index+1)*record_pages]
+            label = 'Record' + value
+            raw_record = ''.join(pages)
+            assert pages[0].count(label) == raw_record.count(label) == 1
+            assert all('Record'+other not in raw_record for other in names if other != value)
+            record_results.append(dict(name=value, pageOffset=index*record_pages, pages=record_pages,
+                labelAboveBody=label_geometry[index], counterText=raw_record.replace(label, '', 1),
+                rawExtractedText=raw_record))
+        actual = ''.join('Record'+r['name']+r['counterText'] for r in record_results)
         previews = row['previews']
         assert len(previews) == (row['pages'] if name == 'block-after-increment' else 0)
         for number, preview in enumerate(previews, 1):
@@ -79,7 +110,7 @@ def verify(directory, *, negative_control=False, baseline=None):
                 assert min(image.convert('L').getextrema()) < 200
         records.append(dict(name=name, mode=mode, pages=row['pages'], pdfSha256=row['pdfSha256'],
             actual=actual, expected=text, matchesExpected=actual == text, independentReadersAgree=True,
-            previews=previews))
+            rawExtractedText=raw_text, recordRangesVerified=True, records=record_results, previews=previews))
     failures = [r['name']+'-'+r['mode'] for r in records if not r['matchesExpected']]
     result = dict(ok=not failures, negativeControl=negative_control, packageVersion=report['packageVersion'],
         engineVersion=report['engineVersion'], platform=report['platform'], node=report['node'],
@@ -87,7 +118,9 @@ def verify(directory, *, negative_control=False, baseline=None):
         fixtureSha256=fixture_sha, wasmSha256=report['wasmSha256'], documents=len(records),
         pages=sum(r['pages'] for r in records), failures=failures, cases=records,
         scope='59 reviewed core counter documents through direct and compiled fixed/reflow saved-PDF paths. '
-        'Exact text and page counts are read with pypdf and PDFium. HTML list controls preserve Fullbleed behavior; '
+        'Counter sequences, record bindings and page ranges are read with pypdf and PDFium; heading placement is checked with glyph geometry. '
+        'Fixed bindings are painted after static content, so raw PDF text-stream order is retained separately and is not claimed to be logical reading order. '
+        'HTML list controls preserve Fullbleed behavior; '
         'this is not complete CSS or browser raster parity.')
     if negative_control:
         result['ok'] = len(failures) == 47 and len(records)-len(failures) == 12

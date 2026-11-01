@@ -499,8 +499,17 @@ def verify_generated_counter_evidence(report):
             text = ''.join('Record'+name+expected[case['name']]['expectedCounterText'] for name in names)
             require(case.get('independentReadersAgree') is True and case.get('matchesExpected') is True
                     and case.get('actual') == case.get('expected') == text
+                    and case.get('recordRangesVerified') is True
                     and case.get('pages') == expected[case['name']]['pagesPerRecord'] * len(names),
                     'A generated counter PDF has incorrect text or pagination')
+            records = case.get('records', [])
+            require(len(records) == len(names) and isinstance(case.get('rawExtractedText'), str),
+                    'Generated counter record readback is incomplete')
+            for index, (name, record) in enumerate(zip(names, records)):
+                require(record.get('name') == name and record.get('pageOffset') == index * expected[case['name']]['pagesPerRecord']
+                        and record.get('pages') == expected[case['name']]['pagesPerRecord'] and record.get('labelAboveBody') is True
+                        and record.get('counterText') == expected[case['name']]['expectedCounterText'],
+                        'Generated counter record ranges, labels or counter sequences differ')
     negative = report.get('generated_counter_negative_control', {})
     require(negative.get('ok') is True and negative.get('negativeControl') is True
             and negative.get('packageVersion') == '0.9.1' and negative.get('engineVersion') == '2.5.48'
