@@ -25,7 +25,7 @@ const build = JSON.parse(await readFile(join(packageRoot, 'dist/build.json'), 'u
 assert.equal(build.packageVersion, version);
 assert.equal(build.engineVersion, engineVersion);
 assert.equal(hash(await readFile(join(packageRoot, 'dist/engine.wasm'))), build.files['dist/engine.wasm'].sha256);
-const fixtureBytes = await readFile(join(root, 'test/fixtures/generated-counters-2.5.50.json'));
+const fixtureBytes = await readFile(join(root, 'test/fixtures/generated-counters-2.5.51.json'));
 const fixture = JSON.parse(fixtureBytes);
 assert.equal(fixture.cases.length, 70);
 assert.equal(fixture.newCases.length, 11);

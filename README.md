@@ -6,7 +6,11 @@ no Python, Rust compiler, browser, or system fonts. MIT licensed.
 
 Use `fullbleed` in Node.js, `fullbleed/browser` in a web application, or
 [`fullbleed/cloudflare`](docs/cloudflare.md) inside a Cloudflare Worker.
-Package **0.9.3** wraps the published **Fullbleed 2.5.50** engine.
+Package **0.9.4** wraps the published **Fullbleed 2.5.51** engine.
+
+A winning `font-family` declaration now replaces an earlier variable-based
+family. If its variable cannot resolve, the text inherits its parent
+family instead of reviving a declaration that lost the cascade.
 
 Numbering continues through `display: contents` wrappers, including their
 children and pseudo-elements. Selectors and inherited styles retain their
@@ -15,7 +19,7 @@ document-tree ancestry.
 Generated CSS counter labels follow document order, including a closing
 `::after` label that counts the preceding items. This applies to ordinary
 PDF rendering and fixed or reflow batches. See the
-[counter authoring guide](https://github.com/fullbleed-engine/fullbleed-official/blob/v2.5.50/docs/generated-content.md)
+[counter authoring guide](https://github.com/fullbleed-engine/fullbleed-official/blob/v2.5.51/docs/generated-content.md)
 for an example and the remaining scope and list-marker limitations.
 
 [Try the browser playground](https://docs.fullbleed.dev/playground/) ·

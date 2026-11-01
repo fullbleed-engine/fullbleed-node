@@ -33,8 +33,9 @@ NAMED_FONT_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'named-fonts.test.mjs'
 NAMED_FONT_FILE = ENGINE_REGRESSION_SOURCE.parents[1] / 'fonts/family/LibreCaslonText[wght].ttf'
 BATCH_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'batch-fixtures.mjs'
 PAGE_MARGIN_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('page-margin-fonts-2.5.48.json')
-PAGE_MARGIN_NATIVE = ENGINE_REGRESSION_SOURCE.with_name('page-margin-native-2.5.50.json')
-GENERATED_COUNTER_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('generated-counters-2.5.50.json')
+PAGE_MARGIN_NATIVE = ENGINE_REGRESSION_SOURCE.with_name('page-margin-native-2.5.51.json')
+GENERATED_COUNTER_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('generated-counters-2.5.51.json')
+FONT_CASCADE_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('font-cascade-2.5.51.json')
 
 
 def require(condition, message):
@@ -81,7 +82,7 @@ def verify_engine_paint_evidence(report):
     source_sha = hashlib.sha256(source).hexdigest()
     names = {case['name'] for case in fixture['cases']}
     families = {case['family'] for case in fixture['cases']}
-    require(report.get('engine_version') in {fixture['engineVersion'], '2.5.46', '2.5.48', '2.5.49', '2.5.50'}, 'Paint fixtures target another engine')
+    require(report.get('engine_version') in {fixture['engineVersion'], '2.5.46', '2.5.48', '2.5.49', '2.5.50', '2.5.51'}, 'Paint fixtures target another engine')
     evidence = report.get('engine_paint', [])
     require(len(evidence) == 2 and {item.get('platform') for item in evidence} == {'win32', 'linux'},
             'Paint inspection requires Windows and Linux evidence')
@@ -262,7 +263,7 @@ def verify_text_decorations_evidence(report):
     expectations_sha = hashlib.sha256(TEXT_DECORATIONS_EXPECTATIONS.read_bytes()).hexdigest()
     oracle = json.loads(TEXT_DECORATIONS_EXPECTATIONS.read_bytes())
     require(oracle['inputSha256'] == source_sha and oracle['engineVersion'] == '2.5.40'
-                and report.get('engine_version') in {'2.5.40', '2.5.41', '2.5.43', '2.5.46', '2.5.48', '2.5.49', '2.5.50'},
+                and report.get('engine_version') in {'2.5.40', '2.5.41', '2.5.43', '2.5.46', '2.5.48', '2.5.49', '2.5.50', '2.5.51'},
             'Text decorations target another core or fixture')
     names = sorted(row['name'] for row in oracle['cases'])
     failing_names = sorted(row['name'] for row in oracle['cases'] if row['previousEngineFails'])
@@ -350,7 +351,7 @@ def verify_radial_gradient_evidence(report):
     evidence = report.get('radial_gradients', [])
     require(len(evidence) == 2 and {row.get('platform') for row in evidence} == {'linux', 'win32'},
             'Radial gradients require separate Linux and Windows installed-package evidence')
-    require(report.get('engine_version') in {'2.5.43', '2.5.46', '2.5.48', '2.5.49', '2.5.50'}, 'Radial evidence targets another engine')
+    require(report.get('engine_version') in {'2.5.43', '2.5.46', '2.5.48', '2.5.49', '2.5.50', '2.5.51'}, 'Radial evidence targets another engine')
     for row in evidence:
         require(row.get('ok') is True and row.get('negative_control') is False
                 and row.get('package_version') == report.get('package_version')
@@ -529,6 +530,60 @@ def verify_generated_counter_evidence(report):
             'The public generated-counter failure count changed')
 
 
+def verify_font_cascade_evidence(report):
+    source_bytes = FONT_CASCADE_SOURCE.read_bytes()
+    source = json.loads(source_bytes)
+    source_sha = hashlib.sha256(source_bytes).hexdigest()
+    expected = {case['name']: case for case in source['cases']}
+    require(len(expected) == 13 and report['engine_version'] == source['engineVersion'],
+            'Font-cascade fixtures target another engine')
+    evidence = report.get('font_cascade', [])
+    require(len(evidence) == 2 and {row.get('platform') for row in evidence} == {'linux', 'win32'},
+            'Font-cascade PDFs require Windows and Linux evidence')
+
+    def check_cases(row, negative):
+        cases = row.get('cases', [])
+        require(row.get('documents') == len(cases) == 13 and {case.get('name') for case in cases} == set(expected),
+                'Font-cascade cases are missing or duplicated')
+        failures = []
+        for case in cases:
+            name = case['name']
+            fonts = expected[name]['expectedBaseFonts']
+            actual = source['negativeControl']['actualBaseFonts'][name] if negative else fonts
+            require(case.get('actualBaseFonts') == actual and case.get('expectedBaseFonts') == fonts
+                    and case.get('matchesExpected') is (actual == fonts) and case.get('pages') == 1
+                    and case.get('missingGlyphs') == 0 and re.fullmatch(r'[0-9a-f]{64}', case.get('pdfSha256', '')),
+                    'Actual PDF font selections are wrong or uncalibrated')
+            previews = case.get('previews', [])
+            require(len(previews) == 1 and previews[0].get('filename') == name + '-1.png'
+                    and re.fullmatch(r'[0-9a-f]{64}', previews[0].get('sha256', '')),
+                    'Font-cascade preview evidence is incomplete')
+            if actual != fonts:
+                failures.append(name)
+        require(row.get('failures') == sorted(failures), 'Font-cascade failure summary differs from actual cases')
+        return {case['name']: (case['pdfSha256'], case['previews'][0]['sha256']) for case in cases}
+
+    reference = None
+    for row in evidence:
+        require(row.get('ok') is True and row.get('negativeControl') is False and row.get('isolation') == 'process'
+                and row.get('defaultStyles') is False and row.get('fixtureSha256') == source_sha
+                and row.get('packageVersion') == report['package_version'] and row.get('engineVersion') == report['engine_version']
+                and row.get('tarballSha256') == report['package_sha256'] and row.get('wasmSha256') == report['wasm_sha256'],
+                'Font-cascade evidence targets another package or source')
+        outputs = check_cases(row, False)
+        if reference is None:
+            reference = outputs
+        require(outputs == reference, 'Font-cascade outputs differ between Windows and Linux')
+    negative = report.get('font_cascade_negative_control', {})
+    require(negative.get('ok') is True and negative.get('negativeControl') is True
+            and negative.get('isolation') == 'process' and negative.get('defaultStyles') is False
+            and negative.get('packageVersion') == '0.9.3' and negative.get('engineVersion') == '2.5.50'
+            and negative.get('fixtureSha256') == source_sha,
+            'The actual public font-cascade failure control is missing')
+    check_cases(negative, True)
+
+
+
 def verify_binding(version, run_id, run, release, tag_commit, report):
     require(re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version), 'Use a stable numeric version')
     require(re.fullmatch(r'[0-9]+', run_id), 'Use a numeric CI run ID')
@@ -599,7 +654,7 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
                 hidden_sha = hashlib.sha256(hidden_source).hexdigest()
                 hidden_fixture = json.loads(hidden_source)
                 hidden_cases = hidden_fixture['cases']
-                require(report.get('engine_version') in {hidden_fixture['engineVersion'], '2.5.46', '2.5.48', '2.5.49', '2.5.50'},
+                require(report.get('engine_version') in {hidden_fixture['engineVersion'], '2.5.46', '2.5.48', '2.5.49', '2.5.50', '2.5.51'},
                         'Hidden-text fixtures target another engine')
                 hidden = report.get('hidden_text', [])
                 require(len(hidden) == 2 and {item.get('platform') for item in hidden} == {'win32', 'linux'},
@@ -650,6 +705,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             verify_page_margin_evidence(report)
         if release_version >= (0, 9, 2):
             verify_generated_counter_evidence(report)
+        if release_version >= (0, 9, 4):
+            verify_font_cascade_evidence(report)
 
 
 def verify_tarball(data, info, report):

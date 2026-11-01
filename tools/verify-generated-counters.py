@@ -11,7 +11,7 @@ from pypdf import PdfReader
 import pypdfium2 as pdfium
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / 'test/fixtures/generated-counters-2.5.50.json'
+SOURCE = ROOT / 'test/fixtures/generated-counters-2.5.51.json'
 MODES = ('direct', 'fixed', 'reflow')
 
 
@@ -31,7 +31,7 @@ def verify(directory, *, negative_control=False, baseline=None):
     if negative_control:
         assert report['packageVersion'] == '0.9.2' and report['engineVersion'] == '2.5.49'
     else:
-        assert report['engineVersion'] == source['engineVersion'] == '2.5.50'
+        assert report['engineVersion'] == source['engineVersion'] == '2.5.51'
     modes = ('direct',) if negative_control else MODES
     assert tuple(report['modes']) == modes
     assert len(source['cases']) == 70 and len(source['newCases']) == 11
