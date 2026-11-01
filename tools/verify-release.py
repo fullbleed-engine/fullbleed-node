@@ -33,7 +33,8 @@ NAMED_FONT_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'named-fonts.test.mjs'
 NAMED_FONT_FILE = ENGINE_REGRESSION_SOURCE.parents[1] / 'fonts/family/LibreCaslonText[wght].ttf'
 BATCH_SOURCE = ENGINE_REGRESSION_SOURCE.parents[1] / 'batch-fixtures.mjs'
 PAGE_MARGIN_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('page-margin-fonts-2.5.48.json')
-PAGE_MARGIN_NATIVE = ENGINE_REGRESSION_SOURCE.with_name('page-margin-native-2.5.48.json')
+PAGE_MARGIN_NATIVE = ENGINE_REGRESSION_SOURCE.with_name('page-margin-native-2.5.49.json')
+GENERATED_COUNTER_SOURCE = ENGINE_REGRESSION_SOURCE.with_name('generated-counters-2.5.49.json')
 
 
 def require(condition, message):
@@ -80,7 +81,7 @@ def verify_engine_paint_evidence(report):
     source_sha = hashlib.sha256(source).hexdigest()
     names = {case['name'] for case in fixture['cases']}
     families = {case['family'] for case in fixture['cases']}
-    require(report.get('engine_version') in {fixture['engineVersion'], '2.5.46', '2.5.48'}, 'Paint fixtures target another engine')
+    require(report.get('engine_version') in {fixture['engineVersion'], '2.5.46', '2.5.48', '2.5.49'}, 'Paint fixtures target another engine')
     evidence = report.get('engine_paint', [])
     require(len(evidence) == 2 and {item.get('platform') for item in evidence} == {'win32', 'linux'},
             'Paint inspection requires Windows and Linux evidence')
@@ -261,7 +262,7 @@ def verify_text_decorations_evidence(report):
     expectations_sha = hashlib.sha256(TEXT_DECORATIONS_EXPECTATIONS.read_bytes()).hexdigest()
     oracle = json.loads(TEXT_DECORATIONS_EXPECTATIONS.read_bytes())
     require(oracle['inputSha256'] == source_sha and oracle['engineVersion'] == '2.5.40'
-                and report.get('engine_version') in {'2.5.40', '2.5.41', '2.5.43', '2.5.46', '2.5.48'},
+                and report.get('engine_version') in {'2.5.40', '2.5.41', '2.5.43', '2.5.46', '2.5.48', '2.5.49'},
             'Text decorations target another core or fixture')
     names = sorted(row['name'] for row in oracle['cases'])
     failing_names = sorted(row['name'] for row in oracle['cases'] if row['previousEngineFails'])
@@ -349,7 +350,7 @@ def verify_radial_gradient_evidence(report):
     evidence = report.get('radial_gradients', [])
     require(len(evidence) == 2 and {row.get('platform') for row in evidence} == {'linux', 'win32'},
             'Radial gradients require separate Linux and Windows installed-package evidence')
-    require(report.get('engine_version') in {'2.5.43', '2.5.46', '2.5.48'}, 'Radial evidence targets another engine')
+    require(report.get('engine_version') in {'2.5.43', '2.5.46', '2.5.48', '2.5.49'}, 'Radial evidence targets another engine')
     for row in evidence:
         require(row.get('ok') is True and row.get('negative_control') is False
                 and row.get('package_version') == report.get('package_version')
@@ -470,6 +471,55 @@ def verify_page_margin_evidence(report):
                 'Page-margin failure control is uncalibrated')
 
 
+def verify_generated_counter_evidence(report):
+    source_bytes = GENERATED_COUNTER_SOURCE.read_bytes()
+    source_sha = hashlib.sha256(source_bytes).hexdigest()
+    source = json.loads(source_bytes)
+    expected = {row['name']: row for row in source['cases']}
+    require(len(expected) == 59 and report['engine_version'] == source['engineVersion'],
+            'Generated counter fixtures target another engine')
+    evidence = report.get('generated_counters', [])
+    require(len(evidence) == 2 and {row.get('platform') for row in evidence} == {'linux', 'win32'},
+            'Generated counters require Windows and Linux saved-PDF evidence')
+    wanted = {(name, mode) for name in expected for mode in ['direct', 'fixed', 'reflow']}
+    for row in evidence:
+        require(row.get('ok') is True and row.get('negativeControl') is False
+                and row.get('isolation') == 'process' and row.get('defaultStyles') is False
+                and row.get('packageVersion') == report['package_version']
+                and row.get('engineVersion') == report['engine_version']
+                and row.get('tarballSha256') == report['package_sha256']
+                and row.get('wasmSha256') == report['wasm_sha256'] and row.get('fixtureSha256') == source_sha
+                and row.get('documents') == 177 and row.get('pages') == 300 and row.get('failures') == [],
+                'Generated counter evidence is incomplete or targets another package')
+        cases = row.get('cases', [])
+        require(len(cases) == 177 and {(case.get('name'),case.get('mode')) for case in cases} == wanted,
+                'Generated counter cases are missing or duplicated')
+        for case in cases:
+            names = ['Ada'] if case['mode'] == 'direct' else ['Ada', 'Bea']
+            text = ''.join('Record'+name+expected[case['name']]['expectedCounterText'] for name in names)
+            require(case.get('independentReadersAgree') is True and case.get('matchesExpected') is True
+                    and case.get('actual') == case.get('expected') == text
+                    and case.get('pages') == expected[case['name']]['pagesPerRecord'] * len(names),
+                    'A generated counter PDF has incorrect text or pagination')
+    negative = report.get('generated_counter_negative_control', {})
+    require(negative.get('ok') is True and negative.get('negativeControl') is True
+            and negative.get('packageVersion') == '0.9.1' and negative.get('engineVersion') == '2.5.48'
+            and negative.get('fixtureSha256') == source_sha and negative.get('documents') == 59
+            and negative.get('pages') == 60 and len(negative.get('failures', [])) == 47,
+            'The public generated-counter failure control is missing')
+    controls = negative.get('cases', [])
+    require(len(controls) == 59 and {c.get('name') for c in controls} == set(expected)
+            and all(c.get('mode') == 'direct' and c.get('independentReadersAgree') is True for c in controls),
+            'The public generated-counter controls are incomplete')
+    for case in controls:
+        text = 'RecordAda' + expected[case['name']]['expectedCounterText']
+        require(case.get('expected') == text and case.get('matchesExpected') == (case.get('actual') == text)
+                and case.get('pages') == expected[case['name']]['pagesPerRecord'],
+                'The public generated-counter control is uncalibrated')
+    require(sum(not c['matchesExpected'] for c in controls) == 47,
+            'The public generated-counter failure count changed')
+
+
 def verify_binding(version, run_id, run, release, tag_commit, report):
     require(re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version), 'Use a stable numeric version')
     require(re.fullmatch(r'[0-9]+', run_id), 'Use a numeric CI run ID')
@@ -540,7 +590,7 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
                 hidden_sha = hashlib.sha256(hidden_source).hexdigest()
                 hidden_fixture = json.loads(hidden_source)
                 hidden_cases = hidden_fixture['cases']
-                require(report.get('engine_version') in {hidden_fixture['engineVersion'], '2.5.46', '2.5.48'},
+                require(report.get('engine_version') in {hidden_fixture['engineVersion'], '2.5.46', '2.5.48', '2.5.49'},
                         'Hidden-text fixtures target another engine')
                 hidden = report.get('hidden_text', [])
                 require(len(hidden) == 2 and {item.get('platform') for item in hidden} == {'win32', 'linux'},
@@ -589,6 +639,8 @@ def verify_binding(version, run_id, run, release, tag_commit, report):
             verify_batch_evidence(report)
         if release_version >= (0, 9, 1):
             verify_page_margin_evidence(report)
+        if release_version >= (0, 9, 2):
+            verify_generated_counter_evidence(report)
 
 
 def verify_tarball(data, info, report):

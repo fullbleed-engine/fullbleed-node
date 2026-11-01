@@ -6,7 +6,13 @@ no Python, Rust compiler, browser, or system fonts. MIT licensed.
 
 Use `fullbleed` in Node.js, `fullbleed/browser` in a web application, or
 [`fullbleed/cloudflare`](docs/cloudflare.md) inside a Cloudflare Worker.
-Package **0.9.1** wraps the published **Fullbleed 2.5.48** engine.
+Package **0.9.2** wraps the published **Fullbleed 2.5.49** engine.
+
+Generated CSS counter labels follow document order, including a closing
+`::after` label that counts the preceding items. This applies to ordinary
+PDF rendering and fixed or reflow batches. See the
+[counter authoring guide](https://github.com/fullbleed-engine/fullbleed-official/blob/v2.5.49/docs/generated-content.md)
+for an example and the remaining scope and list-marker limitations.
 
 [Try the browser playground](https://docs.fullbleed.dev/playground/) ·
 [Documentation](https://docs.fullbleed.dev/getting-started/node/) ·
