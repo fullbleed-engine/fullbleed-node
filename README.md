@@ -6,9 +6,12 @@ no Python, Rust compiler, browser, or system fonts. MIT licensed.
 
 Use `fullbleed` in Node.js, `fullbleed/browser` in a web application, or
 [`fullbleed/cloudflare`](docs/cloudflare.md) inside a Cloudflare Worker.
-Package **0.9.4** wraps the published **Fullbleed 2.5.51** engine.
+Package **0.9.5** wraps the published **Fullbleed 2.5.51** engine.
 
-A winning `font-family` declaration now replaces an earlier variable-based
+This release fixes a Windows worker-startup cancellation race. Aborted renders
+release their worker before the queue starts the next render.
+
+A winning `font-family` declaration replaces an earlier variable-based
 family. If its variable cannot resolve, the text inherits its parent
 family instead of reviving a declaration that lost the cascade.
 

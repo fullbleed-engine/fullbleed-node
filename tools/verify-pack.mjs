@@ -158,6 +158,16 @@ const queuePassed = Number(queueRun.stdout.match(/^# pass (\d+)$/m)?.[1]);
 assert(queueTests >= 14 && queueTests === queuePassed, 'All queue lifecycle checks must pass.');
 const queueSmoke = { ...JSON.parse(await readFile(join(queueOutput, 'burst.json'), 'utf8')),
   tests: queueTests, passed: queuePassed };
+// Repeat the installed startup/cancel/recovery path that previously left a
+// Windows worker alive after cancellation during dynamic module evaluation.
+const startupRun = spawnSync(process.execPath, [join(root, 'tools/check-startup-cancellation.mjs'), install, queueOutput], {
+  cwd: install, env, encoding: 'utf8', timeout: 120000,
+});
+await writeFile(join(output, 'startup-cancellation.log'), startupRun.stdout + startupRun.stderr);
+assert.equal(startupRun.status, 0, startupRun.stderr || startupRun.stdout);
+const startupCancellation = JSON.parse(await readFile(join(queueOutput, 'startup-cancellation.json'), 'utf8'));
+assert(startupCancellation.ok && startupCancellation.cycles.length === 64 && startupCancellation.remainingWorkers === 0);
+queueSmoke.startupCancellation = startupCancellation;
 await mkdir(join(install, 'fonts/family'), { recursive: true });
 await copyFile(join(root, 'test/named-fonts.test.mjs'), join(install, 'named-fonts.test.mjs'));
 for (const name of ['LibreCaslonText[wght].ttf', 'OFL.txt'])

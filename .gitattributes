@@ -6,3 +6,6 @@
 test/fixtures/radial-gradient-endpoints-2.5.43.json -text
 assets/fonts/*-OFL.txt -whitespace
 test/fonts/*-OFL.txt -whitespace
+
+# Keep build, release, and verification tooling out of language statistics.
+tools/** -linguist-detectable

@@ -175,6 +175,7 @@ jobs:
             output/pack-verification/verification.json
             output/pack-verification/text-extraction.json
             output/pack-verification/queue-tests.log
+            output/pack-verification/startup-cancellation.log
             output/pack-verification/default-styles-tests.log
             output/pack-verification/named-fonts-tests.log
             output/pack-verification/named-fonts/
@@ -343,6 +344,7 @@ jobs:
           path: |
             output/pack-verification/verification.json
             output/pack-verification/queue-tests.log
+            output/pack-verification/startup-cancellation.log
             output/pack-verification/default-styles-tests.log
             output/pack-verification/component-tests.log
             output/pack-verification/batch-tests.log
