@@ -15,7 +15,7 @@ dependencies = [
 
 [[package]]
 name = "fullbleed-node-adapter"
-version = "0.9.4"
+version = "0.9.5"
 dependencies = [
  "fullbleed",
  "serde_json",

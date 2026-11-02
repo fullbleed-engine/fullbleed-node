@@ -91,6 +91,10 @@ PDF and preview bytes with standalone rendering. They also exercise overload,
 FIFO starts, queued and active cancellation, waiting deadlines, input snapshots,
 render failure, shutdown before and after startup, and recovery after terminating
 a process-isolated child. CI runs these checks on Node 22, 24 and 26 across Linux,
-Windows and macOS. The [release evidence](https://github.com/fullbleed-engine/fullbleed-node/releases)
+Windows and macOS. A separate 64-cycle check sweeps cancellation delays after
+workers come online, waits for each worker to exit, then compares the next PDF
+and preview with an uncancelled baseline. It retains the lifecycle counts and recovery files
+in `output/queue-verification/startup-cancellation.json` and `startup-recovery.*`.
+The [release evidence](https://github.com/fullbleed-engine/fullbleed-node/releases)
 retains the observed results and PDF/PNG fixtures; it is not a general throughput
 or memory-capacity claim.
